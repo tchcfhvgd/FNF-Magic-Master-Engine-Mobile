@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="ArrowsMines.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="PMineDown0000" x="0" y="0" width="17" height="17"/>
+	<SubTexture name="PMineDown0001" x="17" y="0" width="17" height="17"/>
+	<SubTexture name="PMineDown0002" x="34" y="0" width="17" height="17"/>
+	<SubTexture name="PMineDown0003" x="51" y="0" width="17" height="17"/>
+	<SubTexture name="PMineDown0004" x="68" y="0" width="17" height="17"/>
+	<SubTexture name="PMineDown0005" x="68" y="0" width="17" height="17"/>
+	<SubTexture name="PMineDown0006" x="68" y="0" width="17" height="17"/>
+	<SubTexture name="PMineDown0007" x="68" y="0" width="17" height="17"/>
+	<SubTexture name="PMineDown0008" x="68" y="0" width="17" height="17"/>
+	<SubTexture name="PMineDown0009" x="68" y="0" width="17" height="17"/>
+	<SubTexture name="PMineLeft0000" x="85" y="0" width="17" height="17"/>
+	<SubTexture name="PMineLeft0001" x="102" y="0" width="17" height="17"/>
+	<SubTexture name="PMineLeft0002" x="0" y="17" width="17" height="17"/>
+	<SubTexture name="PMineLeft0003" x="17" y="17" width="17" height="17"/>
+	<SubTexture name="PMineLeft0004" x="34" y="17" width="17" height="17"/>
+	<SubTexture name="PMineLeft0005" x="34" y="17" width="17" height="17"/>
+	<SubTexture name="PMineLeft0006" x="34" y="17" width="17" height="17"/>
+	<SubTexture name="PMineLeft0007" x="34" y="17" width="17" height="17"/>
+	<SubTexture name="PMineLeft0008" x="34" y="17" width="17" height="17"/>
+	<SubTexture name="PMineLeft0009" x="34" y="17" width="17" height="17"/>
+	<SubTexture name="PMineRight0000" x="51" y="17" width="17" height="17"/>
+	<SubTexture name="PMineRight0001" x="68" y="17" width="17" height="17"/>
+	<SubTexture name="PMineRight0002" x="85" y="17" width="17" height="17"/>
+	<SubTexture name="PMineRight0003" x="102" y="17" width="17" height="17"/>
+	<SubTexture name="PMineRight0004" x="0" y="34" width="17" height="17"/>
+	<SubTexture name="PMineRight0005" x="0" y="34" width="17" height="17"/>
+	<SubTexture name="PMineRight0006" x="0" y="34" width="17" height="17"/>
+	<SubTexture name="PMineRight0007" x="0" y="34" width="17" height="17"/>
+	<SubTexture name="PMineRight0008" x="0" y="34" width="17" height="17"/>
+	<SubTexture name="PMineRight0009" x="0" y="34" width="17" height="17"/>
+	<SubTexture name="PMineUp0000" x="17" y="34" width="17" height="17"/>
+	<SubTexture name="PMineUp0001" x="34" y="34" width="17" height="17"/>
+	<SubTexture name="PMineUp0002" x="51" y="34" width="17" height="17"/>
+	<SubTexture name="PMineUp0003" x="68" y="34" width="17" height="17"/>
+	<SubTexture name="PMineUp0004" x="85" y="34" width="17" height="17"/>
+	<SubTexture name="PMineUp0005" x="85" y="34" width="17" height="17"/>
+	<SubTexture name="PMineUp0006" x="85" y="34" width="17" height="17"/>
+	<SubTexture name="PMineUp0007" x="85" y="34" width="17" height="17"/>
+	<SubTexture name="PMineUp0008" x="85" y="34" width="17" height="17"/>
+	<SubTexture name="PMineUp0009" x="85" y="34" width="17" height="17"/>
+</TextureAtlas>

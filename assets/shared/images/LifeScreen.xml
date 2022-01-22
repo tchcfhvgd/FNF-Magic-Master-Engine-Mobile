@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="LifeScreen.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="LifeScreen instance 10000" x="0" y="0" width="1921" height="1102"/>
+	<SubTexture name="LifeScreen instance 10001" x="1924" y="0" width="1921" height="1102"/>
+	<SubTexture name="LifeScreen instance 10002" x="3848" y="0" width="1921" height="1102"/>
+	<SubTexture name="LifeScreen instance 10003" x="5772" y="0" width="1921" height="1102"/>
+	<SubTexture name="LifeScreen instance 10004" x="0" y="1105" width="1921" height="1102"/>
+	<SubTexture name="LifeScreen instance 10005" x="1924" y="1105" width="1921" height="1102"/>
+	<SubTexture name="LifeScreen instance 10006" x="3848" y="1105" width="1921" height="1102"/>
+	<SubTexture name="LifeScreen instance 10007" x="5772" y="1105" width="1921" height="1102"/>
+	<SubTexture name="LifeScreen instance 10008" x="0" y="2210" width="1921" height="1102"/>
+	<SubTexture name="LifeScreen instance 10009" x="1924" y="2210" width="1921" height="1102"/>
+	<SubTexture name="LifeScreen instance 10010" x="3848" y="2210" width="1921" height="1102"/>
+	<SubTexture name="LifeScreen instance 10011" x="5772" y="2210" width="1921" height="1102"/>
+	<SubTexture name="LifeScreen instance 10012" x="0" y="3315" width="1921" height="1102"/>
+	<SubTexture name="LifeScreen instance 10013" x="1924" y="3315" width="1921" height="1102"/>
+	<SubTexture name="LifeScreen instance 10014" x="3848" y="3315" width="1921" height="1102"/>
+	<SubTexture name="LifeScreen instance 10015" x="5772" y="3315" width="1921" height="1102"/>
+	<SubTexture name="LifeScreen instance 10016" x="0" y="4420" width="1921" height="1102"/>
+	<SubTexture name="LifeScreen instance 10017" x="1924" y="4420" width="1921" height="1102"/>
+	<SubTexture name="LifeScreen instance 10018" x="3848" y="4420" width="1921" height="1102"/>
+</TextureAtlas>

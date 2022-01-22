@@ -1,0 +1,28 @@
+{
+    "voice":"bf",
+
+    "image": "characters/DADDY_DEAREST",
+    "healthicon": "dad",
+
+	"position": [0,	0],
+    "camera_position": [0, 0],
+	
+	"defaultFlip": "Left",
+	"scale": 1,
+    
+    "anims":[
+        {
+            "anim": "singLEFT",
+            "symbol": "Dad Sing Note LEFT",
+            "fps": 24,
+    
+            "offsets": [
+                ["Left", 0, -30],
+                ["Right", 0, -30]
+            ],
+            "indices": [],
+    
+            "loop": false
+        }
+    ]
+}

@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Flash_Notes.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Flash_Down0000" x="0" y="0" width="214" height="243" frameX="-23" frameY="-19" frameWidth="241" frameHeight="277"/>
+	<SubTexture name="Flash_Down0001" x="214" y="0" width="214" height="243" frameX="-23" frameY="-19" frameWidth="241" frameHeight="277"/>
+	<SubTexture name="Flash_Down0002" x="428" y="0" width="202" height="220" frameX="-37" frameY="-37" frameWidth="241" frameHeight="277"/>
+	<SubTexture name="Flash_Down0003" x="630" y="0" width="202" height="220" frameX="-37" frameY="-37" frameWidth="241" frameHeight="277"/>
+	<SubTexture name="Flash_Down0004" x="832" y="0" width="203" height="198" frameX="-38" frameY="-53" frameWidth="241" frameHeight="277"/>
+	<SubTexture name="Flash_Down0005" x="1035" y="0" width="203" height="198" frameX="-38" frameY="-53" frameWidth="241" frameHeight="277"/>
+	<SubTexture name="Flash_Down0006" x="1238" y="0" width="214" height="250" frameX="-26" frameY="0" frameWidth="241" frameHeight="277"/>
+	<SubTexture name="Flash_Down0007" x="1452" y="0" width="214" height="250" frameX="-26" frameY="0" frameWidth="241" frameHeight="277"/>
+	<SubTexture name="Flash_Down0008" x="1666" y="0" width="210" height="244" frameX="-28" frameY="-10" frameWidth="241" frameHeight="277"/>
+	<SubTexture name="Flash_Down0009" x="1876" y="0" width="210" height="244" frameX="-28" frameY="-10" frameWidth="241" frameHeight="277"/>
+	<SubTexture name="Flash_Down0010" x="2086" y="0" width="235" height="260" frameX="0" frameY="-17" frameWidth="241" frameHeight="277"/>
+	<SubTexture name="Flash_Down0011" x="2321" y="0" width="235" height="260" frameX="0" frameY="-17" frameWidth="241" frameHeight="277"/>
+	<SubTexture name="Flash_Down0012" x="2556" y="0" width="237" height="256" frameX="-2" frameY="-15" frameWidth="241" frameHeight="277"/>
+	<SubTexture name="Flash_Down0013" x="2793" y="0" width="237" height="256" frameX="-2" frameY="-15" frameWidth="241" frameHeight="277"/>
+	<SubTexture name="Flash_Idle0000" x="3030" y="0" width="526" height="605"/>
+	<SubTexture name="Flash_Idle0001" x="3556" y="0" width="526" height="605"/>
+	<SubTexture name="Flash_Idle0002" x="0" y="605" width="489" height="564" frameX="-14" frameY="-22" frameWidth="526" frameHeight="605"/>
+	<SubTexture name="Flash_Idle0003" x="489" y="605" width="489" height="564" frameX="-14" frameY="-22" frameWidth="526" frameHeight="605"/>
+	<SubTexture name="Flash_Idle0004" x="978" y="605" width="480" height="553" frameX="-17" frameY="-28" frameWidth="526" frameHeight="605"/>
+	<SubTexture name="Flash_Idle0005" x="1458" y="605" width="480" height="553" frameX="-17" frameY="-28" frameWidth="526" frameHeight="605"/>
+	<SubTexture name="Flash_Idle0006" x="1938" y="605" width="473" height="546" frameX="-20" frameY="-32" frameWidth="526" frameHeight="605"/>
+	<SubTexture name="Flash_Idle0007" x="2411" y="605" width="473" height="546" frameX="-20" frameY="-32" frameWidth="526" frameHeight="605"/>
+	<SubTexture name="Flash_Idle0008" x="2884" y="605" width="464" height="533" frameX="-23" frameY="-39" frameWidth="526" frameHeight="605"/>
+	<SubTexture name="Flash_Idle0009" x="3348" y="605" width="464" height="533" frameX="-23" frameY="-39" frameWidth="526" frameHeight="605"/>
+	<SubTexture name="Flash_Idle0010" x="0" y="1169" width="457" height="526" frameX="-26" frameY="-43" frameWidth="526" frameHeight="605"/>
+	<SubTexture name="Flash_Idle0011" x="457" y="1169" width="457" height="526" frameX="-26" frameY="-43" frameWidth="526" frameHeight="605"/>
+	<SubTexture name="Flash_Idle0012" x="914" y="1169" width="457" height="526" frameX="-26" frameY="-43" frameWidth="526" frameHeight="605"/>
+	<SubTexture name="Flash_Idle0013" x="1371" y="1169" width="457" height="526" frameX="-26" frameY="-43" frameWidth="526" frameHeight="605"/>
+	<SubTexture name="Flash_Right0000" x="1828" y="1169" width="248" height="213" frameX="0" frameY="-13" frameWidth="251" frameHeight="231"/>
+	<SubTexture name="Flash_Right0001" x="2076" y="1169" width="248" height="213" frameX="0" frameY="-13" frameWidth="251" frameHeight="231"/>
+	<SubTexture name="Flash_Right0002" x="2324" y="1169" width="198" height="212" frameX="0" frameY="-13" frameWidth="251" frameHeight="231"/>
+	<SubTexture name="Flash_Right0003" x="2522" y="1169" width="198" height="212" frameX="0" frameY="-13" frameWidth="251" frameHeight="231"/>
+	<SubTexture name="Flash_Right0004" x="2720" y="1169" width="196" height="215" frameX="0" frameY="-13" frameWidth="251" frameHeight="231"/>
+	<SubTexture name="Flash_Right0005" x="2916" y="1169" width="196" height="215" frameX="0" frameY="-13" frameWidth="251" frameHeight="231"/>
+	<SubTexture name="Flash_Right0006" x="3112" y="1169" width="199" height="219" frameX="0" frameY="-12" frameWidth="251" frameHeight="231"/>
+	<SubTexture name="Flash_Right0007" x="3311" y="1169" width="199" height="219" frameX="0" frameY="-12" frameWidth="251" frameHeight="231"/>
+	<SubTexture name="Flash_Right0008" x="3510" y="1169" width="197" height="209" frameX="0" frameY="-18" frameWidth="251" frameHeight="231"/>
+	<SubTexture name="Flash_Right0009" x="3707" y="1169" width="197" height="209" frameX="0" frameY="-18" frameWidth="251" frameHeight="231"/>
+	<SubTexture name="Flash_Right0010" x="0" y="1695" width="236" height="226" frameX="0" frameY="0" frameWidth="251" frameHeight="231"/>
+	<SubTexture name="Flash_Right0011" x="236" y="1695" width="236" height="226" frameX="0" frameY="0" frameWidth="251" frameHeight="231"/>
+	<SubTexture name="Flash_Right0012" x="472" y="1695" width="251" height="222" frameX="0" frameY="-5" frameWidth="251" frameHeight="231"/>
+	<SubTexture name="Flash_Right0013" x="472" y="1695" width="251" height="222" frameX="0" frameY="-5" frameWidth="251" frameHeight="231"/>
+	<SubTexture name="Flash_Up0000" x="723" y="1695" width="204" height="218" frameX="-20" frameY="-34" frameWidth="226" frameHeight="256"/>
+	<SubTexture name="Flash_Up0001" x="927" y="1695" width="204" height="218" frameX="-20" frameY="-34" frameWidth="226" frameHeight="256"/>
+	<SubTexture name="Flash_Up0002" x="1131" y="1695" width="198" height="223" frameX="-27" frameY="-29" frameWidth="226" frameHeight="256"/>
+	<SubTexture name="Flash_Up0003" x="1329" y="1695" width="198" height="223" frameX="-27" frameY="-29" frameWidth="226" frameHeight="256"/>
+	<SubTexture name="Flash_Up0004" x="1527" y="1695" width="193" height="249" frameX="-28" frameY="-6" frameWidth="226" frameHeight="256"/>
+	<SubTexture name="Flash_Up0005" x="1720" y="1695" width="193" height="249" frameX="-28" frameY="-6" frameWidth="226" frameHeight="256"/>
+	<SubTexture name="Flash_Up0006" x="1913" y="1695" width="223" height="251" frameX="0" frameY="0" frameWidth="226" frameHeight="256"/>
+	<SubTexture name="Flash_Up0007" x="2136" y="1695" width="223" height="251" frameX="0" frameY="0" frameWidth="226" frameHeight="256"/>
+	<SubTexture name="Flash_Up0008" x="2359" y="1695" width="215" height="236" frameX="-8" frameY="-20" frameWidth="226" frameHeight="256"/>
+	<SubTexture name="Flash_Up0009" x="2574" y="1695" width="215" height="236" frameX="-8" frameY="-20" frameWidth="226" frameHeight="256"/>
+	<SubTexture name="Flash_Up0010" x="2789" y="1695" width="221" height="204" frameX="-4" frameY="-47" frameWidth="226" frameHeight="256"/>
+	<SubTexture name="Flash_Up0011" x="3010" y="1695" width="221" height="204" frameX="-4" frameY="-47" frameWidth="226" frameHeight="256"/>
+	<SubTexture name="Flash_Up0012" x="3231" y="1695" width="222" height="207" frameX="-4" frameY="-41" frameWidth="226" frameHeight="256"/>
+	<SubTexture name="Flash_Up0013" x="3453" y="1695" width="222" height="207" frameX="-4" frameY="-41" frameWidth="226" frameHeight="256"/>
+	<SubTexture name="Flash_left0000" x="3675" y="1695" width="243" height="231" frameX="0" frameY="0" frameWidth="254" frameHeight="255"/>
+	<SubTexture name="Flash_left0001" x="0" y="1946" width="243" height="231" frameX="0" frameY="0" frameWidth="254" frameHeight="255"/>
+	<SubTexture name="Flash_left0002" x="243" y="1946" width="229" height="243" frameX="-14" frameY="-5" frameWidth="254" frameHeight="255"/>
+	<SubTexture name="Flash_left0003" x="472" y="1946" width="229" height="243" frameX="-14" frameY="-5" frameWidth="254" frameHeight="255"/>
+	<SubTexture name="Flash_left0004" x="701" y="1946" width="211" height="245" frameX="-32" frameY="-10" frameWidth="254" frameHeight="255"/>
+	<SubTexture name="Flash_left0005" x="912" y="1946" width="211" height="245" frameX="-32" frameY="-10" frameWidth="254" frameHeight="255"/>
+	<SubTexture name="Flash_left0006" x="1123" y="1946" width="246" height="228" frameX="-8" frameY="-8" frameWidth="254" frameHeight="255"/>
+	<SubTexture name="Flash_left0007" x="1369" y="1946" width="246" height="228" frameX="-8" frameY="-8" frameWidth="254" frameHeight="255"/>
+	<SubTexture name="Flash_left0008" x="1615" y="1946" width="229" height="228" frameX="-17" frameY="-5" frameWidth="254" frameHeight="255"/>
+	<SubTexture name="Flash_left0009" x="1844" y="1946" width="229" height="228" frameX="-17" frameY="-5" frameWidth="254" frameHeight="255"/>
+	<SubTexture name="Flash_left0010" x="2073" y="1946" width="238" height="230" frameX="-12" frameY="-9" frameWidth="254" frameHeight="255"/>
+	<SubTexture name="Flash_left0011" x="2311" y="1946" width="238" height="230" frameX="-12" frameY="-9" frameWidth="254" frameHeight="255"/>
+	<SubTexture name="Flash_left0012" x="2549" y="1946" width="238" height="228" frameX="-12" frameY="-8" frameWidth="254" frameHeight="255"/>
+	<SubTexture name="Flash_left0013" x="2787" y="1946" width="238" height="228" frameX="-12" frameY="-8" frameWidth="254" frameHeight="255"/>
+</TextureAtlas>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="FireScreen.png">
+	<!-- Created with Adobe Animate version 19.2.1.408 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="copia Fuego 10000" x="0" y="0" width="2440" height="1404"/>
+	<SubTexture name="copia Fuego 10001" x="2440" y="0" width="2440" height="1401" frameX="0" frameY="-3" frameWidth="2440" frameHeight="1404"/>
+	<SubTexture name="copia Fuego 10002" x="4880" y="0" width="2440" height="1402" frameX="0" frameY="-2" frameWidth="2440" frameHeight="1404"/>
+	<SubTexture name="copia Fuego 10003" x="0" y="1404" width="2440" height="1403" frameX="0" frameY="-1" frameWidth="2440" frameHeight="1404"/>
+	<SubTexture name="copia Fuego 10004" x="2440" y="1404" width="2440" height="1400" frameX="0" frameY="-4" frameWidth="2440" frameHeight="1404"/>
+	<SubTexture name="copia Fuego 10005" x="4880" y="1404" width="2440" height="1403" frameX="0" frameY="-1" frameWidth="2440" frameHeight="1404"/>
+	<SubTexture name="copia Fuego 10006" x="0" y="2807" width="2440" height="1400" frameX="0" frameY="-4" frameWidth="2440" frameHeight="1404"/>
+	<SubTexture name="copia Fuego 10007" x="2440" y="2807" width="2440" height="1403" frameX="0" frameY="-1" frameWidth="2440" frameHeight="1404"/>
+	<SubTexture name="copia Fuego 10008" x="4880" y="2807" width="2440" height="1403" frameX="0" frameY="-1" frameWidth="2440" frameHeight="1404"/>
+	<SubTexture name="copia Fuego 10009" x="0" y="4210" width="2440" height="1403" frameX="0" frameY="-1" frameWidth="2440" frameHeight="1404"/>
+	<SubTexture name="copia Fuego 10010" x="2440" y="4210" width="2440" height="1403" frameX="0" frameY="-1" frameWidth="2440" frameHeight="1404"/>
+	<SubTexture name="copia Fuego 10011" x="4880" y="4210" width="2440" height="1402" frameX="0" frameY="-2" frameWidth="2440" frameHeight="1404"/>
+	<SubTexture name="copia Fuego 10012" x="0" y="5613" width="2440" height="1401" frameX="0" frameY="-3" frameWidth="2440" frameHeight="1404"/>
+	<SubTexture name="copia Fuego 10013" x="2440" y="5613" width="2440" height="1404"/>
+</TextureAtlas>
