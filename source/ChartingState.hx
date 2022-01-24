@@ -138,8 +138,7 @@ class ChartingState extends MusicBeatState{
 
 				strumToPlay: 0,
 
-				noteStyle: 'NORMAL',
-				ui_Style: "Normal",
+				uiStyle: "Normal",
 
 				stage: 'stage',
 				characters: [
@@ -161,6 +160,8 @@ class ChartingState extends MusicBeatState{
 				],
 				sectionStrums: [
 					{
+						keys: 4,
+						noteStyle: "Default",
 						charToSing: [0],
 						notes: [
 							{
@@ -666,25 +667,16 @@ class ChartingState extends MusicBeatState{
 				});
 				newTAB.add(btn_ChangeStage);
 
-				var txt_NoteStyle = new FlxText(5, btn_ChangeStage.y + 35, 'Note Style');
-				var noteStyleDropDown = new FlxUIDropDownMenu(5, txt_NoteStyle.y + 17, FlxUIDropDownMenu.makeStrIdLabelArray(noteStyles, true), function(noteStyle:String){
-					_song.noteStyle = noteStyles[Std.parseInt(noteStyle)];
-					updateGrid();
-				});
-				noteStyleDropDown.selectedLabel = _song.noteStyle;
-
-				var txt_UIStyle = new FlxText(5, noteStyleDropDown.y + 35, 'UI Style:');
+				var txt_UIStyle = new FlxText(5, btn_ChangeStage.y + 35, 'UI Style:');
 				newTAB.add(txt_UIStyle);
 				var noteUIDropDown = new FlxUIDropDownMenu(5, txt_UIStyle.y + 17, FlxUIDropDownMenu.makeStrIdLabelArray(uiStyles, true), function(uiStyle:String){
-					_song.ui_Style = uiStyles[Std.parseInt(uiStyle)];
+					_song.uiStyle = uiStyles[Std.parseInt(uiStyle)];
 					updateGrid();
 				});
-				noteUIDropDown.selectedLabel = _song.ui_Style;
+				noteUIDropDown.selectedLabel = _song.uiStyle;
 				
 				newTAB.add(noteUIDropDown);
 				newTAB.add(txt_UIStyle);
-				newTAB.add(noteStyleDropDown);
-				newTAB.add(txt_NoteStyle);
 
 				
 				TABMENU.add(newTAB);
@@ -1666,6 +1658,8 @@ class ChartingState extends MusicBeatState{
 
 	private function newSecStrum(charToSing:Array<Int>):SwagStrum {
 		var sec:SwagStrum = {
+			keys: 4,
+			noteStyle: "Default",
 			charToSing: charToSing,
 
 			notes: []

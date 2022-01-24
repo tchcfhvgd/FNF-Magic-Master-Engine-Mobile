@@ -11,6 +11,7 @@ class PreSettings {
         //Game Settings
         ["GhostTapping", true],
         //Visual Settings
+        ["NoteSyle", [0, ["Arrows", "Circles", "Rhombuses", "Bars"]]],
         ["TypeHUD", [0, ["MagicHUD", "Original", "Minimized", "OnlyNotes"]]],
         ["TypeScroll", [0, ["UpScroll", "DownScroll"]]],
         ["ForceMiddleScroll", false],

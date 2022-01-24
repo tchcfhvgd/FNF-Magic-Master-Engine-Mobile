@@ -2,8 +2,14 @@ package;
 
 import flixel.FlxG;
 import flixel.graphics.frames.FlxAtlasFrames;
+import openfl.utils.Assets;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
+
+#if desktop
+import sys.FileSystem;
+import sys.io.File;
+#end
 
 import ListStuff;
 
@@ -121,6 +127,21 @@ class Paths
 		#end
 	}
 
+	inline static public function strumline(keys:Int){
+		var typeNotes = PreSettings.getArraySetting(PreSettings.getPreSetting("NoteSyle"));
+		var toReturn = '';
+
+		toReturn = 'notes:assets/notes/${typeNotes}/${keys}k.json';
+
+		#if desktop
+		if(!FileSystem.exists(toReturn)){
+			toReturn = 'notes:assets/notes/Default/${keys}k.json';
+		}
+		#end
+
+		return toReturn; 
+	}
+
 	inline static public function image(key:String, ?library:String)
 	{
 		return getPath('images/$key.png', IMAGE, library);
@@ -139,5 +160,35 @@ class Paths
 	inline static public function getPackerAtlas(key:String, ?library:String)
 	{
 		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library));
+	}
+
+	inline static public function getNoteAtlas(key:String, typeCheck:String){
+		var typeNotes = PreSettings.getArraySetting(PreSettings.getPreSetting("NoteSyle"));
+
+		var curTypeCheck = typeCheck;
+		var curTypeNotes = typeNotes;
+
+		var imagePath = 'notes:assets/notes/${curTypeNotes}/${curTypeCheck}/${image}.png';
+
+		while(!Assets.exists(imagePath)){
+			if(curTypeCheck == typeCheck && curTypeNotes == typeNotes){
+				curTypeCheck = 'Default';
+			}else if(curTypeCheck != typeCheck && curTypeNotes == typeNotes){
+				curTypeNotes = 'Default';
+			}else if(curTypeCheck == 'Default' && curTypeNotes == 'Default'){
+				break;	
+			}
+
+			imagePath = 'notes:assets/notes/${curTypeNotes}/${curTypeCheck}/${image}.png';
+		}
+
+		var path = 'notes:assets/notes/${curTypeNotes}/${curTypeCheck}/${image}.xml';
+
+		if(Assets.exists(path)){
+			return FlxAtlasFrames.fromSparrow(imagePath, path);
+		}else{
+			path = 'notes:assets/notes/${curTypeNotes}/${curTypeCheck}/${image}.txt';
+			return FlxAtlasFrames.fromSpriteSheetPacker(imagePath, path);
+		}
 	}
 }

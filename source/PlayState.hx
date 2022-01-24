@@ -42,7 +42,6 @@ import lime.utils.Assets;
 import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
-import Note.NoteData;
 
 using StringTools;
 
@@ -55,12 +54,7 @@ class PlayState extends MusicBeatState {
 	//Audio
 	private var voices:FlxSoundGroup;
 
-	//Notes and Strums
-	public var renderedNotes:FlxTypedGroup<FlxTypedGroup<Note>>;
-	private var unspawnNotes:Array<Array<Note>> = [];
-
-	public static var strumsGroup:FlxTypedGroup<FlxTypedGroup<StrumNote>>;
-	private var strumLine:FlxObject;
+	public static var strumsGroup:FlxTypedGroup<StrumLineNote>;
 
 	//Gameplay Stats
 	var defaultCamZoom:Float = 1.05;
@@ -78,7 +72,6 @@ class PlayState extends MusicBeatState {
 	private var health:Float = 1;
 	private var combo:Int = 0;
 
-	var noteTypeCheck:String = 'NORMAL';
 	var uiStyleCheck:String = 'Normal';
 
 	//Cameras
@@ -124,8 +117,7 @@ class PlayState extends MusicBeatState {
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
 
-		if(SONG.noteStyle != null){noteTypeCheck = SONG.noteStyle;}
-		if(SONG.ui_Style != null){uiStyleCheck = SONG.ui_Style;}
+		if(SONG.uiStyle != null){uiStyleCheck = SONG.uiStyle;}
 
 		curStrum = SONG.strumToPlay;
 
@@ -133,11 +125,8 @@ class PlayState extends MusicBeatState {
 
 		Conductor.songPosition = -5000;
 
-		strumsGroup = new FlxTypedGroup<FlxTypedGroup<StrumNote>>();
+		strumsGroup = new FlxTypedGroup<StrumLineNote>();
 		add(strumsGroup);
-
-		strumLine = new FlxObject(0, 50);
-		strumLine.scrollFactor.set();
 
 		generateSong();
 
@@ -146,8 +135,6 @@ class PlayState extends MusicBeatState {
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 
 		FlxG.fixedTimestep = false;
-
-		renderedNotes.cameras = [camHUD];
 
 		startingSong = true;
 
@@ -167,9 +154,7 @@ class PlayState extends MusicBeatState {
 
 	var startTimer:FlxTimer;
 	function startCountdown():Void{
-		for(i in 0...SONG.sectionStrums.length){
-			generateStaticArrows(i);
-		}
+		generateStaticArrows();
 
 		startedCountdown = true;
 		Conductor.songPosition = 0;
@@ -277,100 +262,14 @@ class PlayState extends MusicBeatState {
 			}		
 		}
 
-		renderedNotes = new FlxTypedGroup<FlxTypedGroup<Note>>();
-		add(renderedNotes);
-
-		var noteData:Array<SwagSection>;
-
-		// NEW SHIT
-		for(i in 0...SONG.sectionStrums.length){
-			unspawnNotes.push([]);
-			
-			var noteGroup = new FlxTypedGroup<Note>();
-			renderedNotes.add(noteGroup);
-
-			noteData = songData.sectionStrums[i].notes;
-
-			var daBeats:Int = 0; // Not exactly representative of 'daBeats' lol, just how much it has looped
-			for(section in noteData){
-				for(songNotes in section.sectionNotes){
-					if(
-						(pre_TypeNotes == "All") ||
-						(pre_TypeNotes == "OnlyNormal" && songNotes[4] == 0) ||
-						(pre_TypeNotes == "DisableBads" && songNotes[4] <= 0) ||
-						(pre_TypeNotes == "DisableGoods" && songNotes[4] >= 0) ||
-						(pre_TypeNotes == "OnlySpecials" && songNotes[4] != 0)
-					){
-						var daStrumTime:Float = songNotes[0] + pre_NoteOffset;
-						if(daStrumTime < 0){daStrumTime = 0;}
-						var daNoteData:Int = Std.int(songNotes[1] % 4);
-						var daType:Int = songNotes[4];
-						var daOtherData:Array<NoteData> = songNotes[5];
-	
-						var oldNote:Note;
-						if (unspawnNotes[i].length > 0)
-							oldNote = unspawnNotes[i][Std.int(unspawnNotes.length - 1)];
-						else
-							oldNote = null;
-	
-						var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, daType, daOtherData);
-	
-						swagNote.sustainLength = songNotes[2];
-						swagNote.scrollFactor.set(0, 0);
-	
-						var susLength:Float = swagNote.sustainLength;
-	
-						susLength = susLength / Conductor.stepCrochet;
-						unspawnNotes[i].push(swagNote);
-	
-						for (susNote in 0...Math.floor(susLength))
-						{
-							oldNote = unspawnNotes[i][Std.int(unspawnNotes[i].length - 1)];
-	
-							var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote, true, daType, daOtherData);
-							sustainNote.scrollFactor.set();
-							unspawnNotes[i].push(sustainNote);
-	
-							sustainNote.x += FlxG.width / 2;
-						}
-	
-						swagNote.x += FlxG.width / 2;
-					}
-				}
-				daBeats += 1;
-			}
-		}
-
-		for(unspawnNote in unspawnNotes){
-			unspawnNote.sort(sortByShit);
-		}
-
 		generatedMusic = true;
 	}
 
-	function sortByShit(Obj1:Note, Obj2:Note):Int{
-		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strumTime, Obj2.strumTime);
-	}
-
-	private function generateStaticArrows(player:Int):Void{
-		var charStrums = new FlxTypedGroup<StrumNote>();
-		charStrums.ID = player;
-		strumsGroup.add(charStrums);
-
-		for (i in 0...4){
-			// FlxG.log.add(i);
-			var babyArrow:StrumNote = new StrumNote(0, strumLine.y, i, noteTypeCheck);
-			babyArrow.x += Note.swagWidth * i;
-
-			babyArrow.alpha = 1;
-
-			babyArrow.ID = i;
-
-			charStrums.add(babyArrow);
-			
-			babyArrow.animation.play('static');
-			babyArrow.x += 50;
-			babyArrow.x += ((FlxG.width / 2) * player);
+	private function generateStaticArrows():Void{
+		for(i in 0...SONG.sectionStrums.length){
+			var charStrums = new StrumLineNote(0, 0, SONG.sectionStrums[i].keys, SONG.sectionStrums[i].noteStyle);
+			charStrums.ID = i;
+			strumsGroup.add(charStrums);
 		}
 	}
 
@@ -478,79 +377,6 @@ class PlayState extends MusicBeatState {
 
 			// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 		}
-
-		for(i in 0...unspawnNotes.length){
-			if(unspawnNotes[i][0] != null){
-				if (unspawnNotes[i][0].strumTime - Conductor.songPosition < 3500){
-					var dunceNote:Note = unspawnNotes[i][0];
-					renderedNotes.members[i].add(dunceNote);
-	
-					var index:Int = unspawnNotes[i].indexOf(dunceNote);
-					unspawnNotes[i].splice(index, 1);
-				}
-			}	
-		}
-
-		if(generatedMusic){
-			for(i in 0...renderedNotes.members.length){
-				renderedNotes.members[i].forEachAlive(function(daNote:Note){
-					daNote.strumToPlay = i;
-
-					if(daNote.y > FlxG.height){
-						daNote.active = false;
-						daNote.visible = false;
-					}else{
-						daNote.visible = true;
-						daNote.active = true;
-					}
-
-					daNote.visible = strumsGroup.members[i].members[Math.floor(Math.abs(daNote.noteData))].visible;
-					daNote.x = strumsGroup.members[i].members[Math.floor(Math.abs(daNote.noteData))].x;
-					if(!daNote.isSustainNote){
-						daNote.angle = strumsGroup.members[i].members[Math.floor(Math.abs(daNote.noteData))].angle;	
-					}else{
-						daNote.x += daNote.width / 2 + 17;
-					}
-					daNote.alpha = strumsGroup.members[i].members[Math.floor(Math.abs(daNote.noteData))].alpha;
-
-					daNote.y = (strumLine.y - (Conductor.songPosition - daNote.strumTime) * (0.45 * FlxMath.roundDecimal(SONG.speed, 2)));
-
-					// i am so fucking sorry for this if condition
-					if (daNote.isSustainNote
-						&& daNote.y + daNote.offset.y <= strumLine.y + Note.swagWidth / 2)
-					{
-						var swagRect = new FlxRect(0, strumLine.y + Note.swagWidth / 2 - daNote.y, daNote.width * 2, daNote.height * 2);
-						swagRect.y /= daNote.scale.y;
-						swagRect.height -= swagRect.y;
-
-						daNote.clipRect = swagRect;
-					}
-
-					if(daNote.wasGoodHit && daNote.typeData <= 0){							
-						if(pre_TypeStrums == "All" || pre_TypeStrums == "OnlyOtherStrums"){
-							strumsGroup.members[i].forEach(function(spr:StrumNote){
-								if (Math.abs(daNote.noteData) == spr.ID){
-									spr.playAnim('confirm', true);
-								}
-							});
-						}
-	
-						if(SONG.needsVoices){
-							for(sound in voices.sounds){sound.volume = 1;}
-						}
-	
-						if(SONG.difficulty == "Trauma" && !daNote.isSustainNote){
-							health -= 0.04;						
-						}
-
-						daNote.active = false;
-						daNote.kill();
-						renderedNotes.members[i].remove(daNote, true);
-						daNote.destroy();
-					}
-				});
-			}
-		}
 	}
 
 	function endSong():Void{
@@ -604,12 +430,6 @@ class PlayState extends MusicBeatState {
 
 	override function beatHit(){
 		super.beatHit();
-
-		if (generatedMusic){
-			for(daNotes in renderedNotes){
-				daNotes.sort(FlxSort.byY, FlxSort.DESCENDING);
-			}
-		}
 
 		if (SONG.generalSection[Math.floor(curStep / 16)] != null){
 			if (SONG.generalSection[Math.floor(curStep / 16)].changeBPM){

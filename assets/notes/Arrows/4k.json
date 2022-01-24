@@ -1,0 +1,183 @@
+{
+    "noteSplash": "NOTE_assets",
+    "staticNotes":[
+        {
+            "colorHUE":[0, 0, 0],
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "arrowLEFT",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "scale": 1,
+                    "antialiasing": true
+                },
+                {
+                    "anim": "pressed",
+                    "symbol": "left press",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "scale": 1,
+                    "antialiasing": true
+                },
+                {
+                    "anim": "confirm",
+                    "symbol": "left confirm",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "scale": 1,
+                    "antialiasing": true
+                }
+            ]
+        },
+        {
+            "colorHUE":[0, 0, 0],
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "arrowLEFT",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "scale": 1,
+                    "antialiasing": true
+                },
+                {
+                    "anim": "pressed",
+                    "symbol": "left press",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "scale": 1,
+                    "antialiasing": true
+                },
+                {
+                    "anim": "confirm",
+                    "symbol": "left confirm",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "scale": 1,
+                    "antialiasing": true
+                }
+            ]
+        },
+        {
+            "colorHUE":[0, 0, 0],
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "arrowLEFT",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "scale": 1,
+                    "antialiasing": true
+                },
+                {
+                    "anim": "pressed",
+                    "symbol": "left press",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "scale": 1,
+                    "antialiasing": true
+                },
+                {
+                    "anim": "confirm",
+                    "symbol": "left confirm",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "scale": 1,
+                    "antialiasing": true
+                }
+            ]
+        },
+        {
+            "colorHUE":[0, 0, 0],
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "arrowLEFT",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "scale": 1,
+                    "antialiasing": true
+                },
+                {
+                    "anim": "pressed",
+                    "symbol": "left press",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "scale": 1,
+                    "antialiasing": true
+                },
+                {
+                    "anim": "confirm",
+                    "symbol": "left confirm",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "scale": 1,
+                    "antialiasing": true
+                }
+            ]
+        }
+    ],
+    "gameplayNotes":[
+        {
+            "colorHUE":[0, 0, 0],
+            "noteAnim":{
+                "anim": "idle",
+                "symbol": "left confirm",
+                "offset": [0, 0],
+
+                "fps": 32,
+                "scale": 1,
+                "antialiasing": true
+            }
+        },
+        {
+            "colorHUE":[0, 0, 0],
+            "noteAnim":{
+                "anim": "idle",
+                "symbol": "left confirm",
+                "offset": [0, 0],
+
+                "fps": 32,
+                "scale": 1,
+                "antialiasing": true
+            }
+        },
+        {
+            "colorHUE":[0, 0, 0],
+            "noteAnim":{
+                "anim": "idle",
+                "symbol": "left confirm",
+                "offset": [0, 0],
+
+                "fps": 32,
+                "scale": 1,
+                "antialiasing": true
+            }
+        },
+        {
+            "colorHUE":[0, 0, 0],
+            "noteAnim":{
+                "anim": "idle",
+                "symbol": "left confirm",
+                "offset": [0, 0],
+
+                "fps": 32,
+                "scale": 1,
+                "antialiasing": true
+            }
+        }
+    ]
+}

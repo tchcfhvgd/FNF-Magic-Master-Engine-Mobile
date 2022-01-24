@@ -24,8 +24,7 @@ typedef SwagSong = {
 
 	var strumToPlay:Int;
 
-	var noteStyle:String;
-	var ui_Style:String;
+	var uiStyle:String;
 
 	var stage:String;	
 	var characters:Array<Dynamic>;
@@ -35,6 +34,8 @@ typedef SwagSong = {
 }
 
 typedef SwagStrum = {
+	var noteStyle:String;
+	var keys:Int;
 	var charToSing:Array<Int>;
 	var notes:Array<SwagSection>;
 }
@@ -52,8 +53,7 @@ class Song{
 
 	public var strumToPlay:Int = 0;
 	
-	public var noteStyle:String = 'NORMAL';
-	public var ui_Style:String = 'Normal';
+	var ui_style:String = "Default";
 
 	public var stage:String = '';
 	public var characters:Array<Dynamic> = [
