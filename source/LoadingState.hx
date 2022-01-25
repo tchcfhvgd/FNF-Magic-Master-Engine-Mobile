@@ -61,7 +61,6 @@ class LoadingState extends MusicBeatState{
 				var introComplete = callbacks.add("introComplete");
 				
 				checkLibrary("shared");
-				checkLibrary("happyfiles");
 
 				checkLoadSong(songData.song);
 

@@ -11,26 +11,17 @@ using StringTools;
 
 typedef StrumLineNoteJSON = {
     var image:String;
-    var staticNotes:Array<StaticNoteJSON>;
-    var gameplayNotes:Array<NoteAnimJSON>;
+    var staticNotes:Array<NoteJSON>;
+    var gameplayNotes:Array<NoteJSON>;
     var noteSplash:String;
-}
-
-typedef StaticNoteJSON = {
-    var colorHUE:Array<Float>;
-    var arrayAnims:Array<NoteAnimJSON>;
-
-    var alpha:Float;
-    var scale:Float;
-    var antialiasing:Bool;
 }
 
 typedef NoteJSON = {
     var colorHUE:Array<Float>;
-    var noteAnim:NoteAnimJSON;
-    
+    var arrayAnims:Array<NoteAnimJSON>;
+
     var alpha:Float;
-    var scale:Float;
+    var scale:Int;
     var antialiasing:Bool;
 }
 
@@ -51,17 +42,19 @@ typedef NoteData = {
 
 class StrumLineNote extends FlxTypedGroup<StrumNote> {
     public var curKeys:Int = 4;
-    public var noteSize:Int = 40;
+    public var noteSize:Int = 110;
 
-    public function new(x:Float, y:Float, keys:Int = 4, typeCheck:String, size:Int = 40){
+    public function new(x:Float, y:Float, keys:Int = 4, typeCheck:String, ?size:Int){
         curKeys = keys;
-        noteSize = size;
+        if(size != null){noteSize = size;}
         super();
         
         var strumJSON:StrumLineNoteJSON = cast Json.parse(Assets.getText(Paths.strumline(keys)));
         
         for(i in 0...keys){
             var strum:StrumNote = new StrumNote(x + (noteSize * i), y, i, strumJSON.image, strumJSON.staticNotes[i]);
+            strum.setNoteScale(noteSize);
+            strum.playAnim('static');
             add(strum);
         }
     }
@@ -70,7 +63,7 @@ class StrumLineNote extends FlxTypedGroup<StrumNote> {
         this.members[noteId].playAnim(anim, true);
     }
 
-    public function setNoteGraphic(noteId:Int, ?newGraphic:String, ?newJSON:StaticNoteJSON, ?newTypeCheck:String){
+    public function setNoteGraphic(noteId:Int, ?newGraphic:String, ?newJSON:NoteJSON, ?newTypeCheck:String){
         this.members[noteId].loadGraphicStrum(newGraphic, newJSON, newTypeCheck);
     }
 }
@@ -78,14 +71,16 @@ class StrumLineNote extends FlxTypedGroup<StrumNote> {
 class StrumNote extends FlxSprite{
 	private var noteData:Int = 0;
 
-    public var JSON:StaticNoteJSON;
+    public var JSON:NoteJSON;
     public var image:String;
+
+    public var scaleNote:Int;
 
     public var typeCheck:String = "Default";
 
 	public var animOffsets:Map<String, Array<Dynamic>>;
 
-	public function new(x:Float, y:Float, leData:Int, image:String, JSON:StaticNoteJSON, ?typeCheck = "Default"){
+	public function new(x:Float, y:Float, leData:Int, image:String, JSON:NoteJSON, ?typeCheck = "Default"){
 		noteData = leData;
         this.image = image;
         this.JSON = JSON;
@@ -100,7 +95,7 @@ class StrumNote extends FlxSprite{
 
         alpha = JSON.alpha;
 
-		setGraphicSize(Std.int(width * JSON.scale));
+		scaleNote = JSON.scale;
 		updateHitbox();
 
         loadGraphicStrum();
@@ -112,11 +107,11 @@ class StrumNote extends FlxSprite{
         }
 	}
 
-    public function loadGraphicStrum(?newGraphic:String, ?newJSON:StaticNoteJSON, ?newTypeCheck:String){
+    public function loadGraphicStrum(?newGraphic:String, ?newJSON:NoteJSON, ?newTypeCheck:String){
         var curImage:String = newGraphic;
         if(curImage == null){curImage = image;}
 
-        var curJSON:StaticNoteJSON = newJSON;
+        var curJSON:NoteJSON = newJSON;
         if(curJSON == null){curJSON = JSON;}
 
         var curTypeCheck:String = newTypeCheck;
@@ -142,8 +137,14 @@ class StrumNote extends FlxSprite{
 		scrollFactor.set();
     }
 
-    override function update(elapsed:Float) {
-        if(animation.finished && animation.curAnim.name == 'confirm'){playAnim("static");}
+    public function setNoteScale(scale:Int){
+        setGraphicSize(scale * scaleNote);
+    }
+
+    override function update(elapsed:Float){
+        if(animation.curAnim.name == "confirm" && animation.finished){
+            playAnim("static");
+        }
 
 		super.update(elapsed);
 	}
@@ -161,23 +162,20 @@ class StrumNote extends FlxSprite{
 }
 
 class Note extends FlxSprite {
-	public var strumTime:Float = 0;
+    //General Variables
+    public var strumTime:Float = 0;
 
 	public var noteData:Int = 0;
-	public var typeData:String = "Default";
     public var specialData:Int = 0;
 	public var otherData:Array<NoteData> = [];
 
-    //TypeDataVariables
-    public var daLenght:Float;
-    
+    public var daLenght:Float; //To sustain notes
+    public var daStrumTimeArray:Array<Float> = []; //To MultiTap Notes
 
-    //status: notSpawned, spawned, canBeHit, Pressed, late
-    public var noteStatus:String = "notSpawned";
-	
-	public var strumToPlay:Int = 0;
+    //Other Variables
+    public var noteStatus:String = "notSpawned"; //status: notSpawned, spawned, canBeHit, Pressed, late
 
-	public function new(noteJSON:NoteJSON, graphic:String, strumTime:Float, noteData:Int, noteType:String, ?specialNote:Int = 0, ?otherData:Array<NoteData>){
+	public function new(noteJSON:NoteJSON, graphic:String, strumTime:Float, noteData:Int, ?specialType:Int = 0, ?otherData:Array<NoteData>){
 		super();
 
 	}

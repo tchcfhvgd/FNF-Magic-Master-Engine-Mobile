@@ -128,13 +128,13 @@ class Paths
 	}
 
 	inline static public function strumline(keys:Int){
-		var typeNotes = PreSettings.getArraySetting(PreSettings.getPreSetting("NoteSyle"));
+		var typeNotes:String = PreSettings.getArraySetting(PreSettings.getPreSetting("NoteSyle"));
 		var toReturn = '';
 
 		toReturn = 'notes:assets/notes/${typeNotes}/${keys}k.json';
 
 		#if desktop
-		if(!FileSystem.exists(toReturn)){
+		if(!Assets.exists(toReturn)){
 			toReturn = 'notes:assets/notes/Default/${keys}k.json';
 		}
 		#end
@@ -163,12 +163,12 @@ class Paths
 	}
 
 	inline static public function getNoteAtlas(key:String, typeCheck:String){
-		var typeNotes = PreSettings.getArraySetting(PreSettings.getPreSetting("NoteSyle"));
+		var typeNotes:String = PreSettings.getArraySetting(PreSettings.getPreSetting("NoteSyle"));
 
 		var curTypeCheck = typeCheck;
 		var curTypeNotes = typeNotes;
 
-		var imagePath = 'notes:assets/notes/${curTypeNotes}/${curTypeCheck}/${image}.png';
+		var imagePath = 'notes:assets/notes/${curTypeNotes}/${curTypeCheck}/${key}.png';
 
 		while(!Assets.exists(imagePath)){
 			if(curTypeCheck == typeCheck && curTypeNotes == typeNotes){
@@ -179,15 +179,17 @@ class Paths
 				break;	
 			}
 
-			imagePath = 'notes:assets/notes/${curTypeNotes}/${curTypeCheck}/${image}.png';
+			imagePath = 'notes:assets/notes/${curTypeNotes}/${curTypeCheck}/${key}.png';
 		}
 
-		var path = 'notes:assets/notes/${curTypeNotes}/${curTypeCheck}/${image}.xml';
+		trace(imagePath);
+
+		var path = 'notes:assets/notes/${curTypeNotes}/${curTypeCheck}/${key}.xml';
 
 		if(Assets.exists(path)){
 			return FlxAtlasFrames.fromSparrow(imagePath, path);
 		}else{
-			path = 'notes:assets/notes/${curTypeNotes}/${curTypeCheck}/${image}.txt';
+			path = 'notes:assets/notes/${curTypeNotes}/${curTypeCheck}/${key}.txt';
 			return FlxAtlasFrames.fromSpriteSheetPacker(imagePath, path);
 		}
 	}

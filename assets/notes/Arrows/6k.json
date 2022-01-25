@@ -70,6 +70,70 @@
             "arrayAnims":[
                 {
                     "anim": "static",
+                    "symbol": "arrowRIGHT",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "pressed",
+                    "symbol": "right press",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "confirm",
+                    "symbol": "right confirm",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "colorHUE":[0, 0, 0],
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "arrowLEFT",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "pressed",
+                    "symbol": "left press",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "confirm",
+                    "symbol": "left confirm",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "colorHUE":[0, 0, 0],
+            "arrayAnims":[
+                {
+                    "anim": "static",
                     "symbol": "arrowUP",
                     "offset": [0, 0],
 
@@ -185,6 +249,70 @@
                 {
                     "anim": "end",
                     "symbol": "blue hold end",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "colorHUE":[0, 0, 0],
+            "arrayAnims":[
+                {
+                    "anim": "idle",
+                    "symbol": "red0",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "sustain",
+                    "symbol": "red hold piece",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "end",
+                    "symbol": "red hold end",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "colorHUE":[0, 0, 0],
+            "arrayAnims":[
+                {
+                    "anim": "idle",
+                    "symbol": "purple0",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "sustain",
+                    "symbol": "purple hold piece",
+                    "offset": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "end",
+                    "symbol": "pruple end hold",
                     "offset": [0, 0],
 
                     "fps": 32,

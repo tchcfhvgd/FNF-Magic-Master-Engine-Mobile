@@ -128,6 +128,8 @@ class PlayState extends MusicBeatState {
 		strumsGroup = new FlxTypedGroup<StrumLineNote>();
 		add(strumsGroup);
 
+		strumsGroup.cameras = [camHUD];
+
 		generateSong();
 
 		FlxG.camera.zoom = defaultCamZoom;
@@ -266,8 +268,10 @@ class PlayState extends MusicBeatState {
 	}
 
 	private function generateStaticArrows():Void{
+		var lastStrum:StrumLineNote = null;
 		for(i in 0...SONG.sectionStrums.length){
-			var charStrums = new StrumLineNote(0, 0, SONG.sectionStrums[i].keys, SONG.sectionStrums[i].noteStyle);
+			var charStrums = new StrumLineNote(5 + (lastStrum != null ? 50 + lastStrum.noteSize * lastStrum.curKeys : 0), 30, SONG.sectionStrums[i].keys, SONG.sectionStrums[i].noteStyle);
+			lastStrum = charStrums;
 			charStrums.ID = i;
 			strumsGroup.add(charStrums);
 		}
