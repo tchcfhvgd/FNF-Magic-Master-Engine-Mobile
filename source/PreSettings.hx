@@ -8,16 +8,19 @@ import flixel.graphics.FlxGraphic;
 class PreSettings {
     public static var PRESETTINGS:Array<Dynamic> = [];
     public static var DEFAULTSETTINGS:Array<Dynamic> = [
-        //Game Settings
+        // Game Settings
         ["GhostTapping", true],
+        ["NoteOffset", 0],
+        ["ScrollSpeedType", [1, ["Scale", "Force", "Disabled"]]],
+        ["ScrollSpeed", 0.5],
         //Visual Settings
-        ["NoteSyle", [0, ["Arrows", "Circles", "Rhombuses", "Bars"]]],
         ["TypeHUD", [0, ["MagicHUD", "Original", "Minimized", "OnlyNotes"]]],
+        ["NoteSyle", [0, ["Arrows", "Circles", "Rhombuses", "Bars"]]],        
         ["TypeScroll", [0, ["UpScroll", "DownScroll"]]],
         ["ForceMiddleScroll", false],
         ["TypeCamera", [1, ["Static", "MoveToSing"]]],
         ["TypeLightStrums", [0, ["All", "OnlyMyStrum", "OnlyOtherStrums", "None"]]],
-        //Graphic Settings
+        // Graphic Settings
         ["ShowFPS", false],
         ["TypeGraphic", [3,
             [
@@ -64,19 +67,17 @@ class PreSettings {
         ["SplashOnSick", true],
         ["AllowLUA", true],
         ["OnlyNotes", false],
-        //Control Settings
-        ["NoteOffset", 0],
-        //Other Settings
+        // Other Settings
         ["AllowFlashingLights", true],
         ["AllowViolence", true],
         ["AllowGore", true],
-        ["AllowNoSafeForWork", true],
-        //Cheating Settings
+        ["AllowNotSafeForWork", true],
+        // Cheating Settings
         ["BotPlay", false],
         ["PracticeMode", false],
         ["DamageMultiplier", 1],
         ["HealingMultiplier", 1],
-        ["TypeNotes", [0, ["All", "OnlyShouldPressed", "OnlyNormal", "DisableBads", "DisableGoods", "OnlySpecials"]]],
+        ["TypeNotes", [0, ["All", "OnlyNormal", "OnlySpecials", "DisableBads", "DisableGoods"]]],
     ];
 
     public static var curKeyBinds:Array<Dynamic> = [];
@@ -90,11 +91,7 @@ class PreSettings {
 
         ["GamePlay_Accept", [SPACE, ENTER]],
         ["GamePlay_Back", [BACKSPACE, ESCAPE]],
-        ["GamePlay_Pause", [ESCAPE, ENTER]],
-        ["GamePlay_Left", [A, LEFT]],
-        ["GamePlay_Up", [W, UP]],
-        ["GamePlay_Down", [S, DOWN]],
-        ["GamePlay_Right", [D, RIGHT]]
+        ["GamePlay_Pause", [ESCAPE, ENTER]]
     ];
 
     public static function loadSettings(){

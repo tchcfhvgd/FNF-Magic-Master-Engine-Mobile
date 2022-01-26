@@ -43,6 +43,8 @@ import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
 
+import StrumLineNote.StrumLine;
+
 using StringTools;
 
 class PlayState extends MusicBeatState {
@@ -54,7 +56,7 @@ class PlayState extends MusicBeatState {
 	//Audio
 	private var voices:FlxSoundGroup;
 
-	public static var strumsGroup:FlxTypedGroup<StrumLineNote>;
+	private var strumsGroup:FlxTypedGroup<StrumLine>;
 
 	//Gameplay Stats
 	var defaultCamZoom:Float = 1.05;
@@ -64,9 +66,6 @@ class PlayState extends MusicBeatState {
 
 	//PreSettings Variables
 	var pre_TypeStrums:String = PreSettings.getArraySetting(PreSettings.getPreSetting("TypeLightStrums"));
-	var pre_TypeNotes:String = PreSettings.getArraySetting(PreSettings.getPreSetting("TypeNotes"));
-	var pre_TypeScroll:String = PreSettings.getArraySetting(PreSettings.getPreSetting("TypeScroll"));
-	var pre_NoteOffset:Int = PreSettings.getPreSetting("NoteOffset");
 	var pre_BotPlay:Bool = PreSettings.getPreSetting("BotPlay");
 
 	private var health:Float = 1;
@@ -125,7 +124,7 @@ class PlayState extends MusicBeatState {
 
 		Conductor.songPosition = -5000;
 
-		strumsGroup = new FlxTypedGroup<StrumLineNote>();
+		strumsGroup = new FlxTypedGroup<StrumLine>();
 		add(strumsGroup);
 
 		strumsGroup.cameras = [camHUD];
@@ -156,8 +155,6 @@ class PlayState extends MusicBeatState {
 
 	var startTimer:FlxTimer;
 	function startCountdown():Void{
-		generateStaticArrows();
-
 		startedCountdown = true;
 		Conductor.songPosition = 0;
 		Conductor.songPosition -= Conductor.crochet * 5;
@@ -250,31 +247,31 @@ class PlayState extends MusicBeatState {
 		var songData = SONG;
 		Conductor.changeBPM(songData.bpm);
 
-		if(SONG.needsVoices){
-			if(SONG.singleVoices){
-				for(i in 0...SONG.characters.length){
-					var voice = new FlxSound().loadEmbedded(Paths.singleVoices(i, SONG.characters[i][0], SONG.song, SONG.category));
+		if(songData.needsVoices){
+			if(songData.singleVoices){
+				for(i in 0...songData.characters.length){
+					var voice = new FlxSound().loadEmbedded(Paths.singleVoices(i, songData.characters[i][0], songData.song, songData.category));
 					FlxG.sound.list.add(voice);
 					voices.add(voice);
 				}
 			}else{
-				var voice = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song, SONG.category));
+				var voice = new FlxSound().loadEmbedded(Paths.voices(songData.song, songData.category));
 				FlxG.sound.list.add(voice);
 				voices.add(voice);
 			}		
 		}
 
-		generatedMusic = true;
-	}
-
-	private function generateStaticArrows():Void{
-		var lastStrum:StrumLineNote = null;
-		for(i in 0...SONG.sectionStrums.length){
-			var charStrums = new StrumLineNote(5 + (lastStrum != null ? 50 + lastStrum.noteSize * lastStrum.curKeys : 0), 30, SONG.sectionStrums[i].keys, SONG.sectionStrums[i].noteStyle);
-			lastStrum = charStrums;
-			charStrums.ID = i;
-			strumsGroup.add(charStrums);
+		var lastStrum:StrumLine = null;
+		for(i in 0...songData.sectionStrums.length){
+			var strumLine = new StrumLine(5 + (lastStrum != null ? 55 + lastStrum.strumSize : 0), 30, songData.sectionStrums[i].keys, (FlxG.width / 3), songData.sectionStrums[i].noteStyle);
+			lastStrum = strumLine;
+			strumLine.scrollSpeed = songData.speed;
+			strumLine.setNotes(songData.sectionStrums[i].notes);
+			strumLine.ID = i;
+			strumsGroup.add(strumLine);
 		}
+
+		generatedMusic = true;
 	}
 
 	override function openSubState(SubState:FlxSubState){
@@ -317,6 +314,12 @@ class PlayState extends MusicBeatState {
 
 	override public function update(elapsed:Float){
 		super.update(elapsed);
+
+		if(FlxG.keys.justPressed.Z){strumsGroup.members[0].changeStaticKeyNumber(4, strumsGroup.members[0].strumSize);}
+		if(FlxG.keys.justPressed.X){strumsGroup.members[0].changeStaticKeyNumber(6, strumsGroup.members[0].strumSize);}
+
+		if(FlxG.keys.justPressed.C){strumsGroup.members[1].changeStaticKeyNumber(4, strumsGroup.members[1].strumSize);}
+		if(FlxG.keys.justPressed.V){strumsGroup.members[1].changeStaticKeyNumber(6, strumsGroup.members[1].strumSize);}
 
 		if(controls.PAUSE && startedCountdown && canPause){
 			persistentUpdate = false;

@@ -4,9 +4,10 @@ typedef SwagSection = {
 	var charToSing:Array<Int>;
 	var changeSing:Bool;
 
+	var keys:Int;
+	var changeKeys:Bool;
 
 	var altAnim:Bool;
-
 	var sectionNotes:Array<Dynamic>;
 }
 

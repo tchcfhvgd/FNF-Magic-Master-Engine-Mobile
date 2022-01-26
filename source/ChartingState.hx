@@ -162,6 +162,9 @@ class ChartingState extends MusicBeatState{
 								charToSing: [0],
 								changeSing: false,
 
+								keys: 4,
+								changeKeys: false,
+
 								altAnim: false,
 
 								sectionNotes: []
@@ -644,7 +647,6 @@ class ChartingState extends MusicBeatState{
 				newTAB.add(tab_title);
 
 				var noteStyles:Array<String> = CoolUtil.coolTextFile(Paths.txt('noteStyleList'));
-				var uiStyles:Array<String> = CoolUtil.coolTextFile(Paths.txt('uiStyleList'));
 
 				var btn_CharactersEdit:FlxButton = new FlxButton(5, 35, "Characters", function(){
 					
@@ -656,13 +658,13 @@ class ChartingState extends MusicBeatState{
 				});
 				newTAB.add(btn_ChangeStage);
 
-				var txt_UIStyle = new FlxText(5, btn_ChangeStage.y + 35, 'UI Style:');
+				var txt_UIStyle = new FlxText(5, btn_ChangeStage.y + 35, 'Note Style:');
 				newTAB.add(txt_UIStyle);
-				var noteUIDropDown = new FlxUIDropDownMenu(5, txt_UIStyle.y + 17, FlxUIDropDownMenu.makeStrIdLabelArray(uiStyles, true), function(uiStyle:String){
-					_song.uiStyle = uiStyles[Std.parseInt(uiStyle)];
+				var noteUIDropDown = new FlxUIDropDownMenu(5, txt_UIStyle.y + 17, FlxUIDropDownMenu.makeStrIdLabelArray(noteStyles, true), function(noteStyle:String){
+					_song.uiStyle = noteStyles[Std.parseInt(noteStyle)];
 					updateGrid();
 				});
-				noteUIDropDown.selectedLabel = _song.uiStyle;
+				noteUIDropDown.selectedLabel = "Default";
 				
 				newTAB.add(noteUIDropDown);
 				newTAB.add(txt_UIStyle);
@@ -1516,6 +1518,9 @@ class ChartingState extends MusicBeatState{
 			charToSing: [0],
 			changeSing: false,
 
+			keys: 4,
+			changeKeys: false,
+
 			altAnim: false,
 
 			sectionNotes: [],
@@ -1561,6 +1566,10 @@ class ChartingState extends MusicBeatState{
 		var sec:SwagSection = {
 			charToSing: charToSing,
 			changeSing: changeSing,
+
+			keys: 4,
+			changeKeys: false,
+			
 			altAnim: altAnim,
 
 			sectionNotes: []

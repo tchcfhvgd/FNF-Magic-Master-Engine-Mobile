@@ -181,9 +181,7 @@ class Paths
 
 			imagePath = 'notes:assets/notes/${curTypeNotes}/${curTypeCheck}/${key}.png';
 		}
-
-		trace(imagePath);
-
+		
 		var path = 'notes:assets/notes/${curTypeNotes}/${curTypeCheck}/${key}.xml';
 
 		if(Assets.exists(path)){
