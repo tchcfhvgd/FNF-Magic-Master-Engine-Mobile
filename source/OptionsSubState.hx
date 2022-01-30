@@ -37,10 +37,10 @@ class OptionsSubState extends MusicBeatSubstate
 	{
 		super.update(elapsed);
 
-		if (controls.UP_P)
+		if (Controls.getBind("Game_Up", "JUST_PRESSED"))
 			curSelected -= 1;
 
-		if (controls.DOWN_P)
+		if (Controls.getBind("Game_Down", "JUST_PRESSED"))
 			curSelected += 1;
 
 		if (curSelected < 0)
@@ -56,15 +56,5 @@ class OptionsSubState extends MusicBeatSubstate
 			if (txt.ID == curSelected)
 				txt.color = FlxColor.YELLOW;
 		});
-
-		if (controls.ACCEPT)
-		{
-			switch (textMenuItems[curSelected])
-			{
-				case "Controls":
-					FlxG.state.closeSubState();
-					FlxG.state.openSubState(new ControlsSubState());
-			}
-		}
 	}
 }

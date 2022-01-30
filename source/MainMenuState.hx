@@ -117,29 +117,23 @@ class MainMenuState extends MusicBeatState
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
 		}
 
-		if (!selectedSomethin)
-		{
-			if (controls.UP_P)
-			{
+		if (!selectedSomethin){
+			if(Controls.getBind("Menu_Up", "JUST_PRESSED")){
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(-1);
 			}
 
-			if (controls.DOWN_P)
-			{
+			if (Controls.getBind("Menu_Down", "JUST_PRESSED")){
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(1);
 			}
 
-			if (controls.BACK)
-			{
+			if (Controls.getBind("Menu_Back", "JUST_PRESSED")){
 				FlxG.switchState(new TitleState());
 			}
 
-			if (controls.ACCEPT)
-			{
-				if (optionShit[curSelected] == 'donate')
-				{
+			if (Controls.getBind("Menu_Accept", "JUST_PRESSED")){
+				if (optionShit[curSelected] == 'donate'){
 					#if linux
 					Sys.command('/usr/bin/xdg-open', ["https://ninja-muffin24.itch.io/funkin", "&"]);
 					#else

@@ -1,5 +1,4 @@
 {
-    "image": "NOTE_assets",
     "staticNotes":[
         {
             "colorHUE":[0, 0, 0],
@@ -199,7 +198,7 @@
             "colorHUE":[0, 0, 0],
             "arrayAnims":[
                 {
-                    "anim": "idle",
+                    "anim": "static",
                     "symbol": "purple0",
                     "offset": [0, 0],
 
@@ -231,7 +230,7 @@
             "colorHUE":[0, 0, 0],
             "arrayAnims":[
                 {
-                    "anim": "idle",
+                    "anim": "static",
                     "symbol": "blue0",
                     "offset": [0, 0],
 
@@ -263,7 +262,7 @@
             "colorHUE":[0, 0, 0],
             "arrayAnims":[
                 {
-                    "anim": "idle",
+                    "anim": "static",
                     "symbol": "red0",
                     "offset": [0, 0],
 
@@ -295,7 +294,7 @@
             "colorHUE":[0, 0, 0],
             "arrayAnims":[
                 {
-                    "anim": "idle",
+                    "anim": "static",
                     "symbol": "purple0",
                     "offset": [0, 0],
 
@@ -327,7 +326,7 @@
             "colorHUE":[0, 0, 0],
             "arrayAnims":[
                 {
-                    "anim": "idle",
+                    "anim": "static",
                     "symbol": "green0",
                     "offset": [0, 0],
 
@@ -359,7 +358,7 @@
             "colorHUE":[0, 0, 0],
             "arrayAnims":[
                 {
-                    "anim": "idle",
+                    "anim": "static",
                     "symbol": "red0",
                     "offset": [0, 0],
 

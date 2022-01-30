@@ -31,11 +31,11 @@ class OutdatedSubState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		if (controls.ACCEPT)
+		if (Controls.getBind("Menu_Accept", "JUST_PRESSED"))
 		{
 			FlxG.openURL("https://ninja-muffin24.itch.io/funkin");
 		}
-		if (controls.BACK)
+		if (Controls.getBind("Menu_Back", "JUST_PRESSED"))
 		{
 			leftState = true;
 			FlxG.switchState(new MainMenuState());

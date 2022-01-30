@@ -1,6 +1,5 @@
 package;
 
-import Controls.Control;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
@@ -83,9 +82,9 @@ class PauseSubState extends MusicBeatSubstate
 
 		super.update(elapsed);
 
-		var upP = controls.UP_P;
-		var downP = controls.DOWN_P;
-		var accepted = controls.ACCEPT;
+		var upP = Controls.getBind("Game_Up", "JUST_PRESSED");
+		var downP = Controls.getBind("Game_Down", "JUST_PRESSED");
+		var accepted = Controls.getBind("Game_Accept", "JUST_PRESSED");
 
 		if (upP)
 		{

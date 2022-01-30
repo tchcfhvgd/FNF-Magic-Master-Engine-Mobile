@@ -3,7 +3,6 @@ package;
 import Song.SwagSong;
 import flixel.input.gamepad.FlxGamepad;
 import openfl.Lib;
-import Controls.Control;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
@@ -226,26 +225,26 @@ class StoryMenuState extends MusicBeatSubstate
 				//	changeWeek(1);
 				//}
 
-				if (controls.RIGHT)
+				if (Controls.getBind("Menu_Right", "PRESSED"))
 					rightArrow.animation.play('press')
 				else
 					rightArrow.animation.play('idle');
 
-				if (controls.LEFT)
+				if (Controls.getBind("Menu_Left", "PRESSED"))
 					leftArrow.animation.play('press');
 				else
 					leftArrow.animation.play('idle');
 
-				if (controls.RIGHT_P)
+				if (Controls.getBind("Menu_Right", "JUST_PRESSED"))
 					changeDifficulty(1);
-				if (controls.LEFT_P)
+				if (Controls.getBind("Menu_Left", "JUST_PRESSED"))
 					changeDifficulty(-1);
 				if (FlxG.keys.justPressed.TAB)
 					changeCat(1);
-				if (controls.BACK)
+				if (Controls.getBind("Menu_Back", "JUST_PRESSED"))
 					closingMenu();
 		}
-		if (controls.ACCEPT)
+		if (Controls.getBind("Menu_Accept", "JUST_PRESSED"))
 			{
 				selectWeek();
 			}

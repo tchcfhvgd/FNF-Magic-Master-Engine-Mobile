@@ -21,7 +21,6 @@ class PreSettings {
         ["TypeCamera", [1, ["Static", "MoveToSing"]]],
         ["TypeLightStrums", [0, ["All", "OnlyMyStrum", "OnlyOtherStrums", "None"]]],
         // Graphic Settings
-        ["ShowFPS", false],
         ["TypeGraphic", [3,
             [
                 ["Custom", [
@@ -80,20 +79,6 @@ class PreSettings {
         ["TypeNotes", [0, ["All", "OnlyNormal", "OnlySpecials", "DisableBads", "DisableGoods"]]],
     ];
 
-    public static var curKeyBinds:Array<Dynamic> = [];
-    public static var defaultKeyBinds:Array<Dynamic> = [
-        ["Menu_Accept", [SPACE, ENTER]],
-        ["Menu_Back", [BACKSPACE, ESCAPE]],
-        ["Menu_Left", [LEFT]],
-        ["Menu_Up", [UP]],
-        ["Menu_Down", [DOWN]],
-        ["Menu_Right", [RIGHT]],
-
-        ["GamePlay_Accept", [SPACE, ENTER]],
-        ["GamePlay_Back", [BACKSPACE, ESCAPE]],
-        ["GamePlay_Pause", [ESCAPE, ENTER]]
-    ];
-
     public static function loadSettings(){
         PRESETTINGS = FlxG.save.data.PRESETTINGS;
 
@@ -108,22 +93,10 @@ class PreSettings {
             trace("Settings Default!");
             loadSettings();
         }
-
-        var sKeyBinds:FlxSave = new FlxSave();
-		sKeyBinds.bind('controls', 'ninjamuffin99');
-        if(sKeyBinds != null && sKeyBinds.data.controls != null) {
-			reloadBinds(sKeyBinds.data.controls);
-		}else{
-            reloadBinds(defaultKeyBinds);
-        }
     }
 
     public static function saveSettings(){
         FlxG.save.data.PRESETTINGS = PRESETTINGS;
-        var sKeyBinds:FlxSave = new FlxSave();
-		sKeyBinds.bind('controls', 'ninjamuffin99');
-        sKeyBinds.data.controls = curKeyBinds;
-		sKeyBinds.flush();
 		FlxG.log.add("PreSettings Saved Successfully!");
     }
 
@@ -191,44 +164,6 @@ class PreSettings {
     static function removeList(){
         for(set in toRemove){
             removePreSetting(set);
-        }
-    }
-
-    static function reloadBinds(newBinds:Array<Dynamic>){
-        curKeyBinds = newBinds;
-        for(nBind in curKeyBinds){hasDefBind(nBind[0]);}
-        for(dBind in defaultKeyBinds){addBind(dBind[0], dBind[1]);}
-    }
-
-    static function hasDefBind(bind:String){
-        var hasBind = false;
-        for(dbind in defaultKeyBinds){
-            if(dbind[0] == bind){
-                hasBind = true;
-            }
-        }
-        if(!hasBind){
-            removeBind(bind);
-        }
-    }
-
-    static function addBind(bind:String, toSet){
-        var hasSet = false;
-        for(set in curKeyBinds){
-            if(set[0] == bind){
-                hasSet = true;
-            }
-        }
-        if(!hasSet){
-            curKeyBinds.push([bind, toSet]);
-        }
-    }
-
-    static function removeBind(bind:String){
-        for(i in 0...curKeyBinds.length){
-            if(curKeyBinds[i][0] == bind){
-                curKeyBinds.remove(i);
-            }
         }
     }
 }

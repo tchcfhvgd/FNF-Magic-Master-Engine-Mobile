@@ -65,7 +65,6 @@ class PlayState extends MusicBeatState {
 	var songScore:Int = 0;
 
 	//PreSettings Variables
-	var pre_TypeStrums:String = PreSettings.getArraySetting(PreSettings.getPreSetting("TypeLightStrums"));
 	var pre_BotPlay:Bool = PreSettings.getPreSetting("BotPlay");
 
 	private var health:Float = 1;
@@ -263,7 +262,8 @@ class PlayState extends MusicBeatState {
 
 		var lastStrum:StrumLine = null;
 		for(i in 0...songData.sectionStrums.length){
-			var strumLine = new StrumLine(5 + (lastStrum != null ? 55 + lastStrum.strumSize : 0), 30, songData.sectionStrums[i].keys, (FlxG.width / 3), songData.sectionStrums[i].noteStyle);
+			var strumLine = new StrumLine(5 + (lastStrum != null ? 55 + lastStrum.strumSize : 0), 30, songData.sectionStrums[i].keys, (FlxG.width / 3));
+			
 			lastStrum = strumLine;
 			strumLine.scrollSpeed = songData.speed;
 			strumLine.setNotes(songData.sectionStrums[i].notes);
@@ -315,13 +315,14 @@ class PlayState extends MusicBeatState {
 	override public function update(elapsed:Float){
 		super.update(elapsed);
 
-		if(FlxG.keys.justPressed.Z){strumsGroup.members[0].changeStaticKeyNumber(4, strumsGroup.members[0].strumSize);}
-		if(FlxG.keys.justPressed.X){strumsGroup.members[0].changeStaticKeyNumber(6, strumsGroup.members[0].strumSize);}
+		strumsGroup.forEach(function(strumLine:StrumLine){
+            if(curStrum == strumLine.ID){strumLine.typeStrum = "Playing";}
+        });
 
-		if(FlxG.keys.justPressed.C){strumsGroup.members[1].changeStaticKeyNumber(4, strumsGroup.members[1].strumSize);}
-		if(FlxG.keys.justPressed.V){strumsGroup.members[1].changeStaticKeyNumber(6, strumsGroup.members[1].strumSize);}
+		if(FlxG.keys.justPressed.Z){strumsGroup.members[0].changeKeyNumber(4, strumsGroup.members[0].strumSize);}
+		if(FlxG.keys.justPressed.X){strumsGroup.members[0].changeKeyNumber(6, strumsGroup.members[0].strumSize);}
 
-		if(controls.PAUSE && startedCountdown && canPause){
+		if(Controls.getBind("Game_Pause", "JUST_PRESSED") && startedCountdown && canPause){
 			persistentUpdate = false;
 			persistentDraw = true;
 			paused = true;
@@ -367,7 +368,7 @@ class PlayState extends MusicBeatState {
 			// Conductor.lastSongPos = FlxG.sound.music.time;
 		}
 
-		if(controls.RESET){
+		if(Controls.getBind("Game_Reset", "JUST_PRESSED")){
 			health = 0;
 			trace("RESET = True");
 		}

@@ -57,6 +57,28 @@
                         ]
                     }
                 ]
+            },{
+                "keys": 4,
+                "noteStyle": "Default",
+                "charToSing": [0],
+                "notes": [
+                    {
+                        "charToSing": [0],
+                        "changeSing": false,
+
+                        "keys": 4,
+                        "changeKeys": false,
+
+                        "altAnim": false,
+
+                        "sectionNotes": [
+                            [100, 0, 500, 3, 0, []],
+                            [600, 1, 0, 0, 0, []],
+                            [1100, 2, 0, 0, 0, []],
+                            [1600, 3, 0, 0, 0, []]
+                        ]
+                    }
+                ]
             }
         ]
     }

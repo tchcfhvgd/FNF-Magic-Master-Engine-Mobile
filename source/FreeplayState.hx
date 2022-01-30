@@ -226,7 +226,7 @@ class FreeplayState extends MusicBeatState {
 
 		var upP = FlxG.keys.justPressed.UP;
 		var downP = FlxG.keys.justPressed.DOWN;
-		var accepted = controls.ACCEPT;
+		var accepted = Controls.getBind("Menu_Accept", "JUST_PRESSED");
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
@@ -266,7 +266,7 @@ class FreeplayState extends MusicBeatState {
 		if (FlxG.keys.justPressed.TAB)
 			changeCat(true);
 
-		if (controls.BACK)
+		if (Controls.getBind("Menu_Back", "JUST_PRESSED"))
 		{
 			FlxG.switchState(new MainMenuState());
 		}
