@@ -1,0 +1,24 @@
+{
+    "image": "Cuddles",
+    "healthicon": "fliqpy",
+
+	"position": [0,	20],
+    "cameraLeft": [0, -300],
+	
+	"xFlip": false,
+	"scale": 1,
+    
+    "anims":[
+		{
+            "anim": "idle",
+            "symbol": "Cuddles",
+            "fps": 24,
+			
+            "offsets_right": [-137, -267],
+            "offsets_left": [0, -30],
+			"indices": [],
+
+            "loop": true
+		}
+    ]
+}

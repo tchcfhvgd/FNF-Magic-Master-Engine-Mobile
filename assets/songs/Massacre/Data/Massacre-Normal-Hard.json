@@ -16,11 +16,11 @@
 
         "uiStyle": "Normal",
 
-        "stage": "cute-land",
+        "stage": "land-cute",
         "characters": [
-            ["Girlfriend", [140, 210], false, "Default", "GF"],
-            ["Fliqpy", [140, 210], true, "Default", "NORMAL"],
-            ["Boyfriend", [140, 210], false, "Default", "NORMAL"]
+            ["Girlfriend", [140, 210], false, "Default", "GF", 3],
+            ["Fliqpy", [140, 210], true, "Default", "NORMAL", 3],
+            ["Boyfriend", [140, 210], false, "Default", "NORMAL", 3]
         ],
         
         "generalSection": [

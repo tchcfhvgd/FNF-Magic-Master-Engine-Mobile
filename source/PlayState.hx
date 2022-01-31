@@ -66,6 +66,7 @@ class PlayState extends MusicBeatState {
 
 	//PreSettings Variables
 	var pre_BotPlay:Bool = PreSettings.getPreSetting("BotPlay");
+	var pre_OnlyNotes:Bool = PreSettings.getPreSetting("OnlyNotes");
 
 	private var health:Float = 1;
 	private var combo:Int = 0;
@@ -84,6 +85,9 @@ class PlayState extends MusicBeatState {
 	private var startedCountdown:Bool = false;
 	private var paused:Bool = false;
 	private var canPause:Bool = true;
+
+	//Stage
+	public var stage:Stage;
 
 	override public function create(){
 		if(FlxG.sound.music != null){FlxG.sound.music.stop();}
@@ -121,19 +125,21 @@ class PlayState extends MusicBeatState {
 
 		voices = new FlxSoundGroup();
 
+		if(!pre_OnlyNotes){
+			stage = new Stage(SONG.stage, SONG.characters);
+			add(stage);
+		}
+
 		Conductor.songPosition = -5000;
 
 		strumsGroup = new FlxTypedGroup<StrumLine>();
-		add(strumsGroup);
-
 		strumsGroup.cameras = [camHUD];
+		add(strumsGroup);
 
 		generateSong();
 
 		FlxG.camera.zoom = defaultCamZoom;
-
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
-
 		FlxG.fixedTimestep = false;
 
 		startingSong = true;

@@ -2,11 +2,11 @@
     "image": "Fliqpy",
     "healthicon": "fliqpy",
 
-	"position": [0,	20],
-    "cameraRight": [60, 270],
+	"position": [0,	0],
+    "cameraRight": [180, 120],
 	
 	"xFlip": true,
-	"scale": 1,
+	"scale": 1.1,
     
     "anims":[
         {

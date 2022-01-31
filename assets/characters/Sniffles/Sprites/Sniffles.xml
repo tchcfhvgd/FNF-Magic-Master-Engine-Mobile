@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Sniffles.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Sniffles0000" x="0" y="0" width="361" height="467" frameX="0" frameY="-93" frameWidth="361" frameHeight="560"/>
+	<SubTexture name="Sniffles0001" x="0" y="0" width="361" height="467" frameX="0" frameY="-93" frameWidth="361" frameHeight="560"/>
+	<SubTexture name="Sniffles0002" x="362" y="0" width="361" height="464" frameX="0" frameY="-95" frameWidth="361" frameHeight="560"/>
+	<SubTexture name="Sniffles0003" x="362" y="0" width="361" height="464" frameX="0" frameY="-95" frameWidth="361" frameHeight="560"/>
+	<SubTexture name="Sniffles0004" x="724" y="0" width="359" height="472" frameX="0" frameY="-88" frameWidth="361" frameHeight="560"/>
+	<SubTexture name="Sniffles0005" x="1084" y="0" width="359" height="472" frameX="0" frameY="-88" frameWidth="361" frameHeight="560"/>
+	<SubTexture name="Sniffles0006" x="1444" y="0" width="356" height="477" frameX="0" frameY="-83" frameWidth="361" frameHeight="560"/>
+	<SubTexture name="Sniffles0007" x="0" y="478" width="356" height="528" frameX="0" frameY="-32" frameWidth="361" frameHeight="560"/>
+	<SubTexture name="Sniffles0008" x="357" y="478" width="356" height="553" frameX="0" frameY="-7" frameWidth="361" frameHeight="560"/>
+	<SubTexture name="Sniffles0009" x="714" y="478" width="356" height="560" frameX="0" frameY="0" frameWidth="361" frameHeight="560"/>
+	<SubTexture name="Sniffles0010" x="1071" y="478" width="356" height="557" frameX="0" frameY="-3" frameWidth="361" frameHeight="560"/>
+	<SubTexture name="Sniffles0011" x="1428" y="478" width="359" height="544" frameX="0" frameY="-16" frameWidth="361" frameHeight="560"/>
+	<SubTexture name="Sniffles0012" x="0" y="1039" width="359" height="492" frameX="0" frameY="-68" frameWidth="361" frameHeight="560"/>
+	<SubTexture name="Sniffles0013" x="360" y="1039" width="361" height="464" frameX="0" frameY="-95" frameWidth="361" frameHeight="560"/>
+	<SubTexture name="Sniffles0014" x="722" y="1039" width="361" height="464" frameX="0" frameY="-95" frameWidth="361" frameHeight="560"/>
+	<SubTexture name="Sniffles0015" x="0" y="0" width="361" height="467" frameX="0" frameY="-93" frameWidth="361" frameHeight="560"/>
+	<SubTexture name="Sniffles0016" x="0" y="0" width="361" height="467" frameX="0" frameY="-93" frameWidth="361" frameHeight="560"/>
+</TextureAtlas>

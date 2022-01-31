@@ -265,8 +265,12 @@ class Character extends FlxSprite{
 		animOffsets[name] = [x, y];
 	}
 
-	public function quickAnimAdd(name:String, anim:String)
-	{
+	public function quickAnimAdd(name:String, anim:String){
 		animation.addByPrefix(name, anim, 24, false);
+	}
+
+	public function setGraphicScale(scale:Float){
+		setGraphicSize(Std.int(width * (scale * jsonScale / 1)));
+		updateHitbox();
 	}
 }

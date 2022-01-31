@@ -3,10 +3,10 @@
     "healthicon": "gf",
 
 	"position": [0, 90],
-    "cameraRight": [0, 0],
+    "cameraRight": [-100, -150],
 	
 	"xFlip": true,
-	"scale": 1,
+	"scale": 1.1,
     
     "anims":[
         {

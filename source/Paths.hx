@@ -142,14 +142,16 @@ class Paths
 		return toReturn; 
 	}
 
-	inline static public function image(key:String, ?library:String)
-	{
+	inline static public function image(key:String, ?library:String){
 		return getPath('images/$key.png', IMAGE, library);
 	}
 
-	inline static public function font(key:String)
-	{
+	inline static public function font(key:String){
 		return 'assets/fonts/$key';
+	}
+
+	inline static public function StageJSON(key:String){
+		return 'stages:assets/stages/${key}.json';
 	}
 
 	inline static public function getSparrowAtlas(key:String, ?library:String)
@@ -188,6 +190,23 @@ class Paths
 			return FlxAtlasFrames.fromSparrow(imagePath, path);
 		}else{
 			path = 'notes:assets/notes/${curTypeNotes}/${curTypeCheck}/${key}.txt';
+			return FlxAtlasFrames.fromSpriteSheetPacker(imagePath, path);
+		}
+	}
+
+	inline static public function getStageAtlas(key:String, ?directory:String = "Stage"){
+		var imagePath = 'stages:assets/stages/images/${directory}/${key}.png';
+
+		if(!Assets.exists(imagePath)){
+			imagePath = 'stages:assets/stages/images/Stage/${key}.png';
+		}
+		
+		var path = 'stages:assets/stages/images/Stage/${key}.xml';
+
+		if(Assets.exists(path)){
+			return FlxAtlasFrames.fromSparrow(imagePath, path);
+		}else{
+			path = 'stages:assets/stages/images/Stage/${key}.txt';
 			return FlxAtlasFrames.fromSpriteSheetPacker(imagePath, path);
 		}
 	}
