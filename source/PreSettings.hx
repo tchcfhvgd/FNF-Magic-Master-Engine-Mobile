@@ -9,6 +9,7 @@ class PreSettings {
     public static var PRESETTINGS:Array<Dynamic> = [];
     public static var DEFAULTSETTINGS:Array<Dynamic> = [
         // Game Settings
+        ["Language", [0, ["English", "Spanish", "Brazilian"]]],
         ["GhostTapping", true],
         ["NoteOffset", 0],
         ["ScrollSpeedType", [1, ["Scale", "Force", "Disabled"]]],

@@ -3,7 +3,7 @@
     "healthicon": "gf",
 
 	"position": [0, 90],
-    "cameraRight": [-100, -150],
+    "cameraRight": [-100, -120],
 	
 	"xFlip": true,
 	"scale": 1.1,

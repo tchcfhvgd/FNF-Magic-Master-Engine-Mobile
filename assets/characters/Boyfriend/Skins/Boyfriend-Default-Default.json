@@ -3,7 +3,7 @@
     "healthicon": "bf",
 
 	"position": [0,	350],
-    "cameraLeft": [-50, -200],
+    "cameraLeft": [-50, -190],
 	
 	"xFlip": false,
 	"scale": 0.9,
