@@ -10,6 +10,7 @@ class Controls {
     public static var defaultKeyBinds:Array<Dynamic> = [
         ["Menu_Accept", [SPACE, ENTER]],
         ["Menu_Back", [BACKSPACE, ESCAPE]],
+        ["Menu_Tab", [TAB]],
         ["Menu_Left", [LEFT]],
         ["Menu_Up", [UP]],
         ["Menu_Down", [DOWN]],

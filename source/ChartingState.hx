@@ -9,7 +9,8 @@ import Section.SwagSection;
 import Song;
 import Song.SwagSong;
 import Song.SwagStrum;
-import Sprite_Input;
+import SpriteInput;
+import SpriteInput.TextButtom;
 import Sprite_UI_MENU.Sprite_UI_MENU_TAB;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -90,13 +91,13 @@ class ChartingState extends MusicBeatState{
 	var stepperSectionBPM:FlxUINumericStepper;
 	var stepperFocusToStrumm:FlxUINumericStepper;
 	var stepperCharToFocus:FlxUINumericStepper;
-	var stchr_ChangeBPM:Sprite_Input;
-	var stchr_AltAnim:Sprite_Input;
-	var stchr_ChangeSing:Sprite_Input;
+	var stchr_ChangeBPM:SpriteInput;
+	var stchr_AltAnim:SpriteInput;
+	var stchr_ChangeSing:SpriteInput;
 
 	var gridStuffGroup:FlxTypedGroup<FlxTypedGroup<Dynamic>>;
-	var btn_AddStrum:Sprite_Input;
-	var btn_DelStrum:Sprite_Input;
+	var btn_AddStrum:SpriteInput;
+	var btn_DelStrum:SpriteInput;
 
 	var copiedStrum:Array<Dynamic> = [];
 
@@ -187,7 +188,7 @@ class ChartingState extends MusicBeatState{
 		blackBorder.alpha = 0.3;
 		add(blackBorder);
 
-		Sprite_Input.INPUTS = new FlxTypedGroup<Sprite_Input>();
+		SpriteInput.INPUTS = new FlxTypedGroup<SpriteInput>();
 
 		TABMENU = new Sprite_UI_MENU(40, 0, 160, FlxG.height);
 		TABMENU.scrollFactor.set();
@@ -221,13 +222,13 @@ class ChartingState extends MusicBeatState{
 			nerBackGrid.scrollFactor.set(1, 0);
 			backGrid.add(nerBackGrid);
 
-			var btn_StrumToFocus = new Sprite_Input(newGrid.x + (GRID_SIZE * 1.5), newGrid.y + newGrid.height, "TOOL_FocusStrum-" + i, "Radio", "FOCUS");
+			var btn_StrumToFocus = new SpriteInput(newGrid.x + (GRID_SIZE * 1.5), newGrid.y + newGrid.height, "TOOL_FocusStrum-" + i, "Radio", "FOCUS");
 			btn_StrumToFocus.loadGraphic(Paths.image('UI_Assets/delStrum'));
 			btn_StrumToFocus.setGraphicSize(GRID_SIZE);
 			btn_StrumToFocus.updateHitbox();
 			newGroupButtoms.add(btn_StrumToFocus);
 
-			var btn_Claps = new Sprite_Input(newGrid.x + (GRID_SIZE / 2), newGrid.y + newGrid.height, "TOOL_StrumClaps-" + i, "Switcher");
+			var btn_Claps = new SpriteInput(newGrid.x + (GRID_SIZE / 2), newGrid.y + newGrid.height, "TOOL_StrumClaps-" + i, "Switcher");
 			btn_Claps.loadGraphic(Paths.image('UI_Assets/delStrum'));
 			btn_Claps.setGraphicSize(Std.int(GRID_SIZE / 2));
 			btn_Claps.updateHitbox();
@@ -247,13 +248,13 @@ class ChartingState extends MusicBeatState{
 		spriteLine = new FlxSprite(0, 50).makeGraphic(Std.int(gridBG.width * _song.sectionStrums.length), 4);
 		add(spriteLine);
 
-		btn_AddStrum = new Sprite_Input(0, 0, "TOOL_AddStrum", "Buttom");
+		btn_AddStrum = new SpriteInput(0, 0, "TOOL_AddStrum", "Buttom");
 		btn_AddStrum.loadGraphic(Paths.image('UI_Assets/addStrum'));
 		btn_AddStrum.setGraphicSize(GRID_SIZE);
 		btn_AddStrum.updateHitbox();
 		add(btn_AddStrum);
 
-		btn_DelStrum = new Sprite_Input(FlxG.width / 2 - (GRID_SIZE * 3), 0 - GRID_SIZE, "TOOL_DelStrum", "Buttom");
+		btn_DelStrum = new SpriteInput(FlxG.width / 2 - (GRID_SIZE * 3), 0 - GRID_SIZE, "TOOL_DelStrum", "Buttom");
 		btn_DelStrum.loadGraphic(Paths.image('UI_Assets/delStrum'));
 		btn_DelStrum.scrollFactor.set(0, 1);
 		btn_DelStrum.setGraphicSize(GRID_SIZE);
@@ -325,7 +326,7 @@ class ChartingState extends MusicBeatState{
 		];
 
 		for(i in 0...up_buttons_Array.length){
-			var buttom = new Sprite_Input(2.5, 2.5 + GRID_SIZE * i, up_buttons_Array[i][0], up_buttons_Array[i][2], up_buttons_Array[i][2] == "Radio" ? "TABS" : "NONE");
+			var buttom = new SpriteInput(2.5, 2.5 + GRID_SIZE * i, up_buttons_Array[i][0], up_buttons_Array[i][2], up_buttons_Array[i][2] == "Radio" ? "TABS" : "NONE");
 			buttom.loadGraphic(up_buttons_Array[i][1]);
 			buttom.setGraphicSize(GRID_SIZE - 5);
 			buttom.updateHitbox();
@@ -341,7 +342,7 @@ class ChartingState extends MusicBeatState{
 		}
 
 		for(i in 0...down_buttons_Array.length){
-			var buttom = new Sprite_Input(2.5, FlxG.height - 2.5 - GRID_SIZE - (GRID_SIZE * i), down_buttons_Array[i][0], down_buttons_Array[i][2], up_buttons_Array[i][2] == "Radio" ? "TABS" : "NONE");
+			var buttom = new SpriteInput(2.5, FlxG.height - 2.5 - GRID_SIZE - (GRID_SIZE * i), down_buttons_Array[i][0], down_buttons_Array[i][2], up_buttons_Array[i][2] == "Radio" ? "TABS" : "NONE");
 			buttom.loadGraphic(down_buttons_Array[i][1]);
 			buttom.setGraphicSize(GRID_SIZE - 5);
 			buttom.updateHitbox();
@@ -396,7 +397,7 @@ class ChartingState extends MusicBeatState{
 				newTAB.add(btn_ReloadAudio);
 				
 				//Has Voice
-				var btn_CheckVoices = new Sprite_Input(5, btn_ReloadAudio.y + 30, "SONG_HasVoices", "Switcher");
+				var btn_CheckVoices = new SpriteInput(5, btn_ReloadAudio.y + 30, "SONG_HasVoices", "Switcher");
 				btn_CheckVoices.loadGraphic(Paths.image('UI_Assets/delStrum'));
 				btn_CheckVoices.setGraphicSize(Std.int(GRID_SIZE / 2));
 				btn_CheckVoices.updateHitbox();
@@ -407,7 +408,7 @@ class ChartingState extends MusicBeatState{
 				newTAB.add(txt_CheckVoices);
 
 				//Has Single
-				var btn_CheckSingle = new Sprite_Input(5, btn_CheckVoices.y + 25, "SONG_HasSingle", "Switcher");
+				var btn_CheckSingle = new SpriteInput(5, btn_CheckVoices.y + 25, "SONG_HasSingle", "Switcher");
 				btn_CheckSingle.loadGraphic(Paths.image('UI_Assets/delStrum'));
 				btn_CheckSingle.setGraphicSize(Std.int(GRID_SIZE / 2));
 				btn_CheckSingle.updateHitbox();
@@ -531,7 +532,7 @@ class ChartingState extends MusicBeatState{
 				newTAB.add(txt_BPM);
 
 				//Change BPM
-				stchr_ChangeBPM = new Sprite_Input(5, stepperSectionBPM.y + 17, "Section_CHBPM", "Switcher");
+				stchr_ChangeBPM = new SpriteInput(5, stepperSectionBPM.y + 17, "Section_CHBPM", "Switcher");
 				stchr_ChangeBPM.loadGraphic(Paths.image('UI_Assets/delStrum'));
 				stchr_ChangeBPM.setGraphicSize(Std.int(GRID_SIZE / 2));
 				stchr_ChangeBPM.updateHitbox();
@@ -688,7 +689,7 @@ class ChartingState extends MusicBeatState{
 				tab_strum.alignment = CENTER;
 				newTAB.add(tab_strum);
 
-				stchr_AltAnim = new Sprite_Input(5, tab_strum.y + 25, "STRUM_AltAnim", "Switcher");
+				stchr_AltAnim = new SpriteInput(5, tab_strum.y + 25, "STRUM_AltAnim", "Switcher");
 				stchr_AltAnim.loadGraphic(Paths.image('UI_Assets/delStrum'));
 				stchr_AltAnim.setGraphicSize(Std.int(GRID_SIZE / 2));
 				stchr_AltAnim.updateHitbox();
@@ -703,7 +704,7 @@ class ChartingState extends MusicBeatState{
 				btn_StrnCharToSing.width = Std.int(TABMENU.width - 10);
 				newTAB.add(btn_StrnCharToSing);
 
-				stchr_ChangeSing = new Sprite_Input(5, btn_StrnCharToSing.y + 25, "STRUM_ChangeSing", "Switcher");
+				stchr_ChangeSing = new SpriteInput(5, btn_StrnCharToSing.y + 25, "STRUM_ChangeSing", "Switcher");
 				stchr_ChangeSing.loadGraphic(Paths.image('UI_Assets/delStrum'));
 				stchr_ChangeSing.setGraphicSize(Std.int(GRID_SIZE / 2));
 				stchr_ChangeSing.updateHitbox();
@@ -716,7 +717,7 @@ class ChartingState extends MusicBeatState{
 				tab_NoteData.alignment = CENTER;
 				newTAB.add(tab_NoteData);
 
-				var stp_SusNote = new Sprite_Input(5, tab_NoteData.y + 25, "NOTE_SUSDATA", "Stepper");
+				var stp_SusNote = new SpriteInput(5, tab_NoteData.y + 25, "NOTE_SUSDATA", "Stepper");
 				stp_SusNote.loadGraphic(Paths.image('UI_Assets/delStrum'));
 				stp_SusNote.setGraphicSize(Std.int(GRID_SIZE / 2));
 				stp_SusNote.updateHitbox();
@@ -724,7 +725,7 @@ class ChartingState extends MusicBeatState{
 				var txt_SusNote = new FlxText(stp_SusNote.x + stp_SusNote.width + 5, stp_SusNote.y, 'Note Sustain');
 				newTAB.add(txt_SusNote);
 
-				var stp_SpecialData = new Sprite_Input(5, stp_SusNote.y + 30, "NOTE_SPECIALDATA", "Stepper");
+				var stp_SpecialData = new SpriteInput(5, stp_SusNote.y + 30, "NOTE_SPECIALDATA", "Stepper");
 				stp_SpecialData.loadGraphic(Paths.image('UI_Assets/delStrum'));
 				stp_SpecialData.setGraphicSize(Std.int(GRID_SIZE / 2));
 				stp_SpecialData.updateHitbox();
@@ -735,7 +736,6 @@ class ChartingState extends MusicBeatState{
 				var btn_NoteCharToSing:FlxButton = new FlxButton(5, stp_SpecialData.y + 25, "Chars to Sing", function(){
 					
 				});
-				btn_NoteCharToSing.scrollFactor.set();
 				newTAB.add(btn_NoteCharToSing);
 
 
@@ -938,76 +938,6 @@ class ChartingState extends MusicBeatState{
 		_song.song = song_title.text;
 
 		strumLine.y = getYfromStrum((Conductor.songPosition - sectionStartTime()) % (Conductor.stepCrochet * _song.generalSection[curSection].lengthInSteps));
-		
-		/*curRenderedNotes.forEach(function(note:Note) {
-			if (strumLine.overlaps(note) && strumLine.y == note.y) // yandere dev type shit
-			{
-				if (_song.notes[curSection].mustHitSection)
-					{
-						trace('must hit ' + Math.abs(note.noteData));
-						if (note.noteData < 4)
-						{
-							switch (Math.abs(note.noteData))
-							{
-								case 2:
-									player1.playAnim('singUP', true);
-								case 3:
-									player1.playAnim('singRIGHT', true);
-								case 1:
-									player1.playAnim('singDOWN', true);
-								case 0:
-									player1.playAnim('singLEFT', true);
-							}
-						}
-						if (note.noteData >= 4)
-						{
-							switch (note.noteData)
-							{
-								case 6:
-									player2.playAnim('singUP', true);
-								case 7:
-									player2.playAnim('singRIGHT', true);
-								case 5:
-									player2.playAnim('singDOWN', true);
-								case 4:
-									player2.playAnim('singLEFT', true);
-							}
-						}
-					}
-					else
-					{
-						trace('hit ' + Math.abs(note.noteData));
-						if (note.noteData < 4)
-						{
-							switch (Math.abs(note.noteData))
-							{
-								case 2:
-									player2.playAnim('singUP', true);
-								case 3:
-									player2.playAnim('singRIGHT', true);
-								case 1:
-									player2.playAnim('singDOWN', true);
-								case 0:
-									player2.playAnim('singLEFT', true);
-							}
-						}
-						if (note.noteData >= 4)
-						{
-							switch (note.noteData)
-							{
-								case 6:
-									player1.playAnim('singUP', true);
-								case 7:
-									player1.playAnim('singRIGHT', true);
-								case 5:
-									player1.playAnim('singDOWN', true);
-								case 4:
-									player1.playAnim('singLEFT', true);
-							}
-						}
-					}
-			}
-		});*/
 
 		if (curBeat % 4 == 0 && curStep >= 16 * (curSection + 1))
 		{
@@ -1035,9 +965,9 @@ class ChartingState extends MusicBeatState{
 			});
 		}
 
-		Sprite_Input.setValue("FOCUS", "TOOL_FocusStrum-" + _song.generalSection[curSection].strumToFocus);
+		SpriteInput.setValue("FOCUS", "TOOL_FocusStrum-" + _song.generalSection[curSection].strumToFocus);
 
-		Sprite_Input.INPUTS.forEach(function(buttom:Sprite_Input){
+		SpriteInput.INPUTS.forEach(function(buttom:SpriteInput){
 			switch(buttom.type){
 				case "Switcher":{
 					if(buttom.name.contains("TOOL_StrumClaps-")){
@@ -1073,7 +1003,7 @@ class ChartingState extends MusicBeatState{
 						if(buttom.name.contains("TAB_")){
 							if(TABMENU.curTAB == buttom.name){
 								TABMENU.curTAB = "";
-								for(i in Sprite_Input.INPUT_VALUES){
+								for(i in SpriteInput.INPUT_VALUES){
 									if(i[0] == "Radio" && i[1] == buttom.tag){
 										i[2] = "";
 									}
@@ -1449,13 +1379,13 @@ class ChartingState extends MusicBeatState{
 			nerBackGrid.scrollFactor.set(1, 0);
 			backGrid.add(nerBackGrid);
 
-			var btn_StrumToFocus = new Sprite_Input(newGrid.x + (GRID_SIZE * 1.5), newGrid.y + newGrid.height, "TOOL_FocusStrum-" + i, "Radio", "FOCUS");
+			var btn_StrumToFocus = new SpriteInput(newGrid.x + (GRID_SIZE * 1.5), newGrid.y + newGrid.height, "TOOL_FocusStrum-" + i, "Radio", "FOCUS");
 			btn_StrumToFocus.loadGraphic(Paths.image('UI_Assets/delStrum'));
 			btn_StrumToFocus.setGraphicSize(GRID_SIZE);
 			btn_StrumToFocus.updateHitbox();
 			newGroupButtoms.add(btn_StrumToFocus);
 
-			var btn_Claps = new Sprite_Input(newGrid.x + (GRID_SIZE / 2), newGrid.y + newGrid.height, "TOOL_StrumClaps-" + i, "Switcher");
+			var btn_Claps = new SpriteInput(newGrid.x + (GRID_SIZE / 2), newGrid.y + newGrid.height, "TOOL_StrumClaps-" + i, "Switcher");
 			btn_Claps.loadGraphic(Paths.image('UI_Assets/delStrum'));
 			btn_Claps.setGraphicSize(Std.int(GRID_SIZE / 2));
 			btn_Claps.updateHitbox();

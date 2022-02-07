@@ -22,6 +22,7 @@ typedef CharacterFile = {
 	var position:Array<Float>;
 	var cameraRight:Array<Float>;
 	var cameraLeft:Array<Float>;
+	var zoom:Float;
 
 	var xFlip:Bool;
 	var scale:Float;
@@ -68,9 +69,11 @@ class Character extends FlxSprite{
 
 	public var positionArray:Array<Float> = [0, 0];
 	public var cameraPosition:Array<Float> = [0, 0];
+	public var cameraZoom:Float = 0.8;
 
 	public var imageFile:String = '';
 	public var jsonScale:Float = 1;
+	public var curScale:Float = 1;
 	public var noAntialiasing:Bool = false;
 
 	public function new(x:Float, y:Float, ?character:String = 'Boyfriend', ?category:String = 'Default', ?type:String = "NORMAL", ?isRight:Bool = false){
@@ -133,6 +136,7 @@ class Character extends FlxSprite{
 
 				positionArray = jCharacter.position;
 				cameraPosition = jCharacter.cameraLeft;
+				cameraZoom = jCharacter.zoom;
 
 				healthIcon = jCharacter.healthicon;
 				singDuration = jCharacter.singDuration;
@@ -270,7 +274,9 @@ class Character extends FlxSprite{
 	}
 
 	public function setGraphicScale(scale:Float){
-		setGraphicSize(Std.int(width * (scale * jsonScale / 1)));
+		curScale = scale;
+		
+		setGraphicSize(Std.int(width * (curScale * jsonScale / 1)));
 		updateHitbox();
 	}
 }

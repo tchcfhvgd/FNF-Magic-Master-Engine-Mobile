@@ -72,7 +72,7 @@ class Sprite_UI_MENU_TAB extends FlxTypedGroup<Dynamic>{
     public var tabName:String = "";
 
     public function new(name:String){
-        tabName = name;
+        this.tabName = name;
         super();
     }
 

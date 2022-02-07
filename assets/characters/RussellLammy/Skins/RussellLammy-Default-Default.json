@@ -1,18 +1,18 @@
 {
-    "image": "Cuddles",
+    "image": "Russell_Lammy",
     "healthicon": "fliqpy",
 
 	"position": [0,	20],
-    "cameraLeft": [0, -260],
+    "cameraRight": [-220, -420],
     "zoom": 0.8,
 	
-	"xFlip": false,
+	"xFlip": true,
 	"scale": 1,
     
     "anims":[
 		{
             "anim": "idle",
-            "symbol": "Cuddles",
+            "symbol": "Russell and Lammy",
             "fps": 24,
 			
             "offsets_right": [0, 0],

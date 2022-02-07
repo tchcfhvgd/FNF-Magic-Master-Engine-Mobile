@@ -1,9 +1,10 @@
 {
-    "image": "Cuddles",
+    "image": "Lumpy",
     "healthicon": "fliqpy",
 
 	"position": [0,	20],
-    "cameraRight": [60, 270],
+    "cameraRight": [-100, 250],
+    "zoom": 0.8,
 	
 	"xFlip": false,
 	"scale": 1,
@@ -11,11 +12,11 @@
     "anims":[
 		{
             "anim": "idle",
-            "symbol": "Cuddles",
+            "symbol": "Lumpy Boceto",
             "fps": 24,
 			
-            "offsets_right": [-137, -267],
-            "offsets_left": [0, -30],
+            "offsets_right": [0, 0],
+            "offsets_left": [0, 0],
 			"indices": [],
 
             "loop": true

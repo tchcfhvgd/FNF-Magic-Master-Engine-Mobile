@@ -4,6 +4,7 @@
 
 	"position": [0,	350],
     "cameraLeft": [-50, -190],
+    "zoom": 0.8,
 	
 	"xFlip": false,
 	"scale": 0.9,

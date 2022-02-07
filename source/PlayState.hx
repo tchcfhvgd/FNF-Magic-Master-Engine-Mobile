@@ -79,6 +79,9 @@ class PlayState extends MusicBeatState {
 	public var camFHUD:FlxCamera;
 	private var camGame:FlxCamera;
 
+	private var camFollow:FlxObject;
+	private static var prevCamFollow:FlxObject;
+
 	//Other
 	private var generatedMusic:Bool = false;
 	private var startingSong:Bool = false;
@@ -137,6 +140,20 @@ class PlayState extends MusicBeatState {
 		add(strumsGroup);
 
 		generateSong();
+
+		camFollow = new FlxObject(0, 0, 1, 1);
+		camFollow.setPosition(0, 0);
+		if (prevCamFollow != null){
+			camFollow = prevCamFollow;
+			prevCamFollow = null;
+		}
+
+		add(camFollow);
+
+		FlxG.camera.follow(camFollow, LOCKON, 0.04);
+		// FlxG.camera.setScrollBounds(0, FlxG.width, 0, FlxG.height);
+		FlxG.camera.zoom = defaultCamZoom;
+		FlxG.camera.focusOn(camFollow.getPosition());
 
 		FlxG.camera.zoom = defaultCamZoom;
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
@@ -374,6 +391,51 @@ class PlayState extends MusicBeatState {
 			// Conductor.lastSongPos = FlxG.sound.music.time;
 		}
 
+		if(!pre_OnlyNotes){
+			if(generatedMusic && PlayState.SONG.generalSection[Std.int(curStep / 16)] != null){
+				var charToFocus = PlayState.SONG.generalSection[Std.int(curStep / 16)].charToFocus;
+
+				var camMoveX = 0.0;
+				var camMoveY = 0.0;
+	
+				var offsetX = 0;
+				var offsetY = 0;
+	
+				var character = stage.characters.members[charToFocus];
+				if(character == null){character = stage.characters.members[0];}
+	
+				switch(character.animation.curAnim.name){
+					default:{
+						camMoveX = character.getMidpoint().x + offsetX;
+						camMoveY = character.getMidpoint().y + offsetY;
+					}		
+					case 'singUP':{
+						camMoveX = character.getMidpoint().x + offsetX;
+						camMoveY = character.getMidpoint().y - 100 + offsetY;
+					}
+					case 'singRIGHT':{
+						camMoveX = character.getMidpoint().x + 100 + offsetX;
+						camMoveY = character.getMidpoint().y + offsetY;
+					}
+					case 'singDOWN':{
+						camMoveX = character.getMidpoint().x + offsetX;
+						camMoveY = character.getMidpoint().y + 100 + offsetY;
+					}
+					case 'singLEFT':{
+						camMoveX = character.getMidpoint().x - 100 + offsetX;
+						camMoveY = character.getMidpoint().y + offsetY;
+					}
+				}
+				
+				camMoveX += character.cameraPosition[0];
+				camMoveY += character.cameraPosition[1];
+				
+				// camFollow.setPosition(lucky.getMidpoint().x - 120, lucky.getMidpoint().y + 210);	
+				camFollow.setPosition(camMoveX, camMoveY);
+				FlxG.camera.zoom = FlxMath.lerp(FlxG.camera.zoom, character.cameraZoom, 0.05);
+			}
+		}
+
 		if(Controls.getBind("Game_Reset", "JUST_PRESSED")){
 			health = 0;
 			trace("RESET = True");
@@ -421,6 +483,8 @@ class PlayState extends MusicBeatState {
 
 			FlxTransitionableState.skipNextTransIn = true;
 			FlxTransitionableState.skipNextTransOut = true;
+
+			prevCamFollow = camFollow;
 
 			SongListData.toPlayState(isStoryMode);
 			FlxG.sound.music.stop();

@@ -19,13 +19,13 @@ import PlayState;
 
 using StringTools;
 
-class Sprite_Input extends FlxSprite{
+class SpriteInput extends FlxSprite{
     public static var INPUT_VALUES:Array<Dynamic> = [];
-    public static var INPUTS:FlxTypedGroup<Sprite_Input>;
+    public static var INPUTS:FlxTypedGroup<SpriteInput>;
 
     public var type:String = "Buttom";
-
     public var tag:String = "NONE";
+
     public var name:String = "";
 
     public var canUse:Bool = true;
@@ -59,6 +59,8 @@ class Sprite_Input extends FlxSprite{
                 }                
             }
         }
+
+        scrollFactor.set();
 
         INPUTS.add(this);
     }
@@ -99,7 +101,130 @@ class Sprite_Input extends FlxSprite{
 
 		super.update(elapsed);
 
-        INPUTS.forEach(function(buttom:Sprite_Input){
+        INPUTS.forEach(function(buttom:SpriteInput){
+            switch(buttom.type){
+                case "Buttom":{
+                    buttom.pressed = (FlxG.mouse.overlaps(buttom) && buttom.canUse && (FlxG.mouse.justPressed && !buttom.isRight || FlxG.mouse.justPressedRight && buttom.isRight));
+                }
+    
+                case "Switcher":{
+                    if(FlxG.mouse.overlaps(buttom) && buttom.canUse && (FlxG.mouse.justPressed && !buttom.isRight || FlxG.mouse.justPressedRight && buttom.isRight)){
+                        if(buttom.pressed){
+                            var timer = new FlxTimer().start(0.1, function(tmr:FlxTimer){buttom.pressed = false;});
+                        }else if(!buttom.pressed){
+                            var timer = new FlxTimer().start(0.1, function(tmr:FlxTimer){buttom.pressed = true;});
+                        }
+                    }
+                }
+    
+                case "Radio":{
+                    buttom.pressed = (FlxG.mouse.overlaps(buttom) && buttom.canUse && (FlxG.mouse.justPressed && !buttom.isRight || FlxG.mouse.justPressedRight && buttom.isRight));
+
+                    if(buttom.pressed){
+                        for(value in INPUT_VALUES){
+                            if(value[0] == "Radio" && value[1] == buttom.tag){
+                                value[2] = buttom.name;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+	}
+
+    public static function setValue(getTag:String, valueToSet:String){
+        for(value in INPUT_VALUES){
+            if(value[1] == getTag){
+                value[2] = valueToSet;
+            }
+        }
+    }
+}
+
+class TextButtom extends FlxText{
+    public static var INPUT_VALUES:Array<Dynamic> = [];
+    public static var INPUTS:FlxTypedGroup<TextButtom>;
+
+    public var type:String = "Buttom";
+    public var tag:String = "NONE";
+
+    public var name:String = "";
+
+    public var canUse:Bool = true;
+    public var isVisible:Bool = true;
+
+    public var isRight:Bool = false;
+
+    public var pressed:Bool = false;
+    
+	var holdTime:Float = 0;
+
+    public function new(x:Float, y:Float, fieldWidth:Float, text:String = "Input", size:Int, embeded:Bool, name:String, type:String = "Buttom", ?tag:String = "NONE"){
+        this.tag = tag;
+        this.type = type;
+        this.name = name;
+        super(x, y, fieldWidth, text, size, embeded);
+
+        antialiasing = true;
+
+        switch(type){
+            case "Radio":{
+                var hasValue = false;
+                for(value in INPUT_VALUES){
+                    if(value[0] == "Radio" && value[1] == tag){
+                        hasValue = true;
+                    }
+                }
+
+                if(!hasValue){
+                    INPUT_VALUES.push(["Radio", tag, name]);
+                }                
+            }
+        }
+
+        scrollFactor.set();
+
+        INPUTS.add(this);
+    }
+
+    override function update(elapsed:Float){
+        if(canUse){
+            switch(type){
+                default:{
+                    if(pressed){
+                        alpha = 1;
+                    }else{
+                        if(FlxG.mouse.overlaps(this)){
+                            alpha = 0.8;
+                        }else{
+                            alpha = 0.4;
+                        }
+                    }
+                }
+
+                case "Radio":{
+                    for(value in INPUT_VALUES){
+                        if(value[0] == "Radio" && value[1] == tag){
+                            if(value[2] == name){
+                                alpha = 1;
+                            }else{
+                                if(FlxG.mouse.overlaps(this)){
+                                    alpha = 0.8;
+                                }else{
+                                    alpha = 0.4;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }else{
+            alpha = 0.2;
+        }
+
+		super.update(elapsed);
+
+        INPUTS.forEach(function(buttom:TextButtom){
             switch(buttom.type){
                 case "Buttom":{
                     buttom.pressed = (FlxG.mouse.overlaps(buttom) && buttom.canUse && (FlxG.mouse.justPressed && !buttom.isRight || FlxG.mouse.justPressedRight && buttom.isRight));

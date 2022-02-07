@@ -1,5 +1,6 @@
 package;
 
+import flixel.input.mouse.FlxMouse;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -19,6 +20,7 @@ import io.newgrounds.NG;
 import lime.app.Application;
 import flixel.math.FlxMath;
 import flixel.FlxCamera;
+import flixel.FlxSubState;
 
 using StringTools;
 
@@ -36,18 +38,21 @@ class MainMenuState extends MusicBeatState{
 	];
 
 	var arrayOther:Array<Dynamic> = [
-		[2, [0, 100], 0.8],
-		[3, [0, 100], 0.8],
-		[1, [0, 100], 0.8],
-		[0, [0, 100], 1.1],
-		[0, [0, 0], 0.8],
-		[0, [0, 0], 0.8]
+		[6, [0, 100], 0.8],
+		[7, [0, 100], 0.8],
+		[5, [0, 100], 0.8],
+		[1, [0, 100], 1.2],
+		[2, [0, 100], 1.2],
+		[0, [0, 100], 1.2]
 	];
 
 	var arrayCharOptions:Array<Dynamic> = [
-	   // Character    Position   isRight  Category  Type  Layer
-		["Cuddles", [200, -300], 0.6, false, "Default", "NORMAL", 1],
-		["Sniffles", [400, -250], 0.6, false, "Default", "NORMAL", 1],
+	   // Character   Position  Size isRight Category     Type  Layer
+		["Cuddles", [200, -280], 0.6, false, "Default", "NORMAL", 1],
+		["Sniffles", [750, -120], 0.6, false, "Default", "NORMAL", 1],
+		["RussellLammy", [-200, -190], 0.6, true, "Default", "NORMAL", 1],
+		["Lumpy", [-1000, -200], 0.7, true, "Default", "NORMAL", 2],
+		["Toothy", [1300, 180], 0.7, false, "Default", "NORMAL", 2],
 		["Girlfriend", [0, 0], 1, true, "Default", "GF", -1],
 		["Fliqpy", [-600, 110], 1, true, "Default", "NORMAL", -1],
 		["Boyfriend", [600, 110], 1, false, "Default", "NORMAL", -1]
@@ -98,6 +103,7 @@ class MainMenuState extends MusicBeatState{
 		add(options);
 		for(i in 0...arrayOptions.length){
 			var option:FlxText = new FlxText(0, FlxG.height - 120, 0, arrayOptions[i], 72);
+			option.antialiasing = PreSettings.getPreSetting("Antialiasing");
 			option.font = Paths.font("Countryhouse.ttf");
 			option.color = FlxColor.WHITE;
 			option.cameras = [camHUD];
@@ -120,6 +126,7 @@ class MainMenuState extends MusicBeatState{
 		super.create();
 	}
 
+	var canControl = false;
 	override function update(elapsed:Float){
 		if (FlxG.sound.music.volume < 0.8){
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
@@ -157,28 +164,34 @@ class MainMenuState extends MusicBeatState{
 					camFollow.setPosition(nextFollow[0], nextFollow[1]);
 				}
 
-				if(Controls.getBind("Menu_Left", "JUST_PRESSED")){changeSelect(-1);}
-				if(Controls.getBind("Menu_Right", "JUST_PRESSED")){changeSelect(1);}
-				if(Controls.getBind("Menu_Accept", "JUST_PRESSED")){
-					switch(arrayOptions[curSelected]){
-						case "Options":{
-							typeMenu = "OptionState";
+				if(canControl){
+					if(Controls.getBind("Menu_Left", "JUST_PRESSED")){changeSelect(-1);}
+					if(Controls.getBind("Menu_Right", "JUST_PRESSED")){changeSelect(1);}
+					if(Controls.getBind("Menu_Accept", "JUST_PRESSED")){
+						switch(arrayOptions[curSelected]){
+							case "Options":{
+								canControl = false;
+								FlxTween.tween(camHUD, {alpha: 0}, 0.5, {onComplete: function(twn:FlxTween){
+									openSubState(new OptionsSubState());
+									typeMenu = "OptionState";
+								}});
+							}
+							case "FreePlay":{
+								canControl = false;
+								FlxG.switchState(new FreeplayState());
+							}
 						}
-					}
+					}	
 				}
 			}
 
 			case "OptionState":{
-				FlxG.camera.zoom = FlxMath.lerp(FlxG.camera.zoom, 0.45, 0.05);
+				FlxG.camera.zoom = FlxMath.lerp(FlxG.camera.zoom, 1, 0.05);
 				camFollow.setPosition(250, 150);
 
 				stage.characters.forEach(function(char:Character){
 					char.alpha = FlxMath.lerp(char.alpha, 1, 2);
 				});
-
-				if(Controls.getBind("Menu_Back", "JUST_PRESSED")){
-					typeMenu = "MainMenuState";
-				}
 			}
 		}
 	}
@@ -188,5 +201,20 @@ class MainMenuState extends MusicBeatState{
 
 		if(curSelected >= arrayOptions.length){curSelected = 0;}
 		if(curSelected < 0){curSelected = arrayOptions.length - 1;}
+	}
+
+	override function openSubState(SubState:FlxSubState){
+		camHUD.alpha = 0;
+
+		super.openSubState(SubState);
+	}
+
+	override function closeSubState(){
+		FlxTween.tween(camHUD, {alpha: 1}, 0.5, {onComplete: function(twn:FlxTween){canControl = true;}});
+		typeMenu = "MainMenuState";
+
+		FlxG.mouse.visible = false;
+		
+		super.closeSubState();
 	}
 }
