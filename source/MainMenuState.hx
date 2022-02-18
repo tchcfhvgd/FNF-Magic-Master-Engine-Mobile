@@ -91,7 +91,7 @@ class MainMenuState extends MusicBeatState{
 
 		FlxCamera.defaultCameras = [camGame];
 
-		stage = new Stage("land-cute", arrayCharOptions);
+		stage = new Stage("Land-Cute", arrayCharOptions);
 		add(stage);
 
 		var backOpt = new FlxSprite(0, FlxG.height - 120).makeGraphic(FlxG.width, 120, FlxColor.BLACK);
@@ -153,8 +153,8 @@ class MainMenuState extends MusicBeatState{
 		switch(typeMenu){
 			case "MainMenuState":{
 				FlxG.camera.zoom = FlxMath.lerp(FlxG.camera.zoom, arrayOther[curSelected][2], 0.05);
-				if(stage.characters.members[arrayOther[curSelected][0]].exists){
-					var curChar:Character = stage.characters.members[arrayOther[curSelected][0]];
+				if(stage.charData.members[arrayOther[curSelected][0]] != null){
+					var curChar = stage.charData.members[arrayOther[curSelected][0]];
 
 					var toX = curChar.getMidpoint().x + curChar.cameraPosition[0];
 					var toY = curChar.getMidpoint().y + curChar.cameraPosition[1];
@@ -189,7 +189,7 @@ class MainMenuState extends MusicBeatState{
 				FlxG.camera.zoom = FlxMath.lerp(FlxG.camera.zoom, 1, 0.05);
 				camFollow.setPosition(250, 150);
 
-				stage.characters.forEach(function(char:Character){
+				stage.charData.forEach(function(char:Character){
 					char.alpha = FlxMath.lerp(char.alpha, 1, 2);
 				});
 			}

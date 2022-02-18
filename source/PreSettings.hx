@@ -24,9 +24,7 @@ class PreSettings {
         // Graphic Settings
         ["TypeGraphic", [3,
             [
-                ["Custom", [
-
-                ]],
+                ["Custom", []],
                 ["Low", [
                     ["FrameRate", 30],
                     ["Antialiasing", false],
@@ -65,13 +63,13 @@ class PreSettings {
         ["AmbientEffects", true],
         ["HUDEffects", true],
         ["SplashOnSick", true],
-        ["AllowLUA", true],
         ["OnlyNotes", false],
         // Other Settings
         ["AllowFlashingLights", true],
         ["AllowViolence", true],
         ["AllowGore", true],
         ["AllowNotSafeForWork", true],
+        ["AllowLUA", true],
         // Cheating Settings
         ["BotPlay", false],
         ["PracticeMode", false],

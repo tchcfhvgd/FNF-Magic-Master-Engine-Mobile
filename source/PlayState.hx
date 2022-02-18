@@ -401,8 +401,8 @@ class PlayState extends MusicBeatState {
 				var offsetX = 0;
 				var offsetY = 0;
 	
-				var character = stage.characters.members[charToFocus];
-				if(character == null){character = stage.characters.members[0];}
+				var character = stage.charData.members[charToFocus];
+				if(character == null){character = stage.charData.members[0];}
 	
 				switch(character.animation.curAnim.name){
 					default:{

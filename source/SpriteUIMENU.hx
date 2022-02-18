@@ -15,8 +15,8 @@ import PlayState;
 
 using StringTools;
 
-class Sprite_UI_MENU extends FlxSprite{
-    public var TABS:FlxTypedGroup<Sprite_UI_MENU_TAB>;
+class SpriteUIMENU extends FlxSprite{
+    public var TABS:FlxTypedGroup<SpriteUIMENU_TAB>;
     public var curTAB:String = "";
     public var tDelay:Float = 5;
 
@@ -28,7 +28,7 @@ class Sprite_UI_MENU extends FlxSprite{
         dHeight = height;
         super(x, y);
 
-        TABS = new FlxTypedGroup<Sprite_UI_MENU_TAB>();
+        TABS = new FlxTypedGroup<SpriteUIMENU_TAB>();
 
         makeGraphic(width, height, FlxColor.BLACK);
         alpha = 0.5;
@@ -44,7 +44,7 @@ class Sprite_UI_MENU extends FlxSprite{
             TABS.revive();
             alpha = 0.5;
 
-            TABS.forEach(function(TAB:Sprite_UI_MENU_TAB){
+            TABS.forEach(function(TAB:SpriteUIMENU_TAB){
                 if(TAB.tabName == curTAB){
                     TAB.revive();
                 }else{
@@ -56,19 +56,20 @@ class Sprite_UI_MENU extends FlxSprite{
         super.update(elapsed);
 	}
 
-    public function add(TAB:Sprite_UI_MENU_TAB){
+    public function add(TAB:SpriteUIMENU_TAB){
         TAB.forEach(function(obj:FlxObject){
             obj.x = this.x + obj.x;
             obj.y = this.y + obj.y;
 
             obj.scrollFactor.set();
+            obj.cameras = this.cameras;
         });
 
         TABS.add(TAB);
     }
 }
 
-class Sprite_UI_MENU_TAB extends FlxTypedGroup<Dynamic>{
+class SpriteUIMENU_TAB extends FlxTypedGroup<Dynamic>{
     public var tabName:String = "";
 
     public function new(name:String){

@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxObject;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.animation.FlxBaseAnimation;
@@ -12,6 +13,7 @@ import haxe.Json;
 import haxe.format.JsonParser;
 import flixel.group.FlxGroup;
 import flixel.system.FlxAssets;
+import flixel.FlxBasic;
 
 typedef StageData = {
     var Directory:String;
@@ -30,6 +32,10 @@ typedef StagePart = {
 
     var size:Float;
     var alpha:Float;
+    var angle:Float;
+
+    var dflipX:Bool;
+    var dflipY:Bool;
 
     var antialiasing:Bool;
 
@@ -46,82 +52,72 @@ typedef StageAnim = {
     var loop:Bool;
 }
 
-class Stage extends FlxGroup{
-    public var CamZoom:Float = 0.7;
-    public var Chrome:Float = 0;
+class Stage extends FlxTypedGroup<Dynamic>{
+    public var curStage:String = "Stage";
 
-    public var characters:FlxTypedGroup<Character>;
-    public var specialData:FlxTypedGroup<Dynamic>;
+    public var directory:String = "Stage";
+    public var zoom:Float = 0.7;
+    public var chrome:Float = 0;
 
-    public function new(?stage:String = "Stage", ?chars:Array<Dynamic>){
+    public var data:StageData = null;
+    public var charData:FlxTypedGroup<Character>;
+
+    public function new(?stage:String = "Stage", ?chars:Array<Dynamic>, ?edit:Bool = false){
         if(chars == null){chars = [];}
         super();
 
-        characters = new FlxTypedGroup<Character>();
-        specialData = new FlxTypedGroup<Dynamic>();
+        charData = new FlxTypedGroup<Character>();
 
         var JSON:StageData = cast Json.parse(Assets.getText(Paths.StageJSON(stage)));
 
+        loadStage(JSON);
+        loadChars(chars);
+    }
+
+    override function update(elapsed:Float){
+		super.update(elapsed);
+    }
+
+    public function loadStage(stage:StageData){
+        data = stage;
+
+        directory = stage.Directory;
+        zoom = stage.CamZoom;
+        chrome = stage.Chrome;
+
+        clear();
+        for(sprite in stage.StageData){
+            var stagePart:StageSprite;
+            stagePart = new StageSprite(sprite.position[0], sprite.position[1]);
+            stagePart.loadPart(sprite, directory);
+
+            add(stagePart);
+        }
+    }
+
+    public function loadChars(chars:Array<Dynamic>){
+        charData.clear();
+        
         for(char in chars){
             if(char[6] == null || char[6] < 0){
-                char[6] = JSON.StageData.length - 1;
+                char[6] = this.length - 1;
             }
         }
 
-        CamZoom = JSON.CamZoom;
-        Chrome = JSON.Chrome;
-
         var numCont:Int = 0;
-        for(sprite in JSON.StageData){
-            var stagePart:StageSprite;
-            if(sprite.stageAnims != null && sprite.stageAnims.length > 0){
-                stagePart = new StageSprite(sprite.position[0], sprite.position[1]);
-                stagePart.frames = Paths.getStageAtlas(sprite.image, JSON.Directory);
-                stagePart.scrollFactor.set(sprite.scrollFactor[0], sprite.scrollFactor[1]);
-                if(sprite.antialiasing){stagePart.antialiasing = PreSettings.getPreSetting("Antialiasing");}
+        for(char in chars){
+            if(char[6] == numCont){
+                //["Girlfriend", [140, 210], false, "Default", "GF", 3]
+                var newChar:Character = new Character(char[1][0], char[1][1], char[0], char[4], char[5], char[3]);
+                newChar.x += newChar.positionArray[0];
+                newChar.y += newChar.positionArray[1];
 
-                var anims = sprite.stageAnims;
-                for(anim in anims){
-                    if(anim.indices != null && anim.indices.length > 0){
-                        stagePart.animation.addByIndices(anim.anim, anim.symbol, anim.indices, "", anim.fps, anim.loop);
-                    }else{
-                        stagePart.animation.addByPrefix(anim.anim, anim.symbol, anim.fps, anim.loop);
-                    }
-        
-                    if(anim.offsets != null && anim.offsets.length > 1){
-                        stagePart.animOffsets[anim.anim] = [anim.offsets[0], anim.offsets[1]];
-                    }
-                }
+                newChar.setGraphicScale(char[2]);
 
-                stagePart.setGraphicSize(Std.int(stagePart.width * sprite.size));
-                stagePart.updateHitbox();
-
-                stagePart.playAnim("idle");
-            }else{
-                stagePart = new StageSprite(sprite.position[0], sprite.position[1]);
-                stagePart.loadGraphic(Paths.image('${JSON.Directory}/${sprite.image}', 'stages'));
-                if(sprite.antialiasing){stagePart.antialiasing = PreSettings.getPreSetting("Antialiasing");}
-                stagePart.scrollFactor.set(sprite.scrollFactor[0], sprite.scrollFactor[1]);
-                stagePart.setGraphicSize(Std.int(stagePart.width * sprite.size));
-                stagePart.updateHitbox();
-            }
-
-            add(stagePart);
-
-            for(char in chars){
-                if(char[6] == numCont){
-                    //["Girlfriend", [140, 210], false, "Default", "GF", 3]
-                    var newChar:Character = new Character(char[1][0], char[1][1], char[0], char[4], char[5], char[3]);
-                    newChar.x += newChar.positionArray[0];
-                    newChar.y += newChar.positionArray[1];
-
-                    newChar.setGraphicScale(char[2]);
-
-                    newChar.scrollFactor.set(stagePart.scrollFactor.x, stagePart.scrollFactor.y);
-
-                    characters.add(newChar);
-                    add(newChar);
-                }
+                newChar.scrollFactor.set(data.StageData[numCont].scrollFactor[0], data.StageData[numCont].scrollFactor[1]);
+                
+                charData.add(newChar);
+                insert(numCont, newChar);
             }
 
             numCont++;
@@ -131,9 +127,16 @@ class Stage extends FlxGroup{
 
 class StageSprite extends FlxSprite {
     public var animOffsets:Map<String, Array<Dynamic>>;
+    public var animArray:Array<StageAnim> = [];
+
+    //Edit Stats
+    public var defScale:Float = 1;
+    public var defAlpha:Float = 1;
+
+    public var data:StagePart;
     
-    public function new(X:Float = 0, Y:Float = 0, ?SimpleGraphic:Null<FlxGraphicAsset>){
-        super(X, Y, SimpleGraphic);
+    public function new(X:Float = 0, Y:Float = 0){
+        super(X, Y);
 
         #if (haxe >= "4.0.0") animOffsets = new Map(); #else animOffsets = new Map<String, Array<Dynamic>>(); #end
     }
@@ -148,4 +151,45 @@ class StageSprite extends FlxSprite {
             offset.set(0, 0);
         }
 	}
+
+    public function setGraphicScale(scale:Float = 1){
+        defScale = scale;
+        setGraphicSize(Std.int(width * defScale));
+    }
+
+    public function loadPart(part:StagePart, directory:String){
+        data = part;
+
+        this.setPosition(part.position[0], part.position[1]);
+        if(part.stageAnims != null && part.stageAnims.length > 0){
+            frames = Paths.getStageAtlas(part.image, directory);
+
+            animArray = part.stageAnims;
+            for(anim in animArray){
+                if(anim.indices != null && anim.indices.length > 0){
+                    animation.addByIndices(anim.anim, anim.symbol, anim.indices, "", anim.fps, anim.loop);
+                }else{
+                    animation.addByPrefix(anim.anim, anim.symbol, anim.fps, anim.loop);
+                }
+    
+                if(anim.offsets != null && anim.offsets.length > 1){
+                    animOffsets[anim.anim] = [anim.offsets[0], anim.offsets[1]];
+                }
+            }
+
+            playAnim("idle");
+        }else{
+            loadGraphic(Paths.image('${directory}/${part.image}', 'stages'));
+        }
+
+        if(part.antialiasing){antialiasing = PreSettings.getPreSetting("Antialiasing");}
+        scrollFactor.x = part.scrollFactor[0];
+        scrollFactor.y = part.scrollFactor[1];
+        angle = part.angle;
+        alpha = part.alpha;
+        flipX = part.dflipX;
+        flipY = part.dflipY;
+        setGraphicScale(part.size);
+        updateHitbox();
+    }
 }

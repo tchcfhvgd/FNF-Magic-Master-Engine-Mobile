@@ -11,7 +11,7 @@ import Song.SwagSong;
 import Song.SwagStrum;
 import SpriteInput;
 import SpriteInput.TextButtom;
-import Sprite_UI_MENU.Sprite_UI_MENU_TAB;
+import SpriteUIMENU.SpriteUIMENU_TAB;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxObject;
@@ -80,8 +80,8 @@ class ChartingState extends MusicBeatState{
 	var backGrid:FlxTypedGroup<FlxSprite>;
 	var gridBG:FlxSprite;
 
-	var TABMENU:Sprite_UI_MENU;
-	var TABSTRUM:Sprite_UI_MENU;
+	var TABMENU:SpriteUIMENU;
+	var TABSTRUM:SpriteUIMENU;
 
 	var song_title:FlxInputText;
 	var song_diff_title:FlxInputText;
@@ -190,10 +190,10 @@ class ChartingState extends MusicBeatState{
 
 		SpriteInput.INPUTS = new FlxTypedGroup<SpriteInput>();
 
-		TABMENU = new Sprite_UI_MENU(40, 0, 160, FlxG.height);
+		TABMENU = new SpriteUIMENU(40, 0, 160, FlxG.height);
 		TABMENU.scrollFactor.set();
 
-		TABSTRUM = new Sprite_UI_MENU(FlxG.width - 160, 0, 160, FlxG.height);
+		TABSTRUM = new SpriteUIMENU(FlxG.width - 160, 0, 160, FlxG.height);
 		TABSTRUM.scrollFactor.set();
 		TABSTRUM.curTAB = "TAB_CurSection";
 
@@ -357,7 +357,7 @@ class ChartingState extends MusicBeatState{
 	}
 
 	function addUiTAB(TAB:String){
-		var newTAB = new Sprite_UI_MENU_TAB(TAB);
+		var newTAB = new SpriteUIMENU_TAB(TAB);
 
 		switch(TAB){
 			case "TAB_General":{
