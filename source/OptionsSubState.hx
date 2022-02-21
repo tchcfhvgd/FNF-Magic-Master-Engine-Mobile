@@ -117,6 +117,7 @@ class OptionsSubState extends MusicBeatSubstate {
 					if(buttom.pressed){
 						switch(buttom.name){
 							case "GoTo-StageEditor":{StageEditorState.editStage();}
+							case "GoTo-ChartEditor":{ChartEditorState.editChart();}
 						}
 					}
 				}
@@ -354,7 +355,7 @@ class OptionsSubState extends MusicBeatSubstate {
 				title.alignment = CENTER;
 				newTAB.add(title);
 
-				var txtChartingState = new TextButtom(5, 40, 0, "Chart Editor", 40, false, "GoTo-ChartingState");
+				var txtChartingState = new TextButtom(5, 40, 0, "Chart Editor", 40, false, "GoTo-ChartEditor");
 				txtChartingState.antialiasing =  PreSettings.getPreSetting("Antialiasing");
 				txtChartingState.font = Paths.font("Countryhouse.ttf");
 				newTAB.add(txtChartingState);

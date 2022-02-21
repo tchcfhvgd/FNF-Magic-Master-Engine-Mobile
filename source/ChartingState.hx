@@ -126,8 +126,7 @@ class ChartingState extends MusicBeatState{
 				bpm: 150,
 				speed: 1,
 
-				needsVoices: true,
-				singleVoices: false,
+				voices: ["General"],
 
 				validScore: false,
 
@@ -401,7 +400,7 @@ class ChartingState extends MusicBeatState{
 				btn_CheckVoices.loadGraphic(Paths.image('UI_Assets/delStrum'));
 				btn_CheckVoices.setGraphicSize(Std.int(GRID_SIZE / 2));
 				btn_CheckVoices.updateHitbox();
-				btn_CheckVoices.pressed = _song.needsVoices;
+				//btn_CheckVoices.pressed = _song.needsVoices;
 				newTAB.add(btn_CheckVoices);
 
 				var txt_CheckVoices = new FlxText(btn_CheckVoices.x + btn_CheckVoices.width + 5, btn_CheckVoices.y, 0, "Has Voices", 8);
@@ -412,7 +411,7 @@ class ChartingState extends MusicBeatState{
 				btn_CheckSingle.loadGraphic(Paths.image('UI_Assets/delStrum'));
 				btn_CheckSingle.setGraphicSize(Std.int(GRID_SIZE / 2));
 				btn_CheckSingle.updateHitbox();
-				btn_CheckSingle.pressed = _song.singleVoices;
+				//btn_CheckSingle.pressed = _song.singleVoices;
 				newTAB.add(btn_CheckSingle);
 
 				var txt_CheckSingle = new FlxText(btn_CheckSingle.x + btn_CheckSingle.width + 5, btn_CheckSingle.y, 0, "Has Single Voices", 8);
@@ -693,7 +692,7 @@ class ChartingState extends MusicBeatState{
 				stchr_AltAnim.loadGraphic(Paths.image('UI_Assets/delStrum'));
 				stchr_AltAnim.setGraphicSize(Std.int(GRID_SIZE / 2));
 				stchr_AltAnim.updateHitbox();
-				stchr_AltAnim.pressed = _song.singleVoices;
+				//stchr_AltAnim.pressed = _song.singleVoices;
 				newTAB.add(stchr_AltAnim);
 				var txt_AltAnim = new FlxText(stchr_AltAnim.x + stchr_AltAnim.width + 5, stchr_AltAnim.y, 0, "is Alt Anim", 8);
 				newTAB.add(txt_AltAnim);
@@ -753,7 +752,7 @@ class ChartingState extends MusicBeatState{
 		FlxG.sound.playMusic(Paths.inst(daSong, cat), 0.6);
 
 		// WONT WORK FOR TUTORIAL OR TEST SONG!!! REDO LATER
-		vocals = new FlxSound().loadEmbedded(Paths.voices(daSong, cat));
+		//vocals = new FlxSound().loadEmbedded(Paths.voices(daSong, cat));
 		FlxG.sound.list.add(vocals);
 
 		FlxG.sound.music.pause();
@@ -939,8 +938,7 @@ class ChartingState extends MusicBeatState{
 
 		strumLine.y = getYfromStrum((Conductor.songPosition - sectionStartTime()) % (Conductor.stepCrochet * _song.generalSection[curSection].lengthInSteps));
 
-		if (curBeat % 4 == 0 && curStep >= 16 * (curSection + 1))
-		{
+		if(curBeat % 4 == 0 && curStep >= 16 * (curSection + 1)){
 			trace(curStep);
 			trace((_song.generalSection[curSection].lengthInSteps) * (curSection + 1));
 			trace('DUMBSHIT');
@@ -977,10 +975,10 @@ class ChartingState extends MusicBeatState{
 
 					switch(buttom.name){
 						case "SONG_HasVoices":{
-							_song.needsVoices = buttom.pressed;
+							//_song.needsVoices = buttom.pressed;
 						}
 						case "SONG_HasSingle":{
-							_song.singleVoices = buttom.pressed;
+							//_song.singleVoices = buttom.pressed;
 						}
 						case "Section_CHBPM":{
 							_song.generalSection[curSection].changeBPM = buttom.pressed;

@@ -55,7 +55,7 @@ class StageEditorState extends MusicBeatState {
     public static var _stage:StageData;
     var curStage:Stage;
     
-    var curObj:Int = 0;
+    public static var curObj:Int = 0;
     var curObject:StagePart;
 
     //TABS
@@ -96,7 +96,7 @@ class StageEditorState extends MusicBeatState {
 
         mPoint = new FlxPoint(0, 0);
 
-        curStage = new Stage();
+        curStage = new Stage(null, null, true);
 
         var backGrid = FlxGridOverlay.create(10, 10, FlxG.width, FlxG.height);
         backGrid.cameras = [camBack];
@@ -261,13 +261,17 @@ class StageEditorState extends MusicBeatState {
             var nums:FlxUINumericStepper = cast sender;
             var wname = nums.name;
             FlxG.log.add(wname);
-            if(wname == 'posX'){curObject.position[0] = nums.value;}
-            if(wname == 'posY'){curObject.position[1] = nums.value;}
-            if(wname == 'scrollX'){curObject.scrollFactor[0] = nums.value;}
-            if(wname == 'scrollY'){curObject.scrollFactor[1] = nums.value;}
-            if(wname == 'angle'){curObject.angle = nums.value;}
-            if(wname == 'alpha'){curObject.alpha = nums.value;}
-            if(wname == 'scale'){curObject.size = nums.value;}
+            switch(wname){
+                case 'posX':{curObject.position[0] = nums.value;}
+                case 'posY':{curObject.position[1] = nums.value;}
+                case 'scrollX':{curObject.scrollFactor[0] = nums.value;}
+                case 'scrollY':{curObject.scrollFactor[1] = nums.value;}
+                case 'angle':{curObject.angle = nums.value;}
+                case 'alpha':{curObject.alpha = nums.value;}
+                case 'scale':{curObject.size = nums.value;}
+                case 'stageZoom':{_stage.CamZoom = nums.value;}
+                case 'stageChroma':{_stage.CamZoom = nums.value;}
+            }
         }
     }
 
@@ -435,14 +439,18 @@ class StageEditorState extends MusicBeatState {
 
         var lblAnims = new FlxText(sprFrame.x, sprFrame.y + 18, 0, "Animations:", 8); propTab.add(lblAnims);
         drpAnims = new FlxUIDropDownMenu(lblAnims.x, lblAnims.y + 15, FlxUIDropDownMenu.makeStrIdLabelArray([''], true), function(pressed:String) {
-			var curAnim:Int = Std.parseInt(pressed);
-			var anim:StageAnim = curObject.stageAnims[curAnim];
+            if(curObject.stageAnims != null){
+                var curAnim:Int = Std.parseInt(pressed);
+                if(curObject.stageAnims.length >= curAnim){
+                    var anim:StageAnim = curObject.stageAnims[curAnim];
 
-			txtAnimName.text = anim.anim;
-			txtAnimSymbol.text = anim.symbol;
-            txtAnimIndices.text = anim.indices.toString().substr(1, anim.indices.toString().length - 2);
-			cbxLoop.checked = anim.loop;
-			sprFrame.value = anim.fps;
+                    txtAnimName.text = anim.anim;
+                    txtAnimSymbol.text = anim.symbol;
+                    txtAnimIndices.text = anim.indices.toString().substr(1, anim.indices.toString().length - 2);
+                    cbxLoop.checked = anim.loop;
+                    sprFrame.value = anim.fps;
+                }
+            }
 		});
         drpAnims.width = lblAnimFrame.width + cbxLoop.width;
         propTab.add(drpAnims);

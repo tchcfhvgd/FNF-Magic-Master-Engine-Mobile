@@ -93,30 +93,24 @@ class Paths
 		return getPath('music/$key.$SOUND_EXT', MUSIC, library);
 	}
 
-	inline static public function voices(song:String, category:String)
-	{
-		#if desktop
-			return Songs.getSongAudioPath("Voices", song, category);
-		#else
-			return 'songs:assets/songs/${song}/Audio/Voices-${category}.$SOUND_EXT';
-		#end
+	inline static public function voice(id:Int, char:String, song:String, category:String){
+		var path = 'songs:assets/songs/${song}/Audio/${id}-${char}Voice-${category}.$SOUND_EXT';
+
+		if(!Assets.exists(path)){path = 'songs:assets/songs/${song}/Audio/${id}-Voice-${category}.$SOUND_EXT';}
+		if(!Assets.exists(path)){path = 'songs:assets/songs/${song}/Audio/${id}-Voice.$SOUND_EXT';}
+			
+		if(!Assets.exists(path) && id == 0){path = 'songs:assets/songs/${song}/Audio/Voices-${category}.$SOUND_EXT';}
+		if(!Assets.exists(path) && id == 0){path = 'songs:assets/songs/${song}/Audio/Voices.$SOUND_EXT';}
+			
+		return path;
 	}
 
-	inline static public function singleVoices(id:Int, char:String, song:String, category:String)
-		{
-			#if desktop
-				return Songs.getSongAudioPath(char, song, category, true, id);
-			#else
-				return 'songs:assets/songs/${song}/Audio/${id}-${char}Voices-${category}.$SOUND_EXT';
-			#end
-		}
-
 	inline static public function inst(song:String, category:String){
-		#if desktop
-			return ListStuff.Songs.getSongAudioPath("Inst", song, category);
-		#else
-			return 'songs:assets/songs/${song}/Audio/Inst-${category}.$SOUND_EXT';
-		#end
+		var path = 'songs:assets/songs/${song}/Audio/Inst-${category}.$SOUND_EXT';
+
+		if(!Assets.exists(path)){path = 'songs:assets/songs/${song}/Audio/Inst.$SOUND_EXT';}
+
+		return path;
 	}
 
 	inline static public function chart(jsonInput:String, song:String){

@@ -16,7 +16,7 @@
 
         "uiStyle": "Normal",
 
-        "stage": "land-cute",
+        "stage": "Land-Cute",
         "characters": [
             ["Cuddles", [200, -280], 0.6, false, "Default", "NORMAL", 1],
             ["Sniffles", [750, -120], 0.6, false, "Default", "NORMAL", 1],

@@ -61,9 +61,13 @@ class Stage extends FlxTypedGroup<Dynamic>{
 
     public var data:StageData = null;
     public var charData:FlxTypedGroup<Character>;
+    var charArray:Array<Dynamic> = [];
+
+    public var onEdit:Bool = false;
 
     public function new(?stage:String = "Stage", ?chars:Array<Dynamic>, ?edit:Bool = false){
         if(chars == null){chars = [];}
+        this.onEdit = edit;
         super();
 
         charData = new FlxTypedGroup<Character>();
@@ -71,57 +75,77 @@ class Stage extends FlxTypedGroup<Dynamic>{
         var JSON:StageData = cast Json.parse(Assets.getText(Paths.StageJSON(stage)));
 
         loadStage(JSON);
-        loadChars(chars);
+        setChars(chars);
     }
 
     override function update(elapsed:Float){
 		super.update(elapsed);
     }
 
-    public function loadStage(stage:StageData){
-        data = stage;
+    public function loadStage(?stage:StageData = null){
+        if(stage != null){data = stage;}
 
-        directory = stage.Directory;
-        zoom = stage.CamZoom;
-        chrome = stage.Chrome;
+        directory = data.Directory;
+        zoom = data.CamZoom;
+        chrome = data.Chrome;
 
+        charData.clear();
         clear();
-        for(sprite in stage.StageData){
+        var numCont:Int = 0;
+        for(sprite in data.StageData){
             var stagePart:StageSprite;
             stagePart = new StageSprite(sprite.position[0], sprite.position[1]);
             stagePart.loadPart(sprite, directory);
 
+            if(onEdit && numCont != StageEditorState.curObj){stagePart.alpha = stagePart.defAlpha * 0.5;}
+
             add(stagePart);
+
+            for(char in charArray){
+                if(char[6] == numCont){
+                    //["Girlfriend", [140, 210], false, "Default", "GF", 3]
+                    var newChar:Character = new Character(char[1][0], char[1][1], char[0], char[4], char[5], char[3]);
+                    newChar.x += newChar.positionArray[0];
+                    newChar.y += newChar.positionArray[1];
+    
+                    newChar.setGraphicScale(char[2]);
+    
+                    newChar.scrollFactor.set(data.StageData[numCont].scrollFactor[0], data.StageData[numCont].scrollFactor[1]);
+                    
+                    charData.add(newChar);
+                    add(newChar);
+                }
+            }
+            numCont++;
         }
     }
 
-    public function loadChars(chars:Array<Dynamic>){
-        charData.clear();
-        
+    public function setChars(chars:Array<Dynamic>){
         for(char in chars){
             if(char[6] == null || char[6] < 0){
                 char[6] = this.length - 1;
             }
         }
 
-        var numCont:Int = 0;
-        for(char in chars){
-            if(char[6] == numCont){
-                //["Girlfriend", [140, 210], false, "Default", "GF", 3]
-                var newChar:Character = new Character(char[1][0], char[1][1], char[0], char[4], char[5], char[3]);
-                newChar.x += newChar.positionArray[0];
-                newChar.y += newChar.positionArray[1];
+        charArray = chars;
 
-                newChar.setGraphicScale(char[2]);
+        loadStage();
+    }
 
-                newChar.scrollFactor.set(data.StageData[numCont].scrollFactor[0], data.StageData[numCont].scrollFactor[1]);
-                
-                charData.add(newChar);
-                insert(numCont, newChar);
+    public function getCharacterById(id:Int):Character {
+        return charData.members[id];
+    }
+
+    public function getCharacterByName(name:String):Character {
+        var toReturn = charData.members[0];
+
+        charData.forEach(function(char:Character){
+            if(char.curCharacter == name){
+                toReturn = char;
             }
+        });
 
-            numCont++;
-        }
+        return toReturn;
     }
 }
 

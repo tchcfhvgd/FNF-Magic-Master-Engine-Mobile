@@ -89,7 +89,7 @@ class StrumLine extends FlxGroup{
         JSONSTRUM = cast Json.parse(Assets.getText(Paths.strumline(keys)));
 
         notes.forEachAlive(function(daNote:Note){
-            daNote.loadGraphicNote(JSONSTRUM.gameplayNotes[daNote.noteData], noteType);
+            daNote.loadGraphicNote(daNote.noteData, JSONSTRUM.gameplayNotes[daNote.noteData], noteType);
         });
         
         staticNotes.noteSize = Std.int(size / keys);
@@ -381,7 +381,7 @@ class Note extends FlxSprite {
     public var strumTime:Float = 1;
 
     public var noteLength:Float = 0;
-    public var noteHits:Float = 0; // Determinate if MultiTap o Sustain
+    public var noteHits:Int = 0; // Determinate if MultiTap o Sustain
 
     public var typeSustain:String = "Normal"; // CurNormal Types
 
@@ -397,7 +397,10 @@ class Note extends FlxSprite {
     //Other Variables
     public var noteStatus:String = "Spawned"; //status: Spawned, CanBeHit, Pressed, Late, MultiTap
 
-	public function new(newJSON:NoteJSON, newTypeCheck:String, strumTime:Float, noteData:Int, noteLength:Float, noteHits:Int, ?specialType:Int = 0, ?otherData:Array<NoteData>){
+    //Debug Variables
+    public var onEdit:Bool = false;
+
+	public function new(newJSON:NoteJSON, newTypeCheck:String, strumTime:Float, noteData:Int, ?noteLength:Float = 0, ?noteHits:Int = 0, ?specialType:Int = 0, ?otherData:Array<NoteData>){
         this.strumTime = strumTime;
 		this.noteData = noteData;
         this.noteLength = noteLength;
@@ -410,10 +413,10 @@ class Note extends FlxSprite {
 		    animOffsets = new Map<String, Array<Dynamic>>();
 		#end
 
-        loadGraphicNote(newJSON, newTypeCheck);
+        loadGraphicNote(noteData, newJSON, newTypeCheck);
 	}
 
-    public function loadGraphicNote(newJSON:NoteJSON, ?newTypeCheck:String = "Default"){
+    public function loadGraphicNote(data:Int, newJSON:NoteJSON, ?newTypeCheck:String = "Default"){
         animOffsets.clear();
         animation.destroyAnimations();
 
@@ -434,7 +437,7 @@ class Note extends FlxSprite {
             }
         }
 
-        alpha = newJSON.alpha;
+        if(!onEdit){alpha = newJSON.alpha;}
 		scaleNote = newJSON.scale;
 
         if(newJSON.antialiasing){antialiasing = PreSettings.getPreSetting("Antialiasing");

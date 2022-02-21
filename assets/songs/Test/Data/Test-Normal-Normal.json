@@ -1,0 +1,81 @@
+{
+    "song":{
+        "song": "Test",
+        "difficulty": "Normal",
+        "category": "Normal",
+
+        "bpm": 150,
+        "speed": 1.6,
+
+        "voices": [
+            "General"
+        ],
+
+        "validScore": true,
+
+        "strumToPlay": 0,
+
+        "uiStyle": "Normal",
+
+        "stage": "Stage",
+        "characters": [
+            ["Girlfriend", [400, 130], 1, true, "Default", "GF", -1],
+		    ["Fliqpy", [100, 100], 1, true, "Default", "NORMAL", -1],
+		    ["Boyfriend", [770, 100], 1, false, "Default", "NORMAL", -1]
+        ],
+        
+        "generalSection": [
+            {
+                "bpm": 150,
+                "changeBPM": false,
+
+                "lengthInSteps": 16,
+
+                "strumToFocus": 0,
+                "charToFocus": 1
+            }
+        ],
+        "sectionStrums": [
+            {
+                "keys": 4,
+                "noteStyle": "Default",
+                "charToSing": [1],
+                "notes": [
+                    {
+                        "charToSing": [0],
+                        "changeSing": false,
+
+                        "keys": 4,
+                        "changeKeys": false,
+
+                        "altAnim": false,
+
+                        "sectionNotes": [
+                            [100, 0, 100, 3, 0, []]
+                        ]
+                    }
+                ]
+            },{
+                "keys": 4,
+                "noteStyle": "Default",
+                "charToSing": [2],
+                "notes": [
+                    {
+                        "charToSing": [0],
+                        "changeSing": false,
+
+                        "keys": 4,
+                        "changeKeys": false,
+
+                        "altAnim": false,
+
+                        "sectionNotes": [
+                            [100, 0, 100, 3, 0, []],
+                            [600, 1, 0, 0, 0, []]
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

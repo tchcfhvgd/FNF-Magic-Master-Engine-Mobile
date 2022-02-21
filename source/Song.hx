@@ -17,8 +17,7 @@ typedef SwagSong = {
 	var bpm:Float;
 	var speed:Float;
 
-	var needsVoices:Bool;
-	var singleVoices:Bool;
+	var voices:Array<String>;
 
 	var validScore:Bool;
 
@@ -48,8 +47,7 @@ class Song{
 	public var bpm:Float;
 	public var speed:Float = 1;
 	
-	public var needsVoices:Bool = true;
-	public var singleVoices:Bool = false;
+	public var voices:Array<String> = ["General"];
 
 	public var strumToPlay:Int = 0;
 	

@@ -269,19 +269,19 @@ class PlayState extends MusicBeatState {
 		var songData = SONG;
 		Conductor.changeBPM(songData.bpm);
 
-		if(songData.needsVoices){
-			if(songData.singleVoices){
-				for(i in 0...songData.characters.length){
-					var voice = new FlxSound().loadEmbedded(Paths.singleVoices(i, songData.characters[i][0], songData.song, songData.category));
-					FlxG.sound.list.add(voice);
-					voices.add(voice);
-				}
-			}else{
-				var voice = new FlxSound().loadEmbedded(Paths.voices(songData.song, songData.category));
-				FlxG.sound.list.add(voice);
-				voices.add(voice);
-			}		
-		}
+		//if(songData.needsVoices){
+		//	if(songData.singleVoices){
+		//		for(i in 0...songData.characters.length){
+		//			var voice = new FlxSound().loadEmbedded(Paths.singleVoices(i, songData.characters[i][0], songData.song, songData.category));
+		//			FlxG.sound.list.add(voice);
+		//			voices.add(voice);
+		//		}
+		//	}else{
+		//		var voice = new FlxSound().loadEmbedded(Paths.voices(songData.song, songData.category));
+		//		FlxG.sound.list.add(voice);
+		//		voices.add(voice);
+		//	}		
+		//}
 
 		var lastStrum:StrumLine = null;
 		for(i in 0...songData.sectionStrums.length){
