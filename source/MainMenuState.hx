@@ -181,7 +181,9 @@ class MainMenuState extends MusicBeatState{
 								FlxG.switchState(new FreeplayState());
 							}
 						}
-					}	
+					}
+
+					if(FlxG.keys.justPressed.SEVEN){ChartEditorState.editChart();}
 				}
 			}
 

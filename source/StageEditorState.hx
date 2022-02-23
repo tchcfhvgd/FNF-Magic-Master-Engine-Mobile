@@ -13,7 +13,6 @@ import Song.SwagSong;
 import Song.SwagStrum;
 import SpriteInput;
 import SpriteInput.TextButtom;
-import SpriteUIMENU.SpriteUIMENU_TAB;
 import Stage.StageData;
 import Stage.StageSprite;
 import Stage.StageAnim;
@@ -59,9 +58,9 @@ class StageEditorState extends MusicBeatState {
     var curObject:StagePart;
 
     //TABS
-    var TABPROP:SpriteUIMENU;
-    var TABDETT:SpriteUIMENU;
-    var TABTOOLS:SpriteUIMENU;
+    //var TABPROP:SpriteUIMENU;
+    //var TABDETT:SpriteUIMENU;
+    //var TABTOOLS:SpriteUIMENU;
 
     //Cameras
     var camBack:FlxCamera;
@@ -119,30 +118,30 @@ class StageEditorState extends MusicBeatState {
 		camGeneral.follow(camFollow, LOCKON);
 		camGeneral.focusOn(camFollow.getPosition());
 
-        TABDETT = new SpriteUIMENU(FlxG.width - 160, 0, 160, FlxG.height);
-		TABDETT.cameras = [camHUD];
-        TABDETT.TABS.cameras = [camHUD]; 
-		TABDETT.curTAB = "TAB_Details";
-        add(TABDETT);
-		add(TABDETT.TABS);
+        //TABDETT = new SpriteUIMENU(FlxG.width - 160, 0, 160, FlxG.height);
+		//TABDETT.cameras = [camHUD];
+        //TABDETT.TABS.cameras = [camHUD]; 
+		//TABDETT.curTAB = "TAB_Details";
+        //add(TABDETT);
+		//add(TABDETT.TABS);
+//
+        //TABTOOLS = new SpriteUIMENU(0, 0, FlxG.width - 160, 25);
+		//TABTOOLS.cameras = [camHUD];
+        //TABTOOLS.TABS.cameras = [camHUD];
+		//TABTOOLS.curTAB = "TAB_Tools";
+        //add(TABTOOLS);
+		//add(TABTOOLS.TABS);
+//
+        //TABPROP = new SpriteUIMENU(0, FlxG.height - 100, FlxG.width - 160, 100);
+		//TABPROP.cameras = [camHUD];
+        //TABPROP.TABS.cameras = [camHUD];
+		//TABPROP.curTAB = "TAB_Properties";
+        //add(TABPROP);
+		//add(TABPROP.TABS);
 
-        TABTOOLS = new SpriteUIMENU(0, 0, FlxG.width - 160, 25);
-		TABTOOLS.cameras = [camHUD];
-        TABTOOLS.TABS.cameras = [camHUD];
-		TABTOOLS.curTAB = "TAB_Tools";
-        add(TABTOOLS);
-		add(TABTOOLS.TABS);
-
-        TABPROP = new SpriteUIMENU(0, FlxG.height - 100, FlxG.width - 160, 100);
-		TABPROP.cameras = [camHUD];
-        TABPROP.TABS.cameras = [camHUD];
-		TABPROP.curTAB = "TAB_Properties";
-        add(TABPROP);
-		add(TABPROP.TABS);
-
-        addPropTAB();
-        addGenTAB();
-        addToolsTAB();
+        //addPropTAB();
+        //addGenTAB();
+        //addToolsTAB();
 
         camGeneral.zoom = 0.5;
 
@@ -292,340 +291,340 @@ class StageEditorState extends MusicBeatState {
     var txtAnimIndices:FlxInputText;
     //Part Properties
     var txtPartImage:FlxInputText;
-    function addPropTAB(){
-        var propTab = new SpriteUIMENU_TAB("TAB_Properties");
-
-        var btnBack = new FlxTypedButton<FlxSprite>(5, 5, function(){curObj--;});
-        btnBack.setGraphicSize(Std.int(20), Std.int(43));
-        btnBack.updateHitbox();
-        propTab.add(btnBack);
-
-        var btnFront = new FlxTypedButton<FlxSprite>(5, btnBack.y + btnBack.height + 6, function(){curObj++;});
-        btnFront.setGraphicSize(Std.int(20), Std.int(43));
-        btnFront.updateHitbox();
-        propTab.add(btnFront);
-
-        //
-        var sprLine1 = new FlxSprite(btnBack.x + btnBack.width + 5, 0).makeGraphic(2, Std.int(TABPROP.height), FlxColor.BLACK);
-        propTab.add(sprLine1);
-        //
-
-        var lblPos = new FlxText(sprLine1.x + 5, 5, 0, "  Position", 8);
-        propTab.add(lblPos);
-
-        var btnResPos = new FlxTypedButton<FlxSprite>(lblPos.x + lblPos.width + 3, lblPos.y + 2, function(){
-            curObject.position = [0, 0];
-        });
-        btnResPos.loadGraphic(Paths.image('UI_Assets/delStrum', 'shared'));
-        btnResPos.setGraphicSize(Std.int(12));
-        btnResPos.updateHitbox();
-        propTab.add(btnResPos);
-
-        var lblPosX = new FlxText(lblPos.x, lblPos.y + 17, 0, "X:", 8);propTab.add(lblPosX);
-        sprPosX = new FlxUINumericStepper(lblPosX.x + lblPosX.width + 5, lblPosX.y, 0.1, 1, -99999, 99999, 1);
-		sprPosX.name = 'posX';
-		propTab.add(sprPosX);
-
-        var lblPosY = new FlxText(lblPos.x, lblPosX.y + 17, 0, "Y:", 8);propTab.add(lblPosY);
-        sprPosY = new FlxUINumericStepper(lblPosY.x + lblPosY.width + 5, lblPosY.y, 0.1, 1, -99999, 99999, 1);
-		sprPosY.name = 'posY';
-		propTab.add(sprPosY);
-
-        var lblScroll = new FlxText(sprPosX.x + sprPosX.width + 10, lblPos.y, 0, "   Scroll", 8);
-        propTab.add(lblScroll);
-
-        var btnResScroll = new FlxTypedButton<FlxSprite>(lblScroll.x + lblScroll.width + 3, lblScroll.y + 2, function(){
-            curObject.scrollFactor = [1, 1];
-        });
-        btnResScroll.loadGraphic(Paths.image('UI_Assets/delStrum', 'shared'));
-        btnResScroll.setGraphicSize(Std.int(12));
-        btnResScroll.updateHitbox();
-        propTab.add(btnResScroll);
-
-        var lblScrollX = new FlxText(lblScroll.x, lblScroll.y + 17, 0, "X:", 8);propTab.add(lblScrollX);
-        sprScrollX = new FlxUINumericStepper(lblScrollX.x + lblScrollX.width + 5, lblScrollX.y, 0.1, 1, -100, 100, 1);
-		sprScrollX.name = 'scrollX';
-		propTab.add(sprScrollX);
-
-        var lblScrollY = new FlxText(lblScrollX.x, lblScrollX.y + 17, 0, "Y:", 8);propTab.add(lblScrollY);
-        sprScrollY = new FlxUINumericStepper(lblScrollY.x + lblScrollY.width + 5, lblScrollY.y, 0.1, 1, -100, 100, 1);
-		sprScrollY.name = 'scrollY';
-		propTab.add(sprScrollY);
-
-        var lblFlip = new FlxText(sprScrollX.x + sprScrollX.width + 10, lblScroll.y, 0, "      Flip", 8);
-        propTab.add(lblFlip);
-
-        var btnResFlip = new FlxTypedButton<FlxSprite>(lblFlip.x + lblFlip.width + 3, lblFlip.y + 2, function(){
-            curObject.dflipX = false;
-            curObject.dflipY = false;
-        });
-        btnResFlip.loadGraphic(Paths.image('UI_Assets/delStrum', 'shared'));
-        btnResFlip.setGraphicSize(Std.int(12));
-        btnResFlip.updateHitbox();
-        propTab.add(btnResFlip);
-
-        var btnHoriz = new FlxButton(lblFlip.x, lblFlip.y + 17, "Horizontal", function(){
-            curObject.dflipX = !curObject.dflipX;
-        });
-        propTab.add(btnHoriz);
-
-        var btnVert = new FlxButton(lblFlip.x, btnHoriz.y + 17, "Vertical", function(){
-            curObject.dflipY = !curObject.dflipY;
-        });
-        propTab.add(btnVert);
-
-        var lblAngle = new FlxText(lblPos.x, sprPosY.y + 20, 0, " Angle", 8); propTab.add(lblAngle);
-        sprAng = new FlxUINumericStepper(lblPos.x, lblAngle.y + 17, 1, 0, -99999, 99999, 1);
-		sprAng.value = curStage.members[curObj].angle;
-		sprAng.name = 'angle';
-		propTab.add(sprAng);
-
-        var lblScale = new FlxText(sprAng.x + sprAng.width + 10, lblAngle.y, 0, " Scale", 8); propTab.add(lblScale);
-        sprScl = new FlxUINumericStepper(lblScale.x, lblScale.y + 17, 0.01, 1, 0, 999, 1);
-		sprScl.value = curStage.members[curObj].defScale;
-		sprScl.name = 'scale';
-		propTab.add(sprScl);
-
-        var lblAlpha = new FlxText(sprScl.x + sprScl.width + 10, lblScale.y, 0, " Alpha", 8); propTab.add(lblAlpha);
-        sprAlp = new FlxUINumericStepper(lblAlpha.x, lblAlpha.y + 17, 0.1, 1, 0, 1, 1);
-		sprAlp.value = curStage.members[curObj].alpha;
-		sprAlp.name = 'alpha';
-		propTab.add(sprAlp);
-
-        var lblCenter = new FlxText(sprAlp.x + sprAlp.width + 10, lblAlpha.y, 0, "  Center", 8);
-        propTab.add(lblCenter);
-
-        var btnResCent = new FlxTypedButton<FlxSprite>(lblCenter.x - 5, sprAlp.y, function(){
-            curStage.members[curObj].screenCenter();
-            curObject.position = [curStage.members[curObj].x, curStage.members[curObj].y];
-        });
-        btnResCent.loadGraphic(Paths.image('UI_Assets/delStrum', 'shared'));
-        btnResCent.setGraphicSize(Std.int(15));
-        btnResCent.updateHitbox();
-        propTab.add(btnResCent);
-
-        var btnResCHor = new FlxTypedButton<FlxSprite>(btnResCent.x + btnResCent.width + 5, btnResCent.y, function(){
-            curStage.members[curObj].screenCenter();
-            curObject.position[0] = curStage.members[curObj].x;
-        });
-        btnResCHor.loadGraphic(Paths.image('UI_Assets/delStrum', 'shared'));
-        btnResCHor.setGraphicSize(Std.int(15));
-        btnResCHor.updateHitbox();
-        propTab.add(btnResCHor);
-
-        var btnResCVer = new FlxTypedButton<FlxSprite>(btnResCHor.x + btnResCHor.width + 5, btnResCHor.y, function(){
-            curStage.members[curObj].screenCenter();
-            curObject.position[1] = curStage.members[curObj].y;
-        });
-        btnResCVer.loadGraphic(Paths.image('UI_Assets/delStrum', 'shared'));
-        btnResCVer.setGraphicSize(Std.int(15));
-        btnResCVer.updateHitbox();
-        propTab.add(btnResCVer);
-
-        //
-        var sprLine2 = new FlxSprite(btnVert.x + btnVert.width + 5, 0).makeGraphic(2, Std.int(TABPROP.height), FlxColor.BLACK);
-        propTab.add(sprLine2);
-        //
-
-        var lblAnimFrame = new FlxText(sprLine2.x + 5, lblPos.y, 0, "FrameRate: ", 8); propTab.add(lblAnimFrame);
-        sprFrame = new FlxUINumericStepper(lblAnimFrame.x + 2, lblAnimFrame.y + 17, 1, 0, 1, 120, 1);
-		sprFrame.value = 12;
-		sprFrame.name = 'anim_framerate';
-		propTab.add(sprFrame);
-
-        cbxLoop = new FlxUICheckBox(lblAnimFrame.x + lblAnimFrame.width + 7, lblAnimFrame.y + 15, null, null, "Loop", 0);
-		cbxLoop.checked = false;
-        propTab.add(cbxLoop);
-
-        var lblAnims = new FlxText(sprFrame.x, sprFrame.y + 18, 0, "Animations:", 8); propTab.add(lblAnims);
-        drpAnims = new FlxUIDropDownMenu(lblAnims.x, lblAnims.y + 15, FlxUIDropDownMenu.makeStrIdLabelArray([''], true), function(pressed:String) {
-            if(curObject.stageAnims != null){
-                var curAnim:Int = Std.parseInt(pressed);
-                if(curObject.stageAnims.length >= curAnim){
-                    var anim:StageAnim = curObject.stageAnims[curAnim];
-
-                    txtAnimName.text = anim.anim;
-                    txtAnimSymbol.text = anim.symbol;
-                    txtAnimIndices.text = anim.indices.toString().substr(1, anim.indices.toString().length - 2);
-                    cbxLoop.checked = anim.loop;
-                    sprFrame.value = anim.fps;
-                }
-            }
-		});
-        drpAnims.width = lblAnimFrame.width + cbxLoop.width;
-        propTab.add(drpAnims);
-
-        var lblAnimName = new FlxText(drpAnims.x + drpAnims.width + 5, lblAnimFrame.y, 0,   " Animation Name:  ", 8); propTab.add(lblAnimName);
-        txtAnimName = new FlxInputText(lblAnimName.x, lblAnimName.y + 15, Std.int(lblAnimName.width), "", 8);
-		propTab.add(txtAnimName);
-
-        var lblAnimSymbol = new FlxText(txtAnimName.x, txtAnimName.y + txtAnimName.height, 0,        " Animation Symbol:", 8); propTab.add(lblAnimSymbol);
-        txtAnimSymbol = new FlxInputText(lblAnimSymbol.x, lblAnimSymbol.y + 15, Std.int(lblAnimSymbol.width), "", 8);
-		propTab.add(txtAnimSymbol);
-
-        var lblAnimIndices = new FlxText(txtAnimSymbol.x, txtAnimSymbol.y + txtAnimSymbol.height, 0, " Animation Indices:            ", 8); propTab.add(lblAnimIndices);
-        txtAnimIndices = new FlxInputText(lblAnimIndices.x, lblAnimIndices.y + 15, Std.int(lblAnimIndices.width), "", 8);
-		propTab.add(txtAnimIndices);
-
-        var btnAnimUpdate = new FlxButton(txtAnimName.x + txtAnimName.width + 5, lblAnimFrame.y, "Update", function(){
-            
-        });
-        btnAnimUpdate.setGraphicSize(Std.int(50), Std.int(btnAnimUpdate.height));
-        btnAnimUpdate.updateHitbox();
-        btnAnimUpdate.label.updateHitbox();
-        for(p in btnAnimUpdate.labelOffsets){p.set(-17, 3);}
-        propTab.add(btnAnimUpdate);
-
-        var btnAnimAdd = new FlxButton(btnAnimUpdate.x, btnAnimUpdate.y + btnAnimUpdate.height + 2, "Add", function(){
-            
-        });
-        btnAnimAdd.setGraphicSize(Std.int(50), Std.int(btnAnimAdd.height));
-        btnAnimAdd.updateHitbox();
-        btnAnimAdd.label.updateHitbox();
-        for(p in btnAnimAdd.labelOffsets){p.set(-17, 3);}
-        propTab.add(btnAnimAdd);
-
-        var btnAnimDel = new FlxButton(btnAnimAdd.x, btnAnimAdd.y + btnAnimAdd.height + 7, "Delete", function(){
-            
-        });
-        btnAnimDel.setGraphicSize(Std.int(50), Std.int(btnAnimDel.height));
-        btnAnimDel.updateHitbox();
-        btnAnimDel.label.updateHitbox();
-        for(p in btnAnimDel.labelOffsets){p.set(-17, 3);}
-        propTab.add(btnAnimDel);
-
-        //
-        var sprLine3 = new FlxSprite(btnAnimUpdate.x + btnAnimUpdate.width + 5, 0).makeGraphic(2, Std.int(TABPROP.height), FlxColor.BLACK);
-        propTab.add(sprLine3);
-        //
-
-        var lblPartImage = new FlxText(sprLine3.x + 5, 5, 0, "Object Image:    ", 8); propTab.add(lblPartImage);
-        txtPartImage = new FlxInputText(lblPartImage.x, lblPartImage.y + 15, Std.int(lblPartImage.width * 1.5), "", 8);
-		propTab.add(txtPartImage);
-
-        var btnImgAdd = new FlxButton(txtPartImage.x, txtPartImage.y + 20, "Add", function(){
-            var newObj = new StageSprite(0, 0);
-            //newObj.loadGraphic(Paths.image('${}/${}', 'stages'));
-            newObj.loadGraphic(Paths.image('Stage/${txtPartImage.text}', 'stages'));
-
-            curStage.insert(curObj, newObj);
-        });
-        btnImgAdd.setGraphicSize(Std.int(50), Std.int(btnImgAdd.height));
-        btnImgAdd.updateHitbox();
-        btnImgAdd.label.updateHitbox();
-        for(p in btnImgAdd.labelOffsets){p.set(-17, 3);}
-        propTab.add(btnImgAdd);
-
-        var btnImgDel = new FlxButton(btnImgAdd.x, btnImgAdd.y + btnImgAdd.height + 2, "Delete", function(){
-            var getObj = curObject;
-            curObj++;
-            curStage.remove(getObj, true);
-        });
-        btnImgDel.setGraphicSize(Std.int(50), Std.int(btnImgDel.height));
-        btnImgDel.updateHitbox();
-        btnImgDel.label.updateHitbox();
-        for(p in btnImgDel.labelOffsets){p.set(-17, 3);}
-        propTab.add(btnImgDel);
-
-        var btnImgUpdate = new FlxButton(btnImgAdd.x + btnImgAdd.width + 5, btnImgAdd.y, "Update", function(){
-            curObject.image = txtPartImage.text;
-        });
-        btnImgUpdate.setGraphicSize(Std.int(50), Std.int(btnImgUpdate.height));
-        btnImgUpdate.updateHitbox();
-        btnImgUpdate.label.updateHitbox();
-        for(p in btnImgUpdate.labelOffsets){p.set(-17, 3);}
-        propTab.add(btnImgUpdate);
-
-
-        TABPROP.add(propTab);
-
-        //Properties
-    }
+    //function addPropTAB(){
+    //    var propTab = new SpriteUIMENU_TAB("TAB_Properties");
+//
+    //    var btnBack = new FlxTypedButton<FlxSprite>(5, 5, function(){curObj--;});
+    //    btnBack.setGraphicSize(Std.int(20), Std.int(43));
+    //    btnBack.updateHitbox();
+    //    propTab.add(btnBack);
+//
+    //    var btnFront = new FlxTypedButton<FlxSprite>(5, btnBack.y + btnBack.height + 6, function(){curObj++;});
+    //    btnFront.setGraphicSize(Std.int(20), Std.int(43));
+    //    btnFront.updateHitbox();
+    //    propTab.add(btnFront);
+//
+    //    //
+    //    var sprLine1 = new FlxSprite(btnBack.x + btnBack.width + 5, 0).makeGraphic(2, Std.int(TABPROP.height), FlxColor.BLACK);
+    //    propTab.add(sprLine1);
+    //    //
+//
+    //    var lblPos = new FlxText(sprLine1.x + 5, 5, 0, "  Position", 8);
+    //    propTab.add(lblPos);
+//
+    //    var btnResPos = new FlxTypedButton<FlxSprite>(lblPos.x + lblPos.width + 3, lblPos.y + 2, function(){
+    //        curObject.position = [0, 0];
+    //    });
+    //    btnResPos.loadGraphic(Paths.image('UI_Assets/delStrum', 'shared'));
+    //    btnResPos.setGraphicSize(Std.int(12));
+    //    btnResPos.updateHitbox();
+    //    propTab.add(btnResPos);
+//
+    //    var lblPosX = new FlxText(lblPos.x, lblPos.y + 17, 0, "X:", 8);propTab.add(lblPosX);
+    //    sprPosX = new FlxUINumericStepper(lblPosX.x + lblPosX.width + 5, lblPosX.y, 0.1, 1, -99999, 99999, 1);
+	//	sprPosX.name = 'posX';
+	//	propTab.add(sprPosX);
+//
+    //    var lblPosY = new FlxText(lblPos.x, lblPosX.y + 17, 0, "Y:", 8);propTab.add(lblPosY);
+    //    sprPosY = new FlxUINumericStepper(lblPosY.x + lblPosY.width + 5, lblPosY.y, 0.1, 1, -99999, 99999, 1);
+	//	sprPosY.name = 'posY';
+	//	propTab.add(sprPosY);
+//
+    //    var lblScroll = new FlxText(sprPosX.x + sprPosX.width + 10, lblPos.y, 0, "   Scroll", 8);
+    //    propTab.add(lblScroll);
+//
+    //    var btnResScroll = new FlxTypedButton<FlxSprite>(lblScroll.x + lblScroll.width + 3, lblScroll.y + 2, function(){
+    //        curObject.scrollFactor = [1, 1];
+    //    });
+    //    btnResScroll.loadGraphic(Paths.image('UI_Assets/delStrum', 'shared'));
+    //    btnResScroll.setGraphicSize(Std.int(12));
+    //    btnResScroll.updateHitbox();
+    //    propTab.add(btnResScroll);
+//
+    //    var lblScrollX = new FlxText(lblScroll.x, lblScroll.y + 17, 0, "X:", 8);propTab.add(lblScrollX);
+    //    sprScrollX = new FlxUINumericStepper(lblScrollX.x + lblScrollX.width + 5, lblScrollX.y, 0.1, 1, -100, 100, 1);
+	//	sprScrollX.name = 'scrollX';
+	//	propTab.add(sprScrollX);
+//
+    //    var lblScrollY = new FlxText(lblScrollX.x, lblScrollX.y + 17, 0, "Y:", 8);propTab.add(lblScrollY);
+    //    sprScrollY = new FlxUINumericStepper(lblScrollY.x + lblScrollY.width + 5, lblScrollY.y, 0.1, 1, -100, 100, 1);
+	//	sprScrollY.name = 'scrollY';
+	//	propTab.add(sprScrollY);
+//
+    //    var lblFlip = new FlxText(sprScrollX.x + sprScrollX.width + 10, lblScroll.y, 0, "      Flip", 8);
+    //    propTab.add(lblFlip);
+//
+    //    var btnResFlip = new FlxTypedButton<FlxSprite>(lblFlip.x + lblFlip.width + 3, lblFlip.y + 2, function(){
+    //        curObject.dflipX = false;
+    //        curObject.dflipY = false;
+    //    });
+    //    btnResFlip.loadGraphic(Paths.image('UI_Assets/delStrum', 'shared'));
+    //    btnResFlip.setGraphicSize(Std.int(12));
+    //    btnResFlip.updateHitbox();
+    //    propTab.add(btnResFlip);
+//
+    //    var btnHoriz = new FlxButton(lblFlip.x, lblFlip.y + 17, "Horizontal", function(){
+    //        curObject.dflipX = !curObject.dflipX;
+    //    });
+    //    propTab.add(btnHoriz);
+//
+    //    var btnVert = new FlxButton(lblFlip.x, btnHoriz.y + 17, "Vertical", function(){
+    //        curObject.dflipY = !curObject.dflipY;
+    //    });
+    //    propTab.add(btnVert);
+//
+    //    var lblAngle = new FlxText(lblPos.x, sprPosY.y + 20, 0, " Angle", 8); propTab.add(lblAngle);
+    //    sprAng = new FlxUINumericStepper(lblPos.x, lblAngle.y + 17, 1, 0, -99999, 99999, 1);
+	//	sprAng.value = curStage.members[curObj].angle;
+	//	sprAng.name = 'angle';
+	//	propTab.add(sprAng);
+//
+    //    var lblScale = new FlxText(sprAng.x + sprAng.width + 10, lblAngle.y, 0, " Scale", 8); propTab.add(lblScale);
+    //    sprScl = new FlxUINumericStepper(lblScale.x, lblScale.y + 17, 0.01, 1, 0, 999, 1);
+	//	sprScl.value = curStage.members[curObj].defScale;
+	//	sprScl.name = 'scale';
+	//	propTab.add(sprScl);
+//
+    //    var lblAlpha = new FlxText(sprScl.x + sprScl.width + 10, lblScale.y, 0, " Alpha", 8); propTab.add(lblAlpha);
+    //    sprAlp = new FlxUINumericStepper(lblAlpha.x, lblAlpha.y + 17, 0.1, 1, 0, 1, 1);
+	//	sprAlp.value = curStage.members[curObj].alpha;
+	//	sprAlp.name = 'alpha';
+	//	propTab.add(sprAlp);
+//
+    //    var lblCenter = new FlxText(sprAlp.x + sprAlp.width + 10, lblAlpha.y, 0, "  Center", 8);
+    //    propTab.add(lblCenter);
+//
+    //    var btnResCent = new FlxTypedButton<FlxSprite>(lblCenter.x - 5, sprAlp.y, function(){
+    //        curStage.members[curObj].screenCenter();
+    //        curObject.position = [curStage.members[curObj].x, curStage.members[curObj].y];
+    //    });
+    //    btnResCent.loadGraphic(Paths.image('UI_Assets/delStrum', 'shared'));
+    //    btnResCent.setGraphicSize(Std.int(15));
+    //    btnResCent.updateHitbox();
+    //    propTab.add(btnResCent);
+//
+    //    var btnResCHor = new FlxTypedButton<FlxSprite>(btnResCent.x + btnResCent.width + 5, btnResCent.y, function(){
+    //        curStage.members[curObj].screenCenter();
+    //        curObject.position[0] = curStage.members[curObj].x;
+    //    });
+    //    btnResCHor.loadGraphic(Paths.image('UI_Assets/delStrum', 'shared'));
+    //    btnResCHor.setGraphicSize(Std.int(15));
+    //    btnResCHor.updateHitbox();
+    //    propTab.add(btnResCHor);
+//
+    //    var btnResCVer = new FlxTypedButton<FlxSprite>(btnResCHor.x + btnResCHor.width + 5, btnResCHor.y, function(){
+    //        curStage.members[curObj].screenCenter();
+    //        curObject.position[1] = curStage.members[curObj].y;
+    //    });
+    //    btnResCVer.loadGraphic(Paths.image('UI_Assets/delStrum', 'shared'));
+    //    btnResCVer.setGraphicSize(Std.int(15));
+    //    btnResCVer.updateHitbox();
+    //    propTab.add(btnResCVer);
+//
+    //    //
+    //    var sprLine2 = new FlxSprite(btnVert.x + btnVert.width + 5, 0).makeGraphic(2, Std.int(TABPROP.height), FlxColor.BLACK);
+    //    propTab.add(sprLine2);
+    //    //
+//
+    //    var lblAnimFrame = new FlxText(sprLine2.x + 5, lblPos.y, 0, "FrameRate: ", 8); propTab.add(lblAnimFrame);
+    //    sprFrame = new FlxUINumericStepper(lblAnimFrame.x + 2, lblAnimFrame.y + 17, 1, 0, 1, 120, 1);
+	//	sprFrame.value = 12;
+	//	sprFrame.name = 'anim_framerate';
+	//	propTab.add(sprFrame);
+//
+    //    cbxLoop = new FlxUICheckBox(lblAnimFrame.x + lblAnimFrame.width + 7, lblAnimFrame.y + 15, null, null, "Loop", 0);
+	//	cbxLoop.checked = false;
+    //    propTab.add(cbxLoop);
+//
+    //    var lblAnims = new FlxText(sprFrame.x, sprFrame.y + 18, 0, "Animations:", 8); propTab.add(lblAnims);
+    //    drpAnims = new FlxUIDropDownMenu(lblAnims.x, lblAnims.y + 15, FlxUIDropDownMenu.makeStrIdLabelArray([''], true), function(pressed:String) {
+    //        if(curObject.stageAnims != null){
+    //            var curAnim:Int = Std.parseInt(pressed);
+    //            if(curObject.stageAnims.length >= curAnim){
+    //                var anim:StageAnim = curObject.stageAnims[curAnim];
+//
+    //                txtAnimName.text = anim.anim;
+    //                txtAnimSymbol.text = anim.symbol;
+    //                txtAnimIndices.text = anim.indices.toString().substr(1, anim.indices.toString().length - 2);
+    //                cbxLoop.checked = anim.loop;
+    //                sprFrame.value = anim.fps;
+    //            }
+    //        }
+	//	});
+    //    drpAnims.width = lblAnimFrame.width + cbxLoop.width;
+    //    propTab.add(drpAnims);
+//
+    //    var lblAnimName = new FlxText(drpAnims.x + drpAnims.width + 5, lblAnimFrame.y, 0,   " Animation Name:  ", 8); propTab.add(lblAnimName);
+    //    txtAnimName = new FlxInputText(lblAnimName.x, lblAnimName.y + 15, Std.int(lblAnimName.width), "", 8);
+	//	propTab.add(txtAnimName);
+//
+    //    var lblAnimSymbol = new FlxText(txtAnimName.x, txtAnimName.y + txtAnimName.height, 0,        " Animation Symbol:", 8); propTab.add(lblAnimSymbol);
+    //    txtAnimSymbol = new FlxInputText(lblAnimSymbol.x, lblAnimSymbol.y + 15, Std.int(lblAnimSymbol.width), "", 8);
+	//	propTab.add(txtAnimSymbol);
+//
+    //    var lblAnimIndices = new FlxText(txtAnimSymbol.x, txtAnimSymbol.y + txtAnimSymbol.height, 0, " Animation Indices:            ", 8); propTab.add(lblAnimIndices);
+    //    txtAnimIndices = new FlxInputText(lblAnimIndices.x, lblAnimIndices.y + 15, Std.int(lblAnimIndices.width), "", 8);
+	//	propTab.add(txtAnimIndices);
+//
+    //    var btnAnimUpdate = new FlxButton(txtAnimName.x + txtAnimName.width + 5, lblAnimFrame.y, "Update", function(){
+    //        
+    //    });
+    //    btnAnimUpdate.setGraphicSize(Std.int(50), Std.int(btnAnimUpdate.height));
+    //    btnAnimUpdate.updateHitbox();
+    //    btnAnimUpdate.label.updateHitbox();
+    //    for(p in btnAnimUpdate.labelOffsets){p.set(-17, 3);}
+    //    propTab.add(btnAnimUpdate);
+//
+    //    var btnAnimAdd = new FlxButton(btnAnimUpdate.x, btnAnimUpdate.y + btnAnimUpdate.height + 2, "Add", function(){
+    //        
+    //    });
+    //    btnAnimAdd.setGraphicSize(Std.int(50), Std.int(btnAnimAdd.height));
+    //    btnAnimAdd.updateHitbox();
+    //    btnAnimAdd.label.updateHitbox();
+    //    for(p in btnAnimAdd.labelOffsets){p.set(-17, 3);}
+    //    propTab.add(btnAnimAdd);
+//
+    //    var btnAnimDel = new FlxButton(btnAnimAdd.x, btnAnimAdd.y + btnAnimAdd.height + 7, "Delete", function(){
+    //        
+    //    });
+    //    btnAnimDel.setGraphicSize(Std.int(50), Std.int(btnAnimDel.height));
+    //    btnAnimDel.updateHitbox();
+    //    btnAnimDel.label.updateHitbox();
+    //    for(p in btnAnimDel.labelOffsets){p.set(-17, 3);}
+    //    propTab.add(btnAnimDel);
+//
+    //    //
+    //    var sprLine3 = new FlxSprite(btnAnimUpdate.x + btnAnimUpdate.width + 5, 0).makeGraphic(2, Std.int(TABPROP.height), FlxColor.BLACK);
+    //    propTab.add(sprLine3);
+    //    //
+//
+    //    var lblPartImage = new FlxText(sprLine3.x + 5, 5, 0, "Object Image:    ", 8); propTab.add(lblPartImage);
+    //    txtPartImage = new FlxInputText(lblPartImage.x, lblPartImage.y + 15, Std.int(lblPartImage.width * 1.5), "", 8);
+	//	propTab.add(txtPartImage);
+//
+    //    var btnImgAdd = new FlxButton(txtPartImage.x, txtPartImage.y + 20, "Add", function(){
+    //        var newObj = new StageSprite(0, 0);
+    //        //newObj.loadGraphic(Paths.image('${}/${}', 'stages'));
+    //        newObj.loadGraphic(Paths.image('Stage/${txtPartImage.text}', 'stages'));
+//
+    //        curStage.insert(curObj, newObj);
+    //    });
+    //    btnImgAdd.setGraphicSize(Std.int(50), Std.int(btnImgAdd.height));
+    //    btnImgAdd.updateHitbox();
+    //    btnImgAdd.label.updateHitbox();
+    //    for(p in btnImgAdd.labelOffsets){p.set(-17, 3);}
+    //    propTab.add(btnImgAdd);
+//
+    //    var btnImgDel = new FlxButton(btnImgAdd.x, btnImgAdd.y + btnImgAdd.height + 2, "Delete", function(){
+    //        var getObj = curObject;
+    //        curObj++;
+    //        curStage.remove(getObj, true);
+    //    });
+    //    btnImgDel.setGraphicSize(Std.int(50), Std.int(btnImgDel.height));
+    //    btnImgDel.updateHitbox();
+    //    btnImgDel.label.updateHitbox();
+    //    for(p in btnImgDel.labelOffsets){p.set(-17, 3);}
+    //    propTab.add(btnImgDel);
+//
+    //    var btnImgUpdate = new FlxButton(btnImgAdd.x + btnImgAdd.width + 5, btnImgAdd.y, "Update", function(){
+    //        curObject.image = txtPartImage.text;
+    //    });
+    //    btnImgUpdate.setGraphicSize(Std.int(50), Std.int(btnImgUpdate.height));
+    //    btnImgUpdate.updateHitbox();
+    //    btnImgUpdate.label.updateHitbox();
+    //    for(p in btnImgUpdate.labelOffsets){p.set(-17, 3);}
+    //    propTab.add(btnImgUpdate);
+//
+//
+    //    TABPROP.add(propTab);
+//
+    //    //Properties
+    //}
 
     //Menu General
     var txtStageName:FlxInputText;
     var txtStageDirect:FlxInputText;
     var sprStageZoom:FlxUINumericStepper;
     var sprStageChroma:FlxUINumericStepper;
-    function addGenTAB(){
-        var propTab = new SpriteUIMENU_TAB("TAB_Details");
-
-        var lblTitleStage = new FlxText(0, 0, TABDETT.width, "Stage Editor:", 16);
-        lblTitleStage.alignment = CENTER;
-        propTab.add(lblTitleStage);
-
-        //
-        var sprLine1 = new FlxSprite(0, TABTOOLS.height - 2).makeGraphic(Std.int(TABDETT.width), 2, FlxColor.BLACK);
-        propTab.add(sprLine1);
-        //
-
-        var lblStageName = new FlxText(lblTitleStage.x + 5, sprLine1.y + sprLine1.height + 5, TABDETT.width - 10, "Stage Name:", 8); propTab.add(lblStageName);
-        txtStageName = new FlxInputText(lblStageName.x, lblStageName.y + 15, Std.int(lblStageName.width), curStage.curStage, 8); propTab.add(txtStageName);
-
-        var btnStageSave = new FlxButton(txtStageName.x, txtStageName.y + txtStageName.height + 3, "Save", function(){
-            saveStage(txtStageName.text);
-        });
-        btnStageSave.setGraphicSize(Std.int(txtStageName.width), Std.int(btnStageSave.height));
-        btnStageSave.updateHitbox();
-        for(p in btnStageSave.labelOffsets){p.set(30, 3);}
-        propTab.add(btnStageSave);
-
-        //
-        var sprLine2 = new FlxSprite(0, btnStageSave.y + btnStageSave.height + 5).makeGraphic(Std.int(TABDETT.width), 2, FlxColor.BLACK);
-        propTab.add(sprLine2);
-        //
-
-        var lblStageZoom = new FlxText(3, sprLine2.y + 5, 0, "Stage Zoom:", 8); propTab.add(lblStageZoom);
-        sprStageZoom = new FlxUINumericStepper(lblStageZoom.x + 3, lblStageZoom.y + lblStageZoom.height + 2, 0.1, 1, 0, 1, 1);
-        sprStageZoom.value = curStage.zoom;
-		sprStageZoom.name = 'stageZoom';
-		propTab.add(sprStageZoom);
-
-        var lblStageChroma = new FlxText(lblStageZoom.x + lblStageZoom.width + 10, lblStageZoom.y, 0, "Stage Chroma:", 8); propTab.add(lblStageChroma);
-        sprStageChroma = new FlxUINumericStepper(lblStageChroma.x + 3, lblStageChroma.y + lblStageChroma.height + 2, 0.1, 0, -1, 1, 1);
-        sprStageChroma.value = curStage.chrome;
-		sprStageChroma.name = 'stageChroma';
-		propTab.add(sprStageChroma);
-
-        var lblStageDirectory = new FlxText(5, sprStageChroma.y + sprStageChroma.height + 5, txtStageName.width, "Stage Directory:", 8); propTab.add(lblStageDirectory);
-        txtStageDirect = new FlxInputText(lblStageDirectory.x, lblStageDirectory.y + 15, Std.int(lblStageDirectory.width), curStage.directory, 8); propTab.add(txtStageDirect);
-
-        var btnStageUpdate = new FlxButton(txtStageDirect.x, txtStageDirect.y + txtStageDirect.height + 3, "Update", function(){
-            _stage.Directory = txtStageDirect.text;
-        });
-        btnStageUpdate.setGraphicSize(Std.int(txtStageDirect.width), Std.int(btnStageUpdate.height));
-        btnStageUpdate.updateHitbox();
-        for(p in btnStageUpdate.labelOffsets){p.set(30, 3);}
-        propTab.add(btnStageUpdate);
-
-        //
-        var sprLine3 = new FlxSprite(0, btnStageUpdate.y + btnStageUpdate.height + 5).makeGraphic(Std.int(TABDETT.width), 2, FlxColor.BLACK);
-        propTab.add(sprLine3);
-        //
-
-        var btnStagePreview = new FlxButton(sprLine3.x + 5, sprLine3.y + sprLine3.height + 3, "Preview", function(){
-            
-        });
-        btnStagePreview.setGraphicSize(Std.int(sprLine3.width - 10), Std.int(btnStagePreview.height));
-        btnStagePreview.updateHitbox();
-        for(p in btnStagePreview.labelOffsets){p.set(30, 3);}
-        propTab.add(btnStagePreview);
-
-
-        TABDETT.add(propTab);
-    }
-
-    function addToolsTAB(){
-        var propTab = new SpriteUIMENU_TAB("TAB_Tools");
-
-        //
-        var sprLine1 = new FlxSprite(TABTOOLS.width, 0).makeGraphic(2, Std.int(TABTOOLS.height), FlxColor.BLACK);
-        propTab.add(sprLine1);
-        //
-
-        
-        TABTOOLS.add(propTab);
-    }
+    //function addGenTAB(){
+    //    var propTab = new SpriteUIMENU_TAB("TAB_Details");
+//
+    //    var lblTitleStage = new FlxText(0, 0, TABDETT.width, "Stage Editor:", 16);
+    //    lblTitleStage.alignment = CENTER;
+    //    propTab.add(lblTitleStage);
+//
+    //    //
+    //    var sprLine1 = new FlxSprite(0, TABTOOLS.height - 2).makeGraphic(Std.int(TABDETT.width), 2, FlxColor.BLACK);
+    //    propTab.add(sprLine1);
+    //    //
+//
+    //    var lblStageName = new FlxText(lblTitleStage.x + 5, sprLine1.y + sprLine1.height + 5, TABDETT.width - 10, "Stage Name:", 8); propTab.add(lblStageName);
+    //    txtStageName = new FlxInputText(lblStageName.x, lblStageName.y + 15, Std.int(lblStageName.width), curStage.curStage, 8); propTab.add(txtStageName);
+//
+    //    var btnStageSave = new FlxButton(txtStageName.x, txtStageName.y + txtStageName.height + 3, "Save", function(){
+    //        saveStage(txtStageName.text);
+    //    });
+    //    btnStageSave.setGraphicSize(Std.int(txtStageName.width), Std.int(btnStageSave.height));
+    //    btnStageSave.updateHitbox();
+    //    for(p in btnStageSave.labelOffsets){p.set(30, 3);}
+    //    propTab.add(btnStageSave);
+//
+    //    //
+    //    var sprLine2 = new FlxSprite(0, btnStageSave.y + btnStageSave.height + 5).makeGraphic(Std.int(TABDETT.width), 2, FlxColor.BLACK);
+    //    propTab.add(sprLine2);
+    //    //
+//
+    //    var lblStageZoom = new FlxText(3, sprLine2.y + 5, 0, "Stage Zoom:", 8); propTab.add(lblStageZoom);
+    //    sprStageZoom = new FlxUINumericStepper(lblStageZoom.x + 3, lblStageZoom.y + lblStageZoom.height + 2, 0.1, 1, 0, 1, 1);
+    //    sprStageZoom.value = curStage.zoom;
+	//	sprStageZoom.name = 'stageZoom';
+	//	propTab.add(sprStageZoom);
+//
+    //    var lblStageChroma = new FlxText(lblStageZoom.x + lblStageZoom.width + 10, lblStageZoom.y, 0, "Stage Chroma:", 8); propTab.add(lblStageChroma);
+    //    sprStageChroma = new FlxUINumericStepper(lblStageChroma.x + 3, lblStageChroma.y + lblStageChroma.height + 2, 0.1, 0, -1, 1, 1);
+    //    sprStageChroma.value = curStage.chrome;
+	//	sprStageChroma.name = 'stageChroma';
+	//	propTab.add(sprStageChroma);
+//
+    //    var lblStageDirectory = new FlxText(5, sprStageChroma.y + sprStageChroma.height + 5, txtStageName.width, "Stage Directory:", 8); propTab.add(lblStageDirectory);
+    //    txtStageDirect = new FlxInputText(lblStageDirectory.x, lblStageDirectory.y + 15, Std.int(lblStageDirectory.width), curStage.directory, 8); propTab.add(txtStageDirect);
+//
+    //    var btnStageUpdate = new FlxButton(txtStageDirect.x, txtStageDirect.y + txtStageDirect.height + 3, "Update", function(){
+    //        _stage.Directory = txtStageDirect.text;
+    //    });
+    //    btnStageUpdate.setGraphicSize(Std.int(txtStageDirect.width), Std.int(btnStageUpdate.height));
+    //    btnStageUpdate.updateHitbox();
+    //    for(p in btnStageUpdate.labelOffsets){p.set(30, 3);}
+    //    propTab.add(btnStageUpdate);
+//
+    //    //
+    //    var sprLine3 = new FlxSprite(0, btnStageUpdate.y + btnStageUpdate.height + 5).makeGraphic(Std.int(TABDETT.width), 2, FlxColor.BLACK);
+    //    propTab.add(sprLine3);
+    //    //
+//
+    //    var btnStagePreview = new FlxButton(sprLine3.x + 5, sprLine3.y + sprLine3.height + 3, "Preview", function(){
+    //        
+    //    });
+    //    btnStagePreview.setGraphicSize(Std.int(sprLine3.width - 10), Std.int(btnStagePreview.height));
+    //    btnStagePreview.updateHitbox();
+    //    for(p in btnStagePreview.labelOffsets){p.set(30, 3);}
+    //    propTab.add(btnStagePreview);
+//
+//
+    //    TABDETT.add(propTab);
+    //}
+//
+    //function addToolsTAB(){
+    //    var propTab = new SpriteUIMENU_TAB("TAB_Tools");
+//
+    //    //
+    //    var sprLine1 = new FlxSprite(TABTOOLS.width, 0).makeGraphic(2, Std.int(TABTOOLS.height), FlxColor.BLACK);
+    //    propTab.add(sprLine1);
+    //    //
+//
+    //    
+    //    TABTOOLS.add(propTab);
+    //}
 
     function reloadStage(){
         curStage.loadStage(_stage);

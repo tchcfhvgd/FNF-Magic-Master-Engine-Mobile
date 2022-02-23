@@ -4,16 +4,15 @@
         "difficulty": "Normal",
         "category": "Normal",
 
-        "bpm": 150,
+        "bpm": 186,
         "speed": 1.6,
 
         "voices": [
-            "General"
         ],
 
         "validScore": true,
 
-        "strumToPlay": 0,
+        "strumToPlay": 1,
 
         "uiStyle": "Normal",
 

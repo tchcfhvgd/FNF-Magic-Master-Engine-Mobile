@@ -361,7 +361,7 @@ class PlayState extends MusicBeatState {
 		}
 
 		if(FlxG.keys.justPressed.SEVEN){
-			FlxG.switchState(new ChartingState());
+			FlxG.switchState(new ChartEditorState());
 		}
 
 		if(health > 2){health = 2;}
