@@ -147,7 +147,7 @@ class StrumLine extends FlxGroup{
                 case "Disabled":{curScrollspeed = scrollSpeed;}
             }
 
-            daNote.setNoteSize(staticNotes.noteSize);
+            daNote.scale.set(staticNotes.noteSize);
             var ySuff:Float = 0.45 * (Conductor.songPosition - daNote.strumTime) * FlxMath.roundDecimal(curScrollspeed, 2);
             if(staticNotes.members[daNote.noteData].exists){
                 if(pre_TypeScroll == "DownScroll"){
@@ -393,6 +393,7 @@ class Note extends FlxSprite {
     public var animOffsets:Map<String, Array<Dynamic>>;
 
     public var scaleNote:Int;
+    public var dSize:Array<Int>;
 
     //Other Variables
     public var noteStatus:String = "Spawned"; //status: Spawned, CanBeHit, Pressed, Late, MultiTap
@@ -442,10 +443,8 @@ class Note extends FlxSprite {
 
         if(newJSON.antialiasing){antialiasing = PreSettings.getPreSetting("Antialiasing");
         }else{antialiasing = false;}
-    }
 
-	public function setNoteSize(size:Int){
-        setGraphicSize(size * scaleNote);
+        dSize = [Std.int(this.width), Std.int(this.height)];
     }
 
     override function update(elapsed:Float){

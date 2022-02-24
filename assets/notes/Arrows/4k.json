@@ -6,7 +6,7 @@
             "arrayAnims":[
                 {
                     "anim": "static",
-                    "symbol": "arrowLEFT",
+                    "symbol": "StaticLeft",
                     "offset": [0, 0],
 
                     "fps": 32,
@@ -14,7 +14,7 @@
                 },
                 {
                     "anim": "pressed",
-                    "symbol": "left press",
+                    "symbol": "PressLeft",
                     "offset": [0, 0],
 
                     "fps": 32,
@@ -22,7 +22,7 @@
                 },
                 {
                     "anim": "confirm",
-                    "symbol": "left confirm",
+                    "symbol": "ConfirmLeft",
                     "offset": [-130, -130],
 
                     "fps": 32,
@@ -38,7 +38,7 @@
             "arrayAnims":[
                 {
                     "anim": "static",
-                    "symbol": "arrowDOWN",
+                    "symbol": "StaticDown",
                     "offset": [0, 0],
 
                     "fps": 32,
@@ -46,7 +46,7 @@
                 },
                 {
                     "anim": "pressed",
-                    "symbol": "down press",
+                    "symbol": "PressDown",
                     "offset": [0, 0],
 
                     "fps": 32,
@@ -54,7 +54,7 @@
                 },
                 {
                     "anim": "confirm",
-                    "symbol": "down confirm",
+                    "symbol": "ConfirmDown",
                     "offset": [-13, -13],
 
                     "fps": 32,
@@ -70,7 +70,7 @@
             "arrayAnims":[
                 {
                     "anim": "static",
-                    "symbol": "arrowUP",
+                    "symbol": "StaticUp",
                     "offset": [0, 0],
 
                     "fps": 32,
@@ -78,7 +78,7 @@
                 },
                 {
                     "anim": "pressed",
-                    "symbol": "up press",
+                    "symbol": "PressUp",
                     "offset": [0, 0],
 
                     "fps": 32,
@@ -86,7 +86,7 @@
                 },
                 {
                     "anim": "confirm",
-                    "symbol": "up confirm",
+                    "symbol": "ConfirmUp",
                     "offset": [-13, -13],
 
                     "fps": 32,
@@ -102,7 +102,7 @@
             "arrayAnims":[
                 {
                     "anim": "static",
-                    "symbol": "arrowRIGHT",
+                    "symbol": "StaticRight",
                     "offset": [0, 0],
 
                     "fps": 32,
@@ -110,7 +110,7 @@
                 },
                 {
                     "anim": "pressed",
-                    "symbol": "right press",
+                    "symbol": "PressRight",
                     "offset": [0, 0],
 
                     "fps": 32,
@@ -118,7 +118,7 @@
                 },
                 {
                     "anim": "confirm",
-                    "symbol": "right confirm",
+                    "symbol": "ConfirmRight",
                     "offset": [-13, -13],
 
                     "fps": 32,
@@ -136,7 +136,7 @@
             "arrayAnims":[
                 {
                     "anim": "static",
-                    "symbol": "purple0",
+                    "symbol": "Left",
                     "offset": [0, 0],
 
                     "fps": 32,
@@ -144,7 +144,7 @@
                 },
                 {
                     "anim": "sustain",
-                    "symbol": "purple hold piece",
+                    "symbol": "HoldPiece",
                     "offset": [0, 0],
 
                     "fps": 32,
@@ -152,7 +152,7 @@
                 },
                 {
                     "anim": "end",
-                    "symbol": "pruple end hold",
+                    "symbol": "HoldEnd",
                     "offset": [0, 0],
 
                     "fps": 32,
@@ -168,7 +168,7 @@
             "arrayAnims":[
                 {
                     "anim": "static",
-                    "symbol": "blue0",
+                    "symbol": "Down",
                     "offset": [0, 0],
 
                     "fps": 32,
@@ -176,7 +176,7 @@
                 },
                 {
                     "anim": "sustain",
-                    "symbol": "blue hold piece",
+                    "symbol": "HoldPiece",
                     "offset": [0, 0],
 
                     "fps": 32,
@@ -184,7 +184,7 @@
                 },
                 {
                     "anim": "end",
-                    "symbol": "blue hold end",
+                    "symbol": "HoldEnd",
                     "offset": [0, 0],
 
                     "fps": 32,
@@ -200,7 +200,7 @@
             "arrayAnims":[
                 {
                     "anim": "static",
-                    "symbol": "green0",
+                    "symbol": "Up",
                     "offset": [0, 0],
 
                     "fps": 32,
@@ -208,7 +208,7 @@
                 },
                 {
                     "anim": "sustain",
-                    "symbol": "green hold piece",
+                    "symbol": "HoldPiece",
                     "offset": [0, 0],
 
                     "fps": 32,
@@ -216,7 +216,7 @@
                 },
                 {
                     "anim": "end",
-                    "symbol": "green hold end",
+                    "symbol": "HoldEnd",
                     "offset": [0, 0],
 
                     "fps": 32,
@@ -232,7 +232,7 @@
             "arrayAnims":[
                 {
                     "anim": "static",
-                    "symbol": "red0",
+                    "symbol": "Right",
                     "offset": [0, 0],
 
                     "fps": 32,
@@ -240,7 +240,7 @@
                 },
                 {
                     "anim": "sustain",
-                    "symbol": "red hold piece",
+                    "symbol": "HoldPiece",
                     "offset": [0, 0],
 
                     "fps": 32,
@@ -248,7 +248,7 @@
                 },
                 {
                     "anim": "end",
-                    "symbol": "red hold end",
+                    "symbol": "HoldEnd",
                     "offset": [0, 0],
 
                     "fps": 32,

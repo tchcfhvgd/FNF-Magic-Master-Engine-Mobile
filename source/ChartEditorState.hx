@@ -160,7 +160,8 @@ class ChartEditorState extends MusicBeatState{
         
         loadStrumJSON();
         dArrow = new Note(curStrumJSON.gameplayNotes[0], "Default", 0, 0);
-        dArrow.setGraphicSize(KEYSIZE);
+        dArrow.setGraphicSize(KEYSIZE, KEYSIZE);
+        dArrow.updateHitbox();
         dArrow.antialiasing = PreSettings.getPreSetting("Antialiasing");
         dArrow.cameras = [camSTRUM];
         dArrow.onEdit = true;
@@ -178,7 +179,7 @@ class ChartEditorState extends MusicBeatState{
 		add(gridBLine);
         gridBLine.cameras = [camSTRUM];
 
-        tabsUI = new FlxUIMenuCustom(FlxG.width - 70, 0, Std.int(FlxG.width / 3), Std.int(FlxG.height), "Right");
+        tabsUI = new FlxUIMenuCustom(FlxG.width - 60, 0, 60, Std.int(FlxG.height), "Left");
         tabsUI.cameras = [camHUD];
         add(tabsUI);
 
@@ -212,11 +213,11 @@ class ChartEditorState extends MusicBeatState{
 
         if(!FlxG.sound.music.playing && (FlxG.mouse.x > curGrid.x && FlxG.mouse.x < curGrid.x + curGrid.width
 		&& FlxG.mouse.y > curGrid.y && FlxG.mouse.y < curGrid.y + curGrid.height)){
-			dArrow.x = Math.floor(FlxG.mouse.x / KEYSIZE) * KEYSIZE - 47;
+			dArrow.x = Math.floor(FlxG.mouse.x / KEYSIZE) * KEYSIZE;
 			if(FlxG.keys.pressed.SHIFT){
-                dArrow.y = FlxG.mouse.y - 47;
+                dArrow.y = FlxG.mouse.y;
             }else{
-                dArrow.y = Math.floor(FlxG.mouse.y / (KEYSIZE / 2)) * (KEYSIZE / 2) - 47;
+                dArrow.y = Math.floor(FlxG.mouse.y / (KEYSIZE / 2)) * (KEYSIZE / 2);
             }
 
             var data:Int = (Math.floor(FlxG.mouse.x / KEYSIZE)) % (getStrumKeys(curStrum));
@@ -271,19 +272,24 @@ class ChartEditorState extends MusicBeatState{
             for(voice in voices.sounds){voice.pause();}
         }
 
+        if(FlxG.keys.justPressed.ONE){tabsUI.changeTAB("");}
+        if(FlxG.keys.justPressed.TWO){tabsUI.changeTAB("SONG");}
+
         if(!FlxG.keys.pressed.SHIFT){
             if(FlxG.mouse.wheel != 0){FlxG.sound.music.time -= (FlxG.mouse.wheel * Conductor.stepCrochet * 0.5);}
 
             if(FlxG.keys.justPressed.E){changeNoteSustain(Conductor.stepCrochet * 0.5);}
             if(FlxG.keys.justPressed.Q){changeNoteSustain(-Conductor.stepCrochet * 0.5);}
 
-            if(FlxG.keys.anyPressed([UP, W])){
-                var daTime:Float = Conductor.stepCrochet * 0.1;
-                FlxG.sound.music.time -= daTime;
-            }
-            if(FlxG.keys.anyPressed([DOWN, S])){
-                var daTime:Float = Conductor.stepCrochet * 0.1;
-                FlxG.sound.music.time += daTime;
+            if(!FlxG.sound.music.playing){
+                if(FlxG.keys.anyPressed([UP, W])){
+                    var daTime:Float = Conductor.stepCrochet * 0.1;
+                    FlxG.sound.music.time -= daTime;
+                }
+                if(FlxG.keys.anyPressed([DOWN, S])){
+                    var daTime:Float = Conductor.stepCrochet * 0.1;
+                    FlxG.sound.music.time += daTime;
+                }
             }
 
             if(FlxG.keys.justPressed.R){resetSection();}
@@ -296,13 +302,15 @@ class ChartEditorState extends MusicBeatState{
             if(FlxG.keys.justPressed.E){changeNoteHits(1);}
             if(FlxG.keys.justPressed.Q){changeNoteHits(-1);}
 
-            if(FlxG.keys.anyPressed([UP, W])){
-                var daTime:Float = Conductor.stepCrochet * 0.05;
-                FlxG.sound.music.time -= daTime;
-            }
-            if(FlxG.keys.anyPressed([DOWN, S])){
-                var daTime:Float = Conductor.stepCrochet * 0.05;
-                FlxG.sound.music.time += daTime;
+            if(!FlxG.sound.music.playing){
+                if(FlxG.keys.anyPressed([UP, W])){
+                    var daTime:Float = Conductor.stepCrochet * 0.05;
+                    FlxG.sound.music.time -= daTime;
+                }
+                if(FlxG.keys.anyPressed([DOWN, S])){
+                    var daTime:Float = Conductor.stepCrochet * 0.05;
+                    FlxG.sound.music.time += daTime;
+                }
             }
 
             if(FlxG.keys.justPressed.R){resetSection(true);}
@@ -778,11 +786,11 @@ class ChartEditorState extends MusicBeatState{
 
     function addTABSONG():Void{
         var icon = new FlxSprite().loadGraphic(Paths.image('UI_Assets/delStrum', 'shared'));
+        var newTab = new FlxUIMenuTabCustom(Std.int(180), FlxG.height, "SONG", icon);
 
-        var newTab = new FlxUIMenuTabCustom(Std.int(FlxG.width / 2), FlxG.height, icon);
+        var title:FlxText = new FlxText(0, 0, 0, "HOLA");
+        newTab.add(title);
 
-        
-
-        tabsUI.add(newTab);
+        tabsUI.addGroup(newTab);
     }
 }
