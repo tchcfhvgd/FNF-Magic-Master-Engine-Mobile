@@ -55,8 +55,8 @@ class FlxUIMenuCustom extends FlxUIGroup implements IResizable implements IFlxUI
 
 		if(!hasThis(g)){
 			trace("Adding Tab");
-			g.y = _BACK.y;
 			g.x = _BACK.x;
+			g.y = _BACK.y;
 
 			switch(alignment){
 				case "Left":{g.x = _BACK.x - g.dWidth;}
@@ -67,6 +67,12 @@ class FlxUIMenuCustom extends FlxUIGroup implements IResizable implements IFlxUI
 
 			add(g);
 			_TABS.add(g);
+
+			g._icon.x = _BACK.x;
+			g._icon.y = _BACK.y;
+
+			add(g._icon);
+			_TABICONS.add(g._icon);
 		}else{
 			trace("Tab already Exist");
 		}
@@ -83,11 +89,19 @@ class FlxUIMenuCustom extends FlxUIGroup implements IResizable implements IFlxUI
 		return null;
 	}
 
-	
+	public function updateButtons():Void{
+		var count:Int = 0;
+		for(btn in members){
+			if((btn is FlxTypedButton<FlxSprite>)){
+				btn.setPosition(dX + 5, dY + 5);
+			}
+		}
+	}
 
 	public function changeTAB(n:String = ""){
 		var curTab:FlxUIMenuTabCustom = getTAB(n);
 
+		updateButtons();
 		_TABS.kill();
 
 		var cCoords:Array<Float> = [dX, dY];
@@ -140,7 +154,7 @@ class FlxUIMenuCustom extends FlxUIGroup implements IResizable implements IFlxUI
 }
 
 class FlxUIMenuTabCustom extends FlxSpriteGroup implements IFlxUIWidget{
-	private var _icon:FlxTypedButton<FlxSprite>;
+	public var _icon:FlxTypedButton<FlxSprite>;
 	public var name:String;
 
 	public var broadcastToFlxUI:Bool = true;
@@ -149,13 +163,17 @@ class FlxUIMenuTabCustom extends FlxSpriteGroup implements IFlxUIWidget{
 	public var dWidth:Int;
 	public var dHeight:Int;
 
-	public function new(width:Int, height:Int, name:String, ?icon:FlxSprite){
+	public function new(width:Int, height:Int, name:String, icon:String){
 		this.name = name;
 		this.dWidth = width;
 		this.dHeight = height;
 		super();
 
-		trace("C: [" + dWidth + "," + dHeight + "]");
+		var btnIcon = new FlxTypedButton<FlxSprite>(0, 0);
+		btnIcon.makeGraphic(0, 0);
+		btnIcon.label.loadGraphic(icon);
+
+		_icon = btnIcon;
 	}
 
 	public override function destroy():Void{

@@ -2,7 +2,7 @@
     "image": "NOTE_assets",
     "staticNotes":[
         {
-            "colorHUE":[0, 0, 0],
+            "colorHSL":[320, 61, 76],
             "arrayAnims":[
                 {
                     "anim": "static",
@@ -34,7 +34,7 @@
             "antialiasing": true
         },
         {
-            "colorHUE":[0, 0, 0],
+            "colorHSL":[180, 100, 100],
             "arrayAnims":[
                 {
                     "anim": "static",
@@ -66,7 +66,7 @@
             "antialiasing": true
         },
         {
-            "colorHUE":[0, 0, 0],
+            "colorHSL":[117, 98, 98],
             "arrayAnims":[
                 {
                     "anim": "static",
@@ -98,7 +98,7 @@
             "antialiasing": true
         },
         {
-            "colorHUE":[0, 0, 0],
+            "colorHSL":[358, 77, 98],
             "arrayAnims":[
                 {
                     "anim": "static",
@@ -132,7 +132,7 @@
     ],
     "gameplayNotes":[
         {
-            "colorHUE":[0, 0, 0],
+            "colorHSL":[320, 61, 76],
             "arrayAnims":[
                 {
                     "anim": "static",
@@ -164,7 +164,7 @@
             "antialiasing": true
         },
         {
-            "colorHUE":[0, 0, 0],
+            "colorHSL":[180, 100, 100],
             "arrayAnims":[
                 {
                     "anim": "static",
@@ -196,7 +196,7 @@
             "antialiasing": true
         },
         {
-            "colorHUE":[0, 0, 0],
+            "colorHSL":[117, 98, 98],
             "arrayAnims":[
                 {
                     "anim": "static",
@@ -228,7 +228,7 @@
             "antialiasing": true
         },
         {
-            "colorHUE":[0, 0, 0],
+            "colorHSL":[358, 77, 98],
             "arrayAnims":[
                 {
                     "anim": "static",

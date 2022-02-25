@@ -8,6 +8,7 @@ import haxe.Json;
 import haxe.format.JsonParser;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import flixel.util.FlxColor;
 
 import flixel.math.FlxMath;
 
@@ -24,7 +25,7 @@ typedef StrumLineNoteJSON = {
 }
 
 typedef NoteJSON = {
-    var colorHUE:Array<Float>;
+    var colorHSL:Array<Int>;
     var arrayAnims:Array<NoteAnimJSON>;
 
     var alpha:Float;
@@ -147,7 +148,7 @@ class StrumLine extends FlxGroup{
                 case "Disabled":{curScrollspeed = scrollSpeed;}
             }
 
-            daNote.scale.set(staticNotes.noteSize);
+            daNote.setGraphicSize(staticNotes.noteSize);
             var ySuff:Float = 0.45 * (Conductor.songPosition - daNote.strumTime) * FlxMath.roundDecimal(curScrollspeed, 2);
             if(staticNotes.members[daNote.noteData].exists){
                 if(pre_TypeScroll == "DownScroll"){
@@ -288,12 +289,12 @@ class StrumStaticNotes extends FlxTypedGroup<StrumNote> {
             }
             
             for(i in 0...curKeys){
-                var strum:StrumNote = new StrumNote(JSON[i], typeCheck, x + (i * noteSize), y - (noteSize / 2), i);
+                var strum:StrumNote = new StrumNote(JSON[i], typeCheck, this.x + (noteSize * i), y - (noteSize / 2), i);
                 strum.ID = i;
                 strum.alpha = 0;
-                strum.setNoteScale(noteSize);
+                strum.setGraphicSize(noteSize);
                 add(strum);
-    
+
                 FlxTween.tween(strum, {alpha: 1, y: y}, (0.5 * (strum.noteData + 1) / curKeys), {ease: FlxEase.quadInOut});
             }
         }
@@ -305,8 +306,7 @@ class StrumNote extends FlxSprite{
     public var specialData:Int = 0;
 
     public var animOffsets:Map<String, Array<Dynamic>>;
-
-    public var scaleNote:Int;
+    public var nColor:Array<Int> = [0xffffff, 1, 1];
 
 	public function new(JSON:NoteJSON, typeNote:String, x:Float, y:Float, leData:Int, ?specialData:Int = 0){
         this.specialData = specialData;
@@ -320,8 +320,6 @@ class StrumNote extends FlxSprite{
 		#end
 
         alpha = JSON.alpha;
-
-		scaleNote = JSON.scale;
 
         loadGraphicStrum(JSON, specialData, typeNote);
 
@@ -354,10 +352,8 @@ class StrumNote extends FlxSprite{
                 animOffsets[anim.anim] = [anim.offsets[0], anim.offsets[1]];
             }
         }
-    }
-
-    public function setNoteScale(scale:Int){
-        setGraphicSize(scale * scaleNote);
+        
+        if(newJSON.colorHSL != null){nColor = newJSON.colorHSL;}
     }
 
     override function update(elapsed:Float){
@@ -372,6 +368,12 @@ class StrumNote extends FlxSprite{
             offset.set(daOffset[0], daOffset[1]);
         }else{
             offset.set(0, 0);
+        }
+
+        if(anim != "static"){
+            this.color = FlxColor.fromHSL(nColor[0], nColor[1], nColor[2]);
+        }else{
+            this.color = 0xffffff;
         }
 	}
 }
@@ -391,9 +393,7 @@ class Note extends FlxSprite {
 
     //Image Variables
     public var animOffsets:Map<String, Array<Dynamic>>;
-
-    public var scaleNote:Int;
-    public var dSize:Array<Int>;
+    public var nColor:Array<Int> = null;
 
     //Other Variables
     public var noteStatus:String = "Spawned"; //status: Spawned, CanBeHit, Pressed, Late, MultiTap
@@ -439,12 +439,11 @@ class Note extends FlxSprite {
         }
 
         if(!onEdit){alpha = newJSON.alpha;}
-		scaleNote = newJSON.scale;
+
+        if(newJSON.colorHSL != null){nColor = newJSON.colorHSL;}
 
         if(newJSON.antialiasing){antialiasing = PreSettings.getPreSetting("Antialiasing");
         }else{antialiasing = false;}
-
-        dSize = [Std.int(this.width), Std.int(this.height)];
     }
 
     override function update(elapsed:Float){
@@ -473,6 +472,12 @@ class Note extends FlxSprite {
             offset.set(daOffset[0], daOffset[1]);
         }else{
             offset.set(0, 0);
+        }
+
+        if(nColor != null){
+            this.color = FlxColor.fromHSL(nColor[0], nColor[1], nColor[2]);
+        }else{
+            this.color = 0xffffff;
         }
 	}
 }

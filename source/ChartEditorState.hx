@@ -160,8 +160,7 @@ class ChartEditorState extends MusicBeatState{
         
         loadStrumJSON();
         dArrow = new Note(curStrumJSON.gameplayNotes[0], "Default", 0, 0);
-        dArrow.setGraphicSize(KEYSIZE, KEYSIZE);
-        dArrow.updateHitbox();
+        dArrow.setGraphicSize(KEYSIZE);
         dArrow.antialiasing = PreSettings.getPreSetting("Antialiasing");
         dArrow.cameras = [camSTRUM];
         dArrow.onEdit = true;
@@ -213,11 +212,11 @@ class ChartEditorState extends MusicBeatState{
 
         if(!FlxG.sound.music.playing && (FlxG.mouse.x > curGrid.x && FlxG.mouse.x < curGrid.x + curGrid.width
 		&& FlxG.mouse.y > curGrid.y && FlxG.mouse.y < curGrid.y + curGrid.height)){
-			dArrow.x = Math.floor(FlxG.mouse.x / KEYSIZE) * KEYSIZE;
+			dArrow.x = (Math.floor(FlxG.mouse.x / KEYSIZE) * KEYSIZE) - ((dArrow.width - KEYSIZE) / 2);
 			if(FlxG.keys.pressed.SHIFT){
-                dArrow.y = FlxG.mouse.y;
+                dArrow.y = FlxG.mouse.y - ((dArrow.width - KEYSIZE) / 2);
             }else{
-                dArrow.y = Math.floor(FlxG.mouse.y / (KEYSIZE / 2)) * (KEYSIZE / 2);
+                dArrow.y = Math.floor(FlxG.mouse.y / (KEYSIZE / 2)) * (KEYSIZE / 2) - ((dArrow.width - KEYSIZE) / 2);
             }
 
             var data:Int = (Math.floor(FlxG.mouse.x / KEYSIZE)) % (getStrumKeys(curStrum));
@@ -407,7 +406,7 @@ class ChartEditorState extends MusicBeatState{
                 note.onEdit = true;
                 note.setGraphicSize(KEYSIZE, KEYSIZE);
                 note.updateHitbox();
-                note.x = gridGroup.members[ii].x + Math.floor(daNoteData * KEYSIZE) - 47;
+                note.x = gridGroup.members[ii].x + Math.floor(daNoteData * KEYSIZE) - ((dArrow.width - KEYSIZE) / 2);
                 note.y = Math.floor(getYfromStrum((daStrumTime - sectionStartTime()) % (Conductor.stepCrochet * _song.generalSection[curSection].lengthInSteps)));
 
                 note.alpha = 0.3;
@@ -436,7 +435,7 @@ class ChartEditorState extends MusicBeatState{
                             hitNote.onEdit = true;
                             hitNote.setGraphicSize(KEYSIZE);
                             hitNote.updateHitbox();
-                            hitNote.x = gridGroup.members[ii].x + Math.floor(daNoteData * KEYSIZE) - 47;
+                            hitNote.x = gridGroup.members[ii].x + Math.floor(daNoteData * KEYSIZE) - ((dArrow.width - KEYSIZE) / 2);
                             hitNote.y = Math.floor(getYfromStrum((newStrumTime - sectionStartTime()) % (Conductor.stepCrochet * _song.generalSection[curSection].lengthInSteps)));
     
                             hitNote.alpha = hits * note.alpha / totalHits;
@@ -457,7 +456,7 @@ class ChartEditorState extends MusicBeatState{
                             nSustain.onEdit = true;
                             nSustain.setGraphicSize(KEYSIZE);
                             nSustain.updateHitbox();
-                            nSustain.x = gridGroup.members[ii].x + Math.floor(daNoteData * KEYSIZE) - 47;
+                            nSustain.x = gridGroup.members[ii].x + Math.floor(daNoteData * KEYSIZE) - ((dArrow.width - KEYSIZE) / 2);
                             nSustain.y = Math.floor(getYfromStrum((sStrumTime - sectionStartTime()) % (Conductor.stepCrochet * _song.generalSection[curSection].lengthInSteps)));
                             nSustain.alpha = 0.5;
 
@@ -702,14 +701,18 @@ class ChartEditorState extends MusicBeatState{
         if(holdingNote){
             if(getNote(nAdd) == null){
                 if(!compNotes(nAdd, curLast)){
+                    trace("Null Note - (Adding)");
+
                     _song.sectionStrums[curStrum].notes[curSection].sectionNotes.push(nAdd);
                     selNote = [curStrum, nAdd];
                 }
             }else{
+                trace("Note Exist - (Undo)");
                 _song.sectionStrums[curStrum].notes[curSection].sectionNotes.push(curLast);
             }
         }else{
             if(getNote(nAdd) == null){
+                trace("Null Note - (Adding)");
                 _song.sectionStrums[curStrum].notes[curSection].sectionNotes.push(nAdd);
                 selNote = [curStrum, nAdd];
             }
@@ -785,8 +788,7 @@ class ChartEditorState extends MusicBeatState{
     }
 
     function addTABSONG():Void{
-        var icon = new FlxSprite().loadGraphic(Paths.image('UI_Assets/delStrum', 'shared'));
-        var newTab = new FlxUIMenuTabCustom(Std.int(180), FlxG.height, "SONG", icon);
+        var newTab = new FlxUIMenuTabCustom(Std.int(180), FlxG.height, "SONG", Paths.image('UI_Assets/delStrum', 'shared'));
 
         var title:FlxText = new FlxText(0, 0, 0, "HOLA");
         newTab.add(title);
