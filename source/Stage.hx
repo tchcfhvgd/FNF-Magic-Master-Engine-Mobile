@@ -15,11 +15,19 @@ import flixel.group.FlxGroup;
 import flixel.system.FlxAssets;
 import flixel.FlxBasic;
 
+#if windows
+import sys.FileSystem;
+import sys.io.File;
+#end
+
+using StringTools;
+
 typedef StageData = {
     var Directory:String;
 
     var CamZoom:Float;
     var Chrome:Float;
+    var initChar:Int;
 
     var StageData:Array<StagePart>;
 }
@@ -59,11 +67,41 @@ class Stage extends FlxTypedGroup<Dynamic>{
     public var zoom:Float = 0.7;
     public var chrome:Float = 0;
 
+    private var initChar:Int = 0;
+
     public var data:StageData = null;
     public var charData:FlxTypedGroup<Character>;
+    public var stageData:FlxTypedGroup<StageSprite>;
+
     var charArray:Array<Dynamic> = [];
 
     public var onEdit:Bool = false;
+
+    public static function getStages():Array<String>{
+        var stageArray:Array<String> = [];
+
+        #if windows
+            for(i in FileSystem.readDirectory(FileSystem.absolutePath('assets/stages'))){
+                if(i.endsWith(".json")){
+                    var aStage:String = i.replace(".json","");
+                    stageArray.push(aStage);
+                }
+            }
+        #else
+            stageArray = [
+                "Stage",
+                "Land-Cute",
+                "Land-Cute-Afternoon",
+                "Land-DeadBodys",
+                "Land-Destroyed",
+                "Land-Lol",
+                "Jungle-Land",
+                "Line-Land"
+            ];
+        #end
+
+        return stageArray;
+    }
 
     public function new(?stage:String = "Stage", ?chars:Array<Dynamic>, ?edit:Bool = false){
         if(chars == null){chars = [];}
@@ -71,10 +109,9 @@ class Stage extends FlxTypedGroup<Dynamic>{
         super();
 
         charData = new FlxTypedGroup<Character>();
+        stageData = new FlxTypedGroup<StageSprite>();
 
-        var JSON:StageData = cast Json.parse(Assets.getText(Paths.StageJSON(stage)));
-
-        loadStage(JSON);
+        loadStage(stage);
         setChars(chars);
     }
 
@@ -82,38 +119,58 @@ class Stage extends FlxTypedGroup<Dynamic>{
 		super.update(elapsed);
     }
 
-    public function loadStage(?stage:StageData = null){
+    public function loadStage(name:String):Void{
+        var newSTAGE:StageData = cast Json.parse(Assets.getText(Paths.StageJSON(name)));
+        if(newSTAGE != null){
+            curStage = name;
+            reload(newSTAGE);
+        }
+    }
+
+    public function reload(?stage:StageData = null){
         if(stage != null){data = stage;}
 
         directory = data.Directory;
         zoom = data.CamZoom;
         chrome = data.Chrome;
 
+        initChar = data.initChar;
+
+        stageData.clear();
         charData.clear();
         clear();
         var numCont:Int = 0;
+        var charID:Int = 0;
         for(sprite in data.StageData){
             var stagePart:StageSprite;
             stagePart = new StageSprite(sprite.position[0], sprite.position[1]);
             stagePart.loadPart(sprite, directory);
 
-            if(onEdit && numCont != StageEditorState.curObj){stagePart.alpha = stagePart.defAlpha * 0.5;}
+            if(onEdit && numCont != states.editors.StageEditorState.curObj){stagePart.alpha = stagePart.defAlpha * 0.5;}
 
+            stageData.ID = numCont;
+
+            stageData.add(stagePart);
             add(stagePart);
 
             for(char in charArray){
-                if(char[6] == numCont){
+                if(char[6] + initChar == numCont){
                     //["Girlfriend", [140, 210], false, "Default", "GF", 3]
-                    var newChar:Character = new Character(char[1][0], char[1][1], char[0], char[4], char[5], char[3]);
+                    var newChar:Character = new Character(char[1][0], char[1][1], char[0], char[4], char[5]);
                     newChar.x += newChar.positionArray[0];
                     newChar.y += newChar.positionArray[1];
     
                     newChar.setGraphicScale(char[2]);
     
                     newChar.scrollFactor.set(data.StageData[numCont].scrollFactor[0], data.StageData[numCont].scrollFactor[1]);
+
+                    newChar.setFacingFlip(LEFT, char[3], false);
+
+                    newChar.ID = charID;
                     
                     charData.add(newChar);
                     add(newChar);
+                    charID++;
                 }
             }
             numCont++;
@@ -121,18 +178,19 @@ class Stage extends FlxTypedGroup<Dynamic>{
     }
 
     public function setChars(chars:Array<Dynamic>){
-        for(char in chars){
-            if(char[6] == null || char[6] < 0){
-                char[6] = this.length - 1;
-            }
-        }
-
         charArray = chars;
 
-        loadStage();
+        reload();
+    }
+
+    public function getChars():Array<Dynamic>{
+        return charArray;
     }
 
     public function getCharacterById(id:Int):Character {
+        if(id >= charData.members.length){id = charData.members.length - 1;}
+        if(id <= 0){id = 0;}
+
         return charData.members[id];
     }
 

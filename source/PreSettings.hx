@@ -12,8 +12,8 @@ class PreSettings {
         ["Language", [0, ["English", "Spanish", "Portuguese"]]],
         ["GhostTapping", true],
         ["NoteOffset", 0],
-        ["ScrollSpeedType", [1, ["Scale", "Force", "Disabled"]]],
-        ["ScrollSpeed", 0.5],
+        ["ScrollSpeedType", [0, ["Scale", "Force", "Disabled"]]],
+        ["ScrollSpeed", 1],
         //Visual Settings
         ["TypeHUD", [0, ["MagicHUD", "Original", "Minimized", "OnlyNotes"]]],
         ["NoteSyle", [0, ["Arrows", "Circles", "Rhombuses", "Bars"]]],        

@@ -11,6 +11,11 @@ import openfl.utils.Assets;
 import haxe.Json;
 import haxe.format.JsonParser;
 
+#if windows
+import sys.FileSystem;
+import sys.io.File;
+#end
+
 import ListStuff;
 
 using StringTools;
@@ -20,8 +25,7 @@ typedef CharacterFile = {
 	var healthicon:String;
 
 	var position:Array<Float>;
-	var cameraRight:Array<Float>;
-	var cameraLeft:Array<Float>;
+	var camera:Array<Float>;
 	var zoom:Float;
 
 	var xFlip:Bool;
@@ -54,18 +58,11 @@ class Character extends FlxSprite{
 
 	public var holdTimer:Float = 0;
 	public var specialAnim:Bool = false;
-
-	public var isRight:Bool = false;
-	
-	public var singDuration:Float = 4;
-	public var danceIdle:Bool = false;
-
-	public var originalFlipX:Bool = false;
+	public var dancedIdle:Bool = false;
 
 	public var healthIcon:String = 'face';
 	public var animationsArray:Array<AnimArray> = [];
 	public var animOffsets:Map<String, Array<Dynamic>>;
-	public var debugMode:Bool = false;
 
 	public var positionArray:Array<Float> = [0, 0];
 	public var cameraPosition:Array<Float> = [0, 0];
@@ -76,7 +73,37 @@ class Character extends FlxSprite{
 	public var curScale:Float = 1;
 	public var noAntialiasing:Bool = false;
 
-	public function new(x:Float, y:Float, ?character:String = 'Boyfriend', ?category:String = 'Default', ?type:String = "NORMAL", ?isRight:Bool = false){
+	public static function getCharacters():Array<String>{
+		var charArray:Array<String> = [];
+
+        #if windows
+            for(i in FileSystem.readDirectory(FileSystem.absolutePath('assets/characters'))){
+                var aChar:String = i.replace("_"," ");
+                charArray.push(aChar);
+            }
+        #else
+			charArray = [
+                "Boyfriend",
+				"Boyfriend Militar",
+				"Boyfriend Pixel",
+				"Cuddles",
+				"Daddy Dearest",
+				"Fliqpy",
+				"Fliqpy Kpow",
+				"Girlfriend",
+				"Girlfriend Invisible",
+				"Girlfriend Pixel",
+				"Lumpy",
+				"RussellLammy",
+				"Sniffles",
+				"Toothy"
+            ];
+        #end
+
+        return charArray;
+	}
+
+	public function new(x:Float, y:Float, ?character:String = 'Boyfriend', ?category:String = 'Default', ?type:String = "NORMAL"){
 		super(x, y);
 
 		#if (haxe >= "4.0.0")
@@ -85,7 +112,6 @@ class Character extends FlxSprite{
 		animOffsets = new Map<String, Array<Dynamic>>();
 		#end
 
-		this.isRight = isRight;
 		antialiasing = true;
 
 		curCharacter = character;
@@ -135,22 +161,17 @@ class Character extends FlxSprite{
 				}
 
 				positionArray = jCharacter.position;
-				cameraPosition = jCharacter.cameraLeft;
+				cameraPosition = jCharacter.camera;
 				cameraZoom = jCharacter.zoom;
 
 				healthIcon = jCharacter.healthicon;
-				singDuration = jCharacter.singDuration;
+				//singDuration = jCharacter.singDuration;
 				if(jCharacter.nAntialiasing){
 					antialiasing = false;
 					noAntialiasing = true;
 				}
 
 				flipX = jCharacter.xFlip;
-				originalFlipX = flipX;
-				if(this.isRight){
-					flipX = !flipX;
-					cameraPosition = jCharacter.cameraRight;
-				}
 
 				antialiasing = !noAntialiasing;
 
@@ -168,28 +189,21 @@ class Character extends FlxSprite{
 							animation.addByPrefix(animAnim, animName, animFps, animLoop);
 						}
 
-						if(this.isRight){
-							if(anim.offsets_right != null && anim.offsets_right.length > 1) {
-								addOffset(anim.anim, anim.offsets_right[0], anim.offsets_right[1]);
-							}
-						}else{
-							if(anim.offsets_left != null && anim.offsets_left.length > 1) {
-								addOffset(anim.anim, anim.offsets_left[0], anim.offsets_left[1]);
-							}
+						if(anim.offsets_left != null && anim.offsets_left.length > 1) {
+							addOffset(anim.anim, anim.offsets_left[0], anim.offsets_left[1]);
 						}
 					}
 				}else{
 					quickAnimAdd('idle', 'BF idle dance');
 				}
 
-				recalculateDanceIdle();
 				dance();
 			}
 		}
 	}
 
 	override function update(elapsed:Float){
-		if(!debugMode && animation.curAnim != null){
+		if(animation.curAnim != null){
 			if(holdTimer > 0){
 				holdTimer -= elapsed;
 			}else{
@@ -209,32 +223,26 @@ class Character extends FlxSprite{
 		super.update(elapsed);
 	}
 
-	public var danced:Bool = false;
-
 	/**
 	 * FOR GF DANCING SHIT
 	 */
-	public function dance()
-	{
-		if (!debugMode && !specialAnim)
-		{
-			if(danceIdle)
-			{
-				danced = !danced;
-
-				if (danced)
-					playAnim(false, 'danceRight');
-				else
+	public function dance(){
+		if(!specialAnim){
+			if(dancedIdle){
+				if(animation.curAnim.name == 'danceRight'){
 					playAnim(false, 'danceLeft');
-			}
-			else if(animation.getByName('idle') != null) {
-					playAnim(false, 'idle');
+				}else{
+					playAnim(false, 'danceRight');
+				}
+			}else{
+				playAnim(false, 'idle');
 			}
 		}
 	}
 
 	public function playAnim(special:Bool = false, AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void{
 		if(!specialAnim && animation.getByName(AnimName) != null){
+			
 			specialAnim = special;
 			animation.play(AnimName, Force, Reversed, Frame);
 	
@@ -245,27 +253,10 @@ class Character extends FlxSprite{
 			else{
 				offset.set(0, 0);
 			}
-	
-			if (curCharacter.startsWith('gf')){
-				if (AnimName == 'singLEFT'){
-					danced = true;
-				}else if(AnimName == 'singRIGHT'){
-					danced = false;
-				}
-	
-				if(AnimName == 'singUP' || AnimName == 'singDOWN'){
-					danced = !danced;
-				}
-			}
 		}
 	}
 
-	public function recalculateDanceIdle() {
-		danceIdle = (animation.getByName('danceLeft') != null && animation.getByName('danceRight') != null);
-	}
-
-	public function addOffset(name:String, x:Float = 0, y:Float = 0)
-	{
+	public function addOffset(name:String, x:Float = 0, y:Float = 0){
 		animOffsets[name] = [x, y];
 	}
 

@@ -3,7 +3,7 @@
     "healthicon": "fliqpy",
 
 	"position": [0,	20],
-    "cameraRight": [120, 250],
+    "camera": [120, 250],
     "zoom": 0.8,
 	
 	"xFlip": true,

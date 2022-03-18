@@ -45,5 +45,6 @@
     ],
     "Chrome":0,
     "CamZoom":0.7,
+    "initChar": 1,
     "Directory":"stage"
 }

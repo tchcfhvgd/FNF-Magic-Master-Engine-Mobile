@@ -121,8 +121,20 @@ class Paths
 		#end
 	}
 
-	inline static public function strumline(keys:Int){
-		var typeNotes:String = PreSettings.getArraySetting(PreSettings.getPreSetting("NoteSyle"));
+	inline static public function image(key:String, ?library:String){
+		return getPath('images/$key.png', IMAGE, library);
+	}
+
+	inline static public function font(key:String){
+		return 'assets/fonts/$key';
+	}
+
+	inline static public function StageJSON(key:String){
+		return 'stages:assets/stages/${key}.json';
+	}
+
+	inline static public function strumJSON(keys:Int, typeNotes:String = null){
+		if(typeNotes == null){typeNotes = PreSettings.getArraySetting(PreSettings.getPreSetting("NoteSyle"));}
 		var toReturn = '';
 
 		toReturn = 'notes:assets/notes/${typeNotes}/${keys}k.json';
@@ -134,18 +146,6 @@ class Paths
 		#end
 
 		return toReturn; 
-	}
-
-	inline static public function image(key:String, ?library:String){
-		return getPath('images/$key.png', IMAGE, library);
-	}
-
-	inline static public function font(key:String){
-		return 'assets/fonts/$key';
-	}
-
-	inline static public function StageJSON(key:String){
-		return 'stages:assets/stages/${key}.json';
 	}
 
 	inline static public function getSparrowAtlas(key:String, ?library:String)

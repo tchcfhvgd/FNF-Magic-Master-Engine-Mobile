@@ -3,6 +3,8 @@
 
     "CamZoom": 0.7,
     "Chrome": 0,
+    
+    "initChar": 3,
 
     "StageData":[
         {

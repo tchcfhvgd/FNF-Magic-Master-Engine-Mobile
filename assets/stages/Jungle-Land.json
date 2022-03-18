@@ -1,0 +1,53 @@
+{
+    "Directory":"land-cute",
+
+    "CamZoom": 0.7,
+    "Chrome": 0,
+
+    "StageData":[
+        {
+            "image": "Sky",
+
+            "position": [-900,-500],
+            "scrollFactor": [0, 0],
+
+            "size": 1,
+            "alpha": 1,
+
+            "antialiasing": true
+        },
+        {
+            "image": "Background 2",
+
+            "position": [-940, -550],
+            "scrollFactor": [0.4, 0.4],
+
+            "size": 1,
+            "alpha": 1,
+
+            "antialiasing": true
+        },
+        {
+            "image": "Background 1",
+
+            "position": [-1020, -750],
+            "scrollFactor": [0.6, 0.6],
+
+            "size": 1,
+            "alpha": 1,
+
+            "antialiasing": true
+        },
+        {
+            "image": "Floor",
+
+            "position": [-1300, 500],
+            "scrollFactor": [1, 1],
+
+            "size": 1.1,
+            "alpha": 1,
+
+            "antialiasing": true
+        }
+    ]
+}
