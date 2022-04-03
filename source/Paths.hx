@@ -133,16 +133,15 @@ class Paths
 		return 'stages:assets/stages/${key}.json';
 	}
 
-	inline static public function strumJSON(keys:Int, typeNotes:String = null){
-		if(typeNotes == null){typeNotes = PreSettings.getArraySetting(PreSettings.getPreSetting("NoteSyle"));}
+	inline static public function strumJSON(keys:Int, typeStrum:String = null){
+		if(typeStrum == null){typeStrum = PreSettings.getArraySetting(PreSettings.getPreSetting("NoteSyle"));}
 		var toReturn = '';
 
-		toReturn = 'notes:assets/notes/${typeNotes}/${keys}k.json';
+		toReturn = 'notes:assets/notes/${typeStrum}/${keys}k.json';
 
 		#if desktop
-		if(!Assets.exists(toReturn)){
-			toReturn = 'notes:assets/notes/Default/${keys}k.json';
-		}
+		if(!Assets.exists(toReturn)){toReturn = 'notes:assets/notes/Default/${keys}k.json';}
+		if(!Assets.exists(toReturn)){toReturn = 'notes:assets/notes/Default/_k.json';}
 		#end
 
 		return toReturn; 

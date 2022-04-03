@@ -176,7 +176,7 @@ class ChartEditorState extends MusicBeatState{
         renderedSustains.cameras = [camSTRUM];
         
         curStrumJSON = cast Json.parse(Assets.getText(Paths.strumJSON(getStrumKeys(curStrum))));
-        dArrow = new Note(curStrumJSON.gameplayNotes[0], "Default", 0, 0);
+        dArrow = new Note(curStrumJSON.gameplayNotes[0], 0, 0);
         dArrow.setGraphicSize(KEYSIZE, KEYSIZE);
         dArrow.antialiasing = PreSettings.getPreSetting("Antialiasing");
         dArrow.cameras = [camSTRUM];
@@ -312,7 +312,7 @@ class ChartEditorState extends MusicBeatState{
             }
 
             var data:Int = (Math.floor((FlxG.mouse.x - curGrid.x) / KEYSIZE)) % (getStrumKeys(curStrum));
-            dArrow.loadGraphicNote(data, curStrumJSON.gameplayNotes[data], _song.sectionStrums[curStrum].noteStyle);
+            dArrow.loadGraphicNote(curStrumJSON.gameplayNotes[data], _song.sectionStrums[curStrum].noteStyle);
 
             if(FlxG.mouse.pressed){dArrow.alpha = 1;
             }else{dArrow.alpha = 0.5;}
@@ -522,7 +522,7 @@ class ChartEditorState extends MusicBeatState{
 
                 var daJSON:StrumLineNoteJSON = cast Json.parse(Assets.getText(Paths.strumJSON(getStrumKeys(ii))));
 
-                var note:Note = newGridNote(ii, daJSON.gameplayNotes[daNoteData], _song.sectionStrums[ii].noteStyle, daStrumTime, daNoteData, daLength, daHits, daSpecial, daOther);
+                var note:Note = newGridNote(ii, daJSON.gameplayNotes[daNoteData], daStrumTime, daNoteData, daLength, daHits, daSpecial, daOther);
         
                 note.alpha = 0.3;
                 if(ii == curStrum){
@@ -546,7 +546,7 @@ class ChartEditorState extends MusicBeatState{
                         while(hits > 0){
                             var newStrumTime = daStrumTime + (daLength * curHits);
     
-                            var hitNote:Note = newGridNote(ii, daJSON.gameplayNotes[daNoteData], _song.sectionStrums[ii].noteStyle, newStrumTime, daNoteData, 0, curHits, daSpecial, daOther);
+                            var hitNote:Note = newGridNote(ii, daJSON.gameplayNotes[daNoteData], newStrumTime, daNoteData, 0, curHits, daSpecial, daOther);
                                 
                             hitNote.alpha = hits * note.alpha / totalHits;
 
@@ -562,7 +562,7 @@ class ChartEditorState extends MusicBeatState{
                         for(sNote in 0...Math.floor(daLength / (Conductor.stepCrochet * 0.25)) + 2){
                             var sStrumTime = daStrumTime + (Conductor.stepCrochet / 2) + ((Conductor.stepCrochet * 0.25) * sNote);
                             
-                            var nSustain:Note = newGridNote(ii, daJSON.gameplayNotes[daNoteData], _song.sectionStrums[ii].noteStyle, sStrumTime, daNoteData, 0, 0, daSpecial, daOther);
+                            var nSustain:Note = newGridNote(ii, daJSON.gameplayNotes[daNoteData], sStrumTime, daNoteData, 0, 0, daSpecial, daOther);
 
                             nSustain.alpha = 0.5;
                             if(ii != curStrum){nSustain.alpha = 0.1;}
@@ -585,8 +585,8 @@ class ChartEditorState extends MusicBeatState{
         updateNoteValues();
     }
 
-    function newGridNote(grid:Int, newJSON:NoteJSON, newTypeCheck:String, strumTime:Float, noteData:Int, ?noteLength:Float = 0, ?noteHits:Int = 0, ?specialType:Int = 0, ?otherData:Array<NoteData>):Note{
-        var note:Note = new Note(newJSON, newTypeCheck, strumTime, noteData, noteLength, noteHits, specialType, otherData);
+    function newGridNote(grid:Int, newJSON:NoteJSON, strumTime:Float, noteData:Int, ?noteLength:Float = 0, ?noteHits:Int = 0, ?specialType:Int = 0, ?otherData:Array<NoteData>):Note{
+        var note:Note = new Note(newJSON, strumTime, noteData, noteLength, noteHits, specialType, otherData);
         note.onEdit = true;
         note.setGraphicSize(KEYSIZE, KEYSIZE);
         note.updateHitbox();

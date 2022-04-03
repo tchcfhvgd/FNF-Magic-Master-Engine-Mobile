@@ -7,7 +7,7 @@
                 {
                     "anim": "static",
                     "symbol": "StaticLeft",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -15,7 +15,7 @@
                 {
                     "anim": "pressed",
                     "symbol": "PressLeft",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -23,7 +23,7 @@
                 {
                     "anim": "confirm",
                     "symbol": "ConfirmLeft",
-                    "offset": [-130, -130],
+                    "offsets": [-130, -130],
 
                     "fps": 32,
                     "loop": false
@@ -39,7 +39,7 @@
                 {
                     "anim": "static",
                     "symbol": "StaticDown",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -47,7 +47,7 @@
                 {
                     "anim": "pressed",
                     "symbol": "PressDown",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -55,7 +55,7 @@
                 {
                     "anim": "confirm",
                     "symbol": "ConfirmDown",
-                    "offset": [-13, -13],
+                    "offsets": [-13, -13],
 
                     "fps": 32,
                     "loop": false
@@ -71,7 +71,7 @@
                 {
                     "anim": "static",
                     "symbol": "StaticMiddle",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -79,7 +79,7 @@
                 {
                     "anim": "pressed",
                     "symbol": "PressMiddle",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -87,7 +87,7 @@
                 {
                     "anim": "confirm",
                     "symbol": "ConfirmMiddle",
-                    "offset": [-13, -13],
+                    "offsets": [-13, -13],
 
                     "fps": 32,
                     "loop": false
@@ -103,7 +103,7 @@
                 {
                     "anim": "static",
                     "symbol": "StaticUp",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -111,7 +111,7 @@
                 {
                     "anim": "pressed",
                     "symbol": "PressUp",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -119,7 +119,7 @@
                 {
                     "anim": "confirm",
                     "symbol": "ConfirmUp",
-                    "offset": [-13, -13],
+                    "offsets": [-13, -13],
 
                     "fps": 32,
                     "loop": false
@@ -135,7 +135,7 @@
                 {
                     "anim": "static",
                     "symbol": "StaticRight",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -143,7 +143,7 @@
                 {
                     "anim": "pressed",
                     "symbol": "PressRight",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -151,7 +151,7 @@
                 {
                     "anim": "confirm",
                     "symbol": "ConfirmRight",
-                    "offset": [-13, -13],
+                    "offsets": [-13, -13],
 
                     "fps": 32,
                     "loop": false
@@ -169,7 +169,7 @@
                 {
                     "anim": "static",
                     "symbol": "Left",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -177,7 +177,7 @@
                 {
                     "anim": "sustain",
                     "symbol": "HoldPiece",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -185,7 +185,7 @@
                 {
                     "anim": "end",
                     "symbol": "HoldEnd",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -201,7 +201,7 @@
                 {
                     "anim": "static",
                     "symbol": "Down",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -209,7 +209,7 @@
                 {
                     "anim": "sustain",
                     "symbol": "HoldPiece",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -217,7 +217,7 @@
                 {
                     "anim": "end",
                     "symbol": "HoldEnd",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -233,7 +233,7 @@
                 {
                     "anim": "static",
                     "symbol": "Middle",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -241,7 +241,7 @@
                 {
                     "anim": "sustain",
                     "symbol": "HoldPiece",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -249,7 +249,7 @@
                 {
                     "anim": "end",
                     "symbol": "HoldEnd",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -265,7 +265,7 @@
                 {
                     "anim": "static",
                     "symbol": "Up",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -273,7 +273,7 @@
                 {
                     "anim": "sustain",
                     "symbol": "HoldPiece",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -281,7 +281,7 @@
                 {
                     "anim": "end",
                     "symbol": "HoldEnd",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -297,7 +297,7 @@
                 {
                     "anim": "static",
                     "symbol": "Right",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -305,7 +305,7 @@
                 {
                     "anim": "sustain",
                     "symbol": "HoldPiece",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -313,7 +313,7 @@
                 {
                     "anim": "end",
                     "symbol": "HoldEnd",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false

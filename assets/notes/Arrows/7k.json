@@ -97,6 +97,38 @@
             "antialiasing": true
         },
         {
+            "colorHSL":[0, 100, 100],
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "StaticMiddle",
+                    "offsets": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "pressed",
+                    "symbol": "PressMiddle",
+                    "offsets": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "confirm",
+                    "symbol": "ConfirmMiddle",
+                    "offsets": [-13, -13],
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
             "colorHSL":[0, 0, 0],
             "arrayAnims":[
                 {
@@ -264,6 +296,38 @@
                 {
                     "anim": "static",
                     "symbol": "Right",
+                    "offsets": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "sustain",
+                    "symbol": "HoldPiece",
+                    "offsets": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "end",
+                    "symbol": "HoldEnd",
+                    "offsets": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "colorHSL":[0, 100, 100],
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "Middle",
                     "offsets": [0, 0],
 
                     "fps": 32,

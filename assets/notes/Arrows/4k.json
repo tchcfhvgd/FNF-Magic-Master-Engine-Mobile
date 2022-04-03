@@ -1,5 +1,4 @@
 {
-    "image": "NOTE_assets",
     "staticNotes":[
         {
             "colorHSL":[320, 61, 76],
@@ -23,7 +22,7 @@
                 {
                     "anim": "confirm",
                     "symbol": "ConfirmLeft",
-                    "offsets": [35, 35],
+                    "offsets": [-35, -35],
 
                     "fps": 32,
                     "loop": false
@@ -137,7 +136,7 @@
                 {
                     "anim": "static",
                     "symbol": "Left",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -145,7 +144,7 @@
                 {
                     "anim": "sustain",
                     "symbol": "HoldPiece",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -153,7 +152,7 @@
                 {
                     "anim": "end",
                     "symbol": "HoldEnd",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -169,7 +168,7 @@
                 {
                     "anim": "static",
                     "symbol": "Down",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -177,7 +176,7 @@
                 {
                     "anim": "sustain",
                     "symbol": "HoldPiece",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -185,7 +184,7 @@
                 {
                     "anim": "end",
                     "symbol": "HoldEnd",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -201,7 +200,7 @@
                 {
                     "anim": "static",
                     "symbol": "Up",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -209,7 +208,7 @@
                 {
                     "anim": "sustain",
                     "symbol": "HoldPiece",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -217,7 +216,7 @@
                 {
                     "anim": "end",
                     "symbol": "HoldEnd",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -233,7 +232,7 @@
                 {
                     "anim": "static",
                     "symbol": "Right",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -241,7 +240,7 @@
                 {
                     "anim": "sustain",
                     "symbol": "HoldPiece",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -249,7 +248,7 @@
                 {
                     "anim": "end",
                     "symbol": "HoldEnd",
-                    "offset": [0, 0],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
