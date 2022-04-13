@@ -14,7 +14,7 @@
                 {
                     "anim": "pressed",
                     "symbol": "PressLeft",
-                    "offsets": [-5, -5],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -22,7 +22,7 @@
                 {
                     "anim": "confirm",
                     "symbol": "ConfirmLeft",
-                    "offsets": [-35, -35],
+                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -131,6 +131,7 @@
     ],
     "gameplayNotes":[
         {
+            "chAnim": "singLEFT",
             "colorHSL":[320, 61, 76],
             "arrayAnims":[
                 {
@@ -163,6 +164,7 @@
             "antialiasing": true
         },
         {
+            "chAnim": "singDOWN",
             "colorHSL":[180, 100, 100],
             "arrayAnims":[
                 {
@@ -195,6 +197,7 @@
             "antialiasing": true
         },
         {
+            "chAnim": "singUP",
             "colorHSL":[117, 98, 98],
             "arrayAnims":[
                 {
@@ -227,6 +230,7 @@
             "antialiasing": true
         },
         {
+            "chAnim": "singRIGHT",
             "colorHSL":[358, 77, 98],
             "arrayAnims":[
                 {
@@ -258,6 +262,5 @@
             "scale": 1,
             "antialiasing": true
         }
-    ],
-    "noteSplash": "NOTE_assets"
+    ]
 }

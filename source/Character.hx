@@ -28,8 +28,7 @@ typedef CharacterFile = {
 	var camera:Array<Float>;
 	var zoom:Float;
 
-	var xFlip:Bool;
-	var scale:Float;
+	var onRight:Bool;
 	var singDuration:Float;
 	var nAntialiasing:Bool;
 
@@ -41,8 +40,6 @@ typedef AnimArray = {
 	var symbol:String;
 	var fps:Int;
 
-	var offsets_right:Array<Float>;
-	var offsets_left:Array<Float>;
 	var indices:Array<Int>;
 
 	var loop:Bool;		
@@ -60,17 +57,16 @@ class Character extends FlxSprite{
 	public var specialAnim:Bool = false;
 	public var dancedIdle:Bool = false;
 
+	private var onRight = true;
+
 	public var healthIcon:String = 'face';
 	public var animationsArray:Array<AnimArray> = [];
-	public var animOffsets:Map<String, Array<Dynamic>>;
 
 	public var positionArray:Array<Float> = [0, 0];
 	public var cameraPosition:Array<Float> = [0, 0];
 	public var cameraZoom:Float = 0.8;
 
 	public var imageFile:String = '';
-	public var jsonScale:Float = 1;
-	public var curScale:Float = 1;
 	public var noAntialiasing:Bool = false;
 
 	public static function getCharacters():Array<String>{
@@ -103,14 +99,8 @@ class Character extends FlxSprite{
         return charArray;
 	}
 
-	public function new(x:Float, y:Float, ?character:String = 'Boyfriend', ?category:String = 'Default', ?type:String = "NORMAL"){
+	public function new(x:Float, y:Float, ?character:String = 'Boyfriend', ?category:String = 'Default', ?type:String = "NORMAL", ?turnRight:Bool = true){
 		super(x, y);
-
-		#if (haxe >= "4.0.0")
-		animOffsets = new Map();
-		#else
-		animOffsets = new Map<String, Array<Dynamic>>();
-		#end
 
 		antialiasing = true;
 
@@ -129,15 +119,7 @@ class Character extends FlxSprite{
 			//case 'your character name in case you want to hardcode him instead':
 
 			default:{
-				var characterPath:String = Characters.getSkinPath(curCharacter + "-"  + curSkin + "-" + curCategory, curCharacter);
-
-				var path:String = characterPath;
-				if (!Assets.exists(path)){
-					curCharacter = cDefault;
-
-					curSkin = ListStuff.Skins.getSkin(curCharacter);
-					path = Characters.getSkinPath(curCharacter + "-"  + curSkin + "-" + curCategory, curCharacter); //If a character couldn't be found, change him to BF just to prevent a crash
-				}
+				var path:String = Paths.getCharacterJSON(curCharacter, curCategory, curSkin);
 
 				var rawJson = Assets.getText(path);
 				var jCharacter:CharacterFile = cast Json.parse(rawJson);
@@ -154,12 +136,6 @@ class Character extends FlxSprite{
 
 				frames = Characters.getAtlas(spritePath, stuffPath);
 
-				if(jCharacter.scale != 1) {
-					jsonScale = jCharacter.scale;
-					setGraphicSize(Std.int(width * jsonScale));
-					updateHitbox();
-				}
-
 				positionArray = jCharacter.position;
 				cameraPosition = jCharacter.camera;
 				cameraZoom = jCharacter.zoom;
@@ -171,7 +147,7 @@ class Character extends FlxSprite{
 					noAntialiasing = true;
 				}
 
-				flipX = jCharacter.xFlip;
+				this.onRight = jCharacter.onRight;
 
 				antialiasing = !noAntialiasing;
 
@@ -188,15 +164,10 @@ class Character extends FlxSprite{
 						}else{
 							animation.addByPrefix(animAnim, animName, animFps, animLoop);
 						}
-
-						if(anim.offsets_left != null && anim.offsets_left.length > 1) {
-							addOffset(anim.anim, anim.offsets_left[0], anim.offsets_left[1]);
-						}
 					}
 				}else{
 					quickAnimAdd('idle', 'BF idle dance');
 				}
-
 				dance();
 			}
 		}
@@ -245,29 +216,10 @@ class Character extends FlxSprite{
 			
 			specialAnim = special;
 			animation.play(AnimName, Force, Reversed, Frame);
-	
-			var daOffset = animOffsets.get(AnimName);
-			if (animOffsets.exists(AnimName)){
-				offset.set(daOffset[0], daOffset[1]);
-			}
-			else{
-				offset.set(0, 0);
-			}
 		}
-	}
-
-	public function addOffset(name:String, x:Float = 0, y:Float = 0){
-		animOffsets[name] = [x, y];
 	}
 
 	public function quickAnimAdd(name:String, anim:String){
 		animation.addByPrefix(name, anim, 24, false);
-	}
-
-	public function setGraphicScale(scale:Float){
-		curScale = scale;
-		
-		setGraphicSize(Std.int(width * (curScale * jsonScale / 1)));
-		updateHitbox();
 	}
 }

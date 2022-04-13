@@ -6,7 +6,7 @@
     "camera": [180, 100],
     "zoom": 0.8,
 	
-	"xFlip": true,
+	"onRight": true,
 	"scale": 1.1,
     
     "anims":[
@@ -14,9 +14,6 @@
             "anim": "singLEFT",
             "symbol": "Fliqpy Note Left",
             "fps": 24,
-
-            "offsets_right": [-138, -246],
-            "offsets_left": [0, -30],
 			"indices": [],
 
             "loop": false
@@ -25,9 +22,6 @@
             "anim": "singDOWN",
             "symbol": "Fliqpy Note Down",
             "fps": 24,
-
-            "offsets_right": [-168, -283],
-            "offsets_left": [0, -30],
 			"indices": [],
 
             "loop": false
@@ -36,9 +30,6 @@
             "anim": "singUP",
             "symbol": "Fliqpy Note Up",
             "fps": 24,
-			
-            "offsets_right": [-99, -233],
-            "offsets_left": [0, -30],
 			"indices": [],
 
             "loop": false
@@ -47,9 +38,6 @@
             "anim": "idle",
             "symbol": "Fliqpy Idle Dance",
             "fps": 24,
-			
-            "offsets_right": [-137, -267],
-            "offsets_left": [0, -30],
 			"indices": [],
 
             "loop": false
@@ -58,9 +46,6 @@
             "anim": "idle-loop",
             "symbol": "Fliqpy Idle Dance",
             "fps": 24,
-
-            "offsets_right": [-137, -267],
-            "offsets_left": [0, -30],
 			"indices": [10,	11,	12,	12],
 
             "loop": true
@@ -69,9 +54,6 @@
             "anim": "singLEFT-loop",
             "symbol": "Fliqpy Note Left",
             "fps": 24,
-
-            "offsets_right": [-106, -246],
-            "offsets_left": [0, -30],
 			"indices": [12,	13,	14,	15],
 
             "loop": true
@@ -80,9 +62,6 @@
             "anim": "singRIGHT",
             "symbol": "Fliqpy Note Right",
             "fps": 24,
-
-            "offsets_right": [-162, -281],
-            "offsets_left": [0, -30],
 			"indices": [],
 			
 			"loop": false

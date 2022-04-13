@@ -114,11 +114,7 @@ class Paths
 	}
 
 	inline static public function chart(jsonInput:String, song:String){
-		#if desktop
-			return ListStuff.Songs.getChartPath(jsonInput, song);
-		#else
-			return 'songs:assets/songs/${song}/Data/${jsonInput}.json';
-		#end
+		return 'songs:assets/songs/${song}/Data/${jsonInput}.json';
 	}
 
 	inline static public function image(key:String, ?library:String){
@@ -130,7 +126,11 @@ class Paths
 	}
 
 	inline static public function StageJSON(key:String){
-		return 'stages:assets/stages/${key}.json';
+		var toReturn = 'stages:assets/stages/${key}.json';
+
+		if(!Assets.exists(toReturn)){toReturn = 'stages:assets/stages/Stage.json';}
+
+		return toReturn;
 	}
 
 	inline static public function strumJSON(keys:Int, typeStrum:String = null){
@@ -139,10 +139,27 @@ class Paths
 
 		toReturn = 'notes:assets/notes/${typeStrum}/${keys}k.json';
 
-		#if desktop
 		if(!Assets.exists(toReturn)){toReturn = 'notes:assets/notes/Default/${keys}k.json';}
 		if(!Assets.exists(toReturn)){toReturn = 'notes:assets/notes/Default/_k.json';}
-		#end
+
+		return toReturn; 
+	}
+
+	inline static public function getCharacterJSON(char:String, cat:String,skin:String){
+		var toReturn = 'characters:assets/characters/${char}/Skins/${char}-${cat}-${skin}.json';
+
+		if(!Assets.exists(toReturn)){
+			cat = "Default";
+			toReturn = 'characters:assets/characters/${char}/Skins/${char}-Default-${skin}.json';
+		}
+		if(!Assets.exists(toReturn)){
+			skin = "Default";
+			toReturn = 'characters:assets/characters/${char}/Skins/${char}-Default-Default.json';
+		}
+		if(!Assets.exists(toReturn)){
+			char = "Boyfriend";
+			toReturn = 'characters:assets/characters/Boyfriend/Skins/Boyfriend-Default-Default.json';
+		}
 
 		return toReturn; 
 	}

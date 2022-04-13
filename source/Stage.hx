@@ -155,16 +155,16 @@ class Stage extends FlxTypedGroup<Dynamic>{
 
             for(char in charArray){
                 if(char[6] + initChar == numCont){
-                    //["Girlfriend", [140, 210], false, "Default", "GF", 3]
+                    //["Boyfriend",[770,100],1,false,"Default","NORMAL",0]
                     var newChar:Character = new Character(char[1][0], char[1][1], char[0], char[4], char[5]);
                     newChar.x += newChar.positionArray[0];
                     newChar.y += newChar.positionArray[1];
     
-                    newChar.setGraphicScale(char[2]);
-    
+                    //newChar.setGraphicSize(Std.int(newChar.width * char[2] / 1));
+
                     newChar.scrollFactor.set(data.StageData[numCont].scrollFactor[0], data.StageData[numCont].scrollFactor[1]);
 
-                    newChar.setFacingFlip(LEFT, char[3], false);
+                    newChar.flipX = char[3];
 
                     newChar.ID = charID;
                     

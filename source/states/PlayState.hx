@@ -1,5 +1,6 @@
 package states;
 
+import StrumLineNote.StrumNote;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -256,7 +257,7 @@ class PlayState extends MusicBeatState {
 	
 		previousFrameTime = FlxG.game.ticks;
 	
-		if(!paused){FlxG.sound.playMusic(Paths.inst(SONG.song, SONG.category), 1, false);}
+		if(!paused){FlxG.sound.playMusic(Paths.inst(SONG.song.replace(" ", "_"), SONG.category), 1, false);}
 		FlxG.sound.music.onComplete = endSong;
 		for(sound in voices.sounds){sound.play();}
 	
@@ -275,7 +276,7 @@ class PlayState extends MusicBeatState {
 		voices.sounds = [];
         if(songData.voices != null && songData.voices.length > 0){
             for(i in 0...songData.voices.length){
-                var voice = new FlxSound().loadEmbedded(Paths.voice(i, songData.voices[i], songData.song, songData.category));
+                var voice = new FlxSound().loadEmbedded(Paths.voice(i, songData.voices[i], songData.song.replace(" ", "_"), songData.category));
                 FlxG.sound.list.add(voice);
                 voices.add(voice);
             }
@@ -287,7 +288,7 @@ class PlayState extends MusicBeatState {
 
 		var lastStrum:StrumLine = null;
 		for(i in 0...songData.sectionStrums.length){
-			var strumLine = new StrumLine(5 + (lastStrum != null ? 55 + lastStrum.strumSize : 0), 30, songData.sectionStrums[i].keys, (FlxG.width / 3));
+			var strumLine = new StrumLine(5 + (lastStrum != null ? 55 + lastStrum.strumSize : 0), 30, songData.sectionStrums[i].keys, Std.int(FlxG.width / 3));
 			
 			lastStrum = strumLine;
 			strumLine.scrollSpeed = songData.speed;
@@ -342,7 +343,7 @@ class PlayState extends MusicBeatState {
 		super.update(elapsed);
 
 		strumsGroup.forEach(function(strumLine:StrumLine){
-            if(curStrum == strumLine.ID){strumLine.typeStrum = "Playing";}
+            if(curStrum == strumLine.ID){strumLine.typeStrum = "Playing";}else{strumLine.typeStrum = "BotPlay";}
         });
 
 		if(Controls.getBind("Game_Pause", "JUST_PRESSED") && startedCountdown && canPause){
@@ -354,8 +355,7 @@ class PlayState extends MusicBeatState {
 			if (FlxG.random.bool(0.1)){
 				trace('GITAROO MAN EASTER EGG');
 				FlxG.switchState(new GitarooPause());
-			}
-			else{
+			}else{
 				openSubState(new substates.PauseSubState());
 			}
 		}
@@ -375,8 +375,8 @@ class PlayState extends MusicBeatState {
 					var char:Character = stage.getCharacterById(i);
 
 					if(char != null){
-						char.playAnim(false, "singLEFT");
-						char.holdTimer = elapsed * 2;
+						char.playAnim(false, daNote.chAnim, true);
+						char.holdTimer = elapsed * 10;
 					}
 				}
 
@@ -412,7 +412,38 @@ class PlayState extends MusicBeatState {
 
 		if(!pre_OnlyNotes){
 			if(generatedMusic && PlayState.SONG.generalSection[Std.int(curStep / 16)] != null){
-				var charToFocus = PlayState.SONG.generalSection[Std.int(curStep / 16)].charToFocus;
+				var pre_ForceMiddle:Bool = PreSettings.getPreSetting("ForceMiddleScroll");
+				var cSection = PlayState.SONG.generalSection[Std.int(curStep / 16)];
+
+				strumsGroup.forEach(function(daStrumline:StrumLine){
+					if(pre_ForceMiddle){
+						
+					}else{
+
+					}
+
+					var getMiddleX = (FlxG.width / 2) - (daStrumline.strumSize / 2);
+					for(daStrum in daStrumline.staticNotes){
+						daStrum.x = FlxMath.lerp(daStrum.x, getMiddleX + ((daStrumline.strumSize / daStrumline.keys) * daStrum.ID), 0.1);
+					}
+					if(daStrumline.ID == curStrum){
+						for(daStrum in daStrumline.staticNotes){
+							daStrum.alpha = FlxMath.lerp(daStrum.alpha, daStrum._alpha, 0.1);
+						}
+					}else if(daStrumline.ID == cSection.strumToFocus){
+						for(daStrum in daStrumline.staticNotes){
+							daStrum.alpha = FlxMath.lerp(daStrum.alpha, 0.1, 0.1);
+						}
+					}else{
+						for(daStrum in daStrumline.staticNotes){
+							daStrum.alpha = FlxMath.lerp(daStrum.alpha, 0, 0.1);
+						}
+					}
+				});
+
+
+				// CHARACTER CAMERA
+				var charToFocus = cSection.charToFocus;
 
 				var camMoveX = 0.0;
 				var camMoveY = 0.0;
@@ -422,36 +453,37 @@ class PlayState extends MusicBeatState {
 	
 				var character = stage.charData.members[charToFocus];
 				if(character == null){character = stage.charData.members[0];}
-	
-				switch(character.animation.curAnim.name){
-					default:{
-						camMoveX = character.getMidpoint().x + offsetX;
-						camMoveY = character.getMidpoint().y + offsetY;
-					}		
-					case 'singUP':{
-						camMoveX = character.getMidpoint().x + offsetX;
-						camMoveY = character.getMidpoint().y - 100 + offsetY;
+				if(character.animation.curAnim != null){
+					switch(character.animation.curAnim.name){
+						default:{
+							camMoveX = character.getMidpoint().x + offsetX;
+							camMoveY = character.getMidpoint().y + offsetY;
+						}		
+						case 'singUP':{
+							camMoveX = character.getMidpoint().x + offsetX;
+							camMoveY = character.getMidpoint().y - 100 + offsetY;
+						}
+						case 'singRIGHT':{
+							camMoveX = character.getMidpoint().x + 100 + offsetX;
+							camMoveY = character.getMidpoint().y + offsetY;
+						}
+						case 'singDOWN':{
+							camMoveX = character.getMidpoint().x + offsetX;
+							camMoveY = character.getMidpoint().y + 100 + offsetY;
+						}
+						case 'singLEFT':{
+							camMoveX = character.getMidpoint().x - 100 + offsetX;
+							camMoveY = character.getMidpoint().y + offsetY;
+						}
 					}
-					case 'singRIGHT':{
-						camMoveX = character.getMidpoint().x + 100 + offsetX;
-						camMoveY = character.getMidpoint().y + offsetY;
-					}
-					case 'singDOWN':{
-						camMoveX = character.getMidpoint().x + offsetX;
-						camMoveY = character.getMidpoint().y + 100 + offsetY;
-					}
-					case 'singLEFT':{
-						camMoveX = character.getMidpoint().x - 100 + offsetX;
-						camMoveY = character.getMidpoint().y + offsetY;
-					}
+					
+					camMoveX += character.cameraPosition[0];
+					camMoveY += character.cameraPosition[1];
+					
+					// camFollow.setPosition(lucky.getMidpoint().x - 120, lucky.getMidpoint().y + 210);	
+					camFollow.setPosition(camMoveX, camMoveY);
+					FlxG.camera.zoom = FlxMath.lerp(FlxG.camera.zoom, character.cameraZoom, 0.05);
 				}
-				
-				camMoveX += character.cameraPosition[0];
-				camMoveY += character.cameraPosition[1];
-				
-				// camFollow.setPosition(lucky.getMidpoint().x - 120, lucky.getMidpoint().y + 210);	
-				camFollow.setPosition(camMoveX, camMoveY);
-				FlxG.camera.zoom = FlxMath.lerp(FlxG.camera.zoom, character.cameraZoom, 0.05);
 			}
 		}
 

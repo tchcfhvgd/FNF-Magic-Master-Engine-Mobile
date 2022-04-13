@@ -280,7 +280,7 @@ class FreeplayState extends MusicBeatState {
 
 			trace("Song Format: " + poop);
 			
-			PlayState.SongListData.addSong(Song.loadFromJson(poop, songs[curSelected].songName));
+			PlayState.SongListData.addSong(Song.loadFromJson(poop, songFormat));
 			PlayState.SongListData.toPlayState();
 		}
 	}

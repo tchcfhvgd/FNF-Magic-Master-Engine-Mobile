@@ -45,6 +45,7 @@ import flixel.text.FlxText;
 import flixel.util.FlxArrayUtil;
 import flixel.math.FlxPoint;
 import flixel.util.FlxStringUtil;
+import lime.ui.FileDialog;
 
 import Conductor.BPMChangeEvent;
 import Section.SwagGeneralSection;
@@ -176,11 +177,11 @@ class ChartEditorState extends MusicBeatState{
         renderedSustains.cameras = [camSTRUM];
         
         curStrumJSON = cast Json.parse(Assets.getText(Paths.strumJSON(getStrumKeys(curStrum))));
-        dArrow = new Note(curStrumJSON.gameplayNotes[0], 0, 0);
+        dArrow = new Note(0, 0);
+        dArrow.loadGraphicNote(curStrumJSON.gameplayNotes[0]);
         dArrow.setGraphicSize(KEYSIZE, KEYSIZE);
-        dArrow.antialiasing = PreSettings.getPreSetting("Antialiasing");
         dArrow.cameras = [camSTRUM];
-        dArrow.onEdit = true;
+        dArrow.onDebug = true;
         add(dArrow);
 
         strumLine = new FlxSprite(0, 50).makeGraphic(Std.int(FlxG.width), 4);
@@ -305,6 +306,7 @@ class ChartEditorState extends MusicBeatState{
         if(!FlxG.sound.music.playing && (FlxG.mouse.x > curGrid.x && FlxG.mouse.x < curGrid.x + curGrid.width
 		&& FlxG.mouse.y > curGrid.y && FlxG.mouse.y < curGrid.y + curGrid.height)){
 			dArrow.x = (Math.floor(FlxG.mouse.x / KEYSIZE) * KEYSIZE) - ((dArrow.width - KEYSIZE) / 2);
+
 			if(FlxG.keys.pressed.SHIFT){
                 dArrow.y = FlxG.mouse.y - ((dArrow.width - KEYSIZE) / 2);
             }else{
@@ -312,7 +314,7 @@ class ChartEditorState extends MusicBeatState{
             }
 
             var data:Int = (Math.floor((FlxG.mouse.x - curGrid.x) / KEYSIZE)) % (getStrumKeys(curStrum));
-            dArrow.loadGraphicNote(curStrumJSON.gameplayNotes[data], _song.sectionStrums[curStrum].noteStyle);
+            dArrow.loadGraphicNote(curStrumJSON.gameplayNotes[data]);
 
             if(FlxG.mouse.pressed){dArrow.alpha = 1;
             }else{dArrow.alpha = 0.5;}
@@ -522,8 +524,9 @@ class ChartEditorState extends MusicBeatState{
 
                 var daJSON:StrumLineNoteJSON = cast Json.parse(Assets.getText(Paths.strumJSON(getStrumKeys(ii))));
 
-                var note:Note = newGridNote(ii, daJSON.gameplayNotes[daNoteData], daStrumTime, daNoteData, daLength, daHits, daSpecial, daOther);
-        
+                var note:Note = newGridNote(ii, daStrumTime, daNoteData, daLength, daHits, daSpecial, daOther);
+                note.loadGraphicNote(daJSON.gameplayNotes[daNoteData], _song.sectionStrums[ii].noteStyle);
+
                 note.alpha = 0.3;
                 if(ii == curStrum){
                     note.alpha = 0.6;
@@ -546,7 +549,8 @@ class ChartEditorState extends MusicBeatState{
                         while(hits > 0){
                             var newStrumTime = daStrumTime + (daLength * curHits);
     
-                            var hitNote:Note = newGridNote(ii, daJSON.gameplayNotes[daNoteData], newStrumTime, daNoteData, 0, curHits, daSpecial, daOther);
+                            var hitNote:Note = newGridNote(ii, newStrumTime, daNoteData, 0, curHits, daSpecial, daOther);
+                            hitNote.loadGraphicNote(daJSON.gameplayNotes[daNoteData], _song.sectionStrums[ii].noteStyle);
                                 
                             hitNote.alpha = hits * note.alpha / totalHits;
 
@@ -562,12 +566,12 @@ class ChartEditorState extends MusicBeatState{
                         for(sNote in 0...Math.floor(daLength / (Conductor.stepCrochet * 0.25)) + 2){
                             var sStrumTime = daStrumTime + (Conductor.stepCrochet / 2) + ((Conductor.stepCrochet * 0.25) * sNote);
                             
-                            var nSustain:Note = newGridNote(ii, daJSON.gameplayNotes[daNoteData], sStrumTime, daNoteData, 0, 0, daSpecial, daOther);
+                            var nSustain:Note = newGridNote(ii, sStrumTime, daNoteData, 0, 0, daSpecial, daOther);
+                            nSustain.loadGraphicNote(daJSON.gameplayNotes[daNoteData], _song.sectionStrums[ii].noteStyle);
 
                             nSustain.alpha = 0.5;
                             if(ii != curStrum){nSustain.alpha = 0.1;}
 
-                            nSustain.x += (KEYSIZE / 3);
                             if(cSusNote > 1){nSustain.typeNote = "Sustain";}
                             else{nSustain.typeNote = "SustainEnd";}
                             
@@ -585,12 +589,12 @@ class ChartEditorState extends MusicBeatState{
         updateNoteValues();
     }
 
-    function newGridNote(grid:Int, newJSON:NoteJSON, strumTime:Float, noteData:Int, ?noteLength:Float = 0, ?noteHits:Int = 0, ?specialType:Int = 0, ?otherData:Array<NoteData>):Note{
-        var note:Note = new Note(newJSON, strumTime, noteData, noteLength, noteHits, specialType, otherData);
-        note.onEdit = true;
+    function newGridNote(grid:Int, strumTime:Float, noteData:Int, ?noteLength:Float = 0, ?noteHits:Int = 0, ?specialType:Int = 0, ?otherData:Array<NoteData>):Note{
+        var note:Note = new Note(strumTime, noteData, noteLength, noteHits, specialType, otherData);
+        note.onDebug = true;
         note.setGraphicSize(KEYSIZE, KEYSIZE);
         note.updateHitbox();
-        note.x = gridGroup.members[grid].x + Math.floor(noteData * KEYSIZE) - ((dArrow.width - KEYSIZE) / 2);
+        note.x = gridGroup.members[grid].x + Math.floor(noteData * KEYSIZE);
         note.y = Math.floor(getYfromStrum((strumTime - sectionStartTime()) % (Conductor.stepCrochet * _song.generalSection[curSection].lengthInSteps)));
 
         return note;
@@ -673,11 +677,15 @@ class ChartEditorState extends MusicBeatState{
     }
 
     function loadSong(daSong:String, cat:String, diff:String) {
+        daSong = daSong.replace(" ", "_");
+
         _song = Song.loadFromJson(daSong + "-" + cat + "-" + diff, daSong);
         LoadingState.loadAndSwitchState(new ChartEditorState(), _song, false);
     }
 
     function loadAudio(daSong:String, cat:String):Void{
+        daSong = daSong.replace(" ", "_");
+
 		if(FlxG.sound.music != null){FlxG.sound.music.stop();}
 
 		FlxG.sound.playMusic(Paths.inst(daSong, cat), 0.6);
@@ -943,7 +951,7 @@ class ChartEditorState extends MusicBeatState{
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(data.trim(), _song.song + "-" + _song.category + "-" + _song.difficulty + ".json");
+			_file.save(data.trim(), _song.song.replace(" ", "_") + "-" + _song.category + "-" + _song.difficulty + ".json");
 		}
 	}
 
@@ -1079,6 +1087,12 @@ class ChartEditorState extends MusicBeatState{
         updateSection();
     }
 
+    private function getFile(_onSelect:String->Void):Void{
+        var fDialog = new FileDialog();
+        fDialog.onSelect.add(function(str){_onSelect(str);});
+        fDialog.browse();
+	}
+
     var txtSong:FlxUIInputText;
     var txtCat:FlxUIInputText;
     var txtDiff:FlxUIInputText;
@@ -1137,18 +1151,26 @@ class ChartEditorState extends MusicBeatState{
         txtDiff.name = "SONG_DIFFICULTY";
 
         var btnSave:FlxButton = new FlxButton(lblDiff.x, txtDiff.y + txtDiff.height + 5, "Save Song", function(){saveSong();}); tabMENU.add(btnSave);
-        btnSave.setSize(Std.int((MENU.width / 2) - 8), Std.int(btnSave.height));
-        btnSave.setGraphicSize(Std.int((MENU.width / 2) - 8), Std.int(btnSave.height));
+        btnSave.setSize(Std.int((MENU.width / 3) - 8), Std.int(btnSave.height));
+        btnSave.setGraphicSize(Std.int((MENU.width / 3) - 8), Std.int(btnSave.height));
         btnSave.centerOffsets();
         btnSave.label.fieldWidth = btnSave.width;
 
         var btnLoad:FlxButton = new FlxButton(btnSave.x + btnSave.width + 5, btnSave.y, "Load Song", function(){
             loadSong(_song.song, _song.category, _song.difficulty);
         }); tabMENU.add(btnLoad);
-        btnLoad.setSize(Std.int((MENU.width / 2) - 8), Std.int(btnLoad.height));
-        btnLoad.setGraphicSize(Std.int((MENU.width / 2) - 8), Std.int(btnLoad.height));
+        btnLoad.setSize(Std.int((MENU.width / 3) - 5), Std.int(btnLoad.height));
+        btnLoad.setGraphicSize(Std.int((MENU.width / 3) - 5), Std.int(btnLoad.height));
         btnLoad.centerOffsets();
         btnLoad.label.fieldWidth = btnLoad.width;
+
+        var btnImport:FlxButton = new FlxButton(btnLoad.x + btnLoad.width + 5, btnLoad.y, "Import Song", function(){
+            getFile(function(str){});
+        }); tabMENU.add(btnImport);
+        btnImport.setSize(Std.int((MENU.width / 3) - 8), Std.int(btnImport.height));
+        btnImport.setGraphicSize(Std.int((MENU.width / 3) - 8), Std.int(btnImport.height));
+        btnImport.centerOffsets();
+        btnImport.label.fieldWidth = btnImport.width;
 
         var line1 = new FlxSprite(btnSave.x, btnSave.y + btnSave.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line1);
 
@@ -1241,10 +1263,10 @@ class ChartEditorState extends MusicBeatState{
         txtAspect = new FlxUIInputText(lblAspect.x + lblAspect.width + 5, lblAspect.y, Std.int(MENU.width * 0.3), "", 8); tabMENU.add(txtAspect);
         txtAspect.name = "CHARACTER_ASPECT";
 
-        chkLEFT = new FlxUICheckBox(txtAspect.x + txtAspect.width + 5, txtAspect.y - 1, null, null, "Look Left?", 100); tabMENU.add(chkLEFT);
+        chkLEFT = new FlxUICheckBox(txtAspect.x + txtAspect.width + 5, txtAspect.y - 1, null, null, "FlipX", 100); tabMENU.add(chkLEFT);
 
         var lblCharX = new FlxText(lblAspect.x, lblAspect.y + lblAspect.height + 5, 0, "X:", 8); tabMENU.add(lblCharX);
-        stpCharX = new FlxUINumericStepper(lblCharX.x + lblCharX.width + 5, lblCharX.y, 0.1, 0, -999, 999, 1); tabMENU.add(stpCharX);
+        stpCharX = new FlxUINumericStepper(lblCharX.x + lblCharX.width + 5, lblCharX.y, 1, 0, -999, 999, 1); tabMENU.add(stpCharX);
         stpCharX.name = "CHARACTER_X";
 
         var lblCharSize = new FlxText(stpCharX.x + stpCharX.width + 5, stpCharX.y, 0, "Size:", 8); tabMENU.add(lblCharSize);
@@ -1252,7 +1274,7 @@ class ChartEditorState extends MusicBeatState{
         stpCharSize.name = "CHARACTER_SIZE";
 
         var lblCharY = new FlxText(lblCharX.x, lblCharX.y + lblCharX.height + 5, 0, "Y:", 8); tabMENU.add(lblCharY);
-        stpCharY = new FlxUINumericStepper(lblCharY.x + lblCharY.width + 5, lblCharY.y, 0.1, 0, -999, 999, 1); tabMENU.add(stpCharY);
+        stpCharY = new FlxUINumericStepper(lblCharY.x + lblCharY.width + 5, lblCharY.y, 1, 0, -999, 999, 1); tabMENU.add(stpCharY);
         stpCharY.name = "CHARACTER_Y";
 
         var lblCharLayout = new FlxText(stpCharY.x + stpCharY.width + 5, stpCharY.y, 0, "Layout:", 8); tabMENU.add(lblCharLayout);
@@ -1799,7 +1821,7 @@ class ChartEditorState extends MusicBeatState{
                     _song.sectionStrums[curStrum].notes[curSection].changeKeys = check.checked;
                     updateSection();
                 }
-                case "Look Left?":{
+                case "FlipX":{
                     if(_song.characters[Std.int(stpCharID.value)] != null){
                         _song.characters[Std.int(stpCharID.value)][3] = check.checked;
                     }

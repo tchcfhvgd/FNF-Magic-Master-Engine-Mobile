@@ -1,5 +1,6 @@
 package states;
 
+import states.editors.XMLEditorState;
 import flixel.input.mouse.FlxMouse;
 #if desktop
 import Discord.DiscordClient;
@@ -186,7 +187,7 @@ class MainMenuState extends MusicBeatState{
 					if(FlxG.keys.justPressed.ONE){states.editors.ChartEditorState.editChart();}
 					if(FlxG.keys.justPressed.TWO){states.editors.StageEditorState.editStage();}
 					if(FlxG.keys.justPressed.THREE){states.editors.StrumLineEditorState.editStrumLine();}
-					if(FlxG.keys.justPressed.FOUR){states.editors.ChartEditorState.editChart();}
+					if(FlxG.keys.justPressed.FOUR){states.editors.XMLEditorState.editXML();}
 				}
 			}
 

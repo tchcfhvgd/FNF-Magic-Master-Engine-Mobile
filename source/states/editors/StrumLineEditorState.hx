@@ -47,18 +47,17 @@ class StrumLineEditorState extends MusicBeatState {
     public static var _strum:StrumLineNoteJSON = null;
     var _file:FileReference = null;
 
-    var strums:StrumLine = null;
-
-    public static var image:String = "NOTE_assets";
-    public static var typeStrum:String = "Arrows";
-    public static var typeNote:String = "Default";
-
-    public var curStrum:Int = 0;
-    public var curAnim:String = "static";
+    private static var image:String = "NOTE_assets";
+    private static var typeStrum:String = "Arrows";
+    private static var typeNote:String = "Default";
+    private static var size:Int = 110;
 
     var MENU:FlxUITabMenu;
 
-    var backStage:Stage = null;
+    var baseStrums:StrumStaticNotes;
+    var editStrums:StrumStaticNotes;
+
+    var backStage:Stage;
 
     public static function editStrumLine(strum:StrumLineNoteJSON = null, image:String = null, type:String = null){
         if(strum != null){
@@ -70,9 +69,8 @@ class StrumLineEditorState extends MusicBeatState {
         FlxG.switchState(new StrumLineEditorState());
     }
 
-    var testNote:StrumNote;
-    var back:FlxSprite;
     override function create(){
+        size = Std.int(FlxG.width / 2);
         Conductor.songPosition = 0;
 
         FlxG.mouse.visible = true;
@@ -80,22 +78,16 @@ class StrumLineEditorState extends MusicBeatState {
         backStage = new Stage();
         add(backStage);
 
-        MENU = new FlxUITabMenu(null, [{name: "General", label: 'General'}], true);
+        MENU = new FlxUITabMenu(null, [{name: "General", label: 'General'},{name: "Animation", label: 'Animation'}], true);
         MENU.resize(250, Std.int(FlxG.height));
 		MENU.x = FlxG.width - MENU.width;
         addMENUTABS();
 
-        strums = new StrumLine((((FlxG.width - MENU.width) / 2) - (FlxG.width / 4)), 50, 4, (FlxG.width / 2));
-        strums.typeStrum = "Playing";
-        //add(strums);
+        baseStrums = new StrumStaticNotes((((FlxG.width - MENU.width) / 2) - (size / 2)), 150, 4, size);
+        editStrums = new StrumStaticNotes((((FlxG.width - MENU.width) / 2) - (size / 2)), 150, 4, size);
 
-        testNote = new StrumNote(_strum.staticNotes[0]); testNote.setPosition(100, 100);
-        back = new FlxSprite(testNote.x, testNote.y).makeGraphic(Std.int(testNote.width), Std.int(testNote.height));
-
-        add(back);
-        add(testNote);
-
-        changeStrumNotes(4);
+        add(baseStrums);
+        add(editStrums);
 
         add(MENU);
     }
@@ -103,35 +95,14 @@ class StrumLineEditorState extends MusicBeatState {
     override function update(elapsed:Float){
 		super.update(elapsed);
 
-        strums.staticNotes.forEach(function (daStrum:StrumNote) {
-            daStrum.alpha = 0.2;
-            if(daStrum.ID == curStrum){
-                daStrum.alpha += 0.3;
-
-                if(daStrum.animation.curAnim.name == curAnim){
-                    daStrum.alpha += 0.3;
-                }
-            }
-        });
-
-        if(testNote.animation.finished && testNote.animation.curAnim.name != "static"){
-            testNote.playAnim("static");
-        }
-
-        if(FlxG.keys.pressed.SHIFT){
-            if(FlxG.keys.justPressed.SPACE){testNote.playAnim("confirm");}
-        }else{
-            if(FlxG.keys.justPressed.SPACE){testNote.playAnim("pressed");}
-        }
-        
-        if(FlxG.keys.pressed.E){testNote.setGraphicSize(Std.int(testNote.width += 5), Std.int(testNote.height += 5));}
-        if(FlxG.keys.pressed.Q){testNote.setGraphicSize(Std.int(testNote.width -= 5), Std.int(testNote.height -= 5));}
+        baseStrums.forEach(function(daNote:StrumNote){daNote.alpha = 0.5;});
 
         if(Controls.getBind("Menu_Back", "JUST_PRESSED")){FlxG.switchState(new MainMenuState());}
     }
 
     public function changeStrumNotes(keys:Int) {
-        //strums.changeKeyNumber(keys, (FlxG.width / 2));
+        baseStrums.changeKeys(keys);
+        editStrums.changeKeys(keys);
     }
 
     var stpKeys:FlxUINumericStepperCustom;
@@ -145,6 +116,20 @@ class StrumLineEditorState extends MusicBeatState {
         var lblKeys = new FlxText(lblGeneral.x, lblGeneral.y + lblGeneral.height + 10, 0, "KEYS: ", 8); tabGENERAL.add(lblKeys);
         stpKeys = new FlxUINumericStepperCustom(lblKeys.x + lblKeys.width, lblKeys.y, 1, 4, 1, 10); tabGENERAL.add(stpKeys);
         stpKeys.name = "STRUMSEC_KEYS";
+
+        var lblImage = new FlxText(lblKeys.x, lblKeys.y + lblKeys.height + 10, 0, "Image"); tabGENERAL.add(lblImage);
+        var ddlImage = new FlxUIDropDownMenu(lblImage.x, lblImage.y + lblImage.height + 5, FlxUIDropDownMenu.makeStrIdLabelArray(["NONE"], true)); tabGENERAL.add(ddlImage);
+        ddlImage.setSize(500, 30);
+        ddlImage.name = "Image";
+
+        var lblTypeImage = new FlxText(ddlImage.x, ddlImage.y + ddlImage.height + 10, 0, "Type Image"); tabGENERAL.add(lblTypeImage);
+        var ddlTypeImage = new FlxUIDropDownMenu(lblTypeImage.x, lblTypeImage.y + lblTypeImage.height + 5, FlxUIDropDownMenu.makeStrIdLabelArray(["Arrows"], true)); tabGENERAL.add(ddlTypeImage);
+        ddlTypeImage.name = "TypeImage";
+
+        var lblTypeNote = new FlxText(ddlTypeImage.x, ddlTypeImage.y + ddlTypeImage.height + 10, 0, "Type Arrow"); tabGENERAL.add(lblTypeNote);
+        var ddlTypeNote = new FlxUIDropDownMenu(lblTypeNote.x, lblTypeNote.y + lblTypeNote.height + 5, FlxUIDropDownMenu.makeStrIdLabelArray(["Default"], true)); tabGENERAL.add(ddlTypeNote);
+        ddlTypeNote.name = "TypeNote";
+
 
         MENU.addGroup(tabGENERAL);
 

@@ -1,5 +1,9 @@
 package;
 
+import flixel.util.*;
+import flixel.addons.ui.*;
+import flixel.addons.ui.interfaces.*;
+
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -32,6 +36,7 @@ typedef StrumLineNoteJSON = {
 typedef NoteJSON = {
     var colorHSL:Array<Int>;
     var arrayAnims:Array<NoteAnimJSON>;
+    var chAnim:String;
 
     var alpha:Float;
     var scale:Int;
@@ -41,7 +46,6 @@ typedef NoteJSON = {
 typedef NoteAnimJSON = {
     var anim:String;
     var symbol:String;
-    var offsets:Array<Int>;
     var indices:Array<Int>;
 
     var fps:Int;
@@ -54,15 +58,18 @@ typedef NoteData = {
 }
 
 class StrumLine extends FlxGroup{
+    public static inline var HIT_EVENT:String = "StrumLine_OnHit"; 
+    public static inline var MISS_EVENT:String = "StrumLine_OnMiss"; 
+
     public var staticNotes:StrumStaticNotes;
     public var notes:FlxTypedGroup<Note>;
 
     public var scrollSpeed:Float = 1;
     public var bpm:Float = 150;
 
-    public var typeStrum:String = "BotPlay"; //BotPlay, Playing
+    public var typeStrum:String = "BotPlay"; //BotPlay, Playing, Charting
 
-    public var strumSize:Float = 110;
+    public var strumSize:Int = 110;
 
     public var JSONSTRUM:StrumLineNoteJSON;
     public var image:String = "NOTE_assets";
@@ -70,19 +77,14 @@ class StrumLine extends FlxGroup{
 
     public var keys:Int = 0;
 
-    private var back:FlxSprite;
-
-    public function new(x:Float, y:Float, keys:Int, size:Float){
+    public function new(x:Float, y:Float, keys:Int, size:Int){
         this.strumSize = size;
         this.keys = keys;
         super();
 
-        back = new FlxSprite(x, y).makeGraphic(Std.int(size), 50, FlxColor.WHITE);
-        add(back);
-
         JSONSTRUM = cast Json.parse(Assets.getText(Paths.strumJSON(keys)));
 
-        staticNotes = new StrumStaticNotes(x, y, keys, Std.int(size / keys));
+        staticNotes = new StrumStaticNotes(x, y, keys, strumSize);
         add(staticNotes);
 
         notes = new FlxTypedGroup<Note>();
@@ -96,15 +98,13 @@ class StrumLine extends FlxGroup{
         changeKeyNumber(keys, strumSize, true);
     }
 
-    public function changeKeyNumber(keys:Int, size:Float, ?force:Bool = false){
+    public function changeKeyNumber(keys:Int, size:Int, ?force:Bool = false){
         this.strumSize = size;
         this.keys = keys;
 
-        back.makeGraphic(Std.int(size), 50, FlxColor.WHITE);
-
         JSONSTRUM = cast Json.parse(Assets.getText(Paths.strumJSON(keys)));
         
-        staticNotes.noteSize = Std.int(size / keys);
+        staticNotes.size = strumSize;
         staticNotes.changeKeys(keys, force);
     }
 
@@ -126,8 +126,9 @@ class StrumLine extends FlxGroup{
                     var daOtherData:Array<NoteData> = strumNotes[5];
     
                     //noteJSON:NoteJSON, typeCheck:String, strumTime:Float, noteData:Int, ?specialType:Int = 0, ?otherData:Array<NoteData>
-                    var swagNote:Note = new Note(JSONSTRUM.gameplayNotes[daNoteData], daStrumTime, daNoteData, daLength, daHits, daSpecialData, daOtherData);
-                    swagNote.setGraphicSize(staticNotes.noteSize, staticNotes.noteSize);
+                    var swagNote:Note = new Note(daStrumTime, daNoteData, daLength, daHits, daSpecialData, daOtherData);
+                    swagNote.loadGraphicNote(JSONSTRUM.gameplayNotes[daNoteData]);
+                    swagNote.setGraphicSize(Std.int(staticNotes.size / keys));
                     swagNote.updateHitbox();
                     notes.add(swagNote);
 
@@ -136,13 +137,14 @@ class StrumLine extends FlxGroup{
                         for(sNote in 0...Math.floor(daLength / (Conductor.stepCrochet * 0.25)) + 2){
                             var sStrumTime = daStrumTime + (Conductor.stepCrochet / 2) + ((Conductor.stepCrochet * 0.25) * sNote);
 
-                            var nSustain:Note = new Note(JSONSTRUM.gameplayNotes[daNoteData], sStrumTime, daNoteData, daLength, daHits, daSpecialData, daOtherData);
+                            var nSustain:Note = new Note(sStrumTime, daNoteData, daLength, daHits, daSpecialData, daOtherData);
+                            nSustain.loadGraphicNote(JSONSTRUM.gameplayNotes[daNoteData]);
 
                             if(cSusNote > 1){nSustain.typeNote = "Sustain";}
                             else{nSustain.typeNote = "SustainEnd";}
 
-                            var nHeight:Int = Std.int(getScrollSpeed() * staticNotes.noteSize / (bpm * 2.3 / 150));
-                            nSustain.setGraphicSize(staticNotes.noteSize, nHeight);
+                            var nHeight:Int = Std.int(getScrollSpeed() * staticNotes.size / (bpm * 2.3 / 150));
+                            nSustain.setGraphicSize(Std.int(staticNotes.size / keys), nHeight);
                             nSustain.updateHitbox();
 
                             notes.add(nSustain);
@@ -184,12 +186,12 @@ class StrumLine extends FlxGroup{
 
                 daNote.visible = staticNotes.members[daNote.noteData].visible;
                 if(daNote.typeNote == "Sustain" || daNote.typeNote == "SustainEnd"){
-                    daNote.x = staticNotes.members[daNote.noteData].x + daNote.width;
-                    daNote.alpha = staticNotes.members[daNote.noteData].alpha / 2;
+                    daNote.alpha = staticNotes.members[daNote.noteData].alpha * (daNote._alpha / 2) / 1;
+                    daNote.x = staticNotes.members[daNote.noteData].x;
                 }else{
+                    daNote.alpha = staticNotes.members[daNote.noteData].alpha * daNote._alpha / 1;
                     daNote.x = staticNotes.members[daNote.noteData].x;
                     daNote.angle = staticNotes.members[daNote.noteData].angle;
-                    daNote.alpha = staticNotes.members[daNote.noteData].alpha;
                 }   
             }else{
                 daNote.visible = false;
@@ -197,7 +199,7 @@ class StrumLine extends FlxGroup{
 
             if(daNote.noteStatus == "Pressed"){
                 if(pre_TypeStrums == "All" || pre_TypeStrums == "OnlyOtherStrums"){
-                    staticNotes.animNote(daNote.noteData, "confirm");
+                    staticNotes.members[daNote.noteData].playAnim("confirm");
                 }
 
                 if(daNote.noteHits > 0 && daNote.noteLength > 20){
@@ -232,7 +234,7 @@ class StrumLine extends FlxGroup{
             notes.forEachAlive(function(daNote:Note){
                 if(daNote.noteStatus == "CanBeHit" && ((jPressArray[daNote.noteData] && daNote.typeNote == "Normal") || (holdArray[daNote.noteData] && (daNote.typeNote == "Sustain" || daNote.typeNote == "SustainEnd")))){
                     if(pre_TypeStrums == "All" || pre_TypeStrums == "OnlyOtherStrums"){
-                        staticNotes.animNote(daNote.noteData, "confirm");
+                        staticNotes.members[daNote.noteData].playAnim("confirm");
                     }
     
                     daNote.noteStatus = "Pressed";
@@ -248,7 +250,7 @@ class StrumLine extends FlxGroup{
             notes.forEachAlive(function(daNote:Note){
                 if(daNote.strumTime <= Conductor.songPosition){
                     if(pre_TypeStrums == "All" || pre_TypeStrums == "OnlyOtherStrums"){
-                        staticNotes.animNote(daNote.noteData, "confirm");
+                        staticNotes.members[daNote.noteData].playAnim("confirm");
                     }
     
                     daNote.noteStatus = "Pressed";
@@ -257,7 +259,7 @@ class StrumLine extends FlxGroup{
         }else if(typeStrum == "Charting"){
             notes.forEachAlive(function(daNote:Note){
                 if(daNote.noteStatus == "CanBeHit"){
-                    staticNotes.animNote(daNote.noteData, "confirm");
+                    staticNotes.members[daNote.noteData].playAnim("confirm");
                 }
             });
         }
@@ -279,43 +281,32 @@ class StrumStaticNotes extends FlxTypedGroup<StrumNote> {
     public var x:Float = 0;
     public var y:Float = 0;
 
-    public var curKeys:Int = 4;
-    public var noteSize:Int = 110;
-
+    public var size:Int = 110;
+    public var keys:Int = 0;
     public var JSON:Array<NoteJSON>;
 
-    public function new(x:Float, y:Float, keys:Int = 4, ?size:Int){
+    public function new(x:Float, y:Float, keys:Int = 4, ?size:Int = 110){
         this.x = x;
         this.y = y;
-        if(size != null){noteSize = size;}
+        this.size = size;
         super();
         
-        changeKeys(curKeys, true);
+        changeKeys(keys);
     }
 
-    public function animNote(noteId:Int, anim:String){
-        this.members[noteId].playAnim(anim, true);
-    }
-
-    public function setNoteGraphic(noteId:Int, specialId:Int = 0, ?newJSON:NoteJSON, ?newTypeCheck:String){
-        var curJSON:NoteJSON = newJSON;
-        if(curJSON == null){curJSON = JSON[noteId];}
-
-        var curType:String = newTypeCheck;
-
-        this.members[noteId].loadGraphicNote(curJSON, curType);
-    }
-
-    public function changeKeys(keys:Int, ?force:Bool = false){
-        if(curKeys != keys || force){
-            curKeys = keys;
+    public function changeKeys(nKeys:Int, ?force:Bool = false, ?ns:Int = 0){
+        if((this.keys != nKeys && nKeys > 0) || force){
+            this.keys = nKeys;
+            if(ns != 0){size = ns;}
+            var nSize:Int = Math.floor(size / keys);
             
-            var newJSON:StrumLineNoteJSON = cast Json.parse(Assets.getText(Paths.strumJSON(curKeys)));
+            var newJSON:StrumLineNoteJSON = cast Json.parse(Assets.getText(Paths.strumJSON(keys)));
             JSON = newJSON.staticNotes;
     
             if(this.members.length > 0){
                 for(i in 0...this.members.length){
                     var strum = this.members[i];
+                    strum.onDebug = true;
 
                     FlxTween.tween(strum, {alpha: 0, y: strum.y + (strum.height / 2)}, (0.5 * (i + 1) / this.members.length), {
                         ease: FlxEase.quadInOut,
@@ -326,48 +317,38 @@ class StrumStaticNotes extends FlxTypedGroup<StrumNote> {
                 }
             }
             
-            for(i in 0...curKeys){
+            for(i in 0...keys){
                 var strum:StrumNote = new StrumNote(JSON[i]);
-                strum.setPosition(this.x + (noteSize * i), y - (noteSize / 2));
+                strum.setPosition(this.x + (nSize * i), y - (nSize / 2));
                 strum.ID = i;
                 strum.alpha = 0;
-                strum.setGraphicSize(noteSize);
+                strum.setGraphicSize(nSize);
                 add(strum);
 
-                FlxTween.tween(strum, {alpha: 1, y: y}, (0.5 * (i + 1) / curKeys), {ease: FlxEase.quadInOut});
+                FlxTween.tween(strum, {alpha: strum._alpha, y: y}, (0.5 * (i + 1) / keys), {ease: FlxEase.quadInOut});
             }
         }
     }
 }
 
 class StrumNote extends FlxSprite{
-    public var animOffsets:Map<String, Array<Dynamic>>;
     public var nColor:Array<Int> = [0xffffff, 1, 1];
+    public var _alpha:Float = 1;
 
-	public function new(JSON:NoteJSON, ?typeImage:String = "NOTE_assets", ?newTypeNote:String = "Default"){
+    public var onDebug:Bool = false;
+
+	public function new(JSON:NoteJSON = null, newTypeNote:String = "Default", typeImage:String = "NOTE_assets"){
         super();
 
-        #if (haxe >= "4.0.0")
-		    animOffsets = new Map();
-		#else
-		    animOffsets = new Map<String, Array<Dynamic>>();
-		#end
-
-        alpha = JSON.alpha;
-
-        loadGraphicNote(JSON, typeImage, newTypeNote);
-
-        if(JSON.antialiasing){
-            antialiasing = PreSettings.getPreSetting("Antialiasing");
-        }else{
-            antialiasing = false;
-        }
-
+        loadGraphicNote(JSON, newTypeNote, typeImage);
         playAnim("static");
 	}
 
-    public function loadGraphicNote(newJSON:NoteJSON, ?newImage:String = "NOTE_assets", ?newTypeNote:String = "Default"){
-        animOffsets.clear();
+    public function loadGraphicNote(newJSON:NoteJSON = null, newTypeNote:String = "Default", newImage:String = "NOTE_assets"){
+        if(newJSON == null){
+            var cJSON:StrumLineNoteJSON = cast Json.parse(Assets.getText(Paths.strumJSON(4)));
+            newJSON = cJSON.staticNotes[0];
+        }
 
         frames = Paths.getNoteAtlas(newImage, newTypeNote);
 
@@ -378,33 +359,16 @@ class StrumNote extends FlxSprite{
             }else{
                 animation.addByPrefix(anim.anim, anim.symbol, anim.fps, anim.loop);
             }
-
-            if(anim.offsets != null && anim.offsets.length > 1){
-                animOffsets[anim.anim] = [anim.offsets[0], anim.offsets[1]];
-                trace("Offsetting: " + anim.offsets[0] + ", " + anim.offsets[1]);
-            }
         }
         
         if(newJSON.colorHSL != null){nColor = newJSON.colorHSL;}
-    }
+        antialiasing = newJSON.antialiasing && PreSettings.getPreSetting("Antialiasing");
+        _alpha = newJSON.alpha;
 
-    override function update(elapsed:Float){
-		super.update(elapsed);
-	}
+    }
 
     public function playAnim(anim:String, ?force:Bool = false){
 		animation.play(anim, force);
-
-        updateHitbox();
-
-        var daOffset = animOffsets.get(anim);
-        if(animOffsets.exists(anim)){
-            offset.set(daOffset[0], daOffset[1]);
-        }else{
-            offset.set(0, 0);
-        }
-
-        trace(daOffset[0], daOffset[1]);
 
         if(anim != "static"){
             this.color = FlxColor.fromHSL(nColor[0], nColor[1], nColor[2]);
@@ -413,10 +377,13 @@ class StrumNote extends FlxSprite{
         }
 	}
 
-    override public function setGraphicSize(Width:Int = 0, Height:Int = 0) {
-        super.setGraphicSize(Width, Height);
+    override function update(elapsed:Float){
+        this.updateHitbox();
+		super.update(elapsed);
+	}
 
-        updateHitbox();
+    override public function setGraphicSize(Width:Int = 0, Height:Int = 0):Void{
+        super.setGraphicSize(Width, Height);
     }
 }
 
@@ -424,6 +391,7 @@ class Note extends StrumNote {
     //General Variables
     public var strumTime:Float = 1;
 
+    public var canMerge:Bool = false; // Determinate if the note Can be Merge with surrounding notes
     public var noteLength:Float = 0;
     public var noteHits:Int = 0; // Determinate if MultiTap o Sustain
 
@@ -433,11 +401,10 @@ class Note extends StrumNote {
     public var specialData:Int = 0;
 	public var otherData:Array<NoteData> = [];
 
+    public var chAnim:String = null;
+
     //Other Variables
     public var noteStatus:String = "Spawned"; //status: Spawned, CanBeHit, Pressed, Late, MultiTap
-
-    //Debug Variables
-    public var onEdit:Bool = false;
 
     public static function getStyles():Array<String>{
         var styleArray:Array<String> = [];
@@ -460,22 +427,14 @@ class Note extends StrumNote {
         return styleArray;
     }
 
-	public function new(newJSON:NoteJSON, strumTime:Float, noteData:Int, ?noteLength:Float = 0, ?noteHits:Int = 0, ?specialType:Int = 0, ?otherData:Array<NoteData>){
+	public function new(strumTime:Float, noteData:Int, ?noteLength:Float = 0, ?noteHits:Int = 0, ?specialType:Int = 0, ?otherData:Array<NoteData>){
         this.strumTime = strumTime;
 		this.noteData = noteData;
         this.noteLength = noteLength;
         this.noteHits = noteHits;
         this.specialData = specialType;
         this.otherData = otherData;
-        super(newJSON);
-
-        #if (haxe >= "4.0.0")
-		    animOffsets = new Map();
-		#else
-		    animOffsets = new Map<String, Array<Dynamic>>();
-		#end
-
-        loadGraphicNote(newJSON);
+        super();
 	}
 
     override function update(elapsed:Float){
@@ -494,5 +453,17 @@ class Note extends StrumNote {
         if(strumTime < Conductor.songPosition - Conductor.safeZoneOffset && noteStatus != "Pressed"){
             noteStatus = "Late";
         }
+	}
+
+    override public function loadGraphicNote(newJSON:NoteJSON = null, newTypeNote:String = "Default", newImage:String = "NOTE_assets"){
+        if(newJSON != null){chAnim = newJSON.chAnim;}
+
+        super.loadGraphicNote(newJSON, newTypeNote, newImage);
+    }
+
+    override public function playAnim(anim:String, ?force:Bool = false){
+		animation.play(anim, force);
+
+        this.color = FlxColor.fromHSL(nColor[0], nColor[1], nColor[2]);
 	}
 }
