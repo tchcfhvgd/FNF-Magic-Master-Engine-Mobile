@@ -16,8 +16,6 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-import ListStuff;
-
 using StringTools;
 
 typedef CharacterFile = {
@@ -31,6 +29,8 @@ typedef CharacterFile = {
 	var onRight:Bool;
 	var singDuration:Float;
 	var nAntialiasing:Bool;
+
+	var danceIdle:Bool;
 
 	var anims:Array<AnimArray>;
 }
@@ -46,6 +46,10 @@ typedef AnimArray = {
 }
 
 class Character extends FlxSprite{
+	public static function getSkin(character:String):String {
+		return "Default";
+	}
+
 	public static var cDefault:String = 'Boyfriend';
 
 	public var curCharacter:String = cDefault;
@@ -57,7 +61,7 @@ class Character extends FlxSprite{
 	public var specialAnim:Bool = false;
 	public var dancedIdle:Bool = false;
 
-	private var onRight = true;
+	public var onRight = true;
 
 	public var healthIcon:String = 'face';
 	public var animationsArray:Array<AnimArray> = [];
@@ -99,14 +103,14 @@ class Character extends FlxSprite{
         return charArray;
 	}
 
-	public function new(x:Float, y:Float, ?character:String = 'Boyfriend', ?category:String = 'Default', ?type:String = "NORMAL", ?turnRight:Bool = true){
+	public function new(x:Float, y:Float, ?character:String = 'Boyfriend', ?category:String = 'Default', ?type:String = "NORMAL", ?toRight:Bool = true, ?nScale:Int = 1){
 		super(x, y);
 
 		antialiasing = true;
 
 		curCharacter = character;
 
-		curSkin = ListStuff.Skins.getSkin(curCharacter);
+		curSkin = Character.getSkin(curCharacter);
 		curCategory = category;
 		curType = type;
 
@@ -128,13 +132,7 @@ class Character extends FlxSprite{
 				trace('Image: ' + imageFile);
 				trace('Icon: ' + jCharacter.healthicon);
 
-				var stuffPath = Characters.getStuffPath(jCharacter.image, curCharacter);
-				var spritePath = Characters.getSpritePath(jCharacter.image, curCharacter);
-
-				trace('Stuff Path: ' + stuffPath);
-				trace('Sprite Path: ' + spritePath);
-
-				frames = Characters.getAtlas(spritePath, stuffPath);
+				frames = Paths.getCharacterAtlas(curCharacter, imageFile);
 
 				positionArray = jCharacter.position;
 				cameraPosition = jCharacter.camera;
@@ -147,9 +145,12 @@ class Character extends FlxSprite{
 					noAntialiasing = true;
 				}
 
-				this.onRight = jCharacter.onRight;
+				this.scale.set(nScale, nScale);
 
-				antialiasing = !noAntialiasing;
+				this.onRight = jCharacter.onRight;
+				this.dancedIdle = jCharacter.danceIdle;
+
+				this.antialiasing = !noAntialiasing;
 
 				animationsArray = jCharacter.anims;
 				if(animationsArray != null && animationsArray.length > 0) {
@@ -171,6 +172,8 @@ class Character extends FlxSprite{
 				dance();
 			}
 		}
+
+		turnLook(toRight);
 	}
 
 	override function update(elapsed:Float){
@@ -179,12 +182,10 @@ class Character extends FlxSprite{
 				holdTimer -= elapsed;
 			}else{
 				holdTimer = 0;
-				dance();
 			}
 
 			if(specialAnim && animation.curAnim.finished){
 				specialAnim = false;
-				dance();
 			}
 
 			if(animation.curAnim.finished && animation.getByName(animation.curAnim.name + '-loop') != null){
@@ -200,7 +201,7 @@ class Character extends FlxSprite{
 	public function dance(){
 		if(!specialAnim){
 			if(dancedIdle){
-				if(animation.curAnim.name == 'danceRight'){
+				if(animation.curAnim != null && animation.curAnim.name == 'danceRight'){
 					playAnim(false, 'danceLeft');
 				}else{
 					playAnim(false, 'danceRight');
@@ -221,5 +222,12 @@ class Character extends FlxSprite{
 
 	public function quickAnimAdd(name:String, anim:String){
 		animation.addByPrefix(name, anim, 24, false);
+	}
+
+	public function turnLook(toRight:Bool = true){
+		if((toRight && !this.onRight) || (!toRight && this.onRight)){
+			this.flipX = !this.flipX;
+			this.onRight = !this.onRight;
+		}
 	}
 }

@@ -14,9 +14,15 @@ import lime.utils.Assets as LimeAssets;
 import lime.utils.AssetLibrary;
 import lime.utils.AssetManifest;
 
-import ListStuff;
-
 import haxe.io.Path;
+
+#if desktop
+import sys.FileSystem;
+import sys.io.File;
+#end
+
+
+using StringTools;
 
 class LoadingState extends MusicBeatState{
 	inline static var MIN_TIME = 1.0;
@@ -57,7 +63,10 @@ class LoadingState extends MusicBeatState{
 		add(logo);
 
 		if(songToLoad == null){songToLoad = PlayState.SongListData.songPlaylist[0];} 
-		trace("Loading: " + songToLoad.song);
+
+		var songName:String = Paths.getFileName(songToLoad.song);
+
+		trace("Loading: " + songName);
 		
 		initSongsManifest().onComplete(
 			function (lib){
@@ -66,7 +75,7 @@ class LoadingState extends MusicBeatState{
 				
 				checkLibrary("shared");
 
-				checkLoadSong(songToLoad.song);
+				checkLoadSong(songName);
 
 				var characters = [];
 				for(char in songToLoad.characters){
@@ -99,27 +108,42 @@ class LoadingState extends MusicBeatState{
 
 	function checkCharacters(path:Array<String>){
 		for(char in path){
-			var sprites = Characters.checkSprites(char);
+			#if desktop
+			if(!Assets.exists('assets/characters/${char}')){char = "Boyfriend";}
 
-			for(sprite in sprites){
-				if (!Assets.cache.hasBitmapData(sprite[1])){
-					var callback = callbacks.add("Character (" + char + "): " + sprite[1]);
-					Assets.loadBitmapData(Std.string(sprite[1])).onComplete(function (_) { callback(); });
-					trace("Cached " + char + " Sprite: " + sprite[1]);
+			for(sprite in FileSystem.readDirectory(FileSystem.absolutePath('assets/characters/${char}/Sprites'))){
+				if(sprite.endsWith(".png")){
+					var sPath:String = 'characters:assets/characters/${char}/Sprites/' + sprite;
+
+					if(!Assets.cache.hasBitmapData(sPath)){
+						var callback = callbacks.add("Character (" + char + "): " + sPath);
+						Assets.loadBitmapData(Std.string(sPath)).onComplete(function (_) { callback(); });
+						trace("Cached [" + char + "] Sprite: " + sPath);
+					}
 				}
 			}
+			#else
+				trace("Error: Doesn't Desktop");
+			#end
 		}
 	}
 
-	function checkLoadSong(path:String){
-		var sounds = Songs.checkAudios(path);
-		for(sound in sounds){
-			if (!Assets.cache.hasSound(Std.string(sound[1]))){
-				var callback = callbacks.add("Song (" + path + "): " + sound[1]);
-				Assets.loadSound(Std.string(sound[1])).onComplete(function (_) { callback(); });
-				trace("Cached " + path + " Sound: " + sound[1]);
+	function checkLoadSong(sName:String){
+		#if desktop
+		for(sound in FileSystem.readDirectory(FileSystem.absolutePath('assets/songs/${sName}/Audio'))){
+			if(sound.endsWith(".ogg")){
+				var sPath:String = 'songs:assets/songs/${sName}/Audio/' + sound;
+
+				if(!Assets.cache.hasSound(Std.string(sPath))){
+					var callback = callbacks.add("Song (" + sName + "): " + sPath);
+					Assets.loadSound(Std.string(sPath)).onComplete(function (_) { callback(); });
+					trace("Cached [" + sName + "] Sound: " + sPath);
+				}
 			}
 		}
+		#else
+			trace("Error: Doesn't Desktop");
+		#end
 	}
 	
 	function checkLibrary(library:String){

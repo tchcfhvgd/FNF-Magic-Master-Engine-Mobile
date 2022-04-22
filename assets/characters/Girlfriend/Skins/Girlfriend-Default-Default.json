@@ -8,6 +8,8 @@
 	
 	"xFlip": true,
 	"scale": 1.1,
+
+	"danceIdle": true,
     
     "anims":[
         {
@@ -15,8 +17,6 @@
             "symbol": "GFB_Dancing_Beat",
             "fps": 24,
 
-			"offsets_right": [0, -9],
-            "offsets_left": [0, -9],
 			"indices": [
 				30,
 				0,
@@ -44,8 +44,6 @@
 			"symbol": "GFB_Dancing_Beat",
 			"fps": 24,
 
-			"offsets_right": [0, -9],
-            "offsets_left": [0, -9],
 			"indices": [
 				15,
 				16,

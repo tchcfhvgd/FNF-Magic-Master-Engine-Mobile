@@ -1,6 +1,5 @@
 package;
 
-import ListStuff.Songs;
 import Section.SwagSection;
 import Section.SwagGeneralSection;
 import haxe.Json;
@@ -108,16 +107,33 @@ class Song{
 
 		switch(typeChart){
 			default:{ //Magic Charts
-				if(aSong.get("difficulty") == null){aSong.set("difficulty", sName.split("-")[2]);}
-				if(aSong.get("category") == null){aSong.set("category", sName.split("-")[1]);}
 				if(aSong.get("strumToPlay") == null){aSong.set("strumToPlay", 1);}
 				if(aSong.get("uiStyle") == null){aSong.set("uiStyle", "Default");}
 				
+				if(aSong.get("difficulty") == null){
+					if(sName.split("-")[2] != null){
+						aSong.set("difficulty", sName.split("-")[2]);
+					}else{
+						aSong.set("difficulty", "Normal");
+					}
+				}
+				if(aSong.get("category") == null){
+					if(sName.split("-")[1] != null){
+						aSong.set("category", sName.split("-")[1]);
+					}else{
+						aSong.set("category", "Normal");
+					}
+				}
+
 
 				if(aSong.get("voices") == null){
 					if(aSong.get("needsVoices") != null){
 						if(aSong.get("needsVoices") == true){
-							aSong.set("voices", ["Default"]);
+							if(aSong.get("doubleVoices") == true){
+								aSong.set("voices", ["Default_1", "Default_2"]);
+							}else{
+								aSong.set("voices", ["Default"]);
+							}
 						}else{
 							aSong.set("voices", []);
 						}

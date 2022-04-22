@@ -290,6 +290,20 @@ class PlayState extends MusicBeatState {
 		for(i in 0...songData.sectionStrums.length){
 			var strumLine = new StrumLine(5 + (lastStrum != null ? 55 + lastStrum.strumSize : 0), 30, songData.sectionStrums[i].keys, Std.int(FlxG.width / 3));
 			
+			strumLine.onHIT = function(note:Note) {
+				var char = SONG.sectionStrums[i].charToSing;
+				if(SONG.sectionStrums[i].notes[curSection].changeSing){char = SONG.sectionStrums[i].notes[curSection].charToSing;}
+
+				for(i in char){
+					var char:Character = stage.getCharacterById(i);
+
+					if(char != null){
+						char.playAnim(false, note.chAnim, true);
+						char.holdTimer = FlxG.elapsed * 10;
+					}
+				}
+			}
+
 			lastStrum = strumLine;
 			strumLine.scrollSpeed = songData.speed;
 			strumLine.bpm = songData.bpm;
@@ -361,29 +375,10 @@ class PlayState extends MusicBeatState {
 		}
 
 		if(FlxG.keys.justPressed.SEVEN){
-			FlxG.switchState(new states.editors.ChartEditorState());
+			states.editors.ChartEditorState.editChart(SONG);
 		}
 
 		if(health > 2){health = 2;}
-
-		for(strum in strumsGroup){
-			strum.notes.forEachDead(function(daNote:Note){
-				var char = SONG.sectionStrums[strum.ID].charToSing;
-				if(SONG.sectionStrums[strum.ID].notes[curSection].changeSing){char = SONG.sectionStrums[strum.ID].notes[curSection].charToSing;}
-
-				for(i in char){
-					var char:Character = stage.getCharacterById(i);
-
-					if(char != null){
-						char.playAnim(false, daNote.chAnim, true);
-						char.holdTimer = elapsed * 10;
-					}
-				}
-
-                strum.notes.remove(daNote, true);
-                daNote.destroy();
-			});
-		}
 
 		if(startingSong){
 			if(startedCountdown){
@@ -413,37 +408,101 @@ class PlayState extends MusicBeatState {
 		if(!pre_OnlyNotes){
 			if(generatedMusic && PlayState.SONG.generalSection[Std.int(curStep / 16)] != null){
 				var pre_ForceMiddle:Bool = PreSettings.getPreSetting("ForceMiddleScroll");
-				var cSection = PlayState.SONG.generalSection[Std.int(curStep / 16)];
+				var gSection = PlayState.SONG.generalSection[Std.int(curStep / 16)];
 
+				var sLeft:StrumLine = null;
+				var sMiddle:StrumLine = null;
+				var sRight:StrumLine = null;
 				strumsGroup.forEach(function(daStrumline:StrumLine){
+					var cStrum = PlayState.SONG.sectionStrums[daStrumline.ID];
+					var cSection = PlayState.SONG.sectionStrums[daStrumline.ID].notes[Std.int(curStep / 16)];
+
+					var char:Character = stage.getCharacterById(cStrum.charToSing[0]);
+					if(cSection.changeSing && cSection.charToSing != null && cSection.charToSing.length > 0){char = stage.getCharacterById(cSection.charToSing[0]);}
+
+					var getStrumLeftX = 100;
+					var getStrumMiddleX = (FlxG.width / 2) - (daStrumline.strumSize / 2);
+					var getStrumRightX = FlxG.width - daStrumline.strumSize - 100;
+
+					var curX:Float = 0;
 					if(pre_ForceMiddle){
+						curX = getStrumMiddleX;
 						
-					}else{
+						if(daStrumline.ID == curStrum){
+							for(daStrum in daStrumline.staticNotes){daStrum.alpha = FlxMath.lerp(daStrum.alpha, daStrum._alpha, 0.1);}
+							sMiddle = daStrumline;
+						}else{
+							if(cStrum.charToSing.length > 0){
+								for(daStrum in daStrumline.staticNotes){daStrum.alpha = FlxMath.lerp(daStrum.alpha, (0.5 * daStrum._alpha / 1), 0.1);}
 
-					}
-
-					var getMiddleX = (FlxG.width / 2) - (daStrumline.strumSize / 2);
-					for(daStrum in daStrumline.staticNotes){
-						daStrum.x = FlxMath.lerp(daStrum.x, getMiddleX + ((daStrumline.strumSize / daStrumline.keys) * daStrum.ID), 0.1);
-					}
-					if(daStrumline.ID == curStrum){
-						for(daStrum in daStrumline.staticNotes){
-							daStrum.alpha = FlxMath.lerp(daStrum.alpha, daStrum._alpha, 0.1);
-						}
-					}else if(daStrumline.ID == cSection.strumToFocus){
-						for(daStrum in daStrumline.staticNotes){
-							daStrum.alpha = FlxMath.lerp(daStrum.alpha, 0.1, 0.1);
+								if(char.onRight){
+									curX = getStrumLeftX;
+									sLeft = daStrumline;
+								}else{
+									curX = getStrumRightX;
+									sRight = daStrumline;
+								}
+							}else{
+								for(daStrum in daStrumline.staticNotes){daStrum.alpha = FlxMath.lerp(daStrum.alpha, 0, 0.1);}
+							}
 						}
 					}else{
-						for(daStrum in daStrumline.staticNotes){
-							daStrum.alpha = FlxMath.lerp(daStrum.alpha, 0, 0.1);
+						if(cStrum.charToSing.length > 0){							
+							if(daStrumline.ID == curStrum){	
+								for(daStrum in daStrumline.staticNotes){daStrum.alpha = FlxMath.lerp(daStrum.alpha, daStrum._alpha, 0.1);}
+
+								if(char.onRight){
+									sLeft = daStrumline;
+									curX = getStrumLeftX;
+								}else{
+									sRight = daStrumline;
+									curX = getStrumRightX;
+								}
+							}else{
+								if(char.onRight){
+									curX = getStrumLeftX;
+									if(sLeft != strumsGroup.members[curStrum]){
+										for(daStrum in daStrumline.staticNotes){daStrum.alpha = FlxMath.lerp(daStrum.alpha, daStrum._alpha, 0.1);}
+										sLeft = daStrumline;
+									}else{
+										for(daStrum in daStrumline.staticNotes){daStrum.alpha = FlxMath.lerp(daStrum.alpha, 0, 0.1);}
+									}
+								}
+
+								if(!char.onRight){
+									curX = getStrumRightX;
+									if(sRight != strumsGroup.members[curStrum]){
+										for(daStrum in daStrumline.staticNotes){daStrum.alpha = FlxMath.lerp(daStrum.alpha, daStrum._alpha, 0.1);}
+										sRight = daStrumline;
+									}else{
+										for(daStrum in daStrumline.staticNotes){daStrum.alpha = FlxMath.lerp(daStrum.alpha, 0, 0.1);}
+									}
+								}
+							}
+						}else{
+							if(daStrumline.ID == curStrum){	
+								for(daStrum in daStrumline.staticNotes){daStrum.alpha = FlxMath.lerp(daStrum.alpha, daStrum._alpha, 0.1);}
+
+								sRight = daStrumline;
+								curX = getStrumRightX;
+							}else{
+								if(sLeft == null){
+									for(daStrum in daStrumline.staticNotes){daStrum.alpha = FlxMath.lerp(daStrum.alpha, daStrum._alpha, 0.1);}
+									sLeft = daStrumline;
+									curX = getStrumLeftX;
+								}else{
+									for(daStrum in daStrumline.staticNotes){daStrum.alpha = FlxMath.lerp(daStrum.alpha, 0, 0.1);}
+								}
+							}
 						}
 					}
+
+					for(daStrum in daStrumline.staticNotes){daStrum.x = FlxMath.lerp(daStrum.x, curX + ((daStrumline.strumSize / daStrumline.keys) * daStrum.ID), 0.1);}
 				});
 
 
 				// CHARACTER CAMERA
-				var charToFocus = cSection.charToFocus;
+				var charToFocus = gSection.charToFocus;
 
 				var camMoveX = 0.0;
 				var camMoveY = 0.0;
@@ -451,8 +510,8 @@ class PlayState extends MusicBeatState {
 				var offsetX = 0;
 				var offsetY = 0;
 	
-				var character = stage.charData.members[charToFocus];
-				if(character == null){character = stage.charData.members[0];}
+				var character = stage.getCharacterById(charToFocus);
+				if(character == null){character = stage.getCharacterById(0);}
 				if(character.animation.curAnim != null){
 					switch(character.animation.curAnim.name){
 						default:{
@@ -477,8 +536,8 @@ class PlayState extends MusicBeatState {
 						}
 					}
 					
-					camMoveX += character.cameraPosition[0];
-					camMoveY += character.cameraPosition[1];
+					camMoveX += 0;
+					camMoveY += -100;
 					
 					// camFollow.setPosition(lucky.getMidpoint().x - 120, lucky.getMidpoint().y + 210);	
 					camFollow.setPosition(camMoveX, camMoveY);
@@ -507,9 +566,13 @@ class PlayState extends MusicBeatState {
 	}
 
 	function endSong():Void{
+		trace("End Song");
 		canPause = false;
 		FlxG.sound.music.volume = 0;
 		for(sound in voices.sounds){sound.volume = 0;}
+		FlxG.sound.music.pause();
+		for(sound in voices.sounds){sound.pause();}
+
 		if (SONG.validScore){
 			#if !switch
 			Highscore.saveScore(SONG.song, songScore, SONG.difficulty, SONG.category);
@@ -518,14 +581,17 @@ class PlayState extends MusicBeatState {
 
 		SongListData.nextSong(songScore);
 		if(SongListData.songPlaylist.length <= 0){
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
-
 			transIn = FlxTransitionableState.defaultTransIn;
 			transOut = FlxTransitionableState.defaultTransOut;
 
-			SongListData.resetVariables();
+			paused = true;
+
+			FlxG.sound.music.stop();
+			for(sound in voices.sounds){sound.stop();}
 
 			FlxG.switchState(new states.MainMenuState());
+
+			SongListData.resetVariables();
 
 			//if (SONG.validScore){
 			//	NGio.unlockMedal(60961);
@@ -561,6 +627,13 @@ class PlayState extends MusicBeatState {
 
 	override function beatHit(){
 		super.beatHit();
+
+		for(i in 0...stage.getChars().length){
+			var cChar:Character = stage.getCharacterById(i);
+			if(cChar.holdTimer <= 0){
+				cChar.dance();
+			}
+		}
 
 		if (SONG.generalSection[Math.floor(curStep / 16)] != null){
 			if (SONG.generalSection[Math.floor(curStep / 16)].changeBPM){
@@ -607,9 +680,6 @@ class SongListData{
 
 	public static function resetVariables(){
 		songPlaylist = [];
-
 		campaignScore = 0;
-
-		PlayState.SONG = null;
 	}
 }

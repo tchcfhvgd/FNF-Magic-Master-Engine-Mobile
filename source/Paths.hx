@@ -11,11 +11,19 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-import ListStuff;
+using StringTools;
 
 class Paths
 {
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
+
+	public static function getFileName(key:String, toNormal:Bool = false){
+		if(toNormal){
+			return key.replace("_", " ");
+		}else{
+			return key.replace(" ", "_");
+		}
+	}
 
 	static var currentLevel:String;
 
@@ -148,18 +156,9 @@ class Paths
 	inline static public function getCharacterJSON(char:String, cat:String,skin:String){
 		var toReturn = 'characters:assets/characters/${char}/Skins/${char}-${cat}-${skin}.json';
 
-		if(!Assets.exists(toReturn)){
-			cat = "Default";
-			toReturn = 'characters:assets/characters/${char}/Skins/${char}-Default-${skin}.json';
-		}
-		if(!Assets.exists(toReturn)){
-			skin = "Default";
-			toReturn = 'characters:assets/characters/${char}/Skins/${char}-Default-Default.json';
-		}
-		if(!Assets.exists(toReturn)){
-			char = "Boyfriend";
-			toReturn = 'characters:assets/characters/Boyfriend/Skins/Boyfriend-Default-Default.json';
-		}
+		if(!Assets.exists(toReturn)){toReturn = 'characters:assets/characters/${char}/Skins/${char}-Default-${skin}.json';}
+		if(!Assets.exists(toReturn)){toReturn = 'characters:assets/characters/${char}/Skins/${char}-Default-Default.json';}
+		if(!Assets.exists(toReturn)){toReturn = 'characters:assets/characters/Boyfriend/Skins/Boyfriend-Default-Default.json';}
 
 		return toReturn; 
 	}
@@ -172,6 +171,18 @@ class Paths
 	inline static public function getPackerAtlas(key:String, ?library:String)
 	{
 		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library));
+	}
+
+	inline static public function getCharacterAtlas(char:String, key:String){
+		var imagePath = 'characters:assets/characters/${char}/Sprites/${key}.png';
+		var descPath = 'characters:assets/characters/${char}/Sprites/${key}.xml';
+
+		if(!Assets.exists(descPath)){
+			descPath = 'characters:assets/characters/${char}/Sprites/${key}.txt';
+			return FlxAtlasFrames.fromSpriteSheetPacker(imagePath, descPath);
+		}else{
+			return FlxAtlasFrames.fromSparrow(imagePath, descPath);
+		}
 	}
 
 	inline static public function getNoteAtlas(key:String, typeCheck:String){

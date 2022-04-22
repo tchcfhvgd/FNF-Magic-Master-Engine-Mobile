@@ -83,13 +83,6 @@ class TitleState extends MusicBeatState
 			];
 		}
 
-		#if desktop
-		sys.thread.Thread.create(() -> {
-            ListStuff.Songs.loadList();
-			ListStuff.Characters.loadList();
-        });
-		#end
-
 		#if FREEPLAY
 		FlxG.switchState(new FreeplayState());
 		#elseif CHARTING

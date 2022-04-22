@@ -140,7 +140,6 @@ class Stage extends FlxTypedGroup<Dynamic>{
         charData.clear();
         clear();
         var numCont:Int = 0;
-        var charID:Int = 0;
         for(sprite in data.StageData){
             var stagePart:StageSprite;
             stagePart = new StageSprite(sprite.position[0], sprite.position[1]);
@@ -153,24 +152,22 @@ class Stage extends FlxTypedGroup<Dynamic>{
             stageData.add(stagePart);
             add(stagePart);
 
-            for(char in charArray){
+            for(i in 0...charArray.length){
+                var char:Array<Dynamic> = charArray[i];
                 if(char[6] + initChar == numCont){
-                    //["Boyfriend",[770,100],1,false,"Default","NORMAL",0]
-                    var newChar:Character = new Character(char[1][0], char[1][1], char[0], char[4], char[5]);
+                    //["Girlfriend",[400,130],1,true,"Default","GF",0]
+                    var newChar:Character = new Character(char[1][0], char[1][1], char[0], char[4], char[5], char[3], char[2]);
                     newChar.x += newChar.positionArray[0];
                     newChar.y += newChar.positionArray[1];
-    
-                    //newChar.setGraphicSize(Std.int(newChar.width * char[2] / 1));
 
                     newChar.scrollFactor.set(data.StageData[numCont].scrollFactor[0], data.StageData[numCont].scrollFactor[1]);
 
-                    newChar.flipX = char[3];
+                    newChar.ID = i;
 
-                    newChar.ID = charID;
+                    trace("Character: " + char[0] + " | OnRight?: " + char[3]);
                     
                     charData.add(newChar);
                     add(newChar);
-                    charID++;
                 }
             }
             numCont++;
@@ -191,7 +188,13 @@ class Stage extends FlxTypedGroup<Dynamic>{
         if(id >= charData.members.length){id = charData.members.length - 1;}
         if(id <= 0){id = 0;}
 
-        return charData.members[id];
+        for(char in charData){
+            if(char.ID == id){
+                return char;
+            }
+        }
+
+        return null;
     }
 
     public function getCharacterByName(name:String):Character {
