@@ -51,7 +51,7 @@ using StringTools;
 
 class PlayState extends MusicBeatState {
 	private var curSection:Int = 0;
-	public static var curStrum:Int = 0;
+	private var curStrum:Int = 0;
 	public static var SONG:SwagSong = null;
 	public static var isStoryMode:Bool = false;
 
@@ -159,7 +159,6 @@ class PlayState extends MusicBeatState {
 		FlxG.camera.zoom = defaultCamZoom;
 		FlxG.camera.focusOn(camFollow.getPosition());
 
-		FlxG.camera.zoom = defaultCamZoom;
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 		FlxG.fixedTimestep = false;
 
@@ -289,10 +288,12 @@ class PlayState extends MusicBeatState {
 		var lastStrum:StrumLine = null;
 		for(i in 0...songData.sectionStrums.length){
 			var strumLine = new StrumLine(5 + (lastStrum != null ? 55 + lastStrum.strumSize : 0), 30, songData.sectionStrums[i].keys, Std.int(FlxG.width / 3));
+
+			for(daStrum in strumLine.staticNotes){daStrum.alpha = 0;}
 			
 			strumLine.onHIT = function(note:Note) {
 				var char = SONG.sectionStrums[i].charToSing;
-				if(SONG.sectionStrums[i].notes[curSection].changeSing){char = SONG.sectionStrums[i].notes[curSection].charToSing;}
+				if(SONG.sectionStrums[i].notes[Std.int(curStep / 16)].changeSing){char = SONG.sectionStrums[i].notes[Std.int(curStep / 16)].charToSing;}
 
 				for(i in char){
 					var char:Character = stage.getCharacterById(i);
@@ -353,8 +354,14 @@ class PlayState extends MusicBeatState {
 		}
 	}
 
+	var sLeft:StrumLine = null;
+	var sMiddle:StrumLine = null;
+	var sRight:StrumLine = null;
+	var sCurStrum:StrumLine = null;
 	override public function update(elapsed:Float){
 		super.update(elapsed);
+
+		FlxG.camera.zoom = stage.zoom;
 
 		strumsGroup.forEach(function(strumLine:StrumLine){
             if(curStrum == strumLine.ID){strumLine.typeStrum = "Playing";}else{strumLine.typeStrum = "BotPlay";}
@@ -406,19 +413,22 @@ class PlayState extends MusicBeatState {
 		}
 
 		if(!pre_OnlyNotes){
+			var char = null;
 			if(generatedMusic && PlayState.SONG.generalSection[Std.int(curStep / 16)] != null){
 				var pre_ForceMiddle:Bool = PreSettings.getPreSetting("ForceMiddleScroll");
 				var gSection = PlayState.SONG.generalSection[Std.int(curStep / 16)];
 
-				var sLeft:StrumLine = null;
-				var sMiddle:StrumLine = null;
-				var sRight:StrumLine = null;
 				strumsGroup.forEach(function(daStrumline:StrumLine){
 					var cStrum = PlayState.SONG.sectionStrums[daStrumline.ID];
 					var cSection = PlayState.SONG.sectionStrums[daStrumline.ID].notes[Std.int(curStep / 16)];
 
-					var char:Character = stage.getCharacterById(cStrum.charToSing[0]);
-					if(cSection.changeSing && cSection.charToSing != null && cSection.charToSing.length > 0){char = stage.getCharacterById(cSection.charToSing[0]);}
+					if(cSection.changeSing && cSection.charToSing != null){
+						char = stage.getCharacterById(cSection.charToSing[gSection.charToFocus]);
+						if(char == null){stage.getCharacterById(cSection.charToSing[cSection.charToSing.length - 1]);}
+					}else{
+						char = stage.getCharacterById(cStrum.charToSing[gSection.charToFocus]);
+						if(char == null){stage.getCharacterById(cStrum.charToSing[cStrum.charToSing.length - 1]);}
+					}
 
 					var getStrumLeftX = 100;
 					var getStrumMiddleX = (FlxG.width / 2) - (daStrumline.strumSize / 2);
@@ -431,6 +441,7 @@ class PlayState extends MusicBeatState {
 						if(daStrumline.ID == curStrum){
 							for(daStrum in daStrumline.staticNotes){daStrum.alpha = FlxMath.lerp(daStrum.alpha, daStrum._alpha, 0.1);}
 							sMiddle = daStrumline;
+							sCurStrum = daStrumline;
 						}else{
 							if(cStrum.charToSing.length > 0){
 								for(daStrum in daStrumline.staticNotes){daStrum.alpha = FlxMath.lerp(daStrum.alpha, (0.5 * daStrum._alpha / 1), 0.1);}
@@ -448,7 +459,7 @@ class PlayState extends MusicBeatState {
 						}
 					}else{
 						if(cStrum.charToSing.length > 0){							
-							if(daStrumline.ID == curStrum){	
+							if(daStrumline.ID == curStrum){
 								for(daStrum in daStrumline.staticNotes){daStrum.alpha = FlxMath.lerp(daStrum.alpha, daStrum._alpha, 0.1);}
 
 								if(char.onRight){
@@ -458,10 +469,12 @@ class PlayState extends MusicBeatState {
 									sRight = daStrumline;
 									curX = getStrumRightX;
 								}
+
+								sCurStrum = daStrumline;
 							}else{
 								if(char.onRight){
 									curX = getStrumLeftX;
-									if(sLeft != strumsGroup.members[curStrum]){
+									if(sLeft != sCurStrum){
 										for(daStrum in daStrumline.staticNotes){daStrum.alpha = FlxMath.lerp(daStrum.alpha, daStrum._alpha, 0.1);}
 										sLeft = daStrumline;
 									}else{
@@ -471,7 +484,7 @@ class PlayState extends MusicBeatState {
 
 								if(!char.onRight){
 									curX = getStrumRightX;
-									if(sRight != strumsGroup.members[curStrum]){
+									if(sRight != sCurStrum){
 										for(daStrum in daStrumline.staticNotes){daStrum.alpha = FlxMath.lerp(daStrum.alpha, daStrum._alpha, 0.1);}
 										sRight = daStrumline;
 									}else{
@@ -500,49 +513,37 @@ class PlayState extends MusicBeatState {
 					for(daStrum in daStrumline.staticNotes){daStrum.x = FlxMath.lerp(daStrum.x, curX + ((daStrumline.strumSize / daStrumline.keys) * daStrum.ID), 0.1);}
 				});
 
-
 				// CHARACTER CAMERA
-				var charToFocus = gSection.charToFocus;
-
 				var camMoveX = 0.0;
 				var camMoveY = 0.0;
 	
 				var offsetX = 0;
-				var offsetY = 0;
-	
-				var character = stage.getCharacterById(charToFocus);
-				if(character == null){character = stage.getCharacterById(0);}
-				if(character.animation.curAnim != null){
-					switch(character.animation.curAnim.name){
-						default:{
-							camMoveX = character.getMidpoint().x + offsetX;
-							camMoveY = character.getMidpoint().y + offsetY;
-						}		
-						case 'singUP':{
-							camMoveX = character.getMidpoint().x + offsetX;
-							camMoveY = character.getMidpoint().y - 100 + offsetY;
-						}
-						case 'singRIGHT':{
-							camMoveX = character.getMidpoint().x + 100 + offsetX;
-							camMoveY = character.getMidpoint().y + offsetY;
-						}
-						case 'singDOWN':{
-							camMoveX = character.getMidpoint().x + offsetX;
-							camMoveY = character.getMidpoint().y + 100 + offsetY;
-						}
-						case 'singLEFT':{
-							camMoveX = character.getMidpoint().x - 100 + offsetX;
-							camMoveY = character.getMidpoint().y + offsetY;
+				var offsetY = -100;
+
+				camMoveX += offsetX;
+				camMoveY += offsetY;
+
+				var cCharacter = stage.getCharacterById(Character.getFocusCharID(SONG, Std.int(curStep / 16)));
+                
+				if(cCharacter == null){
+					camMoveX += FlxG.width / 2;
+					camMoveY += FlxG.height / 2;
+				}else{
+					camMoveX += cCharacter.getMidpoint().x;
+					camMoveY += cCharacter.getMidpoint().y;
+
+					if(cCharacter.animation.curAnim != null){
+						switch(cCharacter.animation.curAnim.name){
+							case 'singUP':{camMoveY -= 100;}
+							case 'singRIGHT':{camMoveX += 100;}
+							case 'singDOWN':{camMoveY += 100;}
+							case 'singLEFT':{camMoveX -= 100;}
 						}
 					}
-					
-					camMoveX += 0;
-					camMoveY += -100;
-					
-					// camFollow.setPosition(lucky.getMidpoint().x - 120, lucky.getMidpoint().y + 210);	
-					camFollow.setPosition(camMoveX, camMoveY);
-					FlxG.camera.zoom = FlxMath.lerp(FlxG.camera.zoom, character.cameraZoom, 0.05);
+
+					//FlxG.camera.zoom = FlxMath.lerp(FlxG.camera.zoom, 1 - char.scale.x, 0.05);
 				}
+				camFollow.setPosition(camMoveX, camMoveY);
 			}
 		}
 

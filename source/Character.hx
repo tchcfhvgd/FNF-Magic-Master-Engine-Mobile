@@ -1,5 +1,9 @@
 package;
 
+import haxe.macro.Expr.Catch;
+import Song.SwagSong;
+import Section.SwagGeneralSection;
+import Song.SwagStrum;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.animation.FlxBaseAnimation;
@@ -48,6 +52,18 @@ typedef AnimArray = {
 class Character extends FlxSprite{
 	public static function getSkin(character:String):String {
 		return "Default";
+	}
+
+	public static function getFocusCharID(SONG:SwagSong, cSection:Int):Int{
+		try{
+			if(SONG.sectionStrums[SONG.generalSection[cSection].strumToFocus].notes[cSection].changeSing){
+				return SONG.sectionStrums[SONG.generalSection[cSection].strumToFocus].notes[cSection].charToSing[SONG.generalSection[cSection].charToFocus];
+			}else{
+				return SONG.sectionStrums[SONG.generalSection[cSection].strumToFocus].charToSing[SONG.generalSection[cSection].charToFocus];
+			}
+		}catch(e){
+			return 0;
+		}
 	}
 
 	public static var cDefault:String = 'Boyfriend';

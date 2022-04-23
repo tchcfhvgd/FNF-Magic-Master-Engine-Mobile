@@ -34,7 +34,7 @@ typedef StrumLineNoteJSON = {
 }
 
 typedef NoteJSON = {
-    var colorHSL:Array<Int>;
+    var colorHEX:String;
     var arrayAnims:Array<NoteAnimJSON>;
     var chAnim:String;
 
@@ -61,6 +61,10 @@ class StrumLine extends FlxGroup{
 
     public var scrollSpeed:Float = 1;
     public var bpm:Float = 150;
+
+    public var health:Float = 1;
+    public var maxHealth:Float = 2;
+
 
     public var typeStrum:String = "BotPlay"; //BotPlay, Playing, Charting
 
@@ -117,10 +121,10 @@ class StrumLine extends FlxGroup{
                     var daNoteData:Int = Std.int(strumNotes[1]);
                     var daLength:Float = strumNotes[2];
                     var daHits:Int = strumNotes[3];
-                    var daCanMerge:Bool = strumNotes[4];
+                    var daHasMerge:Bool = strumNotes[4];
     
                     //noteJSON:NoteJSON, typeCheck:String, strumTime:Float, noteData:Int, ?specialType:Int = 0, ?otherData:Array<NoteData>
-                    var swagNote:Note = new Note(daStrumTime, daNoteData, daLength, daHits, daCanMerge, daOtherData);
+                    var swagNote:Note = new Note(daStrumTime, daNoteData, daLength, daHits, daOtherData);
                     swagNote.loadGraphicNote(JSONSTRUM.gameplayNotes[daNoteData]);
                     swagNote.setGraphicSize(Std.int(staticNotes.size / keys));
                     swagNote.updateHitbox();
@@ -131,7 +135,7 @@ class StrumLine extends FlxGroup{
                         for(sNote in 0...Math.floor(daLength / (Conductor.stepCrochet * 0.25)) + 2){
                             var sStrumTime = daStrumTime + (Conductor.stepCrochet / 2) + ((Conductor.stepCrochet * 0.25) * sNote);
 
-                            var nSustain:Note = new Note(sStrumTime, daNoteData, daLength, daHits, daCanMerge, daOtherData);
+                            var nSustain:Note = new Note(sStrumTime, daNoteData, daLength, daHits, daOtherData);
                             nSustain.loadGraphicNote(JSONSTRUM.gameplayNotes[daNoteData]);
 
                             if(cSusNote > 1){nSustain.typeNote = "Sustain";}
@@ -360,7 +364,7 @@ class StrumStaticNotes extends FlxTypedGroup<StrumNote> {
 }
 
 class StrumNote extends FlxSprite{
-    public var nColor:Array<Int> = [0xffffff, 1, 1];
+    public var nColor:String = "0xffffff";
     public var _alpha:Float = 1;
 
     public var onDebug:Bool = false;
@@ -389,7 +393,7 @@ class StrumNote extends FlxSprite{
             }
         }
         
-        if(newJSON.colorHSL != null){nColor = newJSON.colorHSL;}
+        if(newJSON.colorHEX != null){nColor = newJSON.colorHEX;}
         antialiasing = newJSON.antialiasing && PreSettings.getPreSetting("Antialiasing");
         _alpha = newJSON.alpha;
 
@@ -399,7 +403,7 @@ class StrumNote extends FlxSprite{
 		animation.play(anim, force);
 
         if(anim != "static"){
-            this.color = FlxColor.fromHSL(nColor[0], nColor[1], nColor[2]);
+            this.color = FlxColor.fromString(nColor);
         }else{
             this.color = 0xffffff;
         }
@@ -427,13 +431,14 @@ class Note extends StrumNote {
     ];
 
     //General Variables
+    public var nextNote:Note = null;
+
     public var strumTime:Float = 1;
 
-    public var canMerge:Bool = false; // Determinate if the note Can be Merge with surrounding notes
     public var noteLength:Float = 0;
     public var noteHits:Int = 0; // Determinate if MultiTap o Sustain
 
-    public var typeNote:String = "Normal"; // [Normal, Sustain, SustainEnd, Merge] CurNormal Types
+    public var typeNote:String = "Normal"; // [Normal, Sustain, Merge] CurNormal Types
 
 	public var noteData:Int = 0;
 	public var otherData:Map<String, Dynamic> = [];
@@ -464,12 +469,11 @@ class Note extends StrumNote {
         return styleArray;
     }
 
-	public function new(strumTime:Float, noteData:Int, ?noteLength:Float = 0, ?noteHits:Int = 0, ?canMerge:Bool = false, ?otherData:Map<String, Dynamic>){
+	public function new(strumTime:Float, noteData:Int, ?noteLength:Float = 0, ?noteHits:Int = 0, ?otherData:Map<String, Dynamic>){
         this.strumTime = strumTime;
 		this.noteData = noteData;
         this.noteLength = noteLength;
         this.noteHits = noteHits;
-        this.canMerge = canMerge;
         this.otherData = otherData;
         super();
 	}
@@ -477,11 +481,17 @@ class Note extends StrumNote {
     override function update(elapsed:Float){
 		super.update(elapsed);
 
-        switch(typeNote){
+        switch(this.typeNote){
             case "Normal":{playAnim("static");}
-            case "Sustain":{playAnim("sustain");}
-            case "SustainEnd":{playAnim("end");}
+            case "Sustain":{
+                if(this.nextNote != null){
+                    playAnim("sustain");
+                }else{
+                    playAnim("end");
+                }
+            }
             case "Merge":{playAnim("merge");}
+            case "Switch":{playAnim("switch");}
         }
 
         if(strumTime > Conductor.songPosition - Conductor.safeZoneOffset && strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5)){
@@ -502,6 +512,6 @@ class Note extends StrumNote {
     override public function playAnim(anim:String, ?force:Bool = false){
 		animation.play(anim, force);
 
-        this.color = FlxColor.fromHSL(nColor[0], nColor[1], nColor[2]);
+        this.color = FlxColor.fromString(nColor);
 	}
 }

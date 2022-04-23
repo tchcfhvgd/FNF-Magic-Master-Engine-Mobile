@@ -132,7 +132,7 @@
     "gameplayNotes":[
         {
             "chAnim": "singLEFT",
-            "colorHSL":[320, 61, 76],
+            "colorHEX": "#ff5ec8",
             "arrayAnims":[
                 {
                     "anim": "static",
@@ -161,6 +161,13 @@
 
                     "fps": 32,
                     "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
+
+                    "fps": 32,
+                    "loop": false
                 }
             ],
             "alpha": 1,
@@ -169,7 +176,7 @@
         },
         {
             "chAnim": "singDOWN",
-            "colorHSL":[180, 100, 100],
+            "colorHEX": "#00ffff",
             "arrayAnims":[
                 {
                     "anim": "static",
@@ -198,6 +205,13 @@
 
                     "fps": 32,
                     "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
+
+                    "fps": 32,
+                    "loop": false
                 }
             ],
             "alpha": 1,
@@ -206,7 +220,7 @@
         },
         {
             "chAnim": "singUP",
-            "colorHSL":[117, 98, 98],
+            "colorHEX": "#12fA05",
             "arrayAnims":[
                 {
                     "anim": "static",
@@ -235,6 +249,13 @@
 
                     "fps": 32,
                     "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
+
+                    "fps": 32,
+                    "loop": false
                 }
             ],
             "alpha": 1,
@@ -243,7 +264,7 @@
         },
         {
             "chAnim": "singRIGHT",
-            "colorHSL":[358, 77, 98],
+            "colorHEX": "#f9393f",
             "arrayAnims":[
                 {
                     "anim": "static",
@@ -269,6 +290,13 @@
                 {
                     "anim": "merge",
                     "symbol": "SwitchHold",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
 
                     "fps": 32,
                     "loop": false
