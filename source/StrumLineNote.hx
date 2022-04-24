@@ -57,7 +57,9 @@ class StrumLine extends FlxGroup{
     public var onMISS:Note->Void = null;
 
     public var staticNotes:StrumStaticNotes;
+
     public var notes:FlxTypedGroup<Note>;
+    public var unNotes:Array<Note> = [];
 
     public var scrollSpeed:Float = 1;
     public var bpm:Float = 150;
@@ -90,6 +92,8 @@ class StrumLine extends FlxGroup{
         add(notes);
     }
 
+    public function getStrumSize():Int {return Std.int(staticNotes.size / keys);}
+
     public function changeGraphic(newImage:String, newType:String){
         if(image != newImage){image = newImage;}
         if(noteType != newType){noteType = newType;}
@@ -108,50 +112,107 @@ class StrumLine extends FlxGroup{
     }
 
     public function setNotes(swagNotes:Array<SwagSection>){
-        var pre_Offset:Float = PreSettings.getPreSetting("NoteOffset");
         var pre_TypeNotes:String = PreSettings.getArraySetting(PreSettings.getPreSetting("TypeNotes"));
 
         notes.clear();
 
-        for(section in swagNotes){
-            for(strumNotes in section.sectionNotes){
-                var daOtherData:Map<String, Dynamic> = strumNotes[5];
-                if(pre_TypeNotes == "All" || (pre_TypeNotes == "OnlyNormal" && daOtherData == null) || (pre_TypeNotes == "OnlySpecials" && daOtherData != null) || (pre_TypeNotes == "DisableBads" && daOtherData.get("Damage_Hit") == null) || (pre_TypeNotes == "DisableGoods" && daOtherData.get("Damage_Hit") != null)){
-                    var daStrumTime:Float = strumNotes[0] + pre_Offset;
-                    var daNoteData:Int = Std.int(strumNotes[1]);
-                    var daLength:Float = strumNotes[2];
-                    var daHits:Int = strumNotes[3];
-                    var daHasMerge:Bool = strumNotes[4];
-    
-                    //noteJSON:NoteJSON, typeCheck:String, strumTime:Float, noteData:Int, ?specialType:Int = 0, ?otherData:Array<NoteData>
-                    var swagNote:Note = new Note(daStrumTime, daNoteData, daLength, daHits, daOtherData);
-                    swagNote.loadGraphicNote(JSONSTRUM.gameplayNotes[daNoteData]);
-                    swagNote.setGraphicSize(Std.int(staticNotes.size / keys));
-                    swagNote.updateHitbox();
-                    notes.add(swagNote);
-
-                    if(daLength > 0 && daHits == 0){
-                        var cSusNote = Math.floor(daLength / (Conductor.stepCrochet * 0.25)) + 2;
-                        for(sNote in 0...Math.floor(daLength / (Conductor.stepCrochet * 0.25)) + 2){
-                            var sStrumTime = daStrumTime + (Conductor.stepCrochet / 2) + ((Conductor.stepCrochet * 0.25) * sNote);
-
-                            var nSustain:Note = new Note(sStrumTime, daNoteData, daLength, daHits, daOtherData);
-                            nSustain.loadGraphicNote(JSONSTRUM.gameplayNotes[daNoteData]);
-
-                            if(cSusNote > 1){nSustain.typeNote = "Sustain";}
-                            else{nSustain.typeNote = "SustainEnd";}
-
-                            var nHeight:Int = Std.int(getScrollSpeed() * staticNotes.size / (bpm * 2.3 / 150));
-                            nSustain.setGraphicSize(Std.int(staticNotes.size / keys), nHeight);
-                            nSustain.updateHitbox();
-
-                            notes.add(nSustain);
-                            cSusNote--;
-                        }  
-                    }
-                }
+        for(sSection in swagNotes){
+            for(note in sSection.sectionNotes){
+                addNote(note);
             }
         }
+    }
+
+    var prevNote:Note = null;
+    private function addNote(note:Array<Dynamic>, ?merge:Bool = false){
+        var pre_Offset:Float = PreSettings.getPreSetting("NoteOffset");
+
+        var daStrumTime:Float = note[0] + pre_Offset;
+        var daNoteData:Int = Std.int(note[1]);
+        var daLength:Float = note[2];
+        var daHits:Int = note[3];
+        var daHasMerge:Dynamic = note[4];
+        var daOtherData:Map<String, Dynamic> = note[5];
+    
+        //noteJSON:NoteJSON, typeCheck:String, strumTime:Float, noteData:Int, ?specialType:Int = 0, ?otherData:Array<NoteData>
+        var swagNote:Note = new Note(daStrumTime, daNoteData, daLength, daHits, daOtherData);
+        swagNote.loadGraphicNote(JSONSTRUM.gameplayNotes[daNoteData]);
+        swagNote.setGraphicSize(getStrumSize());
+
+        if(merge){swagNote.typeNote = "Merge";
+            var fData:Note = prevNote;
+            var sData:Note = swagNote;
+            var lDatas:Int = swagNote.noteData - prevNote.noteData;
+            if(swagNote.noteData <  prevNote.noteData){
+                fData = swagNote;
+                sData = prevNote;
+                lDatas = prevNote.noteData - swagNote.noteData;
+            }
+
+            if(fData.noteData != sData.noteData){   var cData:Int = 0;
+                unNotes.push(setSwitcher(cData, daStrumTime, fData.noteData, JSONSTRUM.gameplayNotes[fData.noteData])); cData++;
+                unNotes.push(setSwitcher(cData, daStrumTime, fData.noteData, JSONSTRUM.gameplayNotes[fData.noteData])); cData++;
+                for(i in 1...lDatas){for(ii in 0...4){unNotes.push(setSwitcher(cData, daStrumTime, fData.noteData, JSONSTRUM.gameplayNotes[fData.noteData + i])); cData++;}}
+                unNotes.push(setSwitcher(cData, daStrumTime, fData.noteData, JSONSTRUM.gameplayNotes[sData.noteData])); cData++;
+                unNotes.push(setSwitcher(cData, daStrumTime, fData.noteData, JSONSTRUM.gameplayNotes[sData.noteData])); cData++;
+            }
+        }else{prevNote = null;}
+
+        unNotes.push(swagNote);
+
+        if(daLength > 0 && daHits == 0){
+            var cSusNote = Math.floor(daLength / (Conductor.stepCrochet * 0.25)) + 2;
+
+            var prevSustain:Note = swagNote;
+            for(sNote in 0...Math.floor(daLength / (Conductor.stepCrochet * 0.25)) + 2){
+                var sStrumTime = daStrumTime + (Conductor.stepCrochet / 2) + ((Conductor.stepCrochet * 0.25) * sNote);
+
+                var nSustain:Note = new Note(sStrumTime, daNoteData, daLength, daHits, daOtherData);
+                nSustain.loadGraphicNote(JSONSTRUM.gameplayNotes[daNoteData]);
+
+                nSustain.typeNote = "Sustain";
+                nSustain.typeHit = "Hold";
+                prevSustain.nextNote = nSustain;
+
+                var nHeight:Int = Std.int(getScrollSpeed() * staticNotes.size / (bpm * 2.3 / 150));
+                nSustain.setGraphicSize(getStrumSize(), nHeight);
+                nSustain.updateHitbox();
+
+                if(cSusNote <= 1 && daHasMerge != null){
+                    nSustain.scale.y = 0.75;
+                        
+                    var nMerge:Note = new Note(sStrumTime, daNoteData, 0, 0, daOtherData);
+                    nMerge.setGraphicSize(getStrumSize());
+                    nMerge.loadGraphicNote(JSONSTRUM.gameplayNotes[daNoteData]);
+                    nMerge.typeNote = "Merge";
+                    nMerge.typeHit = "Release";
+
+                    prevNote = nMerge;
+                    nSustain.nextNote = nMerge;
+
+                    unNotes.push(nMerge);
+                        
+                    daHasMerge[0] = sStrumTime;
+                    nMerge.nextNote = addNote(daHasMerge, true);
+                }
+
+                unNotes.push(nSustain);
+
+                prevSustain = nSustain;
+                cSusNote--;
+            }  
+        }
+        return swagNote;
+    }
+
+    function setSwitcher(i:Int, daStrumTime:Float, noteData:Int, JSON:NoteJSON):Note {
+        var nSwitcher:Note = new Note(daStrumTime, noteData, 0, i, []);
+        nSwitcher.setGraphicSize(getStrumSize());
+        nSwitcher.loadGraphicNote(JSON);
+        nSwitcher.typeNote = "Switch";
+        nSwitcher.typeHit = "Ghost";
+
+        return nSwitcher;
     }
 
     var pre_TypeStrums:String = PreSettings.getArraySetting(PreSettings.getPreSetting("TypeLightStrums"));
@@ -159,6 +220,16 @@ class StrumLine extends FlxGroup{
 		super.update(elapsed);
 
         keyShit();
+
+        if(unNotes[0] != null){
+            if(unNotes[0].strumTime - Conductor.songPosition < 3500){
+                var nNote:Note = unNotes[0];
+                notes.add(nNote);
+
+                var index:Int = unNotes.indexOf(nNote);
+				unNotes.splice(index, 1);
+            }
+        }
 
         notes.forEachAlive(function(daNote:Note){
             var pre_TypeScroll:String = PreSettings.getArraySetting(PreSettings.getPreSetting("TypeScroll"));
@@ -183,14 +254,20 @@ class StrumLine extends FlxGroup{
                 }
 
                 daNote.visible = staticNotes.members[daNote.noteData].visible;
-                if(daNote.typeNote == "Sustain" || daNote.typeNote == "SustainEnd"){
+
+                if(daNote.typeNote == "Switch"){
+                    daNote.x = staticNotes.members[daNote.noteData].x + ((getStrumSize() / 4) * daNote.noteHits);
                     daNote.alpha = staticNotes.members[daNote.noteData].alpha * (daNote._alpha / 2) / 1;
-                    daNote.x = staticNotes.members[daNote.noteData].x;
+                    daNote.angle = 270;
                 }else{
-                    daNote.alpha = staticNotes.members[daNote.noteData].alpha * daNote._alpha / 1;
                     daNote.x = staticNotes.members[daNote.noteData].x;
-                    daNote.angle = staticNotes.members[daNote.noteData].angle;
-                }   
+                    if(daNote.typeNote == "Sustain" || daNote.typeNote == "SustainEnd"){
+                        daNote.alpha = staticNotes.members[daNote.noteData].alpha * (daNote._alpha / 2) / 1;
+                    }else{
+                        daNote.alpha = staticNotes.members[daNote.noteData].alpha * daNote._alpha / 1;
+                        daNote.angle = staticNotes.members[daNote.noteData].angle;
+                    }
+                } 
             }else{
                 daNote.visible = false;
             }
@@ -232,11 +309,15 @@ class StrumLine extends FlxGroup{
             });
     
             notes.forEachAlive(function(daNote:Note){
-                if(daNote.noteStatus == "CanBeHit" && ((jPressArray[daNote.noteData] && daNote.typeNote == "Normal") || (holdArray[daNote.noteData] && (daNote.typeNote == "Sustain" || daNote.typeNote == "SustainEnd")))){
-                    if(pre_TypeStrums == "All" || pre_TypeStrums == "OnlyOtherStrums"){
-                        staticNotes.members[daNote.noteData].playAnim("confirm");
-                    }
-    
+                if(daNote.noteStatus == "CanBeHit" &&
+                    (
+                        (daNote.typeHit == "Press" && jPressArray[daNote.noteData]) ||
+                        (daNote.typeHit == "Hold" && holdArray[daNote.noteData]) ||
+                        (daNote.typeHit == "Release" && releaseArray[daNote.noteData]) ||
+                        (daNote.typeHit == "Always" || daNote.typeHit == "Ghost")
+                    )
+                ){
+                    if((pre_TypeStrums == "All" || pre_TypeStrums == "OnlyOtherStrums") && daNote.typeNote != "Ghost"){staticNotes.members[daNote.noteData].playAnim("confirm");}
                     daNote.noteStatus = "Pressed";
                 }
             });
@@ -439,6 +520,9 @@ class Note extends StrumNote {
     public var noteHits:Int = 0; // Determinate if MultiTap o Sustain
 
     public var typeNote:String = "Normal"; // [Normal, Sustain, Merge] CurNormal Types
+    public var typeHit:String = "Press"; // [Press | Normal Hits] [Hold | Hold Hits] [Release | Release Hits] [Always | Just Hit] [Ghost | Just Hit Withowt Strum Anim]
+
+    public var canMiss:Bool = true;
 
 	public var noteData:Int = 0;
 	public var otherData:Map<String, Dynamic> = [];

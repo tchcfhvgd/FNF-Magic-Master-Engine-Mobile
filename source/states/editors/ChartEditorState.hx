@@ -335,7 +335,6 @@ class ChartEditorState extends MusicBeatState{
             if(FlxG.mouse.justPressed){checkToHold();}
             if(FlxG.mouse.justReleased){checkToAdd();}
             if(FlxG.mouse.justPressedRight){checkSelNote();}
-            if(FlxG.mouse.justPressedRight){checkSelNote(true);}
 		}else{
             dArrow.alpha = 0;
         }
@@ -783,7 +782,6 @@ class ChartEditorState extends MusicBeatState{
             stpNoteData.value = note[1];
             stpNoteLength.value = note[2];
             stpNoteHits.value = note[3];
-            //chkNoteCanMerge.checked = note[4];
 
             //lblEventNote.text = "Note Events: " + 0 + "/" + (0 + note[5].lenght);
         }else{
@@ -791,7 +789,6 @@ class ChartEditorState extends MusicBeatState{
             stpNoteData.value = 0;
             stpNoteLength.value = 0;
             stpNoteHits.value = 0;
-            chkNoteCanMerge.checked = false;
 
             lblEventNote.text = "Note Events: 0/0";
         }
@@ -986,17 +983,27 @@ class ChartEditorState extends MusicBeatState{
     }
 
     private function getNote(n:Array<Dynamic>, ?strum:Int):Array<Dynamic>{
-        var toReturn:Array<Dynamic> = null;
-
         if(strum == null){strum = curStrum;}
+        
         for(i in _song.sectionStrums[strum].notes[curSection].sectionNotes){
             if(compNotes(i, n)){
-                toReturn = i;
-                break;
+                return i;
+            }else{
+                var last:Array<Dynamic> = i;
+                var nM:Array<Dynamic> = i[4];
+                while(nM != null){
+                    nM[0] = last[0] + last[2];
+
+                    last = nM;
+                    if(compNotes(nM, n)){
+                        return nM;
+                    }
+                    nM = nM[4];
+                }
             }
         }
 
-        return toReturn;
+        return null;
     }
 
     var curLast:Array<Dynamic> = null;
@@ -1045,24 +1052,38 @@ class ChartEditorState extends MusicBeatState{
         
         updateSection();
     }
-    private function checkSelNote(isRelease:Bool = false){
-        var nAdd = null;
-        if(!isRelease){
-            nAdd = newNoteData();
+    private function checkSelNote(?nAdd:Dynamic = null){
+        if(nAdd == null){nAdd = newNoteData();}
 
-            for(i in _song.sectionStrums[curStrum].notes[curSection].sectionNotes){
-                if(compNotes(i, nAdd)){
-                    selNote = [curStrum, i];
-                    break;
+        for(i in _song.sectionStrums[curStrum].notes[curSection].sectionNotes){
+            trace("|= Start Comparing =|");
+            if(compNotes(i, nAdd)){
+                trace("Note TRUE");
+                selNote = [curStrum, i];
+                break;
+            }else{
+                trace("Note FALSE | Searching for Merge Notes");
+                var pBreak:Bool = false;
+
+                var last:Array<Dynamic> = i;
+                var n:Array<Dynamic> = i[4];
+                while(n != null){
+                    n[0] = last[0] + last[2] + (Conductor.stepCrochet * 0.75);
+
+                    trace("Compare: " + n + " | " + nAdd);
+
+                    last = n;
+                    if(compNotes(n, nAdd)){
+                        trace("This Note True");
+                        selNote = [curStrum, n];
+                        pBreak = true;
+                        break;
+                    }else{trace("This Note False");}
+                    n = n[4];
                 }
+                if(pBreak){break;}
             }
-        }else{
-            nAdd = selNote[1];
-
-            if(nAdd != null){
-
-            }
-        }        
+        }      
 
         updateSection();
     }
@@ -1248,7 +1269,6 @@ class ChartEditorState extends MusicBeatState{
     var stpNoteData:FlxUINumericStepper;
     var stpNoteLength:FlxUINumericStepperCustom;
     var stpNoteHits:FlxUINumericStepper;
-    var chkNoteCanMerge:FlxUICheckBox;
     var ddlNoteEvent:FlxUIDropDownMenu;
     var txtEvent1:FlxUIInputText;
     var txtEvent2:FlxUIInputText;
@@ -1855,9 +1875,19 @@ class ChartEditorState extends MusicBeatState{
         stpNoteHits = new FlxUINumericStepper(lblNoteHits.x + lblNoteHits.width, lblNoteHits.y, 1, 0, 0, 999); tabNOTE.add(stpNoteHits);
         stpNoteHits.name = "NOTE_HITS";
 
-        chkNoteCanMerge = new FlxUICheckBox(lblNoteHits.x, lblNoteHits.y + lblNoteHits.height + 10, null, null, "Note Can Merge?", 100); tabNOTE.add(chkNoteCanMerge);
+        var btnMerge:FlxButton = new FlxButton(lblNoteHits.x, lblNoteHits.y + lblNoteHits.height + 10, "Add Merge Note", function(){
+            var note = getNote(selNote[1], curStrum);
+            if(note != null){note[4] = newNoteData();}
 
-        var lblEvent = new FlxText(chkNoteCanMerge.x, chkNoteCanMerge.y + chkNoteCanMerge.height + 5, Std.int(MENU.width - 10), "Event Note", 8); tabNOTE.add(lblEvent);
+            updateSection();
+        }); tabNOTE.add(btnMerge);
+        btnMerge.setSize(Std.int(MENU.width - 10), Std.int(btnMerge.height));
+        btnMerge.setGraphicSize(Std.int(MENU.width - 10), Std.int(btnMerge.height));
+        btnMerge.centerOffsets();
+        btnMerge.label.fieldWidth = btnMerge.width;
+        btnMerge.color = FlxColor.fromRGB(133, 233, 255);
+
+        var lblEvent = new FlxText(btnMerge.x, btnMerge.y + btnMerge.height + 5, Std.int(MENU.width - 10), "Event Note", 8); tabNOTE.add(lblEvent);
         lblEvent.alignment = CENTER;
 
         lblEventNote = new FlxText(lblEvent.x, lblEvent.y + lblEvent.height + 5, Std.int(MENU.width - 10), "Note Events: 0/0", 8); tabNOTE.add(lblEventNote);
@@ -2100,17 +2130,12 @@ class ChartEditorState extends MusicBeatState{
                 case "NOTE_DATA":{
                     if(nums.value < 0){nums.value = 0;}
                     if(nums.value >= getStrumKeys(curStrum)){nums.value = getStrumKeys(curStrum) - 1;}
-                    
-                    var nComp = selNote[1];
-                    nComp[1] = Std.int(nums.value);
-                    if(getNote(nComp) == null){
-                        var getNote = getNote(selNote[1]);
-                        if(getNote != null){
-                            getNote[1] = Std.int(nums.value);
-                            selNote = [curStrum, getNote];
-                        }   
+
+                    var getNote = getNote(selNote[1]);
+                    if(getNote != null){
+                        getNote[1] = Std.int(nums.value);                       
+                        selNote = [curStrum, getNote];
                     }
-                                     
                     updateSection();
                 }
                 case "NOTE_LENGTH":{
