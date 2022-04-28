@@ -264,7 +264,7 @@ class StageSprite extends FlxSprite {
 
             playAnim("idle");
         }else{
-            loadGraphic(Paths.image('${directory}/${part.image}', 'stages'));
+            loadGraphic('stages:assets/stages/images/${directory}/${part.image}');
         }
 
         if(part.antialiasing){antialiasing = PreSettings.getPreSetting("Antialiasing");}

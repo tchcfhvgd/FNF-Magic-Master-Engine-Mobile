@@ -25,27 +25,21 @@ class Paths
 		}
 	}
 
-	static var currentLevel:String;
+	static var curLibrary:String = "shared";
 
-	static public function setCurrentLevel(name:String)
-	{
-		currentLevel = name.toLowerCase();
+	static public function setCurrentLibrary(name:String){
+		curLibrary = name.toLowerCase();
 	}
 
-	public static function getPath(file:String, type:AssetType, library:Null<String>)
-	{
-		if (library != null)
-			return getLibraryPath(file, library);
+	public static function getPath(file:String, type:AssetType, library:Null<String>){
+		if (library != null){return getLibraryPath(file, library);}
 
-		if (currentLevel != null)
-		{
-			var levelPath = getLibraryPathForce(file, currentLevel);
-			if (OpenFlAssets.exists(levelPath, type))
-				return levelPath;
+		if (curLibrary != null){
+			var levelPath = getLibraryPathForce(file, curLibrary);
+			if(OpenFlAssets.exists(levelPath, type)){return levelPath;}
 
 			levelPath = getLibraryPathForce(file, "shared");
-			if (OpenFlAssets.exists(levelPath, type))
-				return levelPath;
+			if(OpenFlAssets.exists(levelPath, type)){return levelPath;}
 		}
 
 		return getPreloadPath(file);
@@ -102,7 +96,10 @@ class Paths
 	}
 
 	inline static public function voice(id:Int, char:String, song:String, category:String){
-		var path = 'songs:assets/songs/${song}/Audio/${id}-${char}Voice-${category}.$SOUND_EXT';
+		var path = 'songs:assets/songs/${song}/Audio/${id}-${char}-${category}.$SOUND_EXT';
+		if(!Assets.exists(path)){path = 'songs:assets/songs/${song}/Audio/${id}-${char}.$SOUND_EXT';}
+
+		if(!Assets.exists(path)){path = 'songs:assets/songs/${song}/Audio/${id}-${char}Voice-${category}.$SOUND_EXT';}
 
 		if(!Assets.exists(path)){path = 'songs:assets/songs/${song}/Audio/${id}-Voice-${category}.$SOUND_EXT';}
 		if(!Assets.exists(path)){path = 'songs:assets/songs/${song}/Audio/${id}-Voice.$SOUND_EXT';}
@@ -216,19 +213,18 @@ class Paths
 	}
 
 	inline static public function getStageAtlas(key:String, ?directory:String = "Stage"){
-		var imagePath = 'stages:assets/stages/images/${directory}/${key}.png';
+		var imagePath = 'stages:assets/stages/images/${directory}/${key}';
+		var path = 'stages:assets/stages/images/${directory}/${key.split(".")[0]}';
 
 		if(!Assets.exists(imagePath)){
-			imagePath = 'stages:assets/stages/images/Stage/${key}.png';
+			imagePath = 'stages:assets/stages/images/Stage/${key}';
+			path = 'stages:assets/stages/images/Stage/${key.split(".")[0]}';
 		}
-		
-		var path = 'stages:assets/stages/images/Stage/${key}.xml';
 
-		if(Assets.exists(path)){
-			return FlxAtlasFrames.fromSparrow(imagePath, path);
+		if(Assets.exists(path + '.xml')){
+			return FlxAtlasFrames.fromSparrow(imagePath, path + '.xml');
 		}else{
-			path = 'stages:assets/stages/images/Stage/${key}.txt';
-			return FlxAtlasFrames.fromSpriteSheetPacker(imagePath, path);
+			return FlxAtlasFrames.fromSpriteSheetPacker(imagePath, path+ '.txt');
 		}
 	}
 }

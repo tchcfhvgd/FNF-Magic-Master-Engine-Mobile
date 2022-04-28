@@ -288,6 +288,8 @@ class ChartEditorState extends MusicBeatState{
         loadAudio(_song.song, _song.category);
         Conductor.changeBPM(_song.bpm);
 		Conductor.mapBPMChanges(_song);
+
+        super.create();
     }
 
     override function update(elapsed:Float){
@@ -362,9 +364,6 @@ class ChartEditorState extends MusicBeatState{
             backGrid.alpha = 0.3;
             curGrid.alpha = 0.5;
 
-            for(sNotes in renderedNotes){for(n in sNotes){n.alpha = n._alpha;}}
-            for(sNotes in renderedSustains){for(s in sNotes){s.alpha = s._alpha;}}
-
             for(i in 0..._song.sectionStrums.length){
                 var renderStrum:Array<Note> = renderedAll[i];
                 for(daNote in renderStrum){
@@ -408,7 +407,6 @@ class ChartEditorState extends MusicBeatState{
         }
 
         if(FlxG.keys.justPressed.SPACE){
-            updateSection();
             if(FlxG.sound.music.playing){
                 FlxG.sound.music.pause();
                 for(voice in voices.sounds){voice.pause();}
@@ -417,6 +415,8 @@ class ChartEditorState extends MusicBeatState{
                 FlxG.sound.music.play();
             }
             for(voice in voices.sounds){voice.time = FlxG.sound.music.time;}
+
+            updateSection();
         }
 
         if(FlxG.keys.anyJustPressed([UP, DOWN, W, S]) || FlxG.mouse.wheel != 0){
@@ -619,14 +619,16 @@ class ChartEditorState extends MusicBeatState{
             }
         }else{prevNote = null;}
 
-        note.alpha = 0.3;
-        if(strum == curStrum){
-            note.alpha = 0.6;
-
-            if(selNote[0] == strum && selNote[1][0] == note.strumTime && selNote[1][1] == note.noteData){
-                note.alpha = 1;
-            }
-        }                
+        if(FlxG.sound.music.playing){
+            note.alpha = note._alpha;
+        }else{
+            note.alpha = note._alpha * 0.3;
+            if(strum == curStrum){
+                note.alpha = note._alpha * 0.6;
+    
+                if(selNote[0] == strum && selNote[1][0] == note.strumTime && selNote[1][1] == note.noteData){note.alpha = note._alpha;}
+            }   
+        }
         
         renderedNotes.members[strum].add(note);
         renderedAll[strum].push(note);
@@ -644,8 +646,12 @@ class ChartEditorState extends MusicBeatState{
     
                     var hitNote:Note = newGridNote(strum, newStrumTime, daNoteData, 0, curHits, daOther);
                     hitNote.loadGraphicNote(daJSON.gameplayNotes[daNoteData], _song.sectionStrums[strum].noteStyle);
-                                
-                    hitNote.alpha = hits * note.alpha / totalHits;
+                    
+                    if(FlxG.sound.music.playing){
+                        hitNote.alpha = hitNote._alpha;
+                    }else{
+                        hitNote.alpha = hits * note.alpha / totalHits;
+                    }
 
                     renderedNotes.members[strum].add(hitNote);
                     renderedAll[strum].push(hitNote);
@@ -663,8 +669,16 @@ class ChartEditorState extends MusicBeatState{
                     var nSustain:Note = newGridNote(strum, sStrumTime, daNoteData, 0, 0, daOther);
                     nSustain.loadGraphicNote(daJSON.gameplayNotes[daNoteData], _song.sectionStrums[strum].noteStyle);
 
-                    nSustain.alpha = 0.5;
-                    if(strum != curStrum){nSustain.alpha = 0.1;}
+                    if(FlxG.sound.music.playing){
+                        nSustain.alpha = nSustain._alpha * 0.5;
+                    }else{
+                        nSustain.alpha = nSustain._alpha * 0.1;
+                        if(strum == curStrum){
+                            nSustain.alpha = nSustain._alpha * 0.3;
+
+                            if(selNote[0] == strum && selNote[1][0] == note.strumTime && selNote[1][1] == note.noteData){nSustain.alpha = nSustain._alpha * 0.5;}
+                        }
+                    }
 
                     nSustain.typeNote = "Sustain";
                     prevSustain.nextNote = nSustain;
@@ -675,6 +689,17 @@ class ChartEditorState extends MusicBeatState{
                         var nMerge:Note = newGridNote(strum, sStrumTime, daNoteData, 0, 0, daOther);
                         nMerge.loadGraphicNote(daJSON.gameplayNotes[daNoteData], _song.sectionStrums[strum].noteStyle);
                         nMerge.typeNote = "Merge";
+
+                        if(FlxG.sound.music.playing){
+                            nMerge.alpha = nMerge._alpha;
+                        }else{
+                            nMerge.alpha = nMerge._alpha * 0.1;
+                            if(strum == curStrum){
+                                nMerge.alpha = nMerge._alpha * 0.5;
+    
+                                if(selNote[0] == strum && selNote[1][0] == note.strumTime && selNote[1][1] == note.noteData){nMerge.alpha = nMerge._alpha;}
+                            }
+                        }
 
                         prevNote = nMerge;
                         nSustain.nextNote = nMerge;
@@ -702,7 +727,14 @@ class ChartEditorState extends MusicBeatState{
         var nSustain:Note = newGridNote(strum, daStrumTime, noteData, 0, 0, []);
         nSustain.loadGraphicNote(JSON, _song.sectionStrums[strum].noteStyle);
         nSustain.typeNote = "Switch";
-                
+    
+        if(FlxG.sound.music.playing){
+            nSustain.alpha = nSustain._alpha * 0.5;
+        }else{
+            nSustain.alpha = nSustain._alpha * 0.1;
+            if(strum == curStrum){nSustain.alpha = nSustain._alpha * 0.5;}
+        }
+    
         nSustain.angle = 270;
         nSustain.x += i * (KEYSIZE / 4);
 
@@ -960,7 +992,7 @@ class ChartEditorState extends MusicBeatState{
     }
 
     private function newNoteData(isSelected:Bool = false):Array<Dynamic>{
-        var n:Array<Dynamic> = [0, 0, 0, 0, null, []];
+        var n:Array<Dynamic> = [0, 0, 0, 0, null, {}];
 
         n[0] = getStrumTime(dArrow.y) + sectionStartTime();
         n[1] = Math.floor((FlxG.mouse.x - curGrid.x) / KEYSIZE) % getStrumKeys(curStrum);
@@ -1285,9 +1317,7 @@ class ChartEditorState extends MusicBeatState{
         var tabMENU = new FlxUI(null, MENU);
         tabMENU.name = "Song";
 
-        var btnPlaySong:FlxButton = new FlxButton(5, 5, "Play Song", function(){
-            SongListData.playChart(_song);
-        }); tabMENU.add(btnPlaySong);
+        var btnPlaySong:FlxButton = new FlxButton(5, 5, "Play Song", function(){SongListData.playSong(_song);}); tabMENU.add(btnPlaySong);
         btnPlaySong.setSize(Std.int((MENU.width - 10)), Std.int(btnPlaySong.height * 1.1));
         btnPlaySong.setGraphicSize(Std.int((MENU.width - 10)), Std.int(btnPlaySong.height * 1.1));
         btnPlaySong.centerOffsets();

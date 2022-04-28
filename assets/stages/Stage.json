@@ -7,7 +7,7 @@
             "position":[-600, -200],
             "alpha":1,
             "angle":0,
-            "image":"stageback"
+            "image":"stageback.png"
         },{
             "antialiasing":true,
             "scrollFactor":[0.9, 0.9],
@@ -15,7 +15,7 @@
             "position":[-650, 600],
             "alpha":1,
             "angle":0,
-            "image":"stagefront"
+            "image":"stagefront.png"
         },{
             "antialiasing":true,
             "scrollFactor":[0.9, 0.9],
@@ -23,7 +23,7 @@
             "position":[-125, -100],
             "alpha":1,
             "angle":0,
-            "image":"stage_light"
+            "image":"stage_light.png"
         },{
             "antialiasing":true,
             "scrollFactor":[0.9, 0.9],
@@ -32,7 +32,7 @@
             "alpha":1,
             "dflipX":true,
             "angle":0,
-            "image":"stage_light"
+            "image":"stage_light.png"
         },{
             "antialiasing":true,
             "scrollFactor":[1.3,1.3],
@@ -40,7 +40,7 @@
             "position":[-500, -300],
             "alpha":1,
             "angle":0,
-            "image":"stagecurtains"
+            "image":"stagecurtains.png"
         }
     ],
     "Chrome":0,

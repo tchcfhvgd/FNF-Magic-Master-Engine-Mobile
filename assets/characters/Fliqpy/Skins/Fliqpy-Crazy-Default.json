@@ -6,7 +6,7 @@
     "camera": [120, 250],
     "zoom": 0.8,
 	
-	"xFlip": true,
+	"onRight": true,
 	"scale": 1,
     
     "anims":[

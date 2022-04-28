@@ -1,6 +1,8 @@
 package states;
 
-import Song.SwagSong;
+
+import haxe.Json;
+import flixel.tweens.FlxTween;
 import lime.app.Promise;
 import lime.app.Future;
 import flixel.FlxG;
@@ -8,15 +10,20 @@ import flixel.FlxState;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.util.FlxTimer;
+import flixel.tweens.FlxEase;
 
+import openfl.utils.AssetType;
 import openfl.utils.Assets;
 import lime.utils.Assets as LimeAssets;
 import lime.utils.AssetLibrary;
 import lime.utils.AssetManifest;
 
+import Song.SwagSong;
+import Stage;
+
 import haxe.io.Path;
 
-#if desktop
+#if sys
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -25,302 +32,145 @@ import sys.io.File;
 using StringTools;
 
 class LoadingState extends MusicBeatState{
-	inline static var MIN_TIME = 1.0;
-	
-	var target:FlxState;
-	var stopMusic = false;
-	var callbacks:MultiCallback;
-	
-	var logo:FlxSprite;
-	var gfDance:FlxSprite;
-	var danceLeft = false;
+    inline static var MIN_TIME = 1.0;
+	inline static var FADE_TIME = 0.5;
 
-	var songToLoad:SwagSong;
-	
-	function new(target:FlxState, song:SwagSong = null, stopMusic:Bool = false){
-		super();
-		this.target = target;
-		this.stopMusic = stopMusic;
-		this.songToLoad = song;
-	}
-	
-	override function create(){
-		logo = new FlxSprite(-150, -100);
-		logo.frames = Paths.getSparrowAtlas('logoBumpin');
-		logo.antialiasing = true;
-		logo.animation.addByPrefix('bump', 'logo bumpin', 24);
-		logo.animation.play('bump');
-		logo.updateHitbox();
-		// logoBl.screenCenter();
-		// logoBl.color = FlxColor.BLACK;
+	private var TARGET:FlxState;
+	private var SONG:SwagSong;
 
-		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
-		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
-		gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-		gfDance.antialiasing = true;
-		add(gfDance);
-		add(logo);
+	private var bg:FlxSprite;
 
-		if(songToLoad == null){songToLoad = PlayState.SongListData.songPlaylist[0];} 
-
-		var songName:String = Paths.getFileName(songToLoad.song);
-
-		trace("Loading: " + songName);
+	public static function loadAndSwitchState(target:FlxState, song:SwagSong, withMusic:Bool = true){
+		var load:Void->Void = function(){FlxG.switchState(new LoadingState(target, song));};
 		
-		initSongsManifest().onComplete(
-			function (lib){
-				callbacks = new MultiCallback(onLoad);
-				var introComplete = callbacks.add("introComplete");
-				
-				checkLibrary("shared");
-
-				checkLoadSong(songName);
-
-				var characters = [];
-				for(char in songToLoad.characters){
-					characters.push(char[0]);
-				}
-				checkCharacters(characters);
-				
-				var fadeTime = 0.5;
-				FlxG.camera.fade(FlxG.camera.bgColor, fadeTime, true);
-				new FlxTimer().start(fadeTime + MIN_TIME, function(_) introComplete());
-			}
-		);
+		if(!withMusic){
+			FlxTween.tween(FlxG.sound.music, {volume: 0}, 1, {onComplete: function(twn:FlxTween){
+				FlxG.sound.music.stop();
+				load();
+			}});
+		}else{
+			load();
+		}
 	}
 
-	function checkBitMap(path:String){
-		if (!Assets.cache.hasBitmapData(path)){
-			var callback = callbacks.add("BitMap: " + path);
-			Assets.loadBitmapData(path).onComplete(function (_) { callback(); });
-			trace("Cached BitMap: " + path);
+	public function new(target:FlxState, song:SwagSong){
+		super();
+
+		this.TARGET = target;
+		this.SONG = song;
+	}
+
+	override function create(){
+		bg = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
+		bg.setGraphicSize(FlxG.width, FlxG.height);
+		bg.screenCenter();
+		add(bg);
+
+		super.create();
+
+		checkLibrary("shared");
+
+		#if sys
+			trace("Sys Method");
+		#else
+			trace("Alternative Method");
+		#end
+
+		loadSong();
+		loadStage();
+		loadCharacters();
+
+		FlxG.camera.fade(FlxG.camera.bgColor, FADE_TIME, true);
+		new FlxTimer().start(FADE_TIME + MIN_TIME, function(_) onLoad());
+	}
+
+	private function onLoad(){
+		FlxG.switchState(TARGET);
+	}
+
+	function loadSong(){
+		trace('Loading Song [${SONG.song}] Audio Files');
+		var nSong:String = Paths.getFileName(SONG.song);
+		
+		#if sys
+			if(FileSystem.exists(FileSystem.absolutePath('assets/songs/${nSong}/Audio'))){
+				for(sound in FileSystem.readDirectory(FileSystem.absolutePath('assets/songs/${nSong}/Audio'))){
+					if(sound.endsWith(".ogg")){
+						var sPath:String = 'songs:assets/songs/${nSong}/Audio/' + sound;
+						checkSound(Std.string(sPath));
+					}
+				}
+			}else{
+				trace('Song [${nSong}]: Doesn\'t Exist');
+			}
+		#else
+			checkSound(Paths.inst(nSong, SONG.category));
+			for(i in 0...SONG.voices.length){checkSound(Paths.voice(i, SONG.voices[i], nSong, SONG.category));}
+		#end
+	}
+
+	function loadCharacters(){
+		trace('Loading Song [${SONG.song}] Characters');
+
+		#if sys
+			for(charData in SONG.characters){
+				var char = charData[0];
+				if(!FileSystem.exists(FileSystem.absolutePath('assets/characters/${char}'))){char = "Boyfriend";}
+
+				for(file in FileSystem.readDirectory(FileSystem.absolutePath('assets/characters/${char}/Sprites'))){
+					if(file.endsWith(".png") || file.endsWith(".jpg")){
+						var sPath:String = 'characters:assets/characters/${char}/Sprites/' + file;
+						checkBitMap(Std.string(sPath));
+					}
+				}
+			}
+		#end
+	}
+
+	function loadStage(){
+		trace('Loading Song [${SONG.song}] Stage [${SONG.stage}]');
+
+		var sJson:StageData = cast Json.parse(Assets.getText(Paths.StageJSON(SONG.stage)));
+
+		#if sys
+			if(FileSystem.exists(FileSystem.absolutePath('assets/stages/images/${sJson.Directory}'))){
+				for(file in FileSystem.readDirectory(FileSystem.absolutePath('assets/stages/images/${sJson.Directory}'))){
+					if(file.endsWith(".png") || file.endsWith(".jpg")){
+						var sPath:String = 'stages:assets/stages/images/${sJson.Directory}/' + file;
+						checkBitMap(Std.string(sPath));
+					}
+				}
+			}else{
+				trace('Song [${SONG.song}] Stage [${SONG.stage}]: Doesn\'t Exist');
+			}
+		#else
+			for(sprite in sJson.StageData){checkBitMap('stages:assets/stages/images/${sJson.Directory}/${sprite.image}');}
+		#end
+	}
+
+	function checkLibrary(library:String){
+		trace("Checking Library [" + library + "]: " + Assets.hasLibrary(library));
+		if(Assets.getLibrary(library) == null){
+			@:privateAccess
+			if(!LimeAssets.libraryPaths.exists(library)){throw "Missing library: " + library;}
+
+			Assets.loadLibrary(library).onComplete(function (_) { trace("Library [" + library + "]: Loaded"); });
 		}
 	}
 
 	function checkSound(path:String){
-		if (!Assets.cache.hasSound(path)){
-			var callback = callbacks.add("Sound: " + path);
-			Assets.loadSound(path).onComplete(function (_) { callback(); });
-			trace("Cached Sound: " + path);
+		if(!Assets.cache.hasSound(path)){
+			Assets.loadSound(path).onComplete(function (_) { trace("Cached Sound: " + path); });
+		}else{
+			trace('[${path}]: Already Cached');
 		}
 	}
 
-	function checkCharacters(path:Array<String>){
-		for(char in path){
-			#if desktop
-			if(!Assets.exists('assets/characters/${char}')){char = "Boyfriend";}
-
-			for(sprite in FileSystem.readDirectory(FileSystem.absolutePath('assets/characters/${char}/Sprites'))){
-				if(sprite.endsWith(".png")){
-					var sPath:String = 'characters:assets/characters/${char}/Sprites/' + sprite;
-
-					if(!Assets.cache.hasBitmapData(sPath)){
-						var callback = callbacks.add("Character (" + char + "): " + sPath);
-						Assets.loadBitmapData(Std.string(sPath)).onComplete(function (_) { callback(); });
-						trace("Cached [" + char + "] Sprite: " + sPath);
-					}
-				}
-			}
-			#else
-				trace("Error: Doesn't Desktop");
-			#end
+	function checkBitMap(path:String){
+		if(!Assets.cache.hasBitmapData(path)){
+			Assets.loadBitmapData(path).onComplete(function (_) { trace("Cached BitMap: " + path); });
+		}else{
+			trace('[${path}]: Already Cached');
 		}
 	}
-
-	function checkLoadSong(sName:String){
-		#if desktop
-		for(sound in FileSystem.readDirectory(FileSystem.absolutePath('assets/songs/${sName}/Audio'))){
-			if(sound.endsWith(".ogg")){
-				var sPath:String = 'songs:assets/songs/${sName}/Audio/' + sound;
-
-				if(!Assets.cache.hasSound(Std.string(sPath))){
-					var callback = callbacks.add("Song (" + sName + "): " + sPath);
-					Assets.loadSound(Std.string(sPath)).onComplete(function (_) { callback(); });
-					trace("Cached [" + sName + "] Sound: " + sPath);
-				}
-			}
-		}
-		#else
-			trace("Error: Doesn't Desktop");
-		#end
-	}
-	
-	function checkLibrary(library:String){
-		trace(Assets.hasLibrary(library));
-		if (Assets.getLibrary(library) == null)
-		{
-			@:privateAccess
-			if (!LimeAssets.libraryPaths.exists(library))
-				throw "Missing library: " + library;
-			
-			var callback = callbacks.add("Library: " + library);
-			Assets.loadLibrary(library).onComplete(function (_) { callback(); });
-		}
-	}
-	
-	override function beatHit()
-	{
-		super.beatHit();
-		
-		logo.animation.play('bump');
-		danceLeft = !danceLeft;
-		
-		if (danceLeft)
-			gfDance.animation.play('danceRight');
-		else
-			gfDance.animation.play('danceLeft');
-	}
-	
-	override function update(elapsed:Float)
-	{
-		super.update(elapsed);
-		#if debug
-		if (FlxG.keys.justPressed.SPACE)
-			trace('fired: ' + callbacks.getFired() + " unfired:" + callbacks.getUnfired());
-		#end
-	}
-	
-	function onLoad()
-	{
-		if (stopMusic && FlxG.sound.music != null)
-			FlxG.sound.music.stop();
-		
-		FlxG.switchState(target);
-	}
-	
-	inline static public function loadAndSwitchState(target:FlxState, song:SwagSong = null, stopMusic = false){
-		Paths.setCurrentLevel("week1");
-		FlxG.switchState(new LoadingState(target, song, stopMusic));
-	}
-	
-	override function destroy()
-	{
-		super.destroy();
-		
-		callbacks = null;
-	}
-	
-	static function initSongsManifest()
-	{
-		var id = "songs";
-		var promise = new Promise<AssetLibrary>();
-
-		var library = LimeAssets.getLibrary(id);
-
-		if (library != null)
-		{
-			return Future.withValue(library);
-		}
-
-		var path = id;
-		var rootPath = null;
-
-		@:privateAccess
-		var libraryPaths = LimeAssets.libraryPaths;
-		if (libraryPaths.exists(id))
-		{
-			path = libraryPaths[id];
-			rootPath = Path.directory(path);
-		}
-		else
-		{
-			if (StringTools.endsWith(path, ".bundle"))
-			{
-				rootPath = path;
-				path += "/library.json";
-			}
-			else
-			{
-				rootPath = Path.directory(path);
-			}
-			@:privateAccess
-			path = LimeAssets.__cacheBreak(path);
-		}
-
-		AssetManifest.loadFromFile(path, rootPath).onComplete(function(manifest)
-		{
-			if (manifest == null)
-			{
-				promise.error("Cannot parse asset manifest for library \"" + id + "\"");
-				return;
-			}
-
-			var library = AssetLibrary.fromManifest(manifest);
-
-			if (library == null)
-			{
-				promise.error("Cannot open library \"" + id + "\"");
-			}
-			else
-			{
-				@:privateAccess
-				LimeAssets.libraries.set(id, library);
-				library.onChange.add(LimeAssets.onChange.dispatch);
-				promise.completeWith(Future.withValue(library));
-			}
-		}).onError(function(_)
-		{
-			promise.error("There is no asset library with an ID of \"" + id + "\"");
-		});
-
-		return promise.future;
-	}
-}
-
-class MultiCallback
-{
-	public var callback:Void->Void;
-	public var logId:String = null;
-	public var length(default, null) = 0;
-	public var numRemaining(default, null) = 0;
-	
-	var unfired = new Map<String, Void->Void>();
-	var fired = new Array<String>();
-	
-	public function new (callback:Void->Void, logId:String = null)
-	{
-		this.callback = callback;
-		this.logId = logId;
-	}
-	
-	public function add(id = "untitled")
-	{
-		id = '$length:$id';
-		length++;
-		numRemaining++;
-		var func:Void->Void = null;
-		func = function ()
-		{
-			if (unfired.exists(id))
-			{
-				unfired.remove(id);
-				fired.push(id);
-				numRemaining--;
-				
-				if (logId != null)
-					log('fired $id, $numRemaining remaining');
-				
-				if (numRemaining == 0)
-				{
-					if (logId != null)
-						log('all callbacks fired');
-					callback();
-				}
-			}
-			else
-				log('already fired $id');
-		}
-		unfired[id] = func;
-		return func;
-	}
-	
-	inline function log(msg):Void
-	{
-		if (logId != null)
-			trace('$logId: $msg');
-	}
-	
-	public function getFired() return fired.copy();
-	public function getUnfired() return [for (id in unfired.keys()) id];
 }

@@ -56,6 +56,22 @@ class StrumLine extends FlxGroup{
     public var onHIT:Note->Void = null;
     public var onMISS:Note->Void = null;
 
+    // STATS VARIABLES
+    public var HEALTH:Float = 1;
+    public var MAXHEALTH:Float = 2;
+
+    public var nSTATS:Map<String, Int> = [];
+    
+    public var HITS:Int = 0;
+    public var MISSES:Int = 0;
+    
+    public var SCORE:Float = 0;
+    public var PERCENT:Int = 0;
+
+    public var COMBO:Int = 0;
+    public var MAXCOMBO:Int = 0;
+    // ===============
+
     public var staticNotes:StrumStaticNotes;
 
     public var notes:FlxTypedGroup<Note>;
@@ -174,7 +190,7 @@ class StrumLine extends FlxGroup{
                 nSustain.typeHit = "Hold";
                 prevSustain.nextNote = nSustain;
 
-                var nHeight:Int = Std.int(getScrollSpeed() * staticNotes.size / (bpm * 2.3 / 150));
+                var nHeight:Int = Std.int(getScrollSpeed() * getStrumSize() / (bpm * 2.3 / 150));
                 nSustain.setGraphicSize(getStrumSize(), nHeight);
                 nSustain.updateHitbox();
 
@@ -219,7 +235,7 @@ class StrumLine extends FlxGroup{
     override function update(elapsed:Float){
 		super.update(elapsed);
 
-        keyShit();
+        if(COMBO > MAXCOMBO){MAXCOMBO = COMBO;}
 
         if(unNotes[0] != null){
             if(unNotes[0].strumTime - Conductor.songPosition < 3500){
@@ -234,18 +250,19 @@ class StrumLine extends FlxGroup{
         notes.forEachAlive(function(daNote:Note){
             var pre_TypeScroll:String = PreSettings.getArraySetting(PreSettings.getPreSetting("TypeScroll"));
             
-            if(daNote.noteStatus == "late"){
-                daNote.active = false;
-                daNote.visible = false;
-            }else{
-                daNote.visible = true;
-                daNote.active = true;
-            }
-
             var curScrollspeed:Float = getScrollSpeed();
 
-            daNote.updateHitbox();
             var yStuff:Float = 0.45 * (Conductor.songPosition - daNote.strumTime) * curScrollspeed;
+
+            if(daNote.prevStrumTime != null){
+                var middleTime:Float = daNote.strumTime - daNote.prevStrumTime;
+                if(middleTime > Conductor.songPosition){
+                    yStuff = 0.45 * (Conductor.songPosition - (middleTime)) * curScrollspeed;
+                }else{
+                    yStuff = 0.45 * (Conductor.songPosition - (daNote.strumTime)) * curScrollspeed;
+                }
+            }
+
             if(staticNotes.members[daNote.noteData].exists){
                 if(pre_TypeScroll == "DownScroll"){
                     daNote.y = (staticNotes.members[daNote.noteData].y + yStuff);
@@ -271,25 +288,11 @@ class StrumLine extends FlxGroup{
             }else{
                 daNote.visible = false;
             }
-
-            if(daNote.noteStatus == "Pressed"){
-                if(pre_TypeStrums == "All" || pre_TypeStrums == "OnlyOtherStrums"){
-                    staticNotes.members[daNote.noteData].playAnim("confirm");
-                }
-
-                if(daNote.noteHits > 0 && daNote.noteLength > 20){
-                    daNote.noteStatus = "MultiTap";
-                    daNote.strumTime += daNote.noteLength;
-                    daNote.noteHits--;
-                }else{
-                    daNote.active = false;
-
-                    daNote.kill();
-                }
-
-                if(onHIT != null){onHIT(daNote);}
-            }
+            
+            if(daNote.noteStatus == "Late"){missNOTE(daNote);}
         });
+
+        keyShit();
 	}
 
     private function keyShit():Void{
@@ -317,8 +320,7 @@ class StrumLine extends FlxGroup{
                         (daNote.typeHit == "Always" || daNote.typeHit == "Ghost")
                     )
                 ){
-                    if((pre_TypeStrums == "All" || pre_TypeStrums == "OnlyOtherStrums") && daNote.typeNote != "Ghost"){staticNotes.members[daNote.noteData].playAnim("confirm");}
-                    daNote.noteStatus = "Pressed";
+                    hitNOTE(daNote);
                 }
             });
         }else if(typeStrum == "BotPlay"){
@@ -329,21 +331,48 @@ class StrumLine extends FlxGroup{
             });
 
             notes.forEachAlive(function(daNote:Note){
-                if(daNote.strumTime <= Conductor.songPosition){
-                    if(pre_TypeStrums == "All" || pre_TypeStrums == "OnlyOtherStrums"){
-                        staticNotes.members[daNote.noteData].playAnim("confirm");
-                    }
-    
-                    daNote.noteStatus = "Pressed";
-                }
-            });
-        }else if(typeStrum == "Charting"){
-            notes.forEachAlive(function(daNote:Note){
-                if(daNote.noteStatus == "CanBeHit"){
-                    staticNotes.members[daNote.noteData].playAnim("confirm");
-                }
+                if(daNote.strumTime <= Conductor.songPosition){hitNOTE(daNote);}
             });
         }
+    }
+
+    public function hitNOTE(daNote:Note) {
+        if((pre_TypeStrums == "All" || pre_TypeStrums == "OnlyOtherStrums") && daNote.typeHit != "Ghost"){staticNotes.members[daNote.noteData].playAnim("confirm");}
+        daNote.noteStatus = "Pressed";
+
+
+        if(daNote.noteHits > 0 && daNote.noteLength > 20){
+            daNote.noteStatus = "MultiTap";
+
+            daNote.prevStrumTime = daNote.strumTime;
+            daNote.strumTime += daNote.noteLength;
+            
+            daNote.noteHits--;
+        }else{
+            daNote.kill();
+            notes.remove(daNote, true);
+            daNote.destroy();
+        }
+
+        if(daNote.typeHit != "Ghost"){
+            HITS++;
+            SCORE += 20;
+            COMBO++;
+
+            if(onHIT != null){onHIT(daNote);}
+        }
+    }
+
+    public function missNOTE(daNote:Note) {
+        daNote.kill();
+        notes.remove(daNote, true);
+        daNote.destroy();
+
+        MISSES += 1 + daNote.noteHits;
+        SCORE -= 10;
+        COMBO = 0;
+
+        if(onMISS != null){onMISS(daNote);}
     }
 
     public function getScrollSpeed():Float{
@@ -445,23 +474,27 @@ class StrumStaticNotes extends FlxTypedGroup<StrumNote> {
 }
 
 class StrumNote extends FlxSprite{
+    public static var IMAGE_DEFAULT:String = "NOTE_assets";
+
     public var nColor:String = "0xffffff";
     public var _alpha:Float = 1;
 
     public var onDebug:Bool = false;
 
-	public function new(JSON:NoteJSON = null, newTypeNote:String = "Default", typeImage:String = "NOTE_assets"){
+	public function new(JSON:NoteJSON = null, newTypeNote:String = "Default", typeImage:String = null){
         super();
 
         loadGraphicNote(JSON, newTypeNote, typeImage);
         playAnim("static");
 	}
 
-    public function loadGraphicNote(newJSON:NoteJSON = null, newTypeNote:String = "Default", newImage:String = "NOTE_assets"){
+    public function loadGraphicNote(newJSON:NoteJSON = null, newTypeNote:String = "Default", newImage:String = null){
         if(newJSON == null){
             var cJSON:StrumLineNoteJSON = cast Json.parse(Assets.getText(Paths.strumJSON(4)));
             newJSON = cJSON.staticNotes[0];
         }
+
+        if(newImage == null){newImage = IMAGE_DEFAULT;}
 
         frames = Paths.getNoteAtlas(newImage, newTypeNote);
 
@@ -502,18 +535,28 @@ class StrumNote extends FlxSprite{
 
 class Note extends StrumNote {
     //Static Pressets
-    public static var Note_Presets:Map<String, Dynamic> = [
-        
+    public static var Note_Presets:Map<String, Map<String, Dynamic>> = [
+        "DAMAGE_NOTE" => [
+            "New_Image" => "Blood_NOTE_ASSETS",
+            "Damage_Hit" => 0.2,
+            "Hit_Miss" => true,
+            "Ignore_Miss" => true
+        ],
     ];
 
     public static var Note_Specials:Map<String, Dynamic> = [
-        "New_Image" => "NOTE_ASSETS.png",
-        "Damage_Hit" => [0.5],
+        "New_Image" => "NOTE_ASSETS", //Change the Note Image
+        "Damage_Hit" => 0.5, //Change the Miss Damage 
+        "Health_Hit" => 0.5, //Change the Hit Health 
+        "Change_Hit" => "Press", //Change the Note Hit Type
+        "Hit_Miss" => false, //Question if the Note Miss on Hit
+        "Ignore_Miss" => false //Question if the Note does nothing when Miss
     ];
 
     //General Variables
     public var nextNote:Note = null;
 
+    public var prevStrumTime:Null<Float> = null;
     public var strumTime:Float = 1;
 
     public var noteLength:Float = 0;
@@ -521,7 +564,6 @@ class Note extends StrumNote {
 
     public var typeNote:String = "Normal"; // [Normal, Sustain, Merge] CurNormal Types
     public var typeHit:String = "Press"; // [Press | Normal Hits] [Hold | Hold Hits] [Release | Release Hits] [Always | Just Hit] [Ghost | Just Hit Withowt Strum Anim]
-
     public var canMiss:Bool = true;
 
 	public var noteData:Int = 0;
@@ -553,12 +595,12 @@ class Note extends StrumNote {
         return styleArray;
     }
 
-	public function new(strumTime:Float, noteData:Int, ?noteLength:Float = 0, ?noteHits:Int = 0, ?otherData:Map<String, Dynamic>){
+	public function new(strumTime:Float, noteData:Int, noteLength:Float = 0, noteHits:Int = 0, otherData:Map<String, Dynamic> = null){
         this.strumTime = strumTime;
 		this.noteData = noteData;
         this.noteLength = noteLength;
         this.noteHits = noteHits;
-        this.otherData = otherData;
+        if(otherData != null){this.otherData = otherData;}
         super();
 	}
 
@@ -578,17 +620,14 @@ class Note extends StrumNote {
             case "Switch":{playAnim("switch");}
         }
 
-        if(strumTime > Conductor.songPosition - Conductor.safeZoneOffset && strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5)){
-            noteStatus = "CanBeHit";
-        }
-
-        if(strumTime < Conductor.songPosition - Conductor.safeZoneOffset && noteStatus != "Pressed"){
-            noteStatus = "Late";
-        }
+        if(strumTime > Conductor.songPosition - Conductor.safeZoneOffset && strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5)){noteStatus = "CanBeHit";}
+        if(Conductor.songPosition > strumTime + (Conductor.safeZoneOffset * 0.5) && noteStatus != "Pressed"){noteStatus = "Late";}
 	}
 
-    override public function loadGraphicNote(newJSON:NoteJSON = null, newTypeNote:String = "Default", newImage:String = "NOTE_assets"){
+    override public function loadGraphicNote(newJSON:NoteJSON = null, newTypeNote:String = "Default", newImage:String = null){
         if(newJSON != null){chAnim = newJSON.chAnim;}
+
+        if(newImage == null && otherData.exists("New_Image")){newImage = otherData.get("New_Image");}
 
         super.loadGraphicNote(newJSON, newTypeNote, newImage);
     }

@@ -71,9 +71,7 @@ class Song{
 		this.bpm = bpm;
 	}
 
-	public static function loadFromJson(jsonInput:String, song:String):SwagSong{		
-		trace("Loading: " + song);
-
+	public static function loadFromJson(jsonInput:String, song:String):SwagSong{
 		var rawJson = Assets.getText(Paths.chart(jsonInput, song)).trim();
 
 		while (!rawJson.endsWith("}"))
@@ -93,14 +91,17 @@ class Song{
 	public static function convertJSON(sName:String, songJSON:Dynamic, typeChart:String = "Magic"):SwagSong{
 		var aSong:DynamicAccess<Dynamic> = songJSON;
 
-		trace("[== |Reading Chart Values| ==]");
-		for(k in aSong.keys()){trace(k + " | " + aSong.get(k));}
-		trace("[== |Values Readed| ==]");
-
 		//Adding General Values
 		if(aSong.get("validScore") == null){aSong.set("validScore", false);}
 
-		if(aSong.get("song") == null){aSong.set("song", "PlaceHolderName");}
+		if(aSong.get("song") == null){
+			if(sName.split("-")[2] != null){
+				aSong.set("song", sName.split("-")[2]);
+			}else{
+				aSong.set("song", "PlaceHolderName");
+			}
+		}
+
 		if(aSong.get("bpm") == null){aSong.set("bpm", 100);}
 		if(aSong.get("speed") == null){aSong.set("speed", 1);}
 		if(aSong.get("stage") == null){aSong.set("stage", "stage");}
@@ -184,13 +185,7 @@ class Song{
 							if(iLengthInSteps == 0){iLengthInSteps = 16;}
 
 							var iStrumToFocus:Int = 0;
-							var iCharToFocus:Int = 1;
-							if(cSec.get("mustHitSection") != null){
-								if(cSec.get("mustHitSection") == true){
-									iStrumToFocus = 1;
-									iCharToFocus = 2;
-								}
-							}
+							if(cSec.get("mustHitSection") == true){iStrumToFocus = 1;}
 
 							var cgSec:SwagGeneralSection = {
 								bpm: iBpm,
@@ -198,7 +193,7 @@ class Song{
 
 								lengthInSteps: iLengthInSteps,
 								strumToFocus: iStrumToFocus,
-								charToFocus: iCharToFocus
+								charToFocus: 0
 							};
 
 							gSec.push(cgSec);
@@ -227,23 +222,13 @@ class Song{
 							var in2:Array<Dynamic> = [];
 							if(iNotes != null){
 								for(n in iNotes){
-									if(cSec.get("mustHitSection") != null){
-										if(cSec.get("mustHitSection") == true){
-											if(n[1] < 4){
-												in2.push(n);
-											}
-											if(n[1] > 3){
-												n[1] = n[1] % 4;
-												in1.push(n);
-											}
-										}else{
-											if(n[1] < 4){
-												in1.push(n);
-											}
-											if(n[1] > 3){
-												n[1] = n[1] % 4;
-												in2.push(n);
-											}
+									if(cSec.get("mustHitSection") == true){
+										if(n[1] < 4){
+											in2.push(n);
+										}
+										if(n[1] > 3){
+											n[1] = n[1] % 4;
+											in1.push(n);
 										}
 									}else{
 										if(n[1] < 4){
@@ -305,7 +290,8 @@ class Song{
 								noteStyle: aSong.get("uiStyle"),
 								keys: 4,
 								charToSing: [1],
-								notes: []
+								notes: [
+								]
 							},
 							{
 								noteStyle: aSong.get("uiStyle"),
@@ -320,10 +306,6 @@ class Song{
 				}
 			}
 		}
-
-		trace("[== |Converted Chart Values| ==]");
-		for(k in aSong.keys()){trace(k + " | " + aSong.get(k));}
-		trace("[== |Values Converted| ==]");
 
 		var dSong:Dynamic = aSong;
 		var toReturn:SwagSong = dSong;

@@ -16,8 +16,7 @@ class MusicBeatState extends FlxUIState
 	private var curBeat:Int = 0;
 
 	override function create(){
-		if (transIn != null)
-			trace('reg ' + transIn.region);
+		if(transIn != null){trace('reg ' + transIn.region);}
 
 		super.create();
 	}

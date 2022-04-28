@@ -130,11 +130,6 @@ class Character extends FlxSprite{
 		curCategory = category;
 		curType = type;
 
-		trace('Character: ' + curCharacter);
-		trace('Type: ' + curType);
-		trace('Category: ' + curCategory);
-		trace('Skin: ' + curSkin);
-
 		switch(curCharacter){
 			//case 'your character name in case you want to hardcode him instead':
 
@@ -145,8 +140,6 @@ class Character extends FlxSprite{
 				var jCharacter:CharacterFile = cast Json.parse(rawJson);
 				
 				imageFile = jCharacter.image;
-				trace('Image: ' + imageFile);
-				trace('Icon: ' + jCharacter.healthicon);
 
 				frames = Paths.getCharacterAtlas(curCharacter, imageFile);
 

@@ -115,12 +115,10 @@ class PlayState extends MusicBeatState {
 		persistentUpdate = true;
 		persistentDraw = true;
 
-		if(SONG == null){
-			if(SongListData.songPlaylist.length > 0){
-				SONG = SongListData.songPlaylist[0];
-			}else{
-				SONG = Song.loadFromJson('Tutorial-Normal-Hard', 'Tutorial');
-			}
+		if(SongListData.songPlaylist.length > 0){
+			SONG = SongListData.songPlaylist[0];
+		}else{
+			SONG = Song.loadFromJson('Tutorial-Normal-Hard', 'Tutorial');
 		}
 
 		Conductor.mapBPMChanges(SONG);
@@ -154,7 +152,7 @@ class PlayState extends MusicBeatState {
 
 		add(camFollow);
 
-		FlxG.camera.follow(camFollow, LOCKON, 0.04);
+		FlxG.camera.follow(camFollow, LOCKON, 0.02);
 		// FlxG.camera.setScrollBounds(0, FlxG.width, 0, FlxG.height);
 		FlxG.camera.zoom = defaultCamZoom;
 		FlxG.camera.focusOn(camFollow.getPosition());
@@ -292,6 +290,8 @@ class PlayState extends MusicBeatState {
 			for(daStrum in strumLine.staticNotes){daStrum.alpha = 0;}
 			
 			strumLine.onHIT = function(note:Note) {
+				//trace("HITS++ | TOTAL HITS: " +  strumLine.HITS);
+
 				var char = SONG.sectionStrums[i].charToSing;
 				if(SONG.sectionStrums[i].notes[Std.int(curStep / 16)].changeSing){char = SONG.sectionStrums[i].notes[Std.int(curStep / 16)].charToSing;}
 
@@ -300,6 +300,21 @@ class PlayState extends MusicBeatState {
 
 					if(char != null){
 						char.playAnim(false, note.chAnim, true);
+						char.holdTimer = FlxG.elapsed * 10;
+					}
+				}
+			}
+
+			strumLine.onMISS = function(note:Note) {
+				//trace("MISS++ | TOTAL MISSES: " +  strumLine.MISSES);
+				var char = SONG.sectionStrums[i].charToSing;
+				if(SONG.sectionStrums[i].notes[Std.int(curStep / 16)].changeSing){char = SONG.sectionStrums[i].notes[Std.int(curStep / 16)].charToSing;}
+
+				for(i in char){
+					var char:Character = stage.getCharacterById(i);
+
+					if(char != null){
+						char.playAnim(false, note.chAnim + "-miss", true);
 						char.holdTimer = FlxG.elapsed * 10;
 					}
 				}
@@ -590,9 +605,8 @@ class PlayState extends MusicBeatState {
 			FlxG.sound.music.stop();
 			for(sound in voices.sounds){sound.stop();}
 
-			FlxG.switchState(new states.MainMenuState());
-
 			SongListData.resetVariables();
+			FlxG.switchState(new states.MainMenuState());
 
 			//if (SONG.validScore){
 			//	NGio.unlockMedal(60961);
@@ -606,7 +620,7 @@ class PlayState extends MusicBeatState {
 
 			prevCamFollow = camFollow;
 
-			SongListData.toPlayState(isStoryMode);
+			SongListData.playWeek();
 			FlxG.sound.music.stop();
 		}
 	}
@@ -648,39 +662,39 @@ class PlayState extends MusicBeatState {
 }
 
 class SongListData{
+	public static var onNext:Void->Void;
+	public static var onFinish:Void->Void;
+
 	public static var songPlaylist:Array<SwagSong> = [];
 	public static var isStoryMode:Bool = false;
 
-	public static var campaignScore:Int = 0;
+	public static var campScore:Int = 0;
 
 	public static function addWeek(songList:Array<SwagSong>){
-		for(song in songList){
-			songPlaylist.push(song);
-		}
+		for(song in songList){songPlaylist.push(song);}
 	}
 
 	public static function addSong(song:SwagSong){
 		songPlaylist.push(song);
 	}
 
-	public static function toPlayState(story:Bool = false){
-		isStoryMode = story;
-		states.LoadingState.loadAndSwitchState(new PlayState());
+	public static function playWeek(){
+		isStoryMode = true;
+		states.LoadingState.loadAndSwitchState(new PlayState(), songPlaylist[0], false);
 	}
 
-	public static function playChart(song:SwagSong) {
+	public static function playSong(SONG:SwagSong) {
 		isStoryMode = false;
-		PlayState.SONG = song;
-		states.LoadingState.loadAndSwitchState(new PlayState(), song, false);
+		states.LoadingState.loadAndSwitchState(new PlayState(), SONG, false);
 	}
 	
 	public static function nextSong(score){
-		campaignScore += score;
+		campScore += score;
 		songPlaylist.remove(songPlaylist[0]);
 	}
 
 	public static function resetVariables(){
 		songPlaylist = [];
-		campaignScore = 0;
+		campScore = 0;
 	}
 }

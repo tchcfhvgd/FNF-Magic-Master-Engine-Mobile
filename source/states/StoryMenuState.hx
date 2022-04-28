@@ -270,7 +270,7 @@ class StoryMenuState extends substates.MusicBeatSubstate
 			}
 			PlayState.SongListData.resetVariables();
 			new FlxTimer().start(1, function(tmr:FlxTimer){
-				PlayState.SongListData.toPlayState(true);
+				PlayState.SongListData.playWeek();
 			});		
 		}
 	}
