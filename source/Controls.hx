@@ -1,187 +1,627 @@
 package;
 
 import flixel.FlxG;
-import flixel.util.FlxSave;
+import flixel.input.FlxInput;
+import flixel.input.actions.FlxAction;
+import flixel.input.actions.FlxActionInput;
+import flixel.input.actions.FlxActionInputDigital;
+import flixel.input.actions.FlxActionManager;
+import flixel.input.actions.FlxActionSet;
+import flixel.input.gamepad.FlxGamepadButton;
+import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.keyboard.FlxKey;
-import flixel.graphics.FlxGraphic;
 
-class Controls {
-    public static var curKeyBinds:Array<Dynamic> = [];
-    public static var defaultKeyBinds:Array<Dynamic> = [
-        ["Menu_Accept", [SPACE, ENTER]],
-        ["Menu_Back", [BACKSPACE, ESCAPE]],
-        ["Menu_Tab", [TAB]],
-        ["Menu_Left", [LEFT]],
-        ["Menu_Up", [UP]],
-        ["Menu_Down", [DOWN]],
-        ["Menu_Right", [RIGHT]],
+using StringTools;
 
-        ["Game_Accept", [SPACE, ENTER]],
-        ["Game_Back", [BACKSPACE, ESCAPE]],
-        ["Game_Pause", [ESCAPE, ENTER]],
-        ["Game_Reset", [R]],
-        ["Game_Left", [LEFT]],
-        ["Game_Up", [UP]],
-        ["Game_Down", [DOWN]],
-        ["Game_Right", [RIGHT]]
+enum Device {
+	KeyBoard;
+	Gamepad(id:Int);
+}
+
+enum KeyboardScheme {
+	Solo;
+	Duo(first:Bool);
+	None;
+	Custom;
+}
+
+/**
+ * A list of actions that a player would invoke via some input device.
+ * Uses FlxActions to funnel various inputs to a single action.
+ */
+class Controls extends FlxActionSet {
+    public static var STATIC_ACTIONS:Map<String, Array<Array<Int>>> = [
+		//Menu General Movement Actions
+        "Menu_Up" => [// Action Name
+			[FlxKey.UP], // KeyBoard Inputs
+			[FlxGamepadInputID.LEFT_STICK_DIGITAL_UP, FlxGamepadInputID.DPAD_UP] // Gamepad Inputs
+		],
+        "Menu_Left" => [
+			[FlxKey.LEFT],
+			[FlxGamepadInputID.LEFT_STICK_DIGITAL_LEFT, FlxGamepadInputID.DPAD_LEFT]
+		],
+        "Menu_Down" => [
+			[FlxKey.DOWN],
+			[FlxGamepadInputID.LEFT_STICK_DIGITAL_DOWN, FlxGamepadInputID.DPAD_DOWN]
+		],
+        "Menu_Right" => [
+			[FlxKey.RIGHT],
+			[FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT, FlxGamepadInputID.DPAD_RIGHT]
+		],
+        //Menu General Actions
+        "Menu_Accept" => [
+			[FlxKey.ENTER],
+			[FlxGamepadInputID.START, FlxGamepadInputID.A]
+		],
+        "Menu_Back" => [
+			[FlxKey.ESCAPE],
+			[FlxGamepadInputID.B, FlxGamepadInputID.BACK]
+		],
+        "Menu_Pause" => [
+			[FlxKey.ENTER, FlxKey.ESCAPE],
+			[FlxGamepadInputID.START, FlxGamepadInputID.BACK]
+		],
+        //Character General Movement Actions
+        "Game_Up" => [
+			[FlxKey.UP, FlxKey.W],
+			[FlxGamepadInputID.LEFT_STICK_DIGITAL_UP, FlxGamepadInputID.DPAD_UP]
+		],
+        "Game_Left" => [
+			[FlxKey.LEFT, FlxKey.A],
+			[FlxGamepadInputID.LEFT_STICK_DIGITAL_LEFT, FlxGamepadInputID.DPAD_LEFT]
+		],
+        "Game_Down" => [
+			[FlxKey.DOWN, FlxKey.S],
+			[FlxGamepadInputID.LEFT_STICK_DIGITAL_DOWN, FlxGamepadInputID.DPAD_DOWN]
+		],
+        "Game_Right" => [
+			[FlxKey.RIGHT, FlxKey.D],
+			[FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT, FlxGamepadInputID.DPAD_RIGHT]
+		],
     ];
 
-    public static var curStrumBinds:Array<Dynamic> = [];
-    public static var defaultStrumBinds:Array<Dynamic> = [
-        ["1K", [[SPACE]]],
-        ["2K", [[LEFT, A], [RIGHT, D]]],
-        ["3K", [[LEFT, A], [SPACE, DOWN, UP, S, W], [RIGHT, D]]],
-        ["4K", [[LEFT, A], [DOWN, S], [UP, W], [RIGHT, D]]],
-        ["5K", [[LEFT, A], [DOWN, S], [SPACE], [UP, W], [RIGHT, D]]],
-        ["6K", [[A], [S], [D], [J], [K], [L]]],
-        ["7K", [[A], [S], [D], [SPACE], [J], [K], [L]]],
-        ["8K", [[A], [S], [D], [F], [H], [J], [K], [L]]],
-        ["9K", [[A], [S], [D], [F], [SPACE], [H], [J], [K], [L]]],
-        ["10K", [[A], [S], [D], [F], [V], [B], [H], [J], [K], [L]]],
+	public static var STATIC_STRUMCONTROLS:Map<Int, Array<Array<Array<Dynamic>>>> = [
+        1 => [ //Inputs for 1K
+			[// Input Data 0
+				[FlxKey.BACKSPACE], //KeyBoard
+				[FlxGamepadInputID.A] //GamePad
+			]
+		],
+		2 => [ //Inputs for 2K
+			[
+				[FlxKey.A, FlxKey.LEFT],
+				[FlxGamepadInputID.DPAD_LEFT, FlxGamepadInputID.LEFT_SHOULDER, FlxGamepadInputID.LEFT_TRIGGER_BUTTON, FlxGamepadInputID.LEFT_STICK_DIGITAL_LEFT, FlxGamepadInputID.RIGHT_STICK_DIGITAL_LEFT]
+			],
+			[
+				[FlxKey.D, FlxKey.RIGHT],
+				[FlxGamepadInputID.DPAD_RIGHT, FlxGamepadInputID.RIGHT_SHOULDER, FlxGamepadInputID.RIGHT_TRIGGER_BUTTON, FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT, FlxGamepadInputID.RIGHT_STICK_DIGITAL_RIGHT]
+			]
+		],
+		3 => [ //Inputs for 3K
+			[
+				[FlxKey.A, FlxKey.LEFT],
+				[FlxGamepadInputID.DPAD_LEFT, FlxGamepadInputID.LEFT_SHOULDER, FlxGamepadInputID.LEFT_TRIGGER_BUTTON, FlxGamepadInputID.LEFT_STICK_DIGITAL_LEFT, FlxGamepadInputID.RIGHT_STICK_DIGITAL_LEFT]
+			],
+			[
+				[FlxKey.BACKSPACE],
+				[FlxGamepadInputID.A]
+			],
+			[
+				[FlxKey.D, FlxKey.RIGHT],
+				[FlxGamepadInputID.DPAD_RIGHT, FlxGamepadInputID.RIGHT_SHOULDER, FlxGamepadInputID.RIGHT_TRIGGER_BUTTON, FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT, FlxGamepadInputID.RIGHT_STICK_DIGITAL_RIGHT]
+			]
+		],
+		4 => [ //Inputs for 4K
+			[
+				[FlxKey.A, FlxKey.LEFT],
+				[FlxGamepadInputID.DPAD_LEFT, FlxGamepadInputID.LEFT_TRIGGER_BUTTON, FlxGamepadInputID.LEFT_STICK_DIGITAL_LEFT, FlxGamepadInputID.RIGHT_STICK_DIGITAL_LEFT]
+			],
+			[
+				[FlxKey.S, FlxKey.DOWN],
+				[FlxGamepadInputID.DPAD_DOWN, FlxGamepadInputID.LEFT_SHOULDER, FlxGamepadInputID.LEFT_STICK_DIGITAL_DOWN, FlxGamepadInputID.RIGHT_STICK_DIGITAL_DOWN]
+			],
+			[
+				[FlxKey.W, FlxKey.UP],
+				[FlxGamepadInputID.DPAD_UP, FlxGamepadInputID.RIGHT_SHOULDER, FlxGamepadInputID.LEFT_STICK_DIGITAL_UP, FlxGamepadInputID.RIGHT_STICK_DIGITAL_UP]
+			],
+			[
+				[FlxKey.D, FlxKey.RIGHT],
+				[FlxGamepadInputID.DPAD_RIGHT, FlxGamepadInputID.RIGHT_TRIGGER_BUTTON, FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT, FlxGamepadInputID.RIGHT_STICK_DIGITAL_RIGHT]
+			]
+		],
+		5 => [ //Inputs for 5K
+			[
+				[FlxKey.A, FlxKey.LEFT],
+				[FlxGamepadInputID.DPAD_LEFT, FlxGamepadInputID.LEFT_TRIGGER_BUTTON, FlxGamepadInputID.LEFT_STICK_DIGITAL_LEFT, FlxGamepadInputID.RIGHT_STICK_DIGITAL_LEFT]
+			],
+			[
+				[FlxKey.S, FlxKey.DOWN],
+				[FlxGamepadInputID.DPAD_DOWN, FlxGamepadInputID.LEFT_SHOULDER, FlxGamepadInputID.LEFT_STICK_DIGITAL_DOWN, FlxGamepadInputID.RIGHT_STICK_DIGITAL_DOWN]
+			],
+			[
+				[FlxKey.BACKSPACE],
+				[FlxGamepadInputID.A]
+			],
+			[
+				[FlxKey.W, FlxKey.UP],
+				[FlxGamepadInputID.DPAD_UP, FlxGamepadInputID.RIGHT_SHOULDER, FlxGamepadInputID.LEFT_STICK_DIGITAL_UP, FlxGamepadInputID.RIGHT_STICK_DIGITAL_UP]
+			],
+			[
+				[FlxKey.D, FlxKey.RIGHT],
+				[FlxGamepadInputID.DPAD_RIGHT, FlxGamepadInputID.RIGHT_TRIGGER_BUTTON, FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT, FlxGamepadInputID.RIGHT_STICK_DIGITAL_RIGHT]
+			]
+		],
+		6 => [ //Inputs for 6K
+			[
+				[FlxKey.A],
+				[FlxGamepadInputID.DPAD_LEFT, FlxGamepadInputID.LEFT_STICK_DIGITAL_LEFT]
+			],
+			[
+				[FlxKey.S, FlxKey.W],
+				[FlxGamepadInputID.DPAD_UP, FlxGamepadInputID.DPAD_DOWN, FlxGamepadInputID.LEFT_STICK_DIGITAL_UP, FlxGamepadInputID.LEFT_STICK_DIGITAL_DOWN]
+			],
+			[
+				[FlxKey.D],
+				[FlxGamepadInputID.DPAD_RIGHT, FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT]
+			],
+			[
+				[FlxKey.J],
+				[FlxGamepadInputID.X, FlxGamepadInputID.RIGHT_STICK_DIGITAL_LEFT]
+			],
+			[
+				[FlxKey.K, FlxKey.I],
+				[FlxGamepadInputID.A, FlxGamepadInputID.Y, FlxGamepadInputID.RIGHT_STICK_DIGITAL_UP, FlxGamepadInputID.RIGHT_STICK_DIGITAL_DOWN]
+			],
+			[
+				[FlxKey.L],
+				[FlxGamepadInputID.B, FlxGamepadInputID.RIGHT_STICK_DIGITAL_RIGHT]
+			],
+		],
+		7 => [ //Inputs for 7K
+			[
+				[FlxKey.A],
+				[FlxGamepadInputID.DPAD_LEFT, FlxGamepadInputID.LEFT_STICK_DIGITAL_LEFT]
+			],
+			[
+				[FlxKey.S, FlxKey.W],
+				[FlxGamepadInputID.DPAD_UP, FlxGamepadInputID.DPAD_DOWN, FlxGamepadInputID.LEFT_STICK_DIGITAL_UP, FlxGamepadInputID.LEFT_STICK_DIGITAL_DOWN]
+			],
+			[
+				[FlxKey.D],
+				[FlxGamepadInputID.DPAD_RIGHT, FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT]
+			],
+			[
+				[FlxKey.BACKSPACE],
+				[FlxGamepadInputID.LEFT_TRIGGER_BUTTON, FlxGamepadInputID.RIGHT_TRIGGER_BUTTON, FlxGamepadInputID.LEFT_SHOULDER, FlxGamepadInputID.RIGHT_SHOULDER]
+			],
+			[
+				[FlxKey.J],
+				[FlxGamepadInputID.X, FlxGamepadInputID.RIGHT_STICK_DIGITAL_LEFT]
+			],
+			[
+				[FlxKey.K, FlxKey.I],
+				[FlxGamepadInputID.A, FlxGamepadInputID.Y, FlxGamepadInputID.RIGHT_STICK_DIGITAL_UP, FlxGamepadInputID.RIGHT_STICK_DIGITAL_DOWN]
+			],
+			[
+				[FlxKey.L],
+				[FlxGamepadInputID.B, FlxGamepadInputID.RIGHT_STICK_DIGITAL_RIGHT]
+			],
+		],
+		8 => [ //Inputs for 8K
+			[
+				[FlxKey.A],
+				[FlxGamepadInputID.DPAD_LEFT, FlxGamepadInputID.LEFT_STICK_DIGITAL_LEFT]
+			],
+			[
+				[FlxKey.S],
+				[FlxGamepadInputID.DPAD_DOWN, FlxGamepadInputID.LEFT_STICK_DIGITAL_DOWN]
+			],
+			[
+				[FlxKey.D],
+				[FlxGamepadInputID.DPAD_UP, FlxGamepadInputID.LEFT_STICK_DIGITAL_UP]
+			],
+			[
+				[FlxKey.F],
+				[FlxGamepadInputID.DPAD_RIGHT, FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT]
+			],
+			[
+				[FlxKey.H],
+				[FlxGamepadInputID.X, FlxGamepadInputID.RIGHT_STICK_DIGITAL_LEFT]
+			],
+			[
+				[FlxKey.J],
+				[FlxGamepadInputID.A, FlxGamepadInputID.RIGHT_STICK_DIGITAL_DOWN]
+			],
+			[
+				[FlxKey.K],
+				[FlxGamepadInputID.Y, FlxGamepadInputID.RIGHT_STICK_DIGITAL_UP]
+			],
+			[
+				[FlxKey.L],
+				[FlxGamepadInputID.B, FlxGamepadInputID.RIGHT_STICK_DIGITAL_RIGHT]
+			],
+		],
+		9 => [ //Inputs for 9K
+			[
+				[FlxKey.A],
+				[FlxGamepadInputID.DPAD_LEFT, FlxGamepadInputID.LEFT_STICK_DIGITAL_LEFT]
+			],
+			[
+				[FlxKey.S],
+				[FlxGamepadInputID.DPAD_DOWN, FlxGamepadInputID.LEFT_STICK_DIGITAL_DOWN]
+			],
+			[
+				[FlxKey.D],
+				[FlxGamepadInputID.DPAD_UP, FlxGamepadInputID.LEFT_STICK_DIGITAL_UP]
+			],
+			[
+				[FlxKey.F],
+				[FlxGamepadInputID.DPAD_RIGHT, FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT]
+			],
+			[
+				[FlxKey.BACKSPACE],
+				[FlxGamepadInputID.LEFT_TRIGGER_BUTTON, FlxGamepadInputID.RIGHT_TRIGGER_BUTTON, FlxGamepadInputID.LEFT_SHOULDER, FlxGamepadInputID.RIGHT_SHOULDER]
+			],
+			[
+				[FlxKey.H],
+				[FlxGamepadInputID.X, FlxGamepadInputID.RIGHT_STICK_DIGITAL_LEFT]
+			],
+			[
+				[FlxKey.J],
+				[FlxGamepadInputID.A, FlxGamepadInputID.RIGHT_STICK_DIGITAL_DOWN]
+			],
+			[
+				[FlxKey.K],
+				[FlxGamepadInputID.Y, FlxGamepadInputID.RIGHT_STICK_DIGITAL_UP]
+			],
+			[
+				[FlxKey.L],
+				[FlxGamepadInputID.B, FlxGamepadInputID.RIGHT_STICK_DIGITAL_RIGHT]
+			],
+		],
+		10 => [ //Inputs for 10K
+			[
+				[FlxKey.A],
+				[FlxGamepadInputID.DPAD_LEFT, FlxGamepadInputID.LEFT_STICK_DIGITAL_LEFT]
+			],
+			[
+				[FlxKey.S],
+				[FlxGamepadInputID.DPAD_DOWN, FlxGamepadInputID.LEFT_STICK_DIGITAL_DOWN]
+			],
+			[
+				[FlxKey.D],
+				[FlxGamepadInputID.DPAD_UP, FlxGamepadInputID.LEFT_STICK_DIGITAL_UP]
+			],
+			[
+				[FlxKey.F],
+				[FlxGamepadInputID.DPAD_RIGHT, FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT]
+			],
+			[
+				[FlxKey.V],
+				[FlxGamepadInputID.LEFT_TRIGGER_BUTTON, FlxGamepadInputID.LEFT_SHOULDER]
+			],
+			[
+				[FlxKey.B],
+				[FlxGamepadInputID.RIGHT_TRIGGER_BUTTON, FlxGamepadInputID.RIGHT_SHOULDER]
+			],
+			[
+				[FlxKey.H],
+				[FlxGamepadInputID.X, FlxGamepadInputID.RIGHT_STICK_DIGITAL_LEFT]
+			],
+			[
+				[FlxKey.J],
+				[FlxGamepadInputID.A, FlxGamepadInputID.RIGHT_STICK_DIGITAL_DOWN]
+			],
+			[
+				[FlxKey.K],
+				[FlxGamepadInputID.Y, FlxGamepadInputID.RIGHT_STICK_DIGITAL_UP]
+			],
+			[
+				[FlxKey.L],
+				[FlxGamepadInputID.B, FlxGamepadInputID.RIGHT_STICK_DIGITAL_RIGHT]
+			],
+		],
     ];
 
-    public static function loadBinds(){
-        var sKeyBinds:FlxSave = new FlxSave();
-		sKeyBinds.bind('controls', 'ninjamuffin99');
-        if(sKeyBinds != null){
-            if(sKeyBinds.data.binds != null){
-                reloadBinds(sKeyBinds.data.binds);
-            }else{
-                reloadBinds(defaultKeyBinds);
-            }
+    public var ACTIONS:Map<String, FlxActionDigital> = [];
 
-            if(sKeyBinds.data.strums != null){
-                reloadStrums(sKeyBinds.data.strums);
-            }else{
-                reloadStrums(defaultStrumBinds);
-            }   
+	public var gamepadsAdded:Array<Int> = [];
+	public var keyboardScheme = KeyboardScheme.None;
+
+	public function new(name, scheme = None){
+        super(name);
+
+        for(action in STATIC_ACTIONS.keys()){
+            ACTIONS['${action}'] = new FlxActionDigital('${action}');
+            ACTIONS['${action}_r'] = new FlxActionDigital('${action}_h');
+            ACTIONS['${action}_h'] = new FlxActionDigital('${action}_r');
+
+            add(ACTIONS['${action}']);
+            add(ACTIONS['${action}_r']);
+            add(ACTIONS['${action}_h']);
+        }
+
+		for(action in STATIC_STRUMCONTROLS.keys()){
+			var binds:Array<Dynamic> = STATIC_STRUMCONTROLS[action];
+
+			for(i in 0...binds.length){
+				ACTIONS['${action}keys_${i}'] = new FlxActionDigital('${action}keys_${i}');
+				ACTIONS['${action}keys_${i}_h'] = new FlxActionDigital('${action}keys_${i}_h');
+				ACTIONS['${action}keys_${i}_r'] = new FlxActionDigital('${action}keys_${i}_r');
+
+				add(ACTIONS['${action}keys_${i}']);
+				add(ACTIONS['${action}keys_${i}_h']);
+				add(ACTIONS['${action}keys_${i}_r']);
+			}
+        }
+        
+        setKeyboardScheme(scheme, false);
+    }
+
+	override function update(){
+		super.update();
+	}
+
+    private function getBind(name:String, state:FlxInputState){
+        switch(state){
+            default:{}
+            case JUST_RELEASED:{name += "_r";}
+            case PRESSED:{name += "_h";}
+        }
+        
+        #if debug
+		if (!ACTIONS.exists(name))
+			throw 'Invalid name: $name';
+		#end
+		return ACTIONS[name];
+    }
+
+    private function getBindState(name:String):FlxInputState{
+        if(name.contains("_r")){return JUST_RELEASED;}
+        if(name.contains("_h")){return PRESSED;}
+        return JUST_PRESSED;
+    }
+
+	public function getStrumCheckers(keys:Int, state:FlxInputState):Array<Bool>{
+		var toReturn:Array<Bool> = [];
+		var tag:String = '${keys}keys_';
+
+		for(i in 0...keys){
+			toReturn.push(checkAction('${tag}${i}', state));
 		}
+
+		return toReturn;
     }
 
-    public static function saveBinds(){
-        var sKeyBinds:FlxSave = new FlxSave();
-		sKeyBinds.bind('controls', 'ninjamuffin99');
-        sKeyBinds.data.binds = curKeyBinds;
-        sKeyBinds.data.strums = curStrumBinds;
-		sKeyBinds.flush();
-		FlxG.log.add("PreSettings Saved Successfully!");
+    public function checkAction(name:String, state:FlxInputState){
+		return getBind(name, state).check();
     }
 
-    public static function getBind(bind:String, type:String):Bool{
-        var keyArray:Array<FlxKey> = [];
-        var toReturn:Bool = false;
-        
-        for(toBind in curKeyBinds){
-            if(toBind[0] == bind){
-                keyArray = toBind[1];
+	public function replaceBinding(device:Device, bind:String, ?toAdd:Int, ?toRemove:Int){
+		if(toAdd == toRemove){return;}
+
+		switch(device){
+			case KeyBoard:{
+                if(toRemove != null){unbindKeys(bind, [toRemove]);}
+				if(toAdd != null){bindKeys(bind, [toAdd]);}
             }
-        }
-
-        switch(type){
-            case "PRESSED":{toReturn = FlxG.keys.anyPressed(keyArray);}
-            case "JUST_PRESSED":{toReturn = FlxG.keys.anyJustPressed(keyArray);}
-            case "JUST_RELEASED":{toReturn = FlxG.keys.anyJustReleased(keyArray);}
-        }
-
-        return toReturn;
-    }
-
-    public static function getStrumBind(keys:String, type:String):Array<Bool>{
-        var keyArray:Array<Dynamic> = [];
-        var toReturn:Array<Bool> = [];
-
-        for(strum in curStrumBinds){
-            if(strum[0] == keys){
-                keyArray = strum[1];
+			case Gamepad(id):{
+                if(toRemove != null){unbindButtons(id, bind, [toRemove]);}
+				if(toAdd != null){bindButtons(id, bind, [toAdd]);}
             }
-        }
+		}
+	}
 
-        toReturn.resize(keyArray.length);
+	public function copyFrom(controls:Controls, ?device:Device){
+		for(name => action in controls.ACTIONS){
+			for(input in action.inputs){
+				if(device == null || isDevice(input, device)){
+                    ACTIONS[name].add(cast input);
+                }
+			}
+		}
 
-        for(i in 0...toReturn.length){
-            switch(type){
-                case "PRESSED":{toReturn[i] = FlxG.keys.anyPressed(keyArray[i]);}
-                case "JUST_PRESSED":{toReturn[i] = FlxG.keys.anyJustPressed(keyArray[i]);}
-                case "JUST_RELEASED":{toReturn[i] = FlxG.keys.anyJustReleased(keyArray[i]);}
+		switch (device){
+			case null:{
+                // add all
+				#if (haxe >= "4.0.0")
+				for(gamepad in controls.gamepadsAdded){
+                    if(!gamepadsAdded.contains(gamepad)){
+                        gamepadsAdded.push(gamepad);
+                    }
+                }
+				#else
+				for(gamepad in controls.gamepadsAdded){
+                    if(gamepadsAdded.indexOf(gamepad) == -1){
+                        gamepadsAdded.push(gamepad);
+                    }
+                }
+				#end
+
+				mergeKeyboardScheme(controls.keyboardScheme);
             }
-        }
-        
-        return toReturn;
-    }
-    
-    static function reloadBinds(newBinds:Array<Dynamic>){
-        curKeyBinds = newBinds;
-        for(nBind in curKeyBinds){hasDefBind(nBind[0]);}
-        for(dBind in defaultKeyBinds){dAddBind(dBind[0], dBind[1]);}
-    }
-
-    static function reloadStrums(newBinds:Array<Dynamic>){
-        curStrumBinds = newBinds;
-        for(nBind in curStrumBinds){hasDefStrum(nBind[0]);}
-        for(dBind in defaultStrumBinds){dAddStrum(dBind[0], dBind[1]);}
-    }
-
-    static function hasDefStrum(bind:String){
-        var hasBind = false;
-        for(dbind in defaultStrumBinds){
-            if(dbind[0] == bind){
-                hasBind = true;
+			case Gamepad(id):{
+				gamepadsAdded.push(id);
             }
-        }
-        if(!hasBind){
-            removeStrum(bind);
-        }
-    }
-
-    static function hasDefBind(bind:String){
-        var hasBind = false;
-        for(dbind in defaultKeyBinds){
-            if(dbind[0] == bind){
-                hasBind = true;
+			case KeyBoard:{
+				mergeKeyboardScheme(controls.keyboardScheme);
             }
-        }
-        if(!hasBind){
-            removeBind(bind);
-        }
-    }
+		}
+	}
 
-    static function dAddBind(bind:String, toSet){
-        var hasSet = false;
-        for(set in curKeyBinds){
-            if(set[0] == bind){
-                hasSet = true;
-            }
-        }
-        if(!hasSet){
-            curKeyBinds.push([bind, toSet]);
-        }
-    }
+	inline public function copyTo(controls:Controls, ?device:Device){
+		controls.copyFrom(this, device);
+	}
 
-    static function dAddStrum(bind:String, toSet){
-        var hasSet = false;
-        for(set in curStrumBinds){
-            if(set[0] == bind){
-                hasSet = true;
-            }
-        }
-        if(!hasSet){
-            curStrumBinds.push([bind, toSet]);
-        }
-    }
+	function mergeKeyboardScheme(scheme:KeyboardScheme):Void{
+		if(scheme != None){
+			switch(keyboardScheme){
+				case None:{keyboardScheme = scheme;}
+				default:{keyboardScheme = Custom;}
+			}
+		}
+	}
 
-    static function removeBind(bind:String){
-        for(binds in curKeyBinds){
-            if(binds[0] == bind){
-                curKeyBinds.remove(binds);
-            }
-        }
-    }
+	/**
+	 * Sets all actions that pertain to the binder to trigger when the supplied keys are used.
+	 * If binder is a literal you can inline this
+	 */
+	public function bindKeys(bind:String, keys:Array<FlxKey>){
+		//trace('Bind [${bind}] | Keys: ${keys}');
 
-    static function removeStrum(bind:String){
-        for(strum in curStrumBinds){
-            if(strum[0] == bind){
-                curStrumBinds.remove(strum);
-            }
-        }
-    }
+        for(key in keys){
+			ACTIONS['${bind}'].addKey(key, JUST_PRESSED);
+			ACTIONS['${bind}_h'].addKey(key, PRESSED);
+			ACTIONS['${bind}_r'].addKey(key, JUST_RELEASED);
+		}
+	}
+
+	/**
+	 * Sets all actions that pertain to the binder to trigger when the supplied keys are used.
+	 * If binder is a literal you can inline this
+	 */
+	public function unbindKeys(bind:String, keys:Array<FlxKey>){
+		unBindAction(ACTIONS['${bind}'], keys);
+		unBindAction(ACTIONS['${bind}_h'], keys);
+		unBindAction(ACTIONS['${bind}_r'], keys);
+	}
+
+	private function unBindAction(bind:FlxActionDigital, keys:Array<FlxKey>){
+		var i = bind.inputs.length;
+		while (i-- > 0){
+			var input = bind.inputs[i];
+			if(input.device == KEYBOARD && keys.indexOf(cast input.inputID) != -1){bind.remove(input);}
+		}
+	}
+
+	public function setKeyboardScheme(scheme:KeyboardScheme, reset = true){
+		loadBinds();
+	}
+
+	public function loadBinds(){
+        var SAVED_ACTIONS:Map<String, Array<Array<Int>>> = FlxG.save.data.keyBinds;
+		var SAVED_STRUMACTIONS:Map<Int, Array<Array<Array<Int>>>> = FlxG.save.data.strumBinds;
+		
+		if(SAVED_ACTIONS != null && SAVED_STRUMACTIONS != null){
+			removeActions();
+
+			var KEY_ACTIONS:Map<String, Array<FlxKey>> = [];
+			var GAMEPAD_ACTIONS:Map<String, Array<FlxGamepadInputID>> = [];
+
+			for(key in SAVED_ACTIONS.keys()){
+				KEY_ACTIONS[key] = SAVED_ACTIONS[key][0];
+				GAMEPAD_ACTIONS[key] = SAVED_ACTIONS[key][1];
+			}
+
+			for(key in SAVED_STRUMACTIONS.keys()){
+				for(i in 0...SAVED_STRUMACTIONS[key].length){
+					KEY_ACTIONS['${key}keys_${i}'] = SAVED_STRUMACTIONS[key][i][0];
+					GAMEPAD_ACTIONS['${key}keys_${i}'] = SAVED_STRUMACTIONS[key][i][1];
+				}
+			}
+
+			for(key in SAVED_ACTIONS.keys()){
+				bindKeys(key, KEY_ACTIONS[key]);
+				for(gamepad in gamepadsAdded){bindButtons(gamepad, key, GAMEPAD_ACTIONS[key]);}
+			}
+
+			for(key in SAVED_STRUMACTIONS.keys()){
+				for(i in 0...SAVED_STRUMACTIONS[key].length){
+					bindKeys('${key}keys_${i}', KEY_ACTIONS['${key}keys_${i}']);
+					for(gamepad in gamepadsAdded){bindButtons(gamepad, '${key}keys_${i}', GAMEPAD_ACTIONS['${key}keys_${i}']);}
+				}
+			}
+		}else{
+			FlxG.save.data.keyBinds = STATIC_ACTIONS;
+			FlxG.save.data.strumBinds = STATIC_STRUMCONTROLS;
+			loadBinds();
+		}
+	}
+
+	function removeActions(){
+		for(name in ACTIONS.keys()){ACTIONS[name].removeAll();}
+	}
+	
+
+	public function addGamepad(id:Int):Void{
+		gamepadsAdded.push(id);
+		loadBinds();
+	}
+
+	public function removeGamepad(deviceID:Int = FlxInputDeviceID.ALL):Void {
+		for(action in ACTIONS.keys()){
+			var i = ACTIONS[action].inputs.length;
+			while (i-- > 0){
+				var input = ACTIONS[action].inputs[i];
+				if(input.device == GAMEPAD && (deviceID == FlxInputDeviceID.ALL || input.deviceID == deviceID)){ACTIONS[action].remove(input);}
+			}
+		}
+	
+		gamepadsAdded.remove(deviceID);
+	}
+
+	/**
+	 * Sets all actions that pertain to the binder to trigger when the supplied keys are used.
+	 * If binder is a literal you can inline this
+	 */
+	public function bindButtons(id:Int, bind:String, keys:Array<FlxGamepadInputID>){
+		//trace('Button Bind [${bind}] | Keys: ${keys}');
+		for(key in keys){
+			ACTIONS['${bind}'].addGamepad(key, JUST_PRESSED, id);
+			ACTIONS['${bind}_h'].addGamepad(key, PRESSED, id);
+			ACTIONS['${bind}_r'].addGamepad(key, JUST_RELEASED, id);
+		}
+	}
+
+	/**
+	 * Sets all actions that pertain to the binder to trigger when the supplied keys are used.
+	 * If binder is a literal you can inline this
+	 */
+	public function unbindButtons(id:Int, bind:String, keys:Array<FlxGamepadInputID>){
+		unbindActionButtons(id, ACTIONS['${bind}'], keys);
+		unbindActionButtons(id, ACTIONS['${bind}_h'], keys);
+		unbindActionButtons(id, ACTIONS['${bind}_r'], keys);
+	}
+
+	private function unbindActionButtons(id:Int, bind:FlxActionDigital, keys:Array<FlxGamepadInputID>){
+		var i = bind.inputs.length;
+		while(i-- > 0){
+			var input = bind.inputs[i];
+			if(isGamepad(input, id) && keys.indexOf(cast input.inputID) != -1){bind.remove(input);}
+		}
+	}
+
+	inline static function addButtons(action:FlxActionDigital, buttons:Array<FlxGamepadInputID>, state, id)
+	{
+		for (button in buttons)
+			action.addGamepad(button, state, id);
+	}
+
+	static function removeButtons(action:FlxActionDigital, gamepadID:Int, buttons:Array<FlxGamepadInputID>)
+	{
+		var i = action.inputs.length;
+		while (i-- > 0){
+			var input = action.inputs[i];
+			if (isGamepad(input, gamepadID) && buttons.indexOf(cast input.inputID) != -1)
+				action.remove(input);
+		}
+	}
+
+	public function removeDevice(device:Device){
+		switch (device){
+			case KeyBoard:{setKeyboardScheme(None);}
+			case Gamepad(id):{removeGamepad(id);}
+		}
+	}
+
+	static function isDevice(input:FlxActionInput, device:Device){
+		return switch device{
+			case KeyBoard:{input.device == KEYBOARD;}
+			case Gamepad(id):{isGamepad(input, id);}
+		}
+	}
+
+	inline static function isGamepad(input:FlxActionInput, deviceID:Int){
+		return input.device == GAMEPAD && (deviceID == FlxInputDeviceID.ALL || input.deviceID == deviceID);
+	}
 }

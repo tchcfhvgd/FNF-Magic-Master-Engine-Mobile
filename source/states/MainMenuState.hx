@@ -1,5 +1,6 @@
 package states;
 
+import states.editors.CharacterEditorState;
 import states.editors.XMLEditorState;
 import flixel.input.mouse.FlxMouse;
 #if desktop
@@ -103,7 +104,7 @@ class MainMenuState extends MusicBeatState{
 		options = new FlxTypedGroup<FlxText>();
 		add(options);
 		for(i in 0...arrayOptions.length){
-			var option:FlxText = new FlxText(0, FlxG.height - 120, 0, arrayOptions[i], 72);
+			var option:FlxText = new FlxText(0, FlxG.height - 120, 0, CoolUtil.getLangText(arrayOptions[i]), 72);
 			option.antialiasing = PreSettings.getPreSetting("Antialiasing");
 			option.font = Paths.font("Countryhouse.ttf");
 			option.color = FlxColor.WHITE;
@@ -127,7 +128,6 @@ class MainMenuState extends MusicBeatState{
 		super.create();
 	}
 
-	var canControl = false;
 	override function update(elapsed:Float){
 		if (FlxG.sound.music.volume < 0.8){
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
@@ -165,20 +165,20 @@ class MainMenuState extends MusicBeatState{
 					//camFollow.setPosition(nextFollow[0], nextFollow[1]);
 				}
 
-				if(canControl){
-					if(Controls.getBind("Menu_Left", "JUST_PRESSED")){changeSelect(-1);}
-					if(Controls.getBind("Menu_Right", "JUST_PRESSED")){changeSelect(1);}
-					if(Controls.getBind("Menu_Accept", "JUST_PRESSED")){
+				if(canControlle){
+					if(principal_controls.checkAction("Menu_Left", JUST_PRESSED)){changeSelect(-1);}
+					if(principal_controls.checkAction("Menu_Right", JUST_PRESSED)){changeSelect(1);}
+					if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED)){
 						switch(arrayOptions[curSelected]){
 							case "Options":{
-								canControl = false;
+								canControlle = false;
 								FlxTween.tween(camHUD, {alpha: 0}, 0.5, {onComplete: function(twn:FlxTween){
 									openSubState(new substates.OptionsSubState());
 									typeMenu = "OptionState";
 								}});
 							}
 							case "FreePlay":{
-								canControl = false;
+								canControlle = false;
 								FlxG.switchState(new FreeplayState());
 							}
 						}
@@ -188,6 +188,7 @@ class MainMenuState extends MusicBeatState{
 					if(FlxG.keys.justPressed.TWO){states.editors.StageEditorState.editStage();}
 					if(FlxG.keys.justPressed.THREE){states.editors.StrumLineEditorState.editStrumLine();}
 					if(FlxG.keys.justPressed.FOUR){states.editors.XMLEditorState.editXML();}
+					if(FlxG.keys.justPressed.FIVE){CharacterEditorState.editCharacter();}
 				}
 			}
 
@@ -216,7 +217,7 @@ class MainMenuState extends MusicBeatState{
 	}
 
 	override function closeSubState(){
-		FlxTween.tween(camHUD, {alpha: 1}, 0.5, {onComplete: function(twn:FlxTween){canControl = true;}});
+		FlxTween.tween(camHUD, {alpha: 1}, 0.5, {onComplete: function(twn:FlxTween){canControlle = true;}});
 		typeMenu = "MainMenuState";
 
 		FlxG.mouse.visible = false;

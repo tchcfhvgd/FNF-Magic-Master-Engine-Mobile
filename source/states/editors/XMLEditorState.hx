@@ -202,7 +202,7 @@ class XMLEditorState extends MusicBeatState {
 
         if(force){
             stpFCurFrame.value = cFrame;
-            playAnim(clCurAnim.getSelectedIndex(), Std.int(stpFCurFrame.value));
+            playAnim(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value));
         }
     }
 
@@ -249,49 +249,49 @@ class XMLEditorState extends MusicBeatState {
                     switch(wname){
                         default:{trace("[FlxUINumericStepper]: Works!");}
                         case "FRAME_X":{
-                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), Std.int(stpFCurFrame.value)));
+                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
                             sTexture.att.x = Std.string(nums.value);
                             trace(sTexture.att.x);
                             rSprites();
                         }
                         case "FRAME_Y":{
-                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), Std.int(stpFCurFrame.value)));
+                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
                             sTexture.att.y = Std.string(nums.value);
                             trace(sTexture.att.y);
                             rSprites();
                         }
                         case "FRAME_WIDTH":{
-                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), Std.int(stpFCurFrame.value)));
+                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
                             sTexture.att.width = Std.string(nums.value);
                             trace(sTexture.att.width);
                             rSprites();
                         }
                         case "FRAME_HEIGHT":{
-                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), Std.int(stpFCurFrame.value)));
+                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
                             sTexture.att.height = Std.string(nums.value);
                             trace(sTexture.att.height);
                             rSprites();
                         }
                         case "FRAME_FrameX":{
-                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), Std.int(stpFCurFrame.value)));
+                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
                             sTexture.att.frameX = Std.string(nums.value);
                             trace(sTexture.att.frameX);
                             rSprites();
                         }
                         case "FRAME_FrameY":{
-                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), Std.int(stpFCurFrame.value)));
+                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
                             sTexture.att.frameY = Std.string(nums.value);
                             trace(sTexture.att.frameY);
                             rSprites();
                         }
                         case "FRAME_FrameWIDTH":{
-                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), Std.int(stpFCurFrame.value)));
+                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
                             sTexture.att.frameWidth = Std.string(nums.value);
                             trace(sTexture.att.frameWidth);
                             rSprites();
                         }
                         case "FRAME_FrameHEIGHT":{
-                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), Std.int(stpFCurFrame.value)));
+                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
                             sTexture.att.frameHeight = Std.string(nums.value);
                             trace(sTexture.att.frameHeight);
                             rSprites();
@@ -308,11 +308,11 @@ class XMLEditorState extends MusicBeatState {
                     switch(wname){
                         case "FRAME_INDEX":{
                             if(Std.int(nums.value) >= eSprite.animation.curAnim.frames.length){nums.value = 0;}
-                            playAnim(clCurAnim.getSelectedIndex(), Std.int(nums.value));
+                            playAnim(clCurAnim.getSelectedLabel(), Std.int(nums.value));
                         }
                         case "GHOST_INDEX":{
                             if(Std.int(nums.value) >= bSprite.animation.curAnim.frames.length){nums.value = 0;}
-                            playGhost(clGCurAnim.getSelectedIndex(), Std.int(nums.value));
+                            playGhost(clGCurAnim.getSelectedLabel(), Std.int(nums.value));
                         }
                     }
                 }
@@ -320,7 +320,7 @@ class XMLEditorState extends MusicBeatState {
                     switch(wname){
                         case "FRAME_ALL_X":{
                             for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), i));
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
                                 sTexture.att.x = Std.string(Std.parseInt(sTexture.att.x) - Std.int(nums.value));
                                 trace(sTexture.att.x);
                             
@@ -329,7 +329,7 @@ class XMLEditorState extends MusicBeatState {
                         }
                         case "FRAME_ALL_Y":{
                             for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), i));
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
                                 sTexture.att.y = Std.string(Std.parseInt(sTexture.att.y) - Std.int(nums.value));
                                 trace(sTexture.att.y);
                             
@@ -338,7 +338,7 @@ class XMLEditorState extends MusicBeatState {
                         }
                         case "FRAME_ALL_WIDTH":{
                             for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), i));
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
                                 sTexture.att.width = Std.string(Std.parseInt(sTexture.att.width) - Std.int(nums.value));
                                 trace(sTexture.att.width);
                             
@@ -347,7 +347,7 @@ class XMLEditorState extends MusicBeatState {
                         }
                         case "FRAME_ALL_HEIGHT":{
                             for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), i));
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
                                 sTexture.att.height = Std.string(Std.parseInt(sTexture.att.height) - Std.int(nums.value));
                                 trace(sTexture.att.height);
                             
@@ -356,7 +356,7 @@ class XMLEditorState extends MusicBeatState {
                         }
                         case "FRAME_ALL_FrameX":{
                             for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), i));
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
                                 sTexture.att.frameX = Std.string(Std.parseInt(sTexture.att.frameX) - Std.int(nums.value));
                                 trace(sTexture.att.frameX);
                             
@@ -365,7 +365,7 @@ class XMLEditorState extends MusicBeatState {
                         }
                         case "FRAME_ALL_FrameY":{
                             for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), i));
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
                                 sTexture.att.frameY = Std.string(Std.parseInt(sTexture.att.frameY) - Std.int(nums.value));
                                 trace(sTexture.att.frameY);
                             
@@ -374,7 +374,7 @@ class XMLEditorState extends MusicBeatState {
                         }
                         case "FRAME_ALL_FrameWIDTH":{
                             for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), i));
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
                                 sTexture.att.frameWidth = Std.string(Std.parseInt(sTexture.att.frameWidth) - Std.int(nums.value));
                                 trace(sTexture.att.frameWidth);
                             
@@ -383,7 +383,7 @@ class XMLEditorState extends MusicBeatState {
                         }
                         case "FRAME_ALL_FrameHEIGHT":{
                             for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), i));
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
                                 sTexture.att.frameHeight = Std.string(Std.parseInt(sTexture.att.frameHeight) - Std.int(nums.value));
                                 trace(sTexture.att.frameHeight);
                             
@@ -396,7 +396,7 @@ class XMLEditorState extends MusicBeatState {
                     switch(wname){
                         case "FRAME_ALL_X":{
                             for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), i));
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
                                 sTexture.att.x = Std.string(Std.parseInt(sTexture.att.x) + Std.int(nums.value));
                                 trace(sTexture.att.x);
                             
@@ -405,7 +405,7 @@ class XMLEditorState extends MusicBeatState {
                         }
                         case "FRAME_ALL_Y":{
                             for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), i));
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
                                 sTexture.att.y = Std.string(Std.parseInt(sTexture.att.y) + Std.int(nums.value));
                                 trace(sTexture.att.y);
                             
@@ -414,7 +414,7 @@ class XMLEditorState extends MusicBeatState {
                         }
                         case "FRAME_ALL_WIDTH":{
                             for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), i));
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
                                 sTexture.att.width = Std.string(Std.parseInt(sTexture.att.width) + Std.int(nums.value));
                                 trace(sTexture.att.width);
                             
@@ -423,7 +423,7 @@ class XMLEditorState extends MusicBeatState {
                         }
                         case "FRAME_ALL_HEIGHT":{
                             for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), i));
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
                                 sTexture.att.height = Std.string(Std.parseInt(sTexture.att.height) + Std.int(nums.value));
                                 trace(sTexture.att.height);
                             
@@ -432,7 +432,7 @@ class XMLEditorState extends MusicBeatState {
                         }
                         case "FRAME_ALL_FrameX":{
                             for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), i));
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
                                 sTexture.att.frameX = Std.string(Std.parseInt(sTexture.att.frameX) + Std.int(nums.value));
                                 trace(sTexture.att.frameX);
                             
@@ -441,7 +441,7 @@ class XMLEditorState extends MusicBeatState {
                         }
                         case "FRAME_ALL_FrameY":{
                             for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), i));
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
                                 sTexture.att.frameY = Std.string(Std.parseInt(sTexture.att.frameY) + Std.int(nums.value));
                                 trace(sTexture.att.frameY);
                             
@@ -450,7 +450,7 @@ class XMLEditorState extends MusicBeatState {
                         }
                         case "FRAME_ALL_FrameWIDTH":{
                             for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), i));
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
                                 sTexture.att.frameWidth = Std.string(Std.parseInt(sTexture.att.frameWidth) + Std.int(nums.value));
                                 trace(sTexture.att.frameWidth);
                             
@@ -459,7 +459,7 @@ class XMLEditorState extends MusicBeatState {
                         }
                         case "FRAME_ALL_FrameHEIGHT":{
                             for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), i));
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
                                 sTexture.att.frameHeight = Std.string(Std.parseInt(sTexture.att.frameHeight) + Std.int(nums.value));
                                 trace(sTexture.att.frameHeight);
                             
@@ -479,11 +479,11 @@ class XMLEditorState extends MusicBeatState {
                         default:{trace("[FlxUICustomList]: Works!");}
                         case "BASE_CHANGE":{
                             stpFCurFrame.value = 0;
-                            playAnim(nums.getSelectedIndex(), Std.int(stpFCurFrame.value));
+                            playAnim(nums.getSelectedLabel(), Std.int(stpFCurFrame.value));
                         }
                         case "GHOST_CHANGE":{
                             stpGCurFrame.value = 0;
-                            playGhost(nums.getSelectedIndex(), Std.int(stpGCurFrame.value));
+                            playGhost(nums.getSelectedLabel(), Std.int(stpGCurFrame.value));
                         }
                     }
                 }
@@ -743,7 +743,7 @@ class XMLEditorState extends MusicBeatState {
 
         var btnASetFrameSize = new FlxButton(5, lblAFrameWidth.y + lblAFrameWidth.height + 15, "Set FrameSize", function(){
             for(i in 0...eSprite.animation.curAnim.frames.length){
-                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedIndex(), i));
+                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
 
                 sTexture.att.frameWidth = sTexture.att.width; trace(sTexture.att.frameWidth);
                 sTexture.att.frameHeight = sTexture.att.height; trace(sTexture.att.frameHeight);

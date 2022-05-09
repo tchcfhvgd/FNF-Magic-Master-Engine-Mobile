@@ -84,9 +84,9 @@ class PauseSubState extends MusicBeatSubstate
 
 		super.update(elapsed);
 
-		var upP = Controls.getBind("Game_Up", "JUST_PRESSED");
-		var downP = Controls.getBind("Game_Down", "JUST_PRESSED");
-		var accepted = Controls.getBind("Game_Accept", "JUST_PRESSED");
+		var upP = principal_controls.checkAction("Menu_Up", JUST_PRESSED);
+		var downP = principal_controls.checkAction("Menu_Down", JUST_PRESSED);
+		var accepted = principal_controls.checkAction("Menu_Accept", JUST_PRESSED);
 
 		if (upP)
 		{
@@ -106,7 +106,7 @@ class PauseSubState extends MusicBeatSubstate
 				case "Resume":
 					close();
 				case "Options":
-					openSubState(new OptionsSubState());
+					openSubState(new OptionsSubState(true));
 				case "Restart Song":
 					FlxG.resetState();
 				case "Exit to menu":

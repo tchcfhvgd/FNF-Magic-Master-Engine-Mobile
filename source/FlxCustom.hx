@@ -33,11 +33,11 @@ class FlxUINumericStepperCustom extends FlxUIGroup implements IFlxUIWidget imple
 	public static inline var STACK_VERTICAL:Int = 0;
 	public static inline var STACK_HORIZONTAL:Int = 1;
 
-	public static inline var CLICK_EVENT:String = "click_numeric_stepper"; // click a numeric stepper button
-	public static inline var EDIT_EVENT:String = "edit_numeric_stepper"; // edit the numeric stepper text field
-	public static inline var CHANGE_EVENT:String = "change_numeric_stepper"; // do either of the above
-    public static inline var CLICK_MINUS:String = "click_numeric_minus";
-    public static inline var CLICK_PLUS:String = "click_numeric_plus";
+	public static inline var CLICK_EVENT:String = "click_numeric_stepper_custom"; // click a numeric stepper button
+	public static inline var EDIT_EVENT:String = "edit_numeric_stepper_custom"; // edit the numeric stepper text field
+	public static inline var CHANGE_EVENT:String = "change_numeric_stepper_custom"; // do either of the above
+    public static inline var CLICK_MINUS:String = "click_numeric_minus_custom";
+    public static inline var CLICK_PLUS:String = "click_numeric_plus_custom";
 
 	public var params(default, set):Array<Dynamic>;
 
@@ -330,7 +330,9 @@ class FlxUINumericStepperCustom extends FlxUIGroup implements IFlxUIWidget imple
 }
 
 class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlxUIClickable implements IHasParams {
-    private var _btnBack:FlxUIButton;
+    private var _OnChange:Void->Void = null;
+	
+	private var _btnBack:FlxUIButton;
     private var _lblCuItem:FlxUIText;
     private var _btnFront:FlxUIButton;
 
@@ -350,7 +352,7 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
         return b;
     }
 
-    public function new(X:Float = 0, Y:Float = 0, ?DataList:Array<String>){
+    public function new(X:Float = 0, Y:Float = 0, ?DataList:Array<String>, ?OnChange:Void->Void){
         super(X, Y);
 
         if(DataList != null){
@@ -390,6 +392,8 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
 
         _lblCuItem.text = list[index];
 
+		if(_OnChange != null){_OnChange();}
+
         if(change > 0){_doCallback(CLICK_BACK);}
         if(change < 0){_doCallback(CLICK_FRONT);}
         _doCallback(CHANGE_EVENT);
@@ -411,9 +415,14 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
         _btnFront.x = _lblCuItem.x + _lblCuItem.width;
     }
 
-    public function getSelectedIndex():String{
+    public function getSelectedLabel():String{
         return list[index];
     }
+
+	public function getSelectedIndex():Int{
+        return index;
+    }
+
 
     private function _doCallback(event_name:String):Void{
         if(broadcastToFlxUI){

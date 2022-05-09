@@ -1,0 +1,79 @@
+{
+    "image": "NOTE_assets",
+    "staticNotes":[
+        {
+            "colorHEX": "#feffb0",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "StaticMiddle",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "pressed",
+                    "symbol": "PressMiddle",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "confirm",
+                    "symbol": "ConfirmMiddle",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        }
+    ],
+    "gameplayNotes":[
+        {
+            "colorHEX": "#feffb0",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "Middle",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "sustain",
+                    "symbol": "HoldPiece",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "end",
+                    "symbol": "HoldEnd",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "merge",
+                    "symbol": "SwitchHold",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        }
+    ]
+}

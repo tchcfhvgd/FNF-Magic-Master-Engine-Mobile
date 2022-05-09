@@ -1,12 +1,12 @@
 {
+    "image": "NOTE_assets",
     "staticNotes":[
         {
-            "colorHSL":[0, 0, 0],
+            "colorHEX": "#ff5ec8",
             "arrayAnims":[
                 {
                     "anim": "static",
                     "symbol": "StaticLeft",
-                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -14,7 +14,6 @@
                 {
                     "anim": "pressed",
                     "symbol": "PressLeft",
-                    "offsets": [-5, -5],
 
                     "fps": 32,
                     "loop": false
@@ -22,7 +21,6 @@
                 {
                     "anim": "confirm",
                     "symbol": "ConfirmLeft",
-                    "offsets": [35, 35],
 
                     "fps": 32,
                     "loop": false
@@ -33,28 +31,25 @@
             "antialiasing": true
         },
         {
-            "colorHSL":[117, 98, 98],
+            "colorHEX": "#00ffff",
             "arrayAnims":[
                 {
                     "anim": "static",
-                    "symbol": "StaticUp",
-                    "offsets": [0, 0],
+                    "symbol": "StaticDown",
 
                     "fps": 32,
                     "loop": false
                 },
                 {
                     "anim": "pressed",
-                    "symbol": "PressUp",
-                    "offsets": [-5, -5],
+                    "symbol": "PressDown",
 
                     "fps": 32,
                     "loop": false
                 },
                 {
                     "anim": "confirm",
-                    "symbol": "ConfirmUp",
-                    "offsets": [35, 35],
+                    "symbol": "ConfirmDown",
 
                     "fps": 32,
                     "loop": false
@@ -65,12 +60,11 @@
             "antialiasing": true
         },
         {
-            "colorHSL":[358, 77, 98],
+            "colorHEX": "#f9393f",
             "arrayAnims":[
                 {
                     "anim": "static",
                     "symbol": "StaticRight",
-                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -78,7 +72,6 @@
                 {
                     "anim": "pressed",
                     "symbol": "PressRight",
-                    "offsets": [-5, -5],
 
                     "fps": 32,
                     "loop": false
@@ -86,7 +79,6 @@
                 {
                     "anim": "confirm",
                     "symbol": "ConfirmRight",
-                    "offsets": [35, 35],
 
                     "fps": 32,
                     "loop": false
@@ -97,12 +89,11 @@
             "antialiasing": true
         },
         {
-            "colorHSL":[0, 0, 0],
+            "colorHEX": "#ff5ec8",
             "arrayAnims":[
                 {
                     "anim": "static",
                     "symbol": "StaticLeft",
-                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -110,7 +101,6 @@
                 {
                     "anim": "pressed",
                     "symbol": "PressLeft",
-                    "offsets": [-5, -5],
 
                     "fps": 32,
                     "loop": false
@@ -118,7 +108,6 @@
                 {
                     "anim": "confirm",
                     "symbol": "ConfirmLeft",
-                    "offsets": [35, 35],
 
                     "fps": 32,
                     "loop": false
@@ -129,12 +118,11 @@
             "antialiasing": true
         },
         {
-            "colorHSL":[117, 98, 98],
+            "colorHEX": "#12fA05",
             "arrayAnims":[
                 {
                     "anim": "static",
                     "symbol": "StaticUp",
-                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -142,7 +130,6 @@
                 {
                     "anim": "pressed",
                     "symbol": "PressUp",
-                    "offsets": [-5, -5],
 
                     "fps": 32,
                     "loop": false
@@ -150,7 +137,6 @@
                 {
                     "anim": "confirm",
                     "symbol": "ConfirmUp",
-                    "offsets": [35, 35],
 
                     "fps": 32,
                     "loop": false
@@ -161,12 +147,11 @@
             "antialiasing": true
         },
         {
-            "colorHSL":[358, 77, 98],
+            "colorHEX": "#f9393f",
             "arrayAnims":[
                 {
                     "anim": "static",
                     "symbol": "StaticRight",
-                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -174,7 +159,6 @@
                 {
                     "anim": "pressed",
                     "symbol": "PressRight",
-                    "offsets": [-5, -5],
 
                     "fps": 32,
                     "loop": false
@@ -182,7 +166,6 @@
                 {
                     "anim": "confirm",
                     "symbol": "ConfirmRight",
-                    "offsets": [35, 35],
 
                     "fps": 32,
                     "loop": false
@@ -195,12 +178,12 @@
     ],
     "gameplayNotes":[
         {
-            "colorHSL":[320, 61, 76],
+            "chAnim": "singLEFT",
+            "colorHEX": "#ff5ec8",
             "arrayAnims":[
                 {
                     "anim": "static",
                     "symbol": "Left",
-                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -208,7 +191,6 @@
                 {
                     "anim": "sustain",
                     "symbol": "HoldPiece",
-                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -216,7 +198,20 @@
                 {
                     "anim": "end",
                     "symbol": "HoldEnd",
-                    "offsets": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "merge",
+                    "symbol": "SwitchHold",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
 
                     "fps": 32,
                     "loop": false
@@ -227,12 +222,12 @@
             "antialiasing": true
         },
         {
-            "colorHSL":[117, 98, 98],
+            "chAnim": "singDOWN",
+            "colorHEX": "#00ffff",
             "arrayAnims":[
                 {
                     "anim": "static",
-                    "symbol": "Up",
-                    "offsets": [0, 0],
+                    "symbol": "Down",
 
                     "fps": 32,
                     "loop": false
@@ -240,7 +235,6 @@
                 {
                     "anim": "sustain",
                     "symbol": "HoldPiece",
-                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -248,7 +242,20 @@
                 {
                     "anim": "end",
                     "symbol": "HoldEnd",
-                    "offsets": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "merge",
+                    "symbol": "SwitchHold",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
 
                     "fps": 32,
                     "loop": false
@@ -259,12 +266,12 @@
             "antialiasing": true
         },
         {
-            "colorHSL":[358, 77, 98],
+            "chAnim": "singRIGHT",
+            "colorHEX": "#f9393f",
             "arrayAnims":[
                 {
                     "anim": "static",
                     "symbol": "Right",
-                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -272,7 +279,6 @@
                 {
                     "anim": "sustain",
                     "symbol": "HoldPiece",
-                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -280,7 +286,20 @@
                 {
                     "anim": "end",
                     "symbol": "HoldEnd",
-                    "offsets": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "merge",
+                    "symbol": "SwitchHold",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
 
                     "fps": 32,
                     "loop": false
@@ -291,12 +310,12 @@
             "antialiasing": true
         },
         {
-            "colorHSL":[320, 61, 76],
+            "chAnim": "singLEFT",
+            "colorHEX": "#ff5ec8",
             "arrayAnims":[
                 {
                     "anim": "static",
                     "symbol": "Left",
-                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -304,7 +323,6 @@
                 {
                     "anim": "sustain",
                     "symbol": "HoldPiece",
-                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -312,7 +330,20 @@
                 {
                     "anim": "end",
                     "symbol": "HoldEnd",
-                    "offsets": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "merge",
+                    "symbol": "SwitchHold",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
 
                     "fps": 32,
                     "loop": false
@@ -323,12 +354,12 @@
             "antialiasing": true
         },
         {
-            "colorHSL":[117, 98, 98],
+            "chAnim": "singUP",
+            "colorHEX": "#12fA05",
             "arrayAnims":[
                 {
                     "anim": "static",
                     "symbol": "Up",
-                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -336,7 +367,6 @@
                 {
                     "anim": "sustain",
                     "symbol": "HoldPiece",
-                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -344,7 +374,20 @@
                 {
                     "anim": "end",
                     "symbol": "HoldEnd",
-                    "offsets": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "merge",
+                    "symbol": "SwitchHold",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
 
                     "fps": 32,
                     "loop": false
@@ -355,12 +398,12 @@
             "antialiasing": true
         },
         {
-            "colorHSL":[358, 77, 98],
+            "chAnim": "singRIGHT",
+            "colorHEX": "#f9393f",
             "arrayAnims":[
                 {
                     "anim": "static",
                     "symbol": "Right",
-                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -368,7 +411,6 @@
                 {
                     "anim": "sustain",
                     "symbol": "HoldPiece",
-                    "offsets": [0, 0],
 
                     "fps": 32,
                     "loop": false
@@ -376,7 +418,20 @@
                 {
                     "anim": "end",
                     "symbol": "HoldEnd",
-                    "offsets": [0, 0],
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "merge",
+                    "symbol": "SwitchHold",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
 
                     "fps": 32,
                     "loop": false
@@ -386,6 +441,5 @@
             "scale": 1,
             "antialiasing": true
         }
-    ],
-    "noteSplash": "NOTE_assets"
+    ]
 }

@@ -53,7 +53,6 @@ typedef StagePart = {
 typedef StageAnim = {
     var anim:String;
     var symbol:String;
-    var offsets:Array<Int>;
     var indices:Array<Int>;
 
     var fps:Int;
@@ -61,6 +60,14 @@ typedef StageAnim = {
 }
 
 class Stage extends FlxTypedGroup<Dynamic>{
+    public static function getArrayFromAnims(anims:Array<StageAnim>):Array<String>{
+        var toReturn:Array<String> = [];
+        if(anims != null && anims.length > 0){
+            for(a in anims){toReturn.push(a.anim);}
+        }
+        return toReturn;
+    }
+
     public var curStage:String = "Stage";
 
     public var directory:String = "Stage";
@@ -211,7 +218,6 @@ class Stage extends FlxTypedGroup<Dynamic>{
 }
 
 class StageSprite extends FlxSprite {
-    public var animOffsets:Map<String, Array<Dynamic>>;
     public var animArray:Array<StageAnim> = [];
 
     //Edit Stats
@@ -222,26 +228,11 @@ class StageSprite extends FlxSprite {
     
     public function new(X:Float = 0, Y:Float = 0){
         super(X, Y);
-
-        #if (haxe >= "4.0.0") animOffsets = new Map(); #else animOffsets = new Map<String, Array<Dynamic>>(); #end
     }
 
     public function playAnim(anim:String, ?force:Bool = false){
 		animation.play(anim, force);
-
-        var daOffset = animOffsets.get(anim);
-        if(animOffsets.exists(anim)){
-            offset.set(daOffset[0], daOffset[1]);
-        }else{
-            offset.set(0, 0);
-        }
 	}
-
-    public function setGraphicScale(scale:Float = 1){
-        defScale = scale;
-        setGraphicSize(Std.int(width * defScale));
-    }
-
     public function loadPart(part:StagePart, directory:String){
         data = part;
 
@@ -255,10 +246,6 @@ class StageSprite extends FlxSprite {
                     animation.addByIndices(anim.anim, anim.symbol, anim.indices, "", anim.fps, anim.loop);
                 }else{
                     animation.addByPrefix(anim.anim, anim.symbol, anim.fps, anim.loop);
-                }
-    
-                if(anim.offsets != null && anim.offsets.length > 1){
-                    animOffsets[anim.anim] = [anim.offsets[0], anim.offsets[1]];
                 }
             }
 
@@ -274,7 +261,7 @@ class StageSprite extends FlxSprite {
         alpha = part.alpha;
         flipX = part.dflipX;
         flipY = part.dflipY;
-        setGraphicScale(part.size);
+        scale.set(part.size, part.size);
         updateHitbox();
     }
 }

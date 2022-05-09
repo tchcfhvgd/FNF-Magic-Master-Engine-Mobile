@@ -1,0 +1,735 @@
+{
+    "image": "NOTE_assets",
+    "staticNotes":[
+        {
+            "colorHEX": "#ff5ec8",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "StaticLeft",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "pressed",
+                    "symbol": "PressLeft",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "confirm",
+                    "symbol": "ConfirmLeft",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "colorHEX": "#00ffff",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "StaticDown",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "pressed",
+                    "symbol": "PressDown",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "confirm",
+                    "symbol": "ConfirmDown",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "colorHEX": "#feffb0",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "StaticMiddle",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "pressed",
+                    "symbol": "PressMiddle",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "confirm",
+                    "symbol": "ConfirmMiddle",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "colorHEX": "#12fA05",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "StaticUp",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "pressed",
+                    "symbol": "PressUp",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "confirm",
+                    "symbol": "ConfirmUp",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "colorHEX": "#f9393f",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "StaticRight",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "pressed",
+                    "symbol": "PressRight",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "confirm",
+                    "symbol": "ConfirmRight",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "colorHEX": "#ff5ec8",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "StaticLeft",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "pressed",
+                    "symbol": "PressLeft",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "confirm",
+                    "symbol": "ConfirmLeft",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "colorHEX": "#00ffff",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "StaticDown",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "pressed",
+                    "symbol": "PressDown",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "confirm",
+                    "symbol": "ConfirmDown",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "colorHEX": "#feffb0",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "StaticMiddle",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "pressed",
+                    "symbol": "PressMiddle",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "confirm",
+                    "symbol": "ConfirmMiddle",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "colorHEX": "#12fA05",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "StaticUp",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "pressed",
+                    "symbol": "PressUp",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "confirm",
+                    "symbol": "ConfirmUp",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "colorHEX": "#f9393f",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "StaticRight",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "pressed",
+                    "symbol": "PressRight",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "confirm",
+                    "symbol": "ConfirmRight",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        }
+    ],
+    "gameplayNotes":[
+        {
+            "chAnim": "singLEFT",
+            "colorHEX": "#ff5ec8",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "Left",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "sustain",
+                    "symbol": "HoldPiece",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "end",
+                    "symbol": "HoldEnd",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "merge",
+                    "symbol": "SwitchHold",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "chAnim": "singDOWN",
+            "colorHEX": "#00ffff",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "Down",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "sustain",
+                    "symbol": "HoldPiece",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "end",
+                    "symbol": "HoldEnd",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "merge",
+                    "symbol": "SwitchHold",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "colorHEX": "#feffb0",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "Middle",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "sustain",
+                    "symbol": "HoldPiece",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "end",
+                    "symbol": "HoldEnd",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "merge",
+                    "symbol": "SwitchHold",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "chAnim": "singUP",
+            "colorHEX": "#12fA05",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "Up",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "sustain",
+                    "symbol": "HoldPiece",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "end",
+                    "symbol": "HoldEnd",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "merge",
+                    "symbol": "SwitchHold",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "chAnim": "singRIGHT",
+            "colorHEX": "#f9393f",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "Right",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "sustain",
+                    "symbol": "HoldPiece",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "end",
+                    "symbol": "HoldEnd",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "merge",
+                    "symbol": "SwitchHold",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "chAnim": "singLEFT",
+            "colorHEX": "#ff5ec8",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "Left",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "sustain",
+                    "symbol": "HoldPiece",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "end",
+                    "symbol": "HoldEnd",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "merge",
+                    "symbol": "SwitchHold",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "chAnim": "singDOWN",
+            "colorHEX": "#00ffff",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "Down",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "sustain",
+                    "symbol": "HoldPiece",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "end",
+                    "symbol": "HoldEnd",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "merge",
+                    "symbol": "SwitchHold",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "colorHEX": "#feffb0",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "Middle",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "sustain",
+                    "symbol": "HoldPiece",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "end",
+                    "symbol": "HoldEnd",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "merge",
+                    "symbol": "SwitchHold",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "chAnim": "singUP",
+            "colorHEX": "#12fA05",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "Up",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "sustain",
+                    "symbol": "HoldPiece",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "end",
+                    "symbol": "HoldEnd",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "merge",
+                    "symbol": "SwitchHold",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        },
+        {
+            "chAnim": "singRIGHT",
+            "colorHEX": "#f9393f",
+            "arrayAnims":[
+                {
+                    "anim": "static",
+                    "symbol": "Right",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "sustain",
+                    "symbol": "HoldPiece",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "end",
+                    "symbol": "HoldEnd",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "merge",
+                    "symbol": "SwitchHold",
+
+                    "fps": 32,
+                    "loop": false
+                },
+                {
+                    "anim": "switch",
+                    "symbol": "SwitchPiece",
+
+                    "fps": 32,
+                    "loop": false
+                }
+            ],
+            "alpha": 1,
+            "scale": 1,
+            "antialiasing": true
+        }
+    ]
+}

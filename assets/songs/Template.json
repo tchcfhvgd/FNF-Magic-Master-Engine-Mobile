@@ -1,0 +1,90 @@
+{
+    "song":{
+	    "bpm": 100,
+	    "speed": 2.0,
+
+        "hasCharVoices": true,
+	    "voices": [],
+
+	    "validScore": false,
+
+	    "strumToPlay": 1,
+
+	    "uiStyle": "Default",
+
+	    "stage":"Stage",
+	    "characters": [["Girlfriend",[400,130],1,false,"Default","GF",0],["Fliqpy",[85,394],1,true,"Default","NORMAL",0],["Boyfriend",[833,100],1,false,"Default","NORMAL",0]],
+
+	    "generalSection": [
+            {
+                "bpm": 100,
+	            "changeBPM": false,
+	
+	            "lengthInSteps": 16,
+
+	            "strumToFocus": 0,
+    	        "charToFocus": 0
+            }
+        ],
+	    "sectionStrums": [
+            {
+                "keys": 4,
+                "noteStyle": "Default",
+                "charToSing": [],
+                "notes": [
+                    {
+                        "charToSing": [],
+                        "changeSing": false,
+
+                        "keys": 4,
+                        "changeKeys": false,
+
+                        "altAnim": false,
+
+                        "sectionNotes": [
+                            {
+                                "charToSing": [],
+                                "changeSing": false,
+                            
+                                "keys": 4,
+                                "changeKeys": false,
+                            
+                                "altAnim": false,
+                                "sectionNotes": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "keys": 4,
+                "noteStyle": "Default",
+                "charToSing": [],
+                "notes": [
+                    {
+                        "charToSing": [],
+                        "changeSing": false,
+
+                        "keys": 4,
+                        "changeKeys": false,
+
+                        "altAnim": false,
+
+                        "sectionNotes": [
+                            {
+                                "charToSing": [],
+                                "changeSing": false,
+                            
+                                "keys": 4,
+                                "changeKeys": false,
+                            
+                                "altAnim": false,
+                                "sectionNotes": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

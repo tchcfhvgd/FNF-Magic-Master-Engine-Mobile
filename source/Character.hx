@@ -89,6 +89,15 @@ class Character extends FlxSprite{
 	public var imageFile:String = '';
 	public var noAntialiasing:Bool = false;
 
+	//Movement Stuff
+	public var canMove:Bool = false;
+	private var isMoving:Bool = false;
+	private var movementStuff:Map<String, Dynamic>  = [
+		
+	];
+
+	public var controls:Controls;
+
 	public static function getCharacters():Array<String>{
 		var charArray:Array<String> = [];
 
@@ -134,53 +143,11 @@ class Character extends FlxSprite{
 			//case 'your character name in case you want to hardcode him instead':
 
 			default:{
-				var path:String = Paths.getCharacterJSON(curCharacter, curCategory, curSkin);
-
-				var rawJson = Assets.getText(path);
-				var jCharacter:CharacterFile = cast Json.parse(rawJson);
-				
-				imageFile = jCharacter.image;
-
-				frames = Paths.getCharacterAtlas(curCharacter, imageFile);
-
-				positionArray = jCharacter.position;
-				cameraPosition = jCharacter.camera;
-				cameraZoom = jCharacter.zoom;
-
-				healthIcon = jCharacter.healthicon;
-				//singDuration = jCharacter.singDuration;
-				if(jCharacter.nAntialiasing){
-					antialiasing = false;
-					noAntialiasing = true;
-				}
-
-				this.scale.set(nScale, nScale);
-
-				this.onRight = jCharacter.onRight;
-				this.dancedIdle = jCharacter.danceIdle;
-
-				this.antialiasing = !noAntialiasing;
-
-				animationsArray = jCharacter.anims;
-				if(animationsArray != null && animationsArray.length > 0) {
-					for (anim in animationsArray) {
-						var animAnim:String = '' + anim.anim;
-						var animName:String = '' + anim.symbol;
-						var animFps:Int = anim.fps;
-						var animLoop:Bool = !!anim.loop; //Bruh
-						var animIndices:Array<Int> = anim.indices;
-						if(animIndices != null && animIndices.length > 0) {
-							animation.addByIndices(animAnim, animName, animIndices, "", animFps, animLoop);
-						}else{
-							animation.addByPrefix(animAnim, animName, animFps, animLoop);
-						}
-					}
-				}else{
-					quickAnimAdd('idle', 'BF idle dance');
-				}
-				dance();
+				setupByCharacterFile(Json.parse(Assets.getText(Paths.getCharacterJSON(curCharacter, curCategory, curSkin))));
 			}
 		}
+		
+		this.scale.set(nScale, nScale);
 
 		turnLook(toRight);
 	}
@@ -201,12 +168,62 @@ class Character extends FlxSprite{
 				playAnim(false, animation.curAnim.name + '-loop');
 			}
 		}
+
+
+		if(canMove){keyShit();}
 		super.update(elapsed);
 	}
 
-	/**
-	 * FOR GF DANCING SHIT
-	 */
+	private function keyShit() {
+		if(controls != null){
+			if(controls.checkAction("Game_Left", PRESSED)){this.x -= 5;}
+			if(controls.checkAction("Game_Right", PRESSED)){this.x += 5;}
+			if(controls.checkAction("Game_Up", PRESSED)){this.y -= 5;}
+			if(controls.checkAction("Game_Down", PRESSED)){this.y += 5;}
+		}
+	}
+
+	public function setupByCharacterFile(jCharacter:CharacterFile) {
+		imageFile = jCharacter.image;
+
+		frames = Paths.getCharacterAtlas(curCharacter, imageFile);
+
+		positionArray = jCharacter.position;
+		cameraPosition = jCharacter.camera;
+		cameraZoom = jCharacter.zoom;
+
+		healthIcon = jCharacter.healthicon;
+		//singDuration = jCharacter.singDuration;
+		if(jCharacter.nAntialiasing){
+			antialiasing = false;
+			noAntialiasing = true;
+		}
+
+		this.onRight = jCharacter.onRight;
+		this.dancedIdle = jCharacter.danceIdle;
+
+		this.antialiasing = !noAntialiasing;
+
+		animationsArray = jCharacter.anims;
+		if(animationsArray != null && animationsArray.length > 0) {
+			for (anim in animationsArray) {
+				var animAnim:String = '' + anim.anim;
+				var animName:String = '' + anim.symbol;
+				var animFps:Int = anim.fps;
+				var animLoop:Bool = !!anim.loop; //Bruh
+				var animIndices:Array<Int> = anim.indices;
+				if(animIndices != null && animIndices.length > 0) {
+					animation.addByIndices(animAnim, animName, animIndices, "", animFps, animLoop);
+				}else{
+					animation.addByPrefix(animAnim, animName, animFps, animLoop);
+				}
+			}
+		}else{
+			quickAnimAdd('idle', 'BF idle dance');
+		}
+		dance();
+	}
+
 	public function dance(){
 		if(!specialAnim){
 			if(dancedIdle){

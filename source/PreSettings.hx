@@ -21,13 +21,21 @@ class PreSettings {
         "ForceMiddleScroll" => false,
         "TypeCamera" => [1, ["Static", "MoveToSing"]],
         "TypeLightStrums" => [0, ["All", "OnlyMyStrum", "OnlyOtherStrums", "None"]],
+        "TypeSplash" => [0, "OnSick", "TransparencyOnRate", "None"],
         // Graphic Settings
+        "Presets" => [
+            "Low" => [
+                "FrameRate" => 30
+            ],
+            "Medium" => [
+                "FrameRate" => 30
+            ]
+        ],
         "FrameRate" => 60,
         "Antialiasing" => true,
         "BackgroundAnimated" => true,
         "AmbientEffects" => true,
         "HUDEffects" => true,
-        "SplashOnSick" => true,
         "OnlyNotes" => false,
         // Other Settings
         "AllowFlashingLights" => true,
@@ -78,8 +86,9 @@ class PreSettings {
         return PRESETTINGS.get(setting);
     }
 
-    public static function getArraySetting(setting:Array<Dynamic>){
-        return setting[1][setting[0]];
+    public static function getFromArraySetting(setting:String){
+        var pre:Array<Dynamic> = PRESETTINGS.get(setting);
+        return pre[1][pre[0]];
     }
 
     public static function setPreSetting(setting:String, toSet){

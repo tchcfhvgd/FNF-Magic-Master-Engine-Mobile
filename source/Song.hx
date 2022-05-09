@@ -7,6 +7,8 @@ import haxe.format.JsonParser;
 import lime.utils.Assets;
 import haxe.DynamicAccess;
 
+import StrumLineNote.Note;
+
 using StringTools;
 
 typedef SwagSong = {
@@ -17,6 +19,7 @@ typedef SwagSong = {
 	var bpm:Float;
 	var speed:Float;
 
+	var hasCharVoices:Bool;
 	var voices:Array<String>;
 
 	var validScore:Bool;
@@ -96,7 +99,7 @@ class Song{
 
 		if(aSong.get("song") == null){
 			if(sName.split("-")[2] != null){
-				aSong.set("song", sName.split("-")[2]);
+				aSong.set("song", Paths.getFileName(sName.split("-")[0], true));
 			}else{
 				aSong.set("song", "PlaceHolderName");
 			}
@@ -222,6 +225,8 @@ class Song{
 							var in2:Array<Dynamic> = [];
 							if(iNotes != null){
 								for(n in iNotes){
+									n = Note.getNoteDynamicData(n, true);
+
 									if(cSec.get("mustHitSection") == true){
 										if(n[1] < 4){
 											in2.push(n);

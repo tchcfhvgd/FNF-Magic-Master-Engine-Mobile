@@ -73,7 +73,7 @@ class FreeplayState extends MusicBeatState {
 
 		// LOAD MUSIC FROM WEEKS
 		trace("Adding Week Songs");
-		for(week in StoryMenuState.weekData){
+		for(week in substates.StoryMenuSubstate.weekData){
 			var category = week[0];
 
 			for(i in 0...week[1].length){
@@ -87,27 +87,34 @@ class FreeplayState extends MusicBeatState {
 		addSong("Flippin Force", [["Normal", ["Hard"]]]);
 		trace("Manually Songs Added");
 
-		#if desktop
+		#if sys
 		// LOAD MUSIC FROM ARCHIVES
 		trace("Adding Archive Songs");
-		for(song in FileSystem.readDirectory(FileSystem.absolutePath("assets/songs"))){
-			var data:Array<Dynamic> = [];
-			for(chart in FileSystem.readDirectory(FileSystem.absolutePath('assets/songs/${song}/Data'))){
-				var cStats:Array<String> = chart.replace(".json", "").split("-");
-				var hasCat:Bool = false;
+		var songsDirectory:String = FileSystem.absolutePath("assets/songs");
 
-				for(d in data){
-					if(d[0] == cStats[1]){
-						hasCat = true;
-						d[1].push(cStats[2]);
+		for(song in FileSystem.readDirectory(songsDirectory)){
+			var data:Array<Dynamic> = [];
+			if(FileSystem.isDirectory('${songsDirectory}/${song}') && FileSystem.exists('${songsDirectory}/${song}/Data')){
+				for(chart in FileSystem.readDirectory('${songsDirectory}/${song}/Data')){
+					var cStats:Array<String> = chart.replace(".json", "").split("-");
+					if(cStats[1] == null){cStats[1] = "Normal";}
+					if(cStats[2] == null){cStats[2] = "Normal";}
+
+					var hasCat:Bool = false;
+	
+					for(d in data){
+						if(d[0] == cStats[1]){
+							hasCat = true;
+							d[1].push(cStats[2]);
+						}
+					}
+	
+					if(!hasCat){
+						data.push([cStats[1], [cStats[2]]]);
 					}
 				}
-
-				if(!hasCat){
-					data.push([cStats[1], [cStats[2]]]);
-				}
+				addSong(Paths.getFileName(song, true), data);
 			}
-			addSong(Paths.getFileName(song, true), data);
         }
 		trace("Archive Songs Added");
 		#end
@@ -248,7 +255,7 @@ class FreeplayState extends MusicBeatState {
 
 		var upP = FlxG.keys.justPressed.UP;
 		var downP = FlxG.keys.justPressed.DOWN;
-		var accepted = Controls.getBind("Menu_Accept", "JUST_PRESSED");
+		var accepted = principal_controls.checkAction("Menu_Accept", JUST_PRESSED);
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
@@ -288,8 +295,7 @@ class FreeplayState extends MusicBeatState {
 		if (FlxG.keys.justPressed.TAB)
 			changeCat(true);
 
-		if (Controls.getBind("Menu_Back", "JUST_PRESSED"))
-		{
+		if (principal_controls.checkAction("Menu_Back", JUST_PRESSED)){
 			FlxG.switchState(new MainMenuState());
 		}
 

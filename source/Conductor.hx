@@ -64,4 +64,18 @@ class Conductor
 		crochet = ((60 / bpm) * 1000);
 		stepCrochet = crochet / 4;
 	}
+
+	public static function getCurStep():Int {
+		var lastChange:BPMChangeEvent = {
+			stepTime: 0,
+			songTime: 0,
+			bpm: 0
+		}
+		
+		for(i in 0...Conductor.bpmChangeMap.length){
+			if(Conductor.songPosition >= Conductor.bpmChangeMap[i].songTime){lastChange = Conductor.bpmChangeMap[i];}
+		}
+
+		return lastChange.stepTime + Math.floor((Conductor.songPosition - lastChange.songTime) / Conductor.stepCrochet);
+	}
 }

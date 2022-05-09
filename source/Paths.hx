@@ -119,7 +119,11 @@ class Paths
 	}
 
 	inline static public function chart(jsonInput:String, song:String){
-		return 'songs:assets/songs/${song}/Data/${jsonInput}.json';
+		var path = 'songs:assets/songs/${song}/Data/${jsonInput}.json';
+
+		if(!Assets.exists(path)){path = 'songs:assets/songs/Template.json';}
+
+		return path;
 	}
 
 	inline static public function image(key:String, ?library:String){
@@ -139,7 +143,7 @@ class Paths
 	}
 
 	inline static public function strumJSON(keys:Int, typeStrum:String = null){
-		if(typeStrum == null){typeStrum = PreSettings.getArraySetting(PreSettings.getPreSetting("NoteSyle"));}
+		if(typeStrum == null){typeStrum = PreSettings.getFromArraySetting("NoteSyle");}
 		var toReturn = '';
 
 		toReturn = 'notes:assets/notes/${typeStrum}/${keys}k.json';
@@ -182,34 +186,14 @@ class Paths
 		}
 	}
 
-	inline static public function getNoteAtlas(key:String, typeCheck:String){
-		var typeNotes:String = PreSettings.getArraySetting(PreSettings.getPreSetting("NoteSyle"));
+	inline static public function getNoteAtlas(key:String, typeCheck:String = "Default"){
+		var typeNotes:String = PreSettings.getFromArraySetting("NoteSyle");
 
-		var curTypeCheck = typeCheck;
-		var curTypeNotes = typeNotes;
+		var path:String = 'notes:assets/notes/${typeNotes}/${typeCheck}/${key}';
+		if(!Assets.exists('${path}.png')){path = 'notes:assets/notes/${typeNotes}/Default/${key}';}
+		if(!Assets.exists('${path}.png')){path = 'notes:assets/notes/Default/Default/${key}';}
 
-		var imagePath = 'notes:assets/notes/${curTypeNotes}/${curTypeCheck}/${key}.png';
-
-		while(!Assets.exists(imagePath)){
-			if(curTypeCheck == typeCheck && curTypeNotes == typeNotes){
-				curTypeCheck = 'Default';
-			}else if(curTypeCheck != typeCheck && curTypeNotes == typeNotes){
-				curTypeNotes = 'Default';
-			}else if(curTypeCheck == 'Default' && curTypeNotes == 'Default'){
-				break;	
-			}
-
-			imagePath = 'notes:assets/notes/${curTypeNotes}/${curTypeCheck}/${key}.png';
-		}
-		
-		var path = 'notes:assets/notes/${curTypeNotes}/${curTypeCheck}/${key}.xml';
-
-		if(Assets.exists(path)){
-			return FlxAtlasFrames.fromSparrow(imagePath, path);
-		}else{
-			path = 'notes:assets/notes/${curTypeNotes}/${curTypeCheck}/${key}.txt';
-			return FlxAtlasFrames.fromSpriteSheetPacker(imagePath, path);
-		}
+		return getAtlas(path);
 	}
 
 	inline static public function getStageAtlas(key:String, ?directory:String = "Stage"){
@@ -225,6 +209,14 @@ class Paths
 			return FlxAtlasFrames.fromSparrow(imagePath, path + '.xml');
 		}else{
 			return FlxAtlasFrames.fromSpriteSheetPacker(imagePath, path+ '.txt');
+		}
+	}
+
+	inline static public function getAtlas(path:String){
+		if(Assets.exists('${path}.xml')){
+			return FlxAtlasFrames.fromSparrow('${path}.png', '${path}.xml');
+		}else{
+			return FlxAtlasFrames.fromSpriteSheetPacker('${path}.png', '${path}.txt');
 		}
 	}
 }

@@ -97,7 +97,7 @@ class StrumLineEditorState extends MusicBeatState {
 
         baseStrums.forEach(function(daNote:StrumNote){daNote.alpha = 0.5;});
 
-        if(Controls.getBind("Menu_Back", "JUST_PRESSED")){FlxG.switchState(new MainMenuState());}
+        if(FlxG.keys.justPressed.ESCAPE){FlxG.switchState(new MainMenuState());}
     }
 
     public function changeStrumNotes(keys:Int) {

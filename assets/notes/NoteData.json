@@ -1,0 +1,32 @@
+{
+    "Note_Specials":{
+        "New_Image": ["Change the Note Image", "String"],
+        "New_Color": ["Change the Note Color", "String"],
+        "Change_Color": ["Question if the Note Change Color", "Bool"],
+        "Damage_Hit": ["Change the Miss Damage", "Float"],
+        "Health_Hit": ["Change the Hit Health", "Float"],
+        "Change_Hit": ["Change the Note Hit Type", "String"],
+        "Hit_Miss": ["Question if the Note Miss on Hit", "Bool"],
+        "Ignore_Miss": ["Question if the Note does nothing when Miss", "Bool"],
+        "Horizontal_Offset": ["Change the X Offset", "Float"],
+        "StrumTime_Offset": ["Change the Y Offset", "Float"],
+        "Hit_Function": ["Set Function on Hit", "Note->Void"],
+        "Miss_Function": ["Set Function on Miss", "Note->Void"]
+    },
+    "Note_Presets":{
+        "DEFAULT_NOTE": {},
+        "POISON_NOTE": {
+            "New_Image": "Blood_NOTE_ASSETS",
+            "Change_Color": false,
+            "Damage_Hit": 0.2,
+            "Hit_Miss": true,
+            "Ignore_Miss": true
+        },
+        "FLASH_NOTE": {
+            "New_Image": "Flash_Notes",
+            "Change_Color": false,
+            "Hit_Miss": true,
+            "Ignore_Miss": true
+        }
+    }
+}

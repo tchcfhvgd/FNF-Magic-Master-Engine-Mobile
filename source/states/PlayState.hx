@@ -320,10 +320,12 @@ class PlayState extends MusicBeatState {
 				}
 			}
 
+			strumLine.controls = principal_controls;
+
 			lastStrum = strumLine;
 			strumLine.scrollSpeed = songData.speed;
 			strumLine.bpm = songData.bpm;
-			strumLine.setNotes(songData.sectionStrums[i].notes);
+			strumLine.setNotes(songData.sectionStrums[i]);
 			strumLine.ID = i;
 			strumsGroup.add(strumLine);
 		}
@@ -382,7 +384,12 @@ class PlayState extends MusicBeatState {
             if(curStrum == strumLine.ID){strumLine.typeStrum = "Playing";}else{strumLine.typeStrum = "BotPlay";}
         });
 
-		if(Controls.getBind("Game_Pause", "JUST_PRESSED") && startedCountdown && canPause){
+		if(FlxG.keys.anyPressed([O, L])){
+			if(FlxG.keys.pressed.O){FlxG.sound.music.time -= Conductor.stepCrochet * 0.2;}
+			if(FlxG.keys.pressed.L){FlxG.sound.music.time += Conductor.stepCrochet * 0.1;}
+		}
+
+		if(principal_controls.checkAction("Menu_Pause", JUST_PRESSED) && startedCountdown && canPause){
 			persistentUpdate = false;
 			persistentDraw = true;
 			paused = true;
@@ -539,7 +546,7 @@ class PlayState extends MusicBeatState {
 				camMoveY += offsetY;
 
 				var cCharacter = stage.getCharacterById(Character.getFocusCharID(SONG, Std.int(curStep / 16)));
-                
+
 				if(cCharacter == null){
 					camMoveX += FlxG.width / 2;
 					camMoveY += FlxG.height / 2;
@@ -562,7 +569,7 @@ class PlayState extends MusicBeatState {
 			}
 		}
 
-		if(Controls.getBind("Game_Reset", "JUST_PRESSED")){
+		if(FlxG.keys.justPressed.R){
 			health = 0;
 			trace("RESET = True");
 		}
@@ -685,7 +692,10 @@ class SongListData{
 
 	public static function playSong(SONG:SwagSong) {
 		isStoryMode = false;
-		states.LoadingState.loadAndSwitchState(new PlayState(), SONG, false);
+
+		resetVariables();
+		songPlaylist.push(SONG);
+		states.LoadingState.loadAndSwitchState(new PlayState(), SONG);
 	}
 	
 	public static function nextSong(score){
