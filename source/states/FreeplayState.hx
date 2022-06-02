@@ -88,10 +88,48 @@ class FreeplayState extends MusicBeatState {
 		trace("Manually Songs Added");
 
 		#if sys
+
+		// LOAD MUSIC FROM MODS
+		trace("Adding Mod Songs");
+
+		for(mod in ModSupport.MODS){
+			if(mod.enabled){
+				var modSongs:String = '${mod.path}/assets/songs';
+				if(FileSystem.exists(modSongs) && FileSystem.isDirectory(modSongs)){
+					for(song in FileSystem.readDirectory(modSongs)){
+						var data:Array<Dynamic> = [];
+						if(FileSystem.isDirectory('${modSongs}/${song}') && FileSystem.exists('${modSongs}/${song}/Data')){
+							for(chart in FileSystem.readDirectory('${modSongs}/${song}/Data')){
+								var cStats:Array<String> = chart.replace(".json", "").split("-");
+								if(cStats[1] == null){cStats[1] = "Normal";}
+								if(cStats[2] == null){cStats[2] = "Normal";}
+			
+								var hasCat:Bool = false;
+				
+								for(d in data){
+									if(d[0] == cStats[1]){
+										hasCat = true;
+										d[1].push(cStats[2]);
+									}
+								}
+				
+								if(!hasCat){
+									data.push([cStats[1], [cStats[2]]]);
+								}
+							}
+							addSong(Paths.getFileName(song, true), data);
+						}
+					}
+				}
+			}
+		}
+
+		trace("Mod Songs Added");
+
 		// LOAD MUSIC FROM ARCHIVES
 		trace("Adding Archive Songs");
-		var songsDirectory:String = FileSystem.absolutePath("assets/songs");
 
+		var songsDirectory:String = FileSystem.absolutePath("assets/songs");
 		for(song in FileSystem.readDirectory(songsDirectory)){
 			var data:Array<Dynamic> = [];
 			if(FileSystem.isDirectory('${songsDirectory}/${song}') && FileSystem.exists('${songsDirectory}/${song}/Data')){
@@ -117,6 +155,7 @@ class FreeplayState extends MusicBeatState {
 			}
         }
 		trace("Archive Songs Added");
+
 		#end
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
@@ -234,7 +273,7 @@ class FreeplayState extends MusicBeatState {
 	}
 
 	override function update(elapsed:Float){
-		if(FlxG.sound.music != null){Conductor.songPosition = FlxG.sound.music.time;}
+		if(FlxG.sound.music != null){conductor.songPosition = FlxG.sound.music.time;}
 
 		super.update(elapsed);
 
@@ -294,10 +333,6 @@ class FreeplayState extends MusicBeatState {
 			changeDiff(true);
 		if (FlxG.keys.justPressed.TAB)
 			changeCat(true);
-
-		if (principal_controls.checkAction("Menu_Back", JUST_PRESSED)){
-			FlxG.switchState(new MainMenuState());
-		}
 
 		if (accepted){
 			// adjusting the song name to be compatible
@@ -467,8 +502,6 @@ class FreeplayState extends MusicBeatState {
 				// item.setGraphicSize(Std.int(item.width));
 			}
 		}
-
-		bg.loadGraphic(Paths.image('freeplay/' + songHighscore));
 	}
 }
 

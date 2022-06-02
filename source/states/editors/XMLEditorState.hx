@@ -19,6 +19,7 @@ import flixel.graphics.FlxGraphic;
 
 import FlxCustom.FlxUICustomList;
 import FlxCustom.FlxUINumericStepperCustom;
+import FlxCustom.FlxUIValueChanger;
 
 #if windows
 import sys.FileSystem;
@@ -34,10 +35,6 @@ class XMLEditorState extends MusicBeatState {
     var tabFILE:FlxUITabMenu;
     var tabFRAMES:FlxUITabMenu;
     
-    var camBAC:FlxCamera;
-    var camGEN:FlxCamera;
-    var camHUD:FlxCamera;
-
     var point:FlxSprite;
     var bSprite:FlxSprite;
     var eSprite_b:FlxSprite;
@@ -45,48 +42,36 @@ class XMLEditorState extends MusicBeatState {
     var eSprite_f:FlxSprite;
     var imgIcon:FlxSprite;
 
-    public static function editXML(){
+    public static function editXML(?onConfirm:FlxState, ?onBack:FlxState){
         FlxG.sound.music.stop();
-        FlxG.switchState(new XMLEditorState());
+        FlxG.switchState(new XMLEditorState(onConfirm, onBack));
     }
 
     override function create(){
         FlxG.mouse.visible = true;
 
-		if(!FlxG.sound.music.playing){FlxG.sound.playMusic(Paths.music('freakyMenu'));}
-
-        camBAC = new FlxCamera();
-        camGEN = new FlxCamera();
-        camGEN.bgColor.alpha = 0;
-        camHUD = new FlxCamera();
-        camHUD.bgColor.alpha = 0;
-
-		FlxG.cameras.reset(camBAC);
-        FlxG.cameras.add(camGEN);
-		FlxG.cameras.add(camHUD);
-
         var bg = new FlxSprite().loadGraphic(Paths.image('menuBG', 'preload'));
-        bg.camera = camBAC;
+        bg.camera = camGame;
         add(bg);
 
         //SPRITES
         bSprite = new FlxSprite();
         bSprite.alpha = 0.3;
         bSprite.color = FlxColor.GRAY;
-        bSprite.cameras = [camGEN];
+        bSprite.cameras = [camFGame];
 
         eSprite_b = new FlxSprite();
         eSprite_b.alpha = 0.3;
         eSprite_b.color = FlxColor.BLUE;
-        eSprite_b.cameras = [camGEN];
+        eSprite_b.cameras = [camFGame];
         
         eSprite = new FlxSprite();
-        eSprite.cameras = [camGEN];
+        eSprite.cameras = [camFGame];
 
         eSprite_f = new FlxSprite();
         eSprite_f.alpha = 0.3;
         eSprite_f.color = FlxColor.GREEN;
-        eSprite_f.cameras = [camGEN];
+        eSprite_f.cameras = [camFGame];
 
         imgIcon = new FlxSprite(5, 5);
         imgIcon.cameras = [camHUD];
@@ -99,7 +84,7 @@ class XMLEditorState extends MusicBeatState {
         add(imgIcon);
 
         point = new FlxSprite(100, 50).makeGraphic(5, 5, FlxColor.BLACK);
-        point.cameras = [camGEN];
+        point.cameras = [camFGame];
         add(point);
 
         tabFILE = new FlxUITabMenu(null, [{name: "General", label: 'General'}], true);
@@ -129,7 +114,6 @@ class XMLEditorState extends MusicBeatState {
         eSprite.setPosition(point.x, point.y);
         eSprite_f.setPosition(point.x, point.y);
 
-        if(FlxG.keys.justPressed.ESCAPE){FlxG.switchState(new MainMenuState());}
         if(FlxG.keys.justPressed.R){rSprites();}
         if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.S){save();}
         if(FlxG.keys.pressed.SHIFT){
@@ -137,15 +121,15 @@ class XMLEditorState extends MusicBeatState {
             if(FlxG.keys.pressed.S){point.y += 5;}
             if(FlxG.keys.pressed.W){point.y -= 5;}
             if(FlxG.keys.pressed.D){point.x += 5;}
-            if(FlxG.keys.pressed.Q){camGEN.zoom -= 0.5;}
-            if(FlxG.keys.pressed.E){camGEN.zoom += 0.5;}
+            if(FlxG.keys.pressed.Q){camFGame.zoom -= 0.5;}
+            if(FlxG.keys.pressed.E){camFGame.zoom += 0.5;}
         }else{
             if(FlxG.keys.pressed.A){point.x -= 10;}
             if(FlxG.keys.pressed.S){point.y += 10;}
             if(FlxG.keys.pressed.W){point.y -= 10;}
             if(FlxG.keys.pressed.D){point.x += 10;}
-            if(FlxG.keys.pressed.Q){camGEN.zoom -= 0.1;}
-            if(FlxG.keys.pressed.E){camGEN.zoom += 0.1;}
+            if(FlxG.keys.pressed.Q){camFGame.zoom -= 0.1;}
+            if(FlxG.keys.pressed.E){camFGame.zoom += 0.1;}
         }
     }
 
@@ -170,6 +154,10 @@ class XMLEditorState extends MusicBeatState {
         #end
 
         for(i in new Access(_XML.firstElement()).elements){
+            if(!i.has.x){i.att.x = "0";}
+            if(!i.has.y){i.att.y = "0";}
+            if(!i.has.width){i.att.width = "0";}
+            if(!i.has.height){i.att.height = "0";}
             if(!i.has.frameX){i.att.frameX = "0";}
             if(!i.has.frameY){i.att.frameY = "0";}
             if(!i.has.frameWidth){i.att.frameWidth = i.att.width;}
@@ -206,296 +194,15 @@ class XMLEditorState extends MusicBeatState {
         }
     }
 
-    override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>){
-        if((sender is FlxUICheckBox)){
-            var check:FlxUICheckBox = cast sender;
-            var label = check.getLabel().text;
-
-            switch(id){
-                case FlxUICheckBox.CLICK_EVENT:{
-                    switch(label){
-                        default:{trace("[FlxUICheckBox]: Works!");}
-                    }
-                }
-            }
-        }else if((sender is FlxUIInputText)){
-            var input:FlxUIInputText = cast sender;
-            var wname = input.name;
-
-            switch(id){
-                case FlxUIInputText.CHANGE_EVENT:{
-                    switch(wname){
-                        default:{trace("[FlxUIInputText]: Works!");}
-                    }
-                }
-            }
-        }else if((sender is FlxUIDropDownMenu)){
-            var drop:FlxUIDropDownMenu = cast sender;
-            var wname = drop.name;
-
-            switch(id){
-                case FlxUIDropDownMenu.CLICK_EVENT:{
-                    switch(wname){
-                        default:{trace("[FlxUIDropDownMenu]: Works!");}
-                    }
-                }
-            }
-        }else if((sender is FlxUINumericStepper)){
-            var nums:FlxUINumericStepper = cast sender;
-            var wname = nums.name;
-
-            switch(id){
-                case FlxUINumericStepper.CHANGE_EVENT:{
-                    switch(wname){
-                        default:{trace("[FlxUINumericStepper]: Works!");}
-                        case "FRAME_X":{
-                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
-                            sTexture.att.x = Std.string(nums.value);
-                            trace(sTexture.att.x);
-                            rSprites();
-                        }
-                        case "FRAME_Y":{
-                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
-                            sTexture.att.y = Std.string(nums.value);
-                            trace(sTexture.att.y);
-                            rSprites();
-                        }
-                        case "FRAME_WIDTH":{
-                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
-                            sTexture.att.width = Std.string(nums.value);
-                            trace(sTexture.att.width);
-                            rSprites();
-                        }
-                        case "FRAME_HEIGHT":{
-                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
-                            sTexture.att.height = Std.string(nums.value);
-                            trace(sTexture.att.height);
-                            rSprites();
-                        }
-                        case "FRAME_FrameX":{
-                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
-                            sTexture.att.frameX = Std.string(nums.value);
-                            trace(sTexture.att.frameX);
-                            rSprites();
-                        }
-                        case "FRAME_FrameY":{
-                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
-                            sTexture.att.frameY = Std.string(nums.value);
-                            trace(sTexture.att.frameY);
-                            rSprites();
-                        }
-                        case "FRAME_FrameWIDTH":{
-                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
-                            sTexture.att.frameWidth = Std.string(nums.value);
-                            trace(sTexture.att.frameWidth);
-                            rSprites();
-                        }
-                        case "FRAME_FrameHEIGHT":{
-                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
-                            sTexture.att.frameHeight = Std.string(nums.value);
-                            trace(sTexture.att.frameHeight);
-                            rSprites();
-                        }
-                    }
-                }
-            }        
-        }else if((sender is FlxUINumericStepperCustom)){
-            var nums:FlxUINumericStepperCustom = cast sender;
-            var wname = nums.name;
-                
-            switch(id){
-                case FlxUINumericStepperCustom.CHANGE_EVENT:{
-                    switch(wname){
-                        case "FRAME_INDEX":{
-                            if(Std.int(nums.value) >= eSprite.animation.curAnim.frames.length){nums.value = 0;}
-                            playAnim(clCurAnim.getSelectedLabel(), Std.int(nums.value));
-                        }
-                        case "GHOST_INDEX":{
-                            if(Std.int(nums.value) >= bSprite.animation.curAnim.frames.length){nums.value = 0;}
-                            playGhost(clGCurAnim.getSelectedLabel(), Std.int(nums.value));
-                        }
-                    }
-                }
-                case FlxUINumericStepperCustom.CLICK_MINUS:{
-                    switch(wname){
-                        case "FRAME_ALL_X":{
-                            for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
-                                sTexture.att.x = Std.string(Std.parseInt(sTexture.att.x) - Std.int(nums.value));
-                                trace(sTexture.att.x);
-                            
-                            }
-                            rSprites();
-                        }
-                        case "FRAME_ALL_Y":{
-                            for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
-                                sTexture.att.y = Std.string(Std.parseInt(sTexture.att.y) - Std.int(nums.value));
-                                trace(sTexture.att.y);
-                            
-                            }
-                            rSprites();
-                        }
-                        case "FRAME_ALL_WIDTH":{
-                            for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
-                                sTexture.att.width = Std.string(Std.parseInt(sTexture.att.width) - Std.int(nums.value));
-                                trace(sTexture.att.width);
-                            
-                            }
-                            rSprites();
-                        }
-                        case "FRAME_ALL_HEIGHT":{
-                            for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
-                                sTexture.att.height = Std.string(Std.parseInt(sTexture.att.height) - Std.int(nums.value));
-                                trace(sTexture.att.height);
-                            
-                            }
-                            rSprites();
-                        }
-                        case "FRAME_ALL_FrameX":{
-                            for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
-                                sTexture.att.frameX = Std.string(Std.parseInt(sTexture.att.frameX) - Std.int(nums.value));
-                                trace(sTexture.att.frameX);
-                            
-                            }
-                            rSprites();
-                        }
-                        case "FRAME_ALL_FrameY":{
-                            for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
-                                sTexture.att.frameY = Std.string(Std.parseInt(sTexture.att.frameY) - Std.int(nums.value));
-                                trace(sTexture.att.frameY);
-                            
-                            }
-                            rSprites();
-                        }
-                        case "FRAME_ALL_FrameWIDTH":{
-                            for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
-                                sTexture.att.frameWidth = Std.string(Std.parseInt(sTexture.att.frameWidth) - Std.int(nums.value));
-                                trace(sTexture.att.frameWidth);
-                            
-                            }
-                            rSprites();
-                        }
-                        case "FRAME_ALL_FrameHEIGHT":{
-                            for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
-                                sTexture.att.frameHeight = Std.string(Std.parseInt(sTexture.att.frameHeight) - Std.int(nums.value));
-                                trace(sTexture.att.frameHeight);
-                            
-                            }
-                            rSprites();
-                        }
-                    }
-                }
-                case FlxUINumericStepperCustom.CLICK_PLUS:{
-                    switch(wname){
-                        case "FRAME_ALL_X":{
-                            for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
-                                sTexture.att.x = Std.string(Std.parseInt(sTexture.att.x) + Std.int(nums.value));
-                                trace(sTexture.att.x);
-                            
-                            }
-                            rSprites();
-                        }
-                        case "FRAME_ALL_Y":{
-                            for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
-                                sTexture.att.y = Std.string(Std.parseInt(sTexture.att.y) + Std.int(nums.value));
-                                trace(sTexture.att.y);
-                            
-                            }
-                            rSprites();
-                        }
-                        case "FRAME_ALL_WIDTH":{
-                            for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
-                                sTexture.att.width = Std.string(Std.parseInt(sTexture.att.width) + Std.int(nums.value));
-                                trace(sTexture.att.width);
-                            
-                            }
-                            rSprites();
-                        }
-                        case "FRAME_ALL_HEIGHT":{
-                            for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
-                                sTexture.att.height = Std.string(Std.parseInt(sTexture.att.height) + Std.int(nums.value));
-                                trace(sTexture.att.height);
-                            
-                            }
-                            rSprites();
-                        }
-                        case "FRAME_ALL_FrameX":{
-                            for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
-                                sTexture.att.frameX = Std.string(Std.parseInt(sTexture.att.frameX) + Std.int(nums.value));
-                                trace(sTexture.att.frameX);
-                            
-                            }
-                            rSprites();
-                        }
-                        case "FRAME_ALL_FrameY":{
-                            for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
-                                sTexture.att.frameY = Std.string(Std.parseInt(sTexture.att.frameY) + Std.int(nums.value));
-                                trace(sTexture.att.frameY);
-                            
-                            }
-                            rSprites();
-                        }
-                        case "FRAME_ALL_FrameWIDTH":{
-                            for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
-                                sTexture.att.frameWidth = Std.string(Std.parseInt(sTexture.att.frameWidth) + Std.int(nums.value));
-                                trace(sTexture.att.frameWidth);
-                            
-                            }
-                            rSprites();
-                        }
-                        case "FRAME_ALL_FrameHEIGHT":{
-                            for(i in 0...eSprite.animation.curAnim.frames.length){
-                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
-                                sTexture.att.frameHeight = Std.string(Std.parseInt(sTexture.att.frameHeight) + Std.int(nums.value));
-                                trace(sTexture.att.frameHeight);
-                            
-                            }
-                            rSprites();
-                        }
-                    }
-                }
-            }
-        }else if((sender is FlxUICustomList)){
-            var nums:FlxUICustomList = cast sender;
-            var wname = nums.name;
-            
-            switch(id){
-                case FlxUICustomList.CHANGE_EVENT:{
-                    switch(wname){
-                        default:{trace("[FlxUICustomList]: Works!");}
-                        case "BASE_CHANGE":{
-                            stpFCurFrame.value = 0;
-                            playAnim(nums.getSelectedLabel(), Std.int(stpFCurFrame.value));
-                        }
-                        case "GHOST_CHANGE":{
-                            stpGCurFrame.value = 0;
-                            playGhost(nums.getSelectedLabel(), Std.int(stpGCurFrame.value));
-                        }
-                    }
-                }
-            }
-        }
-    }
+    
 
     private function getNamesArray(arr:Iterator<Access>):Array<String>{
         var toReturn:Array<String> = new Array<String>();
 
         for(chr in arr){
-            var nChar = chr.att.name.replace("0", "").replace("1", "").replace("2", "").replace("3", "").replace("4", "").replace("5", "").replace("6", "").replace("7", "").replace("8", "").replace("9", "");
+            var toDel:String = "";
+            for(i in 0...chr.att.name.length){if(i >= chr.att.name.length - 4){toDel = toDel + chr.att.name.charAt(i);}}
+            var nChar = chr.att.name.replace(toDel, ""); trace(nChar);
             if(!toReturn.contains(nChar)){toReturn.push(nChar);}
         }
 
@@ -547,14 +254,16 @@ class XMLEditorState extends MusicBeatState {
         }
 
         var sTexture:Access = getSubTexture(getSubName(AnimName, Frame));
-        stpFX.value = Std.parseInt(sTexture.att.x);
-        stpFY.value = Std.parseInt(sTexture.att.y);
-        stpFWidth.value = Std.parseInt(sTexture.att.width);
-        stpFHeight.value = Std.parseInt(sTexture.att.height);
-        if(sTexture.att.frameX != null){stpFFrameX.value = Std.parseInt(sTexture.att.frameX);}else{stpFFrameX.value = 0;}
-        if(sTexture.att.frameY != null){stpFFrameY.value = Std.parseInt(sTexture.att.frameY);}else{stpFFrameY.value = 0;}
-        if(sTexture.att.frameWidth != null){stpFFrameWidth.value = Std.parseInt(sTexture.att.frameWidth);}else{stpFFrameWidth.value = 0;}
-        if(sTexture.att.frameHeight != null){stpFFrameHeight.value = Std.parseInt(sTexture.att.frameHeight);}else{stpFFrameHeight.value = 0;}
+        if(sTexture != null){
+            if(sTexture.att.x != null){stpFX.value = Std.parseInt(sTexture.att.x);}else{stpFX.value = 0;}
+            if(sTexture.att.y != null){stpFY.value = Std.parseInt(sTexture.att.y);}else{stpFY.value = 0;}
+            if(sTexture.att.width != null){stpFWidth.value = Std.parseInt(sTexture.att.width);}else{stpFWidth.value = 0;}
+            if(sTexture.att.height != null){stpFHeight.value = Std.parseInt(sTexture.att.height);}else{stpFHeight.value = 0;}
+            if(sTexture.att.frameX != null){stpFFrameX.value = Std.parseInt(sTexture.att.frameX);}else{stpFFrameX.value = 0;}
+            if(sTexture.att.frameY != null){stpFFrameY.value = Std.parseInt(sTexture.att.frameY);}else{stpFFrameY.value = 0;}
+            if(sTexture.att.frameWidth != null){stpFFrameWidth.value = Std.parseInt(sTexture.att.frameWidth);}else{stpFFrameWidth.value = 0;}
+            if(sTexture.att.frameHeight != null){stpFFrameHeight.value = Std.parseInt(sTexture.att.frameHeight);}else{stpFFrameHeight.value = 0;}
+        }
 
     }
     public function playGhost(AnimName:String, Frame:Int):Void{
@@ -653,17 +362,17 @@ class XMLEditorState extends MusicBeatState {
     var stpFHeight:FlxUINumericStepper;
     var stpFFrameWidth:FlxUINumericStepper;
     var stpFFrameHeight:FlxUINumericStepper;
-    var stpFCurFrame:FlxUINumericStepperCustom;
-    var stpGCurFrame:FlxUINumericStepperCustom;
+    var stpFCurFrame:FlxUINumericStepper;
+    var stpGCurFrame:FlxUINumericStepper;
 
-    var stpAX:FlxUINumericStepperCustom;
-    var stpAY:FlxUINumericStepperCustom;
-    var stpAWidth:FlxUINumericStepperCustom;
-    var stpAHeight:FlxUINumericStepperCustom;
-    var stpAFrameX:FlxUINumericStepperCustom;
-    var stpAFrameY:FlxUINumericStepperCustom;
-    var stpAFrameWidth:FlxUINumericStepperCustom;
-    var stpAFrameHeight:FlxUINumericStepperCustom;
+    var vchAX:FlxUIValueChanger;
+    var vchAY:FlxUIValueChanger;
+    var vchAWidth:FlxUIValueChanger;
+    var vchAHeight:FlxUIValueChanger;
+    var vchAFrameX:FlxUIValueChanger;
+    var vchAFrameY:FlxUIValueChanger;
+    var vchAFrameWidth:FlxUIValueChanger;
+    var vchAFrameHeight:FlxUIValueChanger;
     private function addFRAMESTABS():Void{
         var uiBase = new FlxUI(null, tabFRAMES);
         uiBase.name = "Frames";
@@ -673,14 +382,12 @@ class XMLEditorState extends MusicBeatState {
 
         var lblSCurAnim = new FlxText(ttAnimFrames.x, ttAnimFrames.y + ttAnimFrames.height + 15, Std.int(tabFRAMES.width - 10), "[Current Animation]", 8); uiBase.add(lblSCurAnim);
         lblSCurAnim.alignment = CENTER;
-        clCurAnim = new FlxUICustomList(lblSCurAnim.x, lblSCurAnim.y + lblSCurAnim.height + 7); uiBase.add(clCurAnim);
+        clCurAnim = new FlxUICustomList(lblSCurAnim.x, lblSCurAnim.y + lblSCurAnim.height + 7, Std.int(tabFRAMES.width - 10)); uiBase.add(clCurAnim);
         clCurAnim.name = "BASE_CHANGE";
-        clCurAnim.setWidth(tabFRAMES.width - 10);
 
         var lblbFCurFrame = new FlxText(clCurAnim.x, clCurAnim.y + clCurAnim.height + 15, 0, "[Current Frame]:", 8); uiBase.add(lblbFCurFrame);
-        stpFCurFrame = new FlxUINumericStepperCustom(lblbFCurFrame.x + lblbFCurFrame.width, lblbFCurFrame.y, 1, 0, 0, 999); uiBase.add(stpFCurFrame);
+        stpFCurFrame = new FlxUINumericStepperCustom(lblbFCurFrame.x + lblbFCurFrame.width, lblbFCurFrame.y, 120, 1, 0, 0, 999); uiBase.add(stpFCurFrame);
         stpFCurFrame.name = "FRAME_INDEX";
-        stpFCurFrame.setWidth(120);
 
         var lblFX = new FlxText(lblbFCurFrame.x, lblbFCurFrame.y + lblbFCurFrame.height + 15, 0, "[X]:", 8); uiBase.add(lblFX);
         stpFX = new FlxUINumericStepper(lblFX.x + lblFX.width, lblFX.y, 1, 0, -99999, 99999); uiBase.add(stpFX);
@@ -714,32 +421,32 @@ class XMLEditorState extends MusicBeatState {
         ttAnims.alignment = CENTER;
 
         var lblAX = new FlxText(ttAnims.x, ttAnims.y + ttAnims.height + 15, 0, "[X]:", 8); uiBase.add(lblAX);
-        stpAX = new FlxUINumericStepperCustom(lblAX.x + lblAX.width, lblAX.y, 0, 0, -99999, 99999); uiBase.add(stpAX);
-        stpAX.name = "FRAME_ALL_X";
-        var lblAY = new FlxText(stpAX.x + stpAX.width + 10, stpAX.y, 0, "[Y]:", 8); uiBase.add(lblAY);
-        stpAY = new FlxUINumericStepperCustom(lblAY.x + lblAY.width, lblAY.y, 0, 0, -99999, 99999); uiBase.add(stpAY);
-        stpAY.name = "FRAME_ALL_Y";
+        vchAX = new FlxUIValueChanger(lblAX.x + lblAX.width, lblAX.y, Std.int((tabFRAMES.width / 2) - (lblAX.width + 5)) - 10); uiBase.add(vchAX);
+        vchAX.name = "FRAME_ALL_X";
+        var lblAY = new FlxText(vchAX.x + vchAX.width + 10, vchAX.y, 0, "[Y]:", 8); uiBase.add(lblAY);
+        vchAY = new FlxUIValueChanger(lblAY.x + lblAY.width, lblAY.y, Std.int((tabFRAMES.width / 2) - (lblAY.width + 5)) - 10); uiBase.add(vchAY);
+        vchAY.name = "FRAME_ALL_Y";
 
         var lblAWidth = new FlxText(lblAX.x, lblAX.y + lblAX.height + 15, 0, "[Width]:", 8); uiBase.add(lblAWidth);
-        stpAWidth = new FlxUINumericStepperCustom(lblAWidth.x + lblAWidth.width, lblAWidth.y, 0, 0, -99999, 99999); uiBase.add(stpAWidth);
-        stpAWidth.name = "FRAME_ALL_WIDTH";
-        var lblAHeight = new FlxText(stpAWidth.x + stpAWidth.width + 10, stpAWidth.y, 0, "[Height]:", 8); uiBase.add(lblAHeight);
-        stpAHeight = new FlxUINumericStepperCustom(lblAHeight.x + lblAHeight.width, lblAHeight.y, 0, 0, -99999, 99999); uiBase.add(stpAHeight);
-        stpAHeight.name = "FRAME_ALL_HEIGHT";
+        vchAWidth = new FlxUIValueChanger(lblAWidth.x + lblAWidth.width, lblAWidth.y, Std.int((tabFRAMES.width / 2) - (lblAWidth.width + 5)) - 10); uiBase.add(vchAWidth);
+        vchAWidth.name = "FRAME_ALL_WIDTH";
+        var lblAHeight = new FlxText(vchAWidth.x + vchAWidth.width + 10, vchAWidth.y, 0, "[Height]:", 8); uiBase.add(lblAHeight);
+        vchAHeight = new FlxUIValueChanger(lblAHeight.x + lblAHeight.width, lblAHeight.y, Std.int((tabFRAMES.width / 2) - (lblAHeight.width + 5)) - 10); uiBase.add(vchAHeight);
+        vchAHeight.name = "FRAME_ALL_HEIGHT";
 
         var lblAFrameX = new FlxText(lblAWidth.x, lblAWidth.y + lblAWidth.height + 15, 0, "[FrameX]:", 8); uiBase.add(lblAFrameX);
-        stpAFrameX = new FlxUINumericStepperCustom(lblAFrameX.x + lblAFrameX.width, lblAFrameX.y, 0, 0, -99999, 99999); uiBase.add(stpAFrameX);
-        stpAFrameX.name = "FRAME_ALL_FrameX";
-        var lblAFrameY = new FlxText(stpAFrameX.x + stpAFrameX.width + 10, stpAFrameX.y, 0, "[FrameY]:", 8); uiBase.add(lblAFrameY);
-        stpAFrameY = new FlxUINumericStepperCustom(lblAFrameY.x + lblAFrameY.width, lblAFrameY.y, 0, 0, -99999, 99999); uiBase.add(stpAFrameY);
-        stpAFrameY.name = "FRAME_ALL_FrameY";
+        vchAFrameX = new FlxUIValueChanger(lblAFrameX.x + lblAFrameX.width, lblAFrameX.y, Std.int((tabFRAMES.width / 2) - (lblAHeight.width + 5)) - 10); uiBase.add(vchAFrameX);
+        vchAFrameX.name = "FRAME_ALL_FrameX";
+        var lblAFrameY = new FlxText(vchAFrameX.x + vchAFrameX.width + 10, vchAFrameX.y, 0, "[FrameY]:", 8); uiBase.add(lblAFrameY);
+        vchAFrameY = new FlxUIValueChanger(lblAFrameY.x + lblAFrameY.width, lblAFrameY.y, Std.int((tabFRAMES.width / 2) - (lblAHeight.width + 5)) - 10); uiBase.add(vchAFrameY);
+        vchAFrameY.name = "FRAME_ALL_FrameY";
 
         var lblAFrameWidth = new FlxText(lblAFrameX.x, lblAFrameX.y + lblAFrameX.height + 15, 0, "[F_Width]:", 8); uiBase.add(lblAFrameWidth);
-        stpAFrameWidth = new FlxUINumericStepperCustom(lblAFrameWidth.x + lblAFrameWidth.width, lblAFrameWidth.y, 0, 0, -99999, 99999); uiBase.add(stpAFrameWidth);
-        stpAFrameWidth.name = "FRAME_ALL_FrameWIDTH";
-        var lblAFrameHeight = new FlxText(stpAFrameWidth.x + stpAFrameWidth.width + 10, stpAFrameWidth.y, 0, "[F_Height]:", 8); uiBase.add(lblAFrameHeight);
-        stpAFrameHeight = new FlxUINumericStepperCustom(lblAFrameHeight.x + lblAFrameHeight.width, lblAFrameHeight.y, 0, 0, -99999, 99999); uiBase.add(stpAFrameHeight);
-        stpAFrameHeight.name = "FRAME_ALL_FrameHEIGHT";
+        vchAFrameWidth = new FlxUIValueChanger(lblAFrameWidth.x + lblAFrameWidth.width, lblAFrameWidth.y, Std.int((tabFRAMES.width / 2) - (lblAHeight.width + 5)) - 10); uiBase.add(vchAFrameWidth);
+        vchAFrameWidth.name = "FRAME_ALL_FrameWIDTH";
+        var lblAFrameHeight = new FlxText(vchAFrameWidth.x + vchAFrameWidth.width + 10, vchAFrameWidth.y, 0, "[F_Height]:", 8); uiBase.add(lblAFrameHeight);
+        vchAFrameHeight = new FlxUIValueChanger(lblAFrameHeight.x + lblAFrameHeight.width, lblAFrameHeight.y, Std.int((tabFRAMES.width / 2) - (lblAHeight.width + 5)) - 10); uiBase.add(vchAFrameHeight);
+        vchAFrameHeight.name = "FRAME_ALL_FrameHEIGHT";
 
         var btnASetFrameSize = new FlxButton(5, lblAFrameWidth.y + lblAFrameWidth.height + 15, "Set FrameSize", function(){
             for(i in 0...eSprite.animation.curAnim.frames.length){
@@ -760,19 +467,298 @@ class XMLEditorState extends MusicBeatState {
 
         var lblGCurAnim = new FlxText(ttGhost.x, ttGhost.y + ttGhost.height + 10, Std.int(tabFRAMES.width - 10), "[Current Animation]", 8); uiBase.add(lblGCurAnim);
         lblGCurAnim.alignment = CENTER;
-        clGCurAnim = new FlxUICustomList(lblGCurAnim.x, lblGCurAnim.y + lblGCurAnim.height + 7); uiBase.add(clGCurAnim);
+        clGCurAnim = new FlxUICustomList(lblGCurAnim.x, lblGCurAnim.y + lblGCurAnim.height + 7, Std.int(tabFRAMES.width - 10)); uiBase.add(clGCurAnim);
         clGCurAnim.name = "GHOST_CHANGE";
-        clGCurAnim.setWidth(tabFRAMES.width - 10);
 
         var lblbGCurFrame = new FlxText(clGCurAnim.x, clGCurAnim.y + clGCurAnim.height + 15, 0, "[Current Frame]:", 8); uiBase.add(lblbGCurFrame);
-        stpGCurFrame = new FlxUINumericStepperCustom(lblbGCurFrame.x + lblbGCurFrame.width, lblbGCurFrame.y, 1, 0, 0, 999); uiBase.add(stpGCurFrame);
+        stpGCurFrame = new FlxUINumericStepperCustom(lblbGCurFrame.x + lblbGCurFrame.width, lblbGCurFrame.y, 120, 1, 0, 0, 999); uiBase.add(stpGCurFrame);
         stpGCurFrame.name = "GHOST_INDEX";
-        stpGCurFrame.setWidth(120);
 
 
         tabFRAMES.addGroup(uiBase);
 
         tabFRAMES.scrollFactor.set();
         tabFRAMES.showTabId("Frames");
+    }
+    
+    override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>){
+        if((sender is FlxUICheckBox)){
+            var check:FlxUICheckBox = cast sender;
+            var label = check.getLabel().text;
+
+            switch(id){
+                case FlxUICheckBox.CLICK_EVENT:{
+                    switch(label){
+                        default:{trace("[FlxUICheckBox]: Works!");}
+                    }
+                }
+            }
+        }else if((sender is FlxUIInputText)){
+            var input:FlxUIInputText = cast sender;
+            var wname = input.name;
+
+            switch(id){
+                case FlxUIInputText.CHANGE_EVENT:{
+                    switch(wname){
+                        default:{trace("[FlxUIInputText]: Works!");}
+                    }
+                }
+            }
+        }else if((sender is FlxUIDropDownMenu)){
+            var drop:FlxUIDropDownMenu = cast sender;
+            var wname = drop.name;
+
+            switch(id){
+                case FlxUIDropDownMenu.CLICK_EVENT:{
+                    switch(wname){
+                        default:{trace("[FlxUIDropDownMenu]: Works!");}
+                    }
+                }
+            }
+        }else if((sender is FlxUINumericStepper)){
+            var nums:FlxUINumericStepper = cast sender;
+            var wname = nums.name;
+
+            switch(id){
+                case FlxUINumericStepper.CHANGE_EVENT:{
+                    switch(wname){
+                        default:{trace("[FlxUINumericStepper]: Works!");}
+                        case "FRAME_X":{
+                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
+                            sTexture.att.x = Std.string(nums.value);
+                            trace(sTexture.att.x);
+                            rSprites();
+                        }
+                        case "FRAME_Y":{
+                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
+                            sTexture.att.y = Std.string(nums.value);
+                            trace(sTexture.att.y);
+                            rSprites();
+                        }
+                        case "FRAME_WIDTH":{
+                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
+                            sTexture.att.width = Std.string(nums.value);
+                            trace(sTexture.att.width);
+                            rSprites();
+                        }
+                        case "FRAME_HEIGHT":{
+                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
+                            sTexture.att.height = Std.string(nums.value);
+                            trace(sTexture.att.height);
+                            rSprites();
+                        }
+                        case "FRAME_FrameX":{
+                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
+                            sTexture.att.frameX = Std.string(nums.value);
+                            trace(sTexture.att.frameX);
+                            rSprites();
+                        }
+                        case "FRAME_FrameY":{
+                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
+                            sTexture.att.frameY = Std.string(nums.value);
+                            trace(sTexture.att.frameY);
+                            rSprites();
+                        }
+                        case "FRAME_FrameWIDTH":{
+                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
+                            sTexture.att.frameWidth = Std.string(nums.value);
+                            trace(sTexture.att.frameWidth);
+                            rSprites();
+                        }
+                        case "FRAME_FrameHEIGHT":{
+                            var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), Std.int(stpFCurFrame.value)));
+                            sTexture.att.frameHeight = Std.string(nums.value);
+                            trace(sTexture.att.frameHeight);
+                            rSprites();
+                        }
+                        case "FRAME_INDEX":{
+                            if(Std.int(nums.value) >= eSprite.animation.curAnim.frames.length){nums.value = 0;}
+                            playAnim(clCurAnim.getSelectedLabel(), Std.int(nums.value));
+                        }
+                        case "GHOST_INDEX":{
+                            if(Std.int(nums.value) >= bSprite.animation.curAnim.frames.length){nums.value = 0;}
+                            playGhost(clGCurAnim.getSelectedLabel(), Std.int(nums.value));
+                        }
+                    }
+                }
+            }        
+        }else if((sender is FlxUIValueChanger)){
+            var nums:FlxUIValueChanger = cast sender;
+            var wname = nums.name;
+                
+            switch(id){
+                case FlxUIValueChanger.CLICK_MINUS:{
+                    switch(wname){
+                        case "FRAME_ALL_X":{
+                            for(i in 0...eSprite.animation.curAnim.frames.length){
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
+                                sTexture.att.x = Std.string(Std.parseInt(sTexture.att.x) - Std.int(nums.value));
+                                trace(sTexture.att.x);
+                            
+                            }
+                            rSprites();
+                        }
+                        case "FRAME_ALL_Y":{
+                            for(i in 0...eSprite.animation.curAnim.frames.length){
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
+                                sTexture.att.y = Std.string(Std.parseInt(sTexture.att.y) - Std.int(nums.value));
+                                trace(sTexture.att.y);
+                            
+                            }
+                            rSprites();
+                        }
+                        case "FRAME_ALL_WIDTH":{
+                            for(i in 0...eSprite.animation.curAnim.frames.length){
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
+                                sTexture.att.width = Std.string(Std.parseInt(sTexture.att.width) - Std.int(nums.value));
+                                trace(sTexture.att.width);
+                            
+                            }
+                            rSprites();
+                        }
+                        case "FRAME_ALL_HEIGHT":{
+                            for(i in 0...eSprite.animation.curAnim.frames.length){
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
+                                sTexture.att.height = Std.string(Std.parseInt(sTexture.att.height) - Std.int(nums.value));
+                                trace(sTexture.att.height);
+                            
+                            }
+                            rSprites();
+                        }
+                        case "FRAME_ALL_FrameX":{
+                            for(i in 0...eSprite.animation.curAnim.frames.length){
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
+                                sTexture.att.frameX = Std.string(Std.parseInt(sTexture.att.frameX) - Std.int(nums.value));
+                                trace(sTexture.att.frameX);
+                            
+                            }
+                            rSprites();
+                        }
+                        case "FRAME_ALL_FrameY":{
+                            for(i in 0...eSprite.animation.curAnim.frames.length){
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
+                                sTexture.att.frameY = Std.string(Std.parseInt(sTexture.att.frameY) - Std.int(nums.value));
+                                trace(sTexture.att.frameY);
+                            
+                            }
+                            rSprites();
+                        }
+                        case "FRAME_ALL_FrameWIDTH":{
+                            for(i in 0...eSprite.animation.curAnim.frames.length){
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
+                                sTexture.att.frameWidth = Std.string(Std.parseInt(sTexture.att.frameWidth) - Std.int(nums.value));
+                                trace(sTexture.att.frameWidth);
+                            
+                            }
+                            rSprites();
+                        }
+                        case "FRAME_ALL_FrameHEIGHT":{
+                            for(i in 0...eSprite.animation.curAnim.frames.length){
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
+                                sTexture.att.frameHeight = Std.string(Std.parseInt(sTexture.att.frameHeight) - Std.int(nums.value));
+                                trace(sTexture.att.frameHeight);
+                            
+                            }
+                            rSprites();
+                        }
+                    }
+                }
+                case FlxUIValueChanger.CLICK_PLUS:{
+                    switch(wname){
+                        case "FRAME_ALL_X":{
+                            for(i in 0...eSprite.animation.curAnim.frames.length){
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
+                                sTexture.att.x = Std.string(Std.parseInt(sTexture.att.x) + Std.int(nums.value));
+                                trace(sTexture.att.x);
+                            
+                            }
+                            rSprites();
+                        }
+                        case "FRAME_ALL_Y":{
+                            for(i in 0...eSprite.animation.curAnim.frames.length){
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
+                                sTexture.att.y = Std.string(Std.parseInt(sTexture.att.y) + Std.int(nums.value));
+                                trace(sTexture.att.y);
+                            
+                            }
+                            rSprites();
+                        }
+                        case "FRAME_ALL_WIDTH":{
+                            for(i in 0...eSprite.animation.curAnim.frames.length){
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
+                                sTexture.att.width = Std.string(Std.parseInt(sTexture.att.width) + Std.int(nums.value));
+                                trace(sTexture.att.width);
+                            
+                            }
+                            rSprites();
+                        }
+                        case "FRAME_ALL_HEIGHT":{
+                            for(i in 0...eSprite.animation.curAnim.frames.length){
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
+                                sTexture.att.height = Std.string(Std.parseInt(sTexture.att.height) + Std.int(nums.value));
+                                trace(sTexture.att.height);
+                            
+                            }
+                            rSprites();
+                        }
+                        case "FRAME_ALL_FrameX":{
+                            for(i in 0...eSprite.animation.curAnim.frames.length){
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
+                                sTexture.att.frameX = Std.string(Std.parseInt(sTexture.att.frameX) + Std.int(nums.value));
+                                trace(sTexture.att.frameX);
+                            
+                            }
+                            rSprites();
+                        }
+                        case "FRAME_ALL_FrameY":{
+                            for(i in 0...eSprite.animation.curAnim.frames.length){
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
+                                sTexture.att.frameY = Std.string(Std.parseInt(sTexture.att.frameY) + Std.int(nums.value));
+                                trace(sTexture.att.frameY);
+                            
+                            }
+                            rSprites();
+                        }
+                        case "FRAME_ALL_FrameWIDTH":{
+                            for(i in 0...eSprite.animation.curAnim.frames.length){
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
+                                sTexture.att.frameWidth = Std.string(Std.parseInt(sTexture.att.frameWidth) + Std.int(nums.value));
+                                trace(sTexture.att.frameWidth);
+                            
+                            }
+                            rSprites();
+                        }
+                        case "FRAME_ALL_FrameHEIGHT":{
+                            for(i in 0...eSprite.animation.curAnim.frames.length){
+                                var sTexture:Access = getSubTexture(getSubName(clCurAnim.getSelectedLabel(), i));
+                                sTexture.att.frameHeight = Std.string(Std.parseInt(sTexture.att.frameHeight) + Std.int(nums.value));
+                                trace(sTexture.att.frameHeight);
+                            
+                            }
+                            rSprites();
+                        }
+                    }
+                }
+            }
+        }else if((sender is FlxUICustomList)){
+            var nums:FlxUICustomList = cast sender;
+            var wname = nums.name;
+            
+            switch(id){
+                case FlxUICustomList.CHANGE_EVENT:{
+                    switch(wname){
+                        default:{trace("[FlxUICustomList]: Works!");}
+                        case "BASE_CHANGE":{
+                            stpFCurFrame.value = 0;
+                            playAnim(nums.getSelectedLabel(), Std.int(stpFCurFrame.value));
+                        }
+                        case "GHOST_CHANGE":{
+                            stpGCurFrame.value = 0;
+                            playGhost(nums.getSelectedLabel(), Std.int(stpGCurFrame.value));
+                        }
+                    }
+                }
+            }
+        }
     }
 }

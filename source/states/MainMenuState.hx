@@ -55,7 +55,7 @@ class MainMenuState extends MusicBeatState{
 		["RussellLammy", [-200, -190], 0.6, true, "Default", "NORMAL", -2],
 		["Lumpy", [-1000, -200], 0.7, true, "Default", "NORMAL", -1],
 		["Toothy", [1300, 180], 0.7, false, "Default", "NORMAL", -1],
-		["Girlfriend", [0, 0], 1, true, "Default", "GF", 0],
+		["Girlfriend", [0, 0], 1, false, "Default", "GF", 0],
 		["Fliqpy", [-600, 110], 1, true, "Default", "NORMAL", 0],
 		["Boyfriend", [600, 110], 1, false, "Default", "NORMAL", 0]
 	];
@@ -63,11 +63,7 @@ class MainMenuState extends MusicBeatState{
 	var stage:Stage;
 	var options:FlxTypedGroup<FlxText>;
 
-	var camFollow:FlxObject;
-
-	//Cameras
-	public var camHUD:FlxCamera;
-	private var camGame:FlxCamera;
+    var camFollow:FlxObject;
 
 	override function create(){
 		#if desktop
@@ -78,20 +74,9 @@ class MainMenuState extends MusicBeatState{
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 
-		if (!FlxG.sound.music.playing){
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
-		}
+		if(FlxG.sound.music == null || (FlxG.sound.music != null && !FlxG.sound.music.playing)){FlxG.sound.playMusic(Paths.music('freakyMenu'));}
 
 		persistentUpdate = persistentDraw = true;
-
-		camGame = new FlxCamera();
-		camHUD = new FlxCamera();
-		camHUD.bgColor.alpha = 0;
-
-		FlxG.cameras.reset(camGame);
-		FlxG.cameras.add(camHUD);
-
-		FlxCamera.defaultCameras = [camGame];
 
 		stage = new Stage("Land-Cute", arrayCharOptions);
 		add(stage);
@@ -115,14 +100,6 @@ class MainMenuState extends MusicBeatState{
 			FlxTween.tween(option, {y: option.y + 5}, 1 + (1 * i), {type: FlxTween.PINGPONG, ease: FlxEase.smootherStepInOut});
 		}
 		
-
-		camFollow = new FlxObject(0, 0, 1, 1);
-		add(camFollow);
-
-		FlxG.camera.follow(camFollow, LOCKON, 0.04);
-		FlxG.camera.zoom = 0.8;
-		FlxG.camera.focusOn(camFollow.getPosition());
-
 		changeSelect(0);
 
 		super.create();
@@ -179,16 +156,15 @@ class MainMenuState extends MusicBeatState{
 							}
 							case "FreePlay":{
 								canControlle = false;
-								FlxG.switchState(new FreeplayState());
+								FlxG.switchState(new FreeplayState(null, new MainMenuState()));
 							}
 						}
 					}
 
-					if(FlxG.keys.justPressed.ONE){states.editors.ChartEditorState.editChart();}
-					if(FlxG.keys.justPressed.TWO){states.editors.StageEditorState.editStage();}
-					if(FlxG.keys.justPressed.THREE){states.editors.StrumLineEditorState.editStrumLine();}
-					if(FlxG.keys.justPressed.FOUR){states.editors.XMLEditorState.editXML();}
-					if(FlxG.keys.justPressed.FIVE){CharacterEditorState.editCharacter();}
+					if(FlxG.keys.justPressed.ONE){states.editors.ChartEditorState.editChart(null, new MainMenuState());}
+					if(FlxG.keys.justPressed.FOUR){states.editors.CharacterEditorState.editCharacter(null, new MainMenuState());}
+					if(FlxG.keys.justPressed.TWO){states.editors.StageEditorState.editStage(null, new MainMenuState());}
+					if(FlxG.keys.justPressed.THREE){states.editors.XMLEditorState.editXML(null, new MainMenuState());}
 				}
 			}
 

@@ -1,45 +1,59 @@
 package;
 
 import flixel.FlxSprite;
+import openfl.utils.Assets;
+import openfl.utils.AssetType;
+import openfl.utils.Assets as OpenFlAssets;
+import flixel.graphics.frames.FlxAtlasFrames;
 
-class HealthIcon extends FlxSprite
-{
-	/**
-	 * Used for FreeplayState! If you use it elsewhere, prob gonna annoying
-	 */
+class HealthIcon extends FlxSprite {
 	public var sprTracker:FlxSprite;
 
-	public function new(char:String = 'bf', isPlayer:Bool = false)
-	{
-		super();
-		loadGraphic(Paths.image('iconGrid'), true, 150, 150);
+	public var isPlayer:Bool = false;
+	public var char:String = 'bf';
 
-		antialiasing = true;
-		animation.add('bf', [0, 1], 0, false, isPlayer);
-		animation.add('bf-car', [0, 1], 0, false, isPlayer);
-		animation.add('bf-christmas', [0, 1], 0, false, isPlayer);
-		animation.add('bf-pixel', [21, 21], 0, false, isPlayer);
-		animation.add('spooky', [2, 3], 0, false, isPlayer);
-		animation.add('pico', [4, 5], 0, false, isPlayer);
-		animation.add('mom', [6, 7], 0, false, isPlayer);
-		animation.add('mom-car', [6, 7], 0, false, isPlayer);
-		animation.add('tankman', [8, 9], 0, false, isPlayer);
-		animation.add('face', [10, 11], 0, false, isPlayer);
-		animation.add('dad', [12, 13], 0, false, isPlayer);
-		animation.add('senpai', [22, 22], 0, false, isPlayer);
-		animation.add('senpai-angry', [22, 22], 0, false, isPlayer);
-		animation.add('spirit', [23, 23], 0, false, isPlayer);
-		animation.add('bf-old', [14, 15], 0, false, isPlayer);
-		animation.add('gf', [16], 0, false, isPlayer);
-		animation.add('parents-christmas', [17], 0, false, isPlayer);
-		animation.add('monster', [19, 20], 0, false, isPlayer);
-		animation.add('monster-christmas', [19, 20], 0, false, isPlayer);
-		animation.play(char);
+	public function new(char:String = 'bf', isPlayer:Bool = false){
+		this.isPlayer = isPlayer;
+		super();
+		
+		setIcon(char);
 		scrollFactor.set();
 	}
 
-	override function update(elapsed:Float)
-	{
+	public function setIcon(char:String){
+		if(this.char != char){
+			switch(char){
+				default:{
+					var name:String = 'icons/' + char;
+					var path:String = 'assets/images/';
+					if(!Assets.exists(path + name + '.png', IMAGE)){name = 'icons/icon-' + char;}
+					if(!Assets.exists(path + name + '.png', IMAGE)){name = 'icons/icon-face';}
+							
+					if(Assets.exists(path + name + '.xml', TEXT)){
+						var file:FlxAtlasFrames = Paths.getSparrowAtlas(name);
+						frames = file;
+	
+						animation.addByPrefix('default', 'Default', 24, true, isPlayer);
+						animation.addByPrefix('losing', 'Losing', 24, true, isPlayer);
+	
+					}else{
+						var file:Dynamic = Paths.image(name);
+						loadGraphic(file, true, Math.floor(width / 2), Math.floor(height));
+	
+						animation.add('default', [0], 0, false, isPlayer);
+						animation.add('losing', [1], 0, false, isPlayer);
+					}
+
+					updateHitbox();
+				}
+			}
+			
+			this.char = char;
+			animation.play('default');
+		}
+	}
+
+	override function update(elapsed:Float){
 		super.update(elapsed);
 
 		if (sprTracker != null)

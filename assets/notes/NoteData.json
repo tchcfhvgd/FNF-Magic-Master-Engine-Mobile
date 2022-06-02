@@ -11,7 +11,8 @@
         "Horizontal_Offset": ["Change the X Offset", "Float"],
         "StrumTime_Offset": ["Change the Y Offset", "Float"],
         "Hit_Function": ["Set Function on Hit", "Note->Void"],
-        "Miss_Function": ["Set Function on Miss", "Note->Void"]
+        "Miss_Function": ["Set Function on Miss", "Note->Void"],
+        "Set_CharToSing": ["Change Characters to Sing this Note", "Array<Int>"]
     },
     "Note_Presets":{
         "DEFAULT_NOTE": {},

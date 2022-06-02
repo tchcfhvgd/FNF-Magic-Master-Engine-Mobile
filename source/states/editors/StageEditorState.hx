@@ -16,6 +16,7 @@ import Song.SwagStrum;
 import Stage.StageData;
 import Stage.StageSprite;
 import Stage.StageAnim;
+import flixel.FlxState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxObject;
@@ -60,64 +61,38 @@ class StageEditorState extends MusicBeatState {
     //TABS
     var MENU:FlxUITabMenu;
 
-    //Cameras
-    var camBack:FlxCamera;
-    var camGeneral:FlxCamera;
-	var camHUD:FlxCamera;
-
     var CAMERA:FlxSprite;
-    var camFollow:FlxObject;
     var mPoint:FlxPoint;
+
+    var camFollow:FlxObject;
 
     var arrayFocus:Array<FlxUIInputText> = [];
 
-    public static function editStage(stage:StageData = null){
-        if(stage != null){
-            _stage = stage;
-        }else{
-            _stage = cast Json.parse(Assets.getText(Paths.StageJSON("Stage")));
-        }
+    public static function editStage(?onConfirm:FlxState, ?onBack:FlxState, ?stage:StageData){
+        if(stage == null){stage = cast Json.parse(Assets.getText(Paths.getStageJSON("Stage")));}
+        _stage = stage;
 
-        FlxG.switchState(new StageEditorState());
+        FlxG.switchState(new StageEditorState(onConfirm, onBack));
     }
 
     override function create(){
         FlxG.mouse.visible = true;
 
-        camBack = new FlxCamera();
-        camGeneral = new FlxCamera();
-		camGeneral.bgColor.alpha = 0;
-		camHUD = new FlxCamera();
-		camHUD.bgColor.alpha = 0;
-
-		FlxG.cameras.reset(camBack);
-		FlxG.cameras.add(camGeneral);
-        FlxG.cameras.add(camHUD);
-
         mPoint = new FlxPoint(0, 0);
-
-        curStage = new Stage(null, null, true);
-
+        
         var backGrid = FlxGridOverlay.create(10, 10, FlxG.width, FlxG.height);
-        backGrid.cameras = [camBack];
+        backGrid.cameras = [camGame];
         add(backGrid);
 
-        curStage.cameras = [camGeneral];
+        curStage = new Stage(null, [["Girlfriend",[400,130],1,false,"Default","GF",0],["Fliqpy",[100,100],1,true,"Default","NORMAL",0],["Boyfriend",[770,100],1,false,"Default","NORMAL",0]], true);
+        curStage.cameras = [camFGame];
         add(curStage);
 
         CAMERA = new FlxSprite(0 - (FlxG.width / 2), 0 - (FlxG.height / 2)).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
         CAMERA.screenCenter();
-        CAMERA.cameras = [camGeneral];
+        CAMERA.cameras = [camFGame];
         CAMERA.alpha = 0.2;
         add(CAMERA);
-
-        camFollow = new FlxObject(0, 0, 1, 1);
-        camFollow.cameras = [camGeneral];
-        camFollow.screenCenter();
-		add(camFollow);
-
-		camGeneral.follow(camFollow, LOCKON);
-		camGeneral.focusOn(camFollow.getPosition());
 
         var menuTabs = [
             {name: "General", label: 'General'}
@@ -126,14 +101,17 @@ class StageEditorState extends MusicBeatState {
         MENU.resize(250, Std.int(FlxG.height));
 		MENU.x = FlxG.width - MENU.width;
         MENU.camera = camHUD;
-
         addMENUTAB();
-
         add(MENU);
 
-        camGeneral.zoom = 0.5;
+        camFGame.zoom = 0.5;
 
         super.create();
+        
+        camFollow = new FlxObject(0, 0, 1, 1);
+        camFollow.screenCenter();
+		add(camFollow);
+        camFGame.follow(camFollow, LOCKON);
     }
 
     var canControl = true;
@@ -144,7 +122,7 @@ class StageEditorState extends MusicBeatState {
     override function update(elapsed:Float){
 		super.update(elapsed);
 
-        mPoint = FlxG.mouse.getPositionInCameraView(camGeneral);
+        mPoint = FlxG.mouse.getPositionInCameraView(camFGame);
 
         reloadStage();
         if(curObj >= _stage.StageData.length){curObj = 0;}else if(curObj < 0){curObj = _stage.StageData.length - 1;}
@@ -169,8 +147,6 @@ class StageEditorState extends MusicBeatState {
         for(item in arrayFocus){if(item.hasFocus){canControlle = false;}}
 
         if(canControl && canControlle){
-            if(FlxG.keys.justPressed.ESCAPE){FlxG.switchState(new MainMenuState());}
-
             if(!draggin && (FlxG.mouse.justPressedRight || FlxG.mouse.justPressed)){
                 mouPos[0] = mPoint.x;
                 mouPos[1] = mPoint.y;
@@ -207,9 +183,9 @@ class StageEditorState extends MusicBeatState {
                 }
 
                 if(FlxG.keys.pressed.SHIFT){
-                    camGeneral.zoom += (FlxG.mouse.wheel * 0.1);
+                    camFGame.zoom += (FlxG.mouse.wheel * 0.1);
                 }else{
-                    camGeneral.zoom += (FlxG.mouse.wheel * 0.01);
+                    camFGame.zoom += (FlxG.mouse.wheel * 0.01);
                 }
 
                 if(FlxG.keys.justPressed.T && curObj - 1 >= 0){
@@ -249,13 +225,13 @@ class StageEditorState extends MusicBeatState {
     var sprStageZoom:FlxUINumericStepper;
     var sprStageChroma:FlxUINumericStepper;
     //Menu Stats
-    var sprPosX:FlxUINumericStepperCustom;
-    var sprPosY:FlxUINumericStepperCustom;
-    var sprScrollX:FlxUINumericStepperCustom;
-    var sprScrollY:FlxUINumericStepperCustom;
-    var sprScl:FlxUINumericStepperCustom;
-    var sprAng:FlxUINumericStepperCustom;
-    var sprAlp:FlxUINumericStepperCustom;
+    var sprPosX:FlxUINumericStepper;
+    var sprPosY:FlxUINumericStepper;
+    var sprScrollX:FlxUINumericStepper;
+    var sprScrollY:FlxUINumericStepper;
+    var sprScl:FlxUINumericStepper;
+    var sprAng:FlxUINumericStepper;
+    var sprAlp:FlxUINumericStepper;
     //Menu Animations
     var sprFrame:FlxUINumericStepper;
     var cbxLoop:FlxUICheckBox;
@@ -282,7 +258,7 @@ class StageEditorState extends MusicBeatState {
         btnStageSave.label.fieldWidth = btnStageSave.width;
 
         var btnStageLoad = new FlxButton(btnStageSave.x, btnStageSave.y + btnStageSave.height + 3, "Load", function(){
-            editStage(cast Json.parse(Assets.getText(Paths.StageJSON(txtStageName.text))));
+            editStage(cast Json.parse(Assets.getText(Paths.getStageJSON(txtStageName.text))));
         }); tabMENU.add(btnStageLoad);
         btnStageLoad.setSize(Std.int((txtStageName.width)), Std.int(btnStageLoad.height));
         btnStageLoad.setGraphicSize(Std.int((txtStageName.width)), Std.int(btnStageLoad.height));
@@ -380,17 +356,15 @@ class StageEditorState extends MusicBeatState {
         tabMENU.add(btnResPos);
 
         var lblPosX = new FlxText(lblPos.x, lblPos.y + 17, 0, "X:", 8);tabMENU.add(lblPosX);
-        sprPosX = new FlxUINumericStepperCustom(lblPosX.x + lblPosX.width + 5, lblPosX.y, 0.1, 1, -99999, 99999, 1);
+        sprPosX = new FlxUINumericStepperCustom(lblPosX.x + lblPosX.width + 5, lblPosX.y, Std.int((MENU.width / 2) - (lblPosX.width + 5)) - 25, 0.1, 1, -99999, 99999, 1);
             @:privateAccess arrayFocus.push(cast sprPosX.text_field);
 		sprPosX.name = 'posX';
-        sprPosX.setWidth(Std.int(MENU.width / 2) - 25);
 		tabMENU.add(sprPosX);
 
         var lblPosY = new FlxText(lblPos.x, lblPosX.y + 17, 0, "Y:", 8);tabMENU.add(lblPosY);
-        sprPosY = new FlxUINumericStepperCustom(lblPosY.x + lblPosY.width + 5, lblPosY.y, 0.1, 1, -99999, 99999, 1);
+        sprPosY = new FlxUINumericStepperCustom(lblPosY.x + lblPosY.width + 5, lblPosY.y, Std.int((MENU.width / 2) - (lblPosY.width + 5)) - 25, 0.1, 1, -99999, 99999, 1);
             @:privateAccess arrayFocus.push(cast sprPosY.text_field);
 		sprPosY.name = 'posY';
-        sprPosY.setWidth(Std.int(MENU.width / 2) - 25);
 		tabMENU.add(sprPosY);
 
         var lblScroll = new FlxText(sprPosX.x + sprPosX.width + 10, lblPos.y, 0, "   Scroll", 8);
@@ -405,39 +379,36 @@ class StageEditorState extends MusicBeatState {
         tabMENU.add(btnResScroll);
 
         var lblScrollX = new FlxText(lblScroll.x, lblScroll.y + 17, 0, "X:", 8);tabMENU.add(lblScrollX);
-        sprScrollX = new FlxUINumericStepperCustom(lblScrollX.x + lblScrollX.width + 5, lblScrollX.y, 0.1, 1, -100, 100, 1);
+        sprScrollX = new FlxUINumericStepperCustom(lblScrollX.x + lblScrollX.width + 5, lblScrollX.y, Std.int((MENU.width / 2) - (lblScrollX.width + 5)), 0.1, 1, -100, 100, 1);
             @:privateAccess arrayFocus.push(cast sprScrollX.text_field);
 		sprScrollX.name = 'scrollX';
 		tabMENU.add(sprScrollX);
 
         var lblScrollY = new FlxText(lblScrollX.x, lblScrollX.y + 17, 0, "Y:", 8);tabMENU.add(lblScrollY);
-        sprScrollY = new FlxUINumericStepperCustom(lblScrollY.x + lblScrollY.width + 5, lblScrollY.y, 0.1, 1, -100, 100, 1);
+        sprScrollY = new FlxUINumericStepperCustom(lblScrollY.x + lblScrollY.width + 5, lblScrollY.y, Std.int((MENU.width / 2) - (lblScrollY.width + 5)), 0.1, 1, -100, 100, 1);
             @:privateAccess arrayFocus.push(cast sprScrollY.text_field);
 		sprScrollY.name = 'scrollY';
 		tabMENU.add(sprScrollY);
 
         var lblAngle = new FlxText(lblPos.x, sprPosY.y + 20, 0, "   Angle", 8); tabMENU.add(lblAngle);
-        sprAng = new FlxUINumericStepperCustom(lblPos.x, lblAngle.y + 17, 1, 0, -99999, 99999, 2);
+        sprAng = new FlxUINumericStepperCustom(lblPos.x, lblAngle.y + 17, Std.int((MENU.width / 3) - 10), 1, 0, -99999, 99999, 2);
             @:privateAccess arrayFocus.push(cast sprAng.text_field);
 		sprAng.value = curStage.members[curObj].angle;
 		sprAng.name = 'angle';
-        sprAng.setWidth(40);
 		tabMENU.add(sprAng);
 
         var lblScale = new FlxText(sprAng.x + sprAng.width + 10, lblAngle.y, 0, "   Scale", 8); tabMENU.add(lblScale);
-        sprScl = new FlxUINumericStepperCustom(lblScale.x, lblScale.y + 17, 0.01, 1, 0, 999, 2);
+        sprScl = new FlxUINumericStepperCustom(lblScale.x, lblScale.y + 17, Std.int((MENU.width / 3) - 10), 0.01, 1, 0, 999, 2);
             @:privateAccess arrayFocus.push(cast sprScl.text_field);
 		sprScl.value = curStage.members[curObj].defScale;
 		sprScl.name = 'scale';
-        sprScl.setWidth(40);
 		tabMENU.add(sprScl);
 
         var lblAlpha = new FlxText(sprScl.x + sprScl.width + 10, lblScale.y, 0, "   Alpha", 8); tabMENU.add(lblAlpha);
-        sprAlp = new FlxUINumericStepperCustom(lblAlpha.x, lblAlpha.y + 17, 0.1, 1, 0, 1, 1);
+        sprAlp = new FlxUINumericStepperCustom(lblAlpha.x, lblAlpha.y + 17, Std.int((MENU.width / 3) - 10), 0.1, 1, 0, 1, 1);
             @:privateAccess arrayFocus.push(cast sprAlp.text_field);
 		sprAlp.value = curStage.members[curObj].alpha;
 		sprAlp.name = 'alpha';
-        sprAlp.setWidth(40);
 		tabMENU.add(sprAlp);
 
         var lblFlip = new FlxText(5, sprAlp.y + sprAlp.height + 5, 0, "                                Flip", 8);
@@ -573,9 +544,9 @@ class StageEditorState extends MusicBeatState {
         tabMENU.add(cbxLoop);
 
         var lblAnims = new FlxText(sprFrame.x, sprFrame.y + 18, 0, "Animations:", 8); tabMENU.add(lblAnims);
-        clAnims = new FlxUICustomList(lblAnims.x, lblAnims.y + 15, [''], function() {
-            if(curObject.stageAnims != null && curObject.stageAnims.length > 0){
-                var curAnim:Int = clAnims.getSelectedIndex();
+        clAnims = new FlxUICustomList(lblAnims.x, lblAnims.y + 15, Std.int(MENU.width - 10), null, function(list:FlxUICustomList) {
+            if(curObject != null && curObject.stageAnims != null && curObject.stageAnims.length > 0){
+                var curAnim:Int = list.getSelectedIndex();
                 if(curObject.stageAnims.length >= curAnim){
                     var anim:StageAnim = curObject.stageAnims[curAnim];
 
@@ -587,7 +558,6 @@ class StageEditorState extends MusicBeatState {
                 }
             }
 		}); tabMENU.add(clAnims);
-        clAnims.setWidth(Std.int(MENU.width - 10));
 
         //
         var line5 = new FlxSprite(5, clAnims.y + clAnims.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line5);
@@ -599,7 +569,9 @@ class StageEditorState extends MusicBeatState {
         arrayFocus.push(txtPartImage);
 		tabMENU.add(txtPartImage);
 
-        MENU.add(tabMENU);
+        MENU.addGroup(tabMENU);
+
+        MENU.showTabId("General");
 
         //Properties
     }
@@ -632,12 +604,6 @@ class StageEditorState extends MusicBeatState {
             switch(wname){
                 case 'stageZoom':{_stage.CamZoom = nums.value;}
                 case 'stageChroma':{_stage.CamZoom = nums.value;}
-            }
-        }else if(id == FlxUINumericStepperCustom.CHANGE_EVENT && (sender is FlxUINumericStepperCustom)){
-            var nums:FlxUINumericStepperCustom = cast sender;
-            var wname = nums.name;
-            FlxG.log.add(wname);
-            switch(wname){
                 case 'posX':{curObject.position[0] = nums.value;}
                 case 'posY':{curObject.position[1] = nums.value;}
                 case 'scrollX':{curObject.scrollFactor[0] = nums.value;}

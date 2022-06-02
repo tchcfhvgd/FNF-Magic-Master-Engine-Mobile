@@ -80,9 +80,10 @@ class Stage extends FlxTypedGroup<Dynamic>{
     public var charData:FlxTypedGroup<Character>;
     public var stageData:FlxTypedGroup<StageSprite>;
 
-    var charArray:Array<Dynamic> = [];
-
     public var onEdit:Bool = false;
+
+    public var character_Length(get, never):Int;
+	inline function get_character_Length():Int {return charData.length;}
 
     public static function getStages():Array<String>{
         var stageArray:Array<String> = [];
@@ -119,7 +120,7 @@ class Stage extends FlxTypedGroup<Dynamic>{
         stageData = new FlxTypedGroup<StageSprite>();
 
         loadStage(stage);
-        setChars(chars);
+        setCharacters(chars);
     }
 
     override function update(elapsed:Float){
@@ -127,7 +128,7 @@ class Stage extends FlxTypedGroup<Dynamic>{
     }
 
     public function loadStage(name:String):Void{
-        var newSTAGE:StageData = cast Json.parse(Assets.getText(Paths.StageJSON(name)));
+        var newSTAGE:StageData = cast Json.parse(Paths.getText(Paths.getStageJSON(name)));
         if(newSTAGE != null){
             curStage = name;
             reload(newSTAGE);
@@ -143,9 +144,12 @@ class Stage extends FlxTypedGroup<Dynamic>{
 
         initChar = data.initChar;
 
+        var charInstanced:Array<Character> = [];
+        while(charData.members.length > 0){charInstanced.push(charData.members[0]); charData.remove(charData.members[0], true);}
+
         stageData.clear();
-        charData.clear();
         clear();
+        
         var numCont:Int = 0;
         for(sprite in data.StageData){
             var stagePart:StageSprite;
@@ -159,19 +163,11 @@ class Stage extends FlxTypedGroup<Dynamic>{
             stageData.add(stagePart);
             add(stagePart);
 
-            for(i in 0...charArray.length){
-                var char:Array<Dynamic> = charArray[i];
-                if(char[6] + initChar == numCont){
+            for(i in 0...charInstanced.length){
+                if(charInstanced[i].curLayer + initChar == numCont){
                     //["Girlfriend",[400,130],1,true,"Default","GF",0]
-                    var newChar:Character = new Character(char[1][0], char[1][1], char[0], char[4], char[5], char[3], char[2]);
-                    newChar.x += newChar.positionArray[0];
-                    newChar.y += newChar.positionArray[1];
-
+                    var newChar:Character = charInstanced[i];
                     newChar.scrollFactor.set(data.StageData[numCont].scrollFactor[0], data.StageData[numCont].scrollFactor[1]);
-
-                    newChar.ID = i;
-
-                    trace("Character: " + char[0] + " | OnRight?: " + char[3]);
                     
                     charData.add(newChar);
                     add(newChar);
@@ -181,14 +177,26 @@ class Stage extends FlxTypedGroup<Dynamic>{
         }
     }
 
-    public function setChars(chars:Array<Dynamic>){
-        charArray = chars;
+    public function setCharacters(chars:Array<Dynamic>){
+        charData.clear();
+
+        for(i in 0...chars.length){
+            var char:Array<Dynamic> = chars[i];
+            
+            var newChar:Character = new Character(char[1][0], char[1][1], char[0], char[4], char[5]);
+            newChar.x += newChar.positionArray[0];
+            newChar.y += newChar.positionArray[1];
+            
+		    newChar.scale.set(char[2], char[2]);
+            newChar.curLayer = char[6];
+		    newChar.turnLook(char[3]);
+
+            newChar.ID = i;
+
+            charData.add(newChar);
+        }
 
         reload();
-    }
-
-    public function getChars():Array<Dynamic>{
-        return charArray;
     }
 
     public function getCharacterById(id:Int):Character {

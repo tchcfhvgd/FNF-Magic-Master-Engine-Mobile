@@ -130,7 +130,7 @@ class LoadingState extends MusicBeatState{
 	function loadStage(){
 		trace('Loading Song [${SONG.song}] Stage [${SONG.stage}]');
 
-		var sJson:StageData = cast Json.parse(Assets.getText(Paths.StageJSON(SONG.stage)));
+		var sJson:StageData = cast Json.parse(Assets.getText(Paths.getStageJSON(SONG.stage)));
 
 		#if sys
 			if(FileSystem.exists(FileSystem.absolutePath('assets/stages/images/${sJson.Directory}'))){

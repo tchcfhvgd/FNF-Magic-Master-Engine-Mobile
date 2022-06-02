@@ -75,6 +75,7 @@ class StrumLine extends FlxGroup{
     // ===============
 
     public var swagStrum:SwagStrum = null;
+    public var strumConductor:Conductor = null;
 
     private var splashGroup:FlxTypedGroup<NoteSplash>;
     public var staticNotes:StrumStaticNotes;
@@ -104,7 +105,7 @@ class StrumLine extends FlxGroup{
         this.keys = keys;
         super();
 
-        JSONSTRUM = cast Json.parse(Assets.getText(Paths.strumJSON(keys)));
+        JSONSTRUM = cast Json.parse(Paths.getText(Paths.getStrumJSON(keys)));
 
         staticNotes = new StrumStaticNotes(x, y, keys, strumSize);
         add(staticNotes);
@@ -130,7 +131,7 @@ class StrumLine extends FlxGroup{
     public function changeKeyNumber(keys:Int, size:Int, ?force:Bool = false){
         this.keys = keys;
 
-        JSONSTRUM = cast Json.parse(Assets.getText(Paths.strumJSON(keys)));
+        JSONSTRUM = cast Json.parse(Paths.getText(Paths.getStrumJSON(keys)));
         
         staticNotes.size = size;
         staticNotes.changeKeys(keys, force);
@@ -150,7 +151,7 @@ class StrumLine extends FlxGroup{
 
         for(sSection in swagStrum.notes){
             for(note in sSection.sectionNotes){
-                addNote(Note.getNoteDynamicData(note));
+                addNote(note);
             }
         }
     }
@@ -193,11 +194,11 @@ class StrumLine extends FlxGroup{
         unNotes.push(swagNote);
 
         if(daLength > 0 && daHits == 0){
-            var cSusNote = Math.floor(daLength / (Conductor.stepCrochet * 0.25)) + 2;
+            var cSusNote = Math.floor(daLength / (strumConductor.stepCrochet * 0.25)) + 2;
 
             var prevSustain:Note = swagNote;
-            for(sNote in 0...Math.floor(daLength / (Conductor.stepCrochet * 0.25)) + 2){
-                var sStrumTime = daStrumTime + (Conductor.stepCrochet / 2) + ((Conductor.stepCrochet * 0.25) * sNote);
+            for(sNote in 0...Math.floor(daLength / (strumConductor.stepCrochet * 0.25)) + 2){
+                var sStrumTime = daStrumTime + (strumConductor.stepCrochet / 2) + ((strumConductor.stepCrochet * 0.25) * sNote);
 
                 var nSustain:Note = new Note(sStrumTime, daNoteData, daLength, daHits, daOtherData);
                 nSustain.loadGraphicNote(JSONSTRUM.gameplayNotes[daNoteData]);
@@ -253,7 +254,7 @@ class StrumLine extends FlxGroup{
         if(COMBO > MAXCOMBO){MAXCOMBO = COMBO;}
 
         if(unNotes[0] != null){
-            if(unNotes[0].strumTime - Conductor.songPosition < 3500){
+            if(unNotes[0].strumTime - strumConductor.songPosition < 3500){
                 var nNote:Note = unNotes[0];
                 notes.add(nNote);
 
@@ -262,8 +263,8 @@ class StrumLine extends FlxGroup{
             }
         }
 
-        if(swagStrum.notes[Std.int(Conductor.getCurStep() / 16)] != null){
-            var curSec = swagStrum.notes[Std.int(Conductor.getCurStep() / 16)];
+        if(swagStrum.notes[Std.int(strumConductor.getCurStep() / 16)] != null){
+            var curSec = swagStrum.notes[Std.int(strumConductor.getCurStep() / 16)];
 
             var nKeys:Int = swagStrum.keys;
             if(curSec.changeKeys){nKeys = curSec.keys;}
@@ -271,14 +272,17 @@ class StrumLine extends FlxGroup{
             changeKeyNumber(nKeys, strumSize);
         }
 
-        notes.forEachAlive(function(daNote:Note){
+        notes.forEachAlive(function(daNote:Note){            
+            if(daNote.strumTime > strumConductor.songPosition - Conductor.safeZoneOffset && daNote.strumTime < strumConductor.songPosition + (Conductor.safeZoneOffset * 0.5)){daNote.noteStatus = "CanBeHit";}
+            if(strumConductor.songPosition > daNote.strumTime + (Conductor.safeZoneOffset * 0.5) && daNote.noteStatus != "Pressed"){daNote.noteStatus = "Late";}
+
             var pre_TypeScroll:String = PreSettings.getFromArraySetting("TypeScroll");
             
             var curScrollspeed:Float = getScrollSpeed();
 
-            //var yStuff:Float = 0.45 * (Conductor.songPosition - daNote.strumTime) * curScrollspeed;
-            var yStuff:Float = (0.005 * Math.pow(Conductor.songPosition - daNote.strumTime, 2) + (Conductor.songPosition - daNote.strumTime));
-            if(daNote.prevStrumTime != null){yStuff = (0.005 * Math.pow(Conductor.songPosition - daNote.strumTime, 2) + (Conductor.songPosition - daNote.strumTime));}
+            //var yStuff:Float = 0.45 * (strumConductor.songPosition - daNote.strumTime) * curScrollspeed;
+            var yStuff:Float = 0.45 * (strumConductor.songPosition - daNote.strumTime) * curScrollspeed;
+            if(daNote.prevStrumTime != null){yStuff = (0.005 * Math.pow(strumConductor.songPosition - daNote.strumTime, 2) + (3 * (strumConductor.songPosition - daNote.strumTime)));}
 
             if(staticNotes.members[daNote.noteData] != null){
                 if(pre_TypeScroll == "DownScroll"){
@@ -348,7 +352,7 @@ class StrumLine extends FlxGroup{
             });
 
             notes.forEachAlive(function(daNote:Note){
-                if(daNote.strumTime <= Conductor.songPosition){hitNOTE(daNote);}
+                if(daNote.strumTime <= strumConductor.songPosition){hitNOTE(daNote);}
             });
         }
     }
@@ -452,7 +456,7 @@ class StrumStaticNotes extends FlxTypedGroup<StrumNote> {
             if(SIZE != 0){size = SIZE;}
             var nSize:Int = Math.floor(size / keys);
             
-            var newJSON:StrumLineNoteJSON = cast Json.parse(Assets.getText(Paths.strumJSON(keys)));
+            var newJSON:StrumLineNoteJSON = cast Json.parse(Paths.getText(Paths.getStrumJSON(keys)));
             JSON = newJSON.staticNotes;
 
             if(skip){
@@ -574,7 +578,7 @@ class Note extends StrumNote {
     }
 
     //Static Methods
-    public static function getJSONDATA():DynamicAccess<Dynamic> {return cast Json.parse(Assets.getText('notes:assets/notes/NoteData.json'));}
+    public static function getJSONDATA():DynamicAccess<Dynamic> {return cast Json.parse(Paths.getText(Paths.getPath('notes/NoteData.json', TEXT, 'notes')));}
 
     public static function getNotePresets():DynamicAccess<Dynamic> {return getJSONDATA().get("Note_Presets");}
     public static function getNoteSpecials():DynamicAccess<Dynamic> {return getJSONDATA().get("Note_Specials");}
@@ -645,9 +649,6 @@ class Note extends StrumNote {
             case "Merge":{playAnim("merge");}
             case "Switch":{playAnim("switch");}
         }
-
-        if(strumTime > Conductor.songPosition - Conductor.safeZoneOffset && strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5)){noteStatus = "CanBeHit";}
-        if(Conductor.songPosition > strumTime + (Conductor.safeZoneOffset * 0.5) && noteStatus != "Pressed"){noteStatus = "Late";}
 	}
 
     override public function loadGraphicNote(newJSON:NoteJSON, newTypeNote:String = "Default", newImage:String = null){

@@ -4,6 +4,7 @@ package;
 import flixel.util.*;
 import flixel.addons.ui.*;
 import flixel.addons.ui.interfaces.*;
+import flixel.ui.*;
 
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
@@ -16,321 +17,8 @@ import flixel.util.FlxStringUtil;
 import flixel.util.FlxDestroyUtil;
 import flixel.system.FlxSound;
 
-class FlxUINumericStepperCustom extends FlxUIGroup implements IFlxUIWidget implements IFlxUIClickable implements IHasParams
-{
-	private var button_plus:FlxUITypedButton<FlxSprite>;
-	private var button_minus:FlxUITypedButton<FlxSprite>;
-	private var text_field:FlxText;
-
-	public var stepSize:Float = 0;
-	public var decimals(default, set):Int = 0; // Number of decimals
-	public var min(default, set):Float = 0;
-	public var max(default, set):Float = 10;
-	public var value(default, set):Float = 0;
-	public var stack(default, set):Int = STACK_HORIZONTAL;
-	public var isPercent(default, set):Bool = false;
-
-	public static inline var STACK_VERTICAL:Int = 0;
-	public static inline var STACK_HORIZONTAL:Int = 1;
-
-	public static inline var CLICK_EVENT:String = "click_numeric_stepper_custom"; // click a numeric stepper button
-	public static inline var EDIT_EVENT:String = "edit_numeric_stepper_custom"; // edit the numeric stepper text field
-	public static inline var CHANGE_EVENT:String = "change_numeric_stepper_custom"; // do either of the above
-    public static inline var CLICK_MINUS:String = "click_numeric_minus_custom";
-    public static inline var CLICK_PLUS:String = "click_numeric_plus_custom";
-
-	public var params(default, set):Array<Dynamic>;
-
-	private function set_params(p:Array<Dynamic>):Array<Dynamic>
-	{
-		params = p;
-		return params;
-	}
-
-	public var skipButtonUpdate(default, set):Bool;
-
-	private function set_skipButtonUpdate(b:Bool):Bool
-	{
-		skipButtonUpdate = b;
-		button_plus.skipButtonUpdate = b;
-		button_minus.skipButtonUpdate = b;
-		// TODO: Handle input text
-		return b;
-	}
-
-	private override function set_color(Value:Int):Int
-	{
-		color = Value;
-		button_plus.color = Value;
-		button_minus.color = Value;
-		if ((text_field is FlxInputText))
-		{
-			var fit:FlxInputText = cast text_field;
-			fit.backgroundColor = Value;
-		}
-		else
-		{
-			text_field.color = Value;
-		}
-		return Value;
-	}
-
-	private function set_min(f:Float):Float
-	{
-		min = f;
-		if (value < min)
-		{
-			value = min;
-		}
-		return min;
-	}
-
-	private function set_max(f:Float):Float
-	{
-		max = f;
-		if (value > max)
-		{
-			value = max;
-		}
-		return max;
-	}
-
-	private function set_value(f:Float):Float
-	{
-		value = f;
-		if (value < min)
-		{
-			value = min;
-		}
-		if (value > max)
-		{
-			value = max;
-		}
-		if (text_field != null)
-		{
-			var displayValue:Float = value;
-			if (isPercent)
-			{
-				displayValue *= 100;
-				text_field.text = Std.string(decimalize(displayValue, decimals)) + "%";
-			}
-			else
-			{
-				text_field.text = decimalize(displayValue, decimals);
-			}
-		}
-		return value;
-	}
-
-	private function set_decimals(i:Int):Int
-	{
-		decimals = i;
-		if (i < 0)
-		{
-			decimals = 0;
-		}
-		value = value;
-		return decimals;
-	}
-
-	private function set_isPercent(b:Bool):Bool
-	{
-		isPercent = b;
-		value = value;
-		return isPercent;
-	}
-
-	private function set_stack(s:Int):Int
-	{
-		stack = s;
-		var btnSize:Int = 10;
-		var offsetX:Int = 0;
-		var offsetY:Int = 0;
-		if ((text_field is FlxUIInputText))
-		{
-			offsetX = 1;
-			offsetY = 1; // border for input text
-		}
-		switch (stack)
-		{
-			case STACK_HORIZONTAL:
-				btnSize = 2 + cast text_field.height;
-				if (button_plus.height != btnSize)
-				{
-					button_plus.resize(btnSize, btnSize);
-				}
-				if (button_minus.height != btnSize)
-				{
-					button_minus.resize(btnSize, btnSize);
-				}
-				button_plus.x = offsetX + text_field.x + text_field.width;
-				button_plus.y = -offsetY + text_field.y;
-				button_minus.x = button_plus.x + button_plus.width;
-				button_minus.y = button_plus.y;
-			case STACK_VERTICAL:
-				btnSize = 1 + cast text_field.height / 2;
-				if (button_plus.height != btnSize)
-				{
-					button_plus.resize(btnSize, btnSize);
-				}
-				if (button_minus.height != btnSize)
-				{
-					button_minus.resize(btnSize, btnSize);
-				}
-				button_plus.x = offsetX + text_field.x + text_field.width;
-				button_plus.y = -offsetY + text_field.y;
-				button_minus.x = offsetX + text_field.x + text_field.width;
-				button_minus.y = offsetY + text_field.y + (text_field.height - button_minus.height);
-		}
-		return stack;
-	}
-
-	private inline function decimalize(f:Float, digits:Int):String
-	{
-		var tens:Float = Math.pow(10, digits);
-		return Std.string(Math.round(f * tens) / tens);
-	}
-
-	/**
-	 * This creates a new dropdown menu.
-	 *
-	 * @param	X					x position of the dropdown menu
-	 * @param	Y					y position of the dropdown menu
-	 * @param	StepSize			How big is the step
-	 * @param	DefaultValue		Optional default numerical value for the stepper to display
-	 * @param	Min					Optional Minimum values for the stepper
-	 * @param	Max					Optional Maximum and Minimum values for the stepper
-	 * @param	Decimals			Optional # of decimal places
-	 * @param	Stack				Stacking method
-	 * @param	TextField			Optional text field
-	 * @param	ButtonPlus			Optional button to use for plus
-	 * @param	ButtonMinus			Optional button to use for minus
-	 * @param	IsPercent			Whether to portray the number as a percentage
-	 */
-	public function new(X:Float = 0, Y:Float = 0, StepSize:Float = 1, DefaultValue:Float = 0, Min:Float = -999, Max:Float = 999, Decimals:Int = 0,
-			Stack:Int = STACK_HORIZONTAL, ?TextField:FlxText, ?ButtonPlus:FlxUITypedButton<FlxSprite>, ?ButtonMinus:FlxUITypedButton<FlxSprite>,
-			IsPercent:Bool = false)
-	{
-		super(X, Y);
-
-		if (TextField == null)
-		{
-			TextField = new FlxUIInputText(0, 0, 25);
-		}
-		TextField.x = 0;
-		TextField.y = 0;
-		text_field = TextField;
-		text_field.text = Std.string(DefaultValue);
-
-		if ((text_field is FlxUIInputText))
-		{
-			var fuit:FlxUIInputText = cast text_field;
-			fuit.lines = 1;
-			fuit.callback = _onInputTextEvent; // internal communication only
-			fuit.broadcastToFlxUI = false;
-		}
-
-		stepSize = StepSize;
-		decimals = Decimals;
-		min = Min;
-		max = Max;
-		value = DefaultValue;
-		isPercent = IsPercent;
-
-		var btnSize:Int = 1 + cast TextField.height;
-
-		if (ButtonPlus == null)
-		{
-			ButtonPlus = new FlxUITypedButton<FlxSprite>(0, 0);
-			ButtonPlus.loadGraphicSlice9([FlxUIAssets.IMG_BUTTON_THIN], btnSize, btnSize, [FlxStringUtil.toIntArray(FlxUIAssets.SLICE9_BUTTON_THIN)],
-				FlxUI9SliceSprite.TILE_NONE, -1, false, FlxUIAssets.IMG_BUTTON_SIZE, FlxUIAssets.IMG_BUTTON_SIZE);
-			ButtonPlus.label = new FlxSprite(0, 0, FlxUIAssets.IMG_PLUS);
-		}
-		if (ButtonMinus == null)
-		{
-			ButtonMinus = new FlxUITypedButton<FlxSprite>(0, 0);
-			ButtonMinus.loadGraphicSlice9([FlxUIAssets.IMG_BUTTON_THIN], btnSize, btnSize, [FlxStringUtil.toIntArray(FlxUIAssets.SLICE9_BUTTON_THIN)],
-				FlxUI9SliceSprite.TILE_NONE, -1, false, FlxUIAssets.IMG_BUTTON_SIZE, FlxUIAssets.IMG_BUTTON_SIZE);
-			ButtonMinus.label = new FlxSprite(0, 0, FlxUIAssets.IMG_MINUS);
-		}
-
-		button_plus = ButtonPlus;
-		button_minus = ButtonMinus;
-
-		add(text_field);
-		add(button_plus);
-		add(button_minus);
-
-		button_plus.onUp.callback = _onPlus;
-		button_plus.broadcastToFlxUI = false;
-
-		button_minus.onUp.callback = _onMinus;
-		button_minus.broadcastToFlxUI = false;
-
-		stack = Stack;
-	}
-
-	private function _onInputTextEvent(text:String, action:String):Void
-	{
-		if (text == "")
-		{
-			text = Std.string(min);
-		}
-
-		var numDecimals:Int = 0;
-		for (i in 0...text.length)
-		{
-			var char = text.charAt(i);
-			if (char == ".")
-			{
-				numDecimals++;
-			}
-		}
-
-		var justAddedDecimal = (numDecimals == 1 && text.indexOf(".") == text.length - 1);
-
-		// if I just added a decimal don't treat that as having changed the value just yet
-		if (!justAddedDecimal)
-		{
-			value = Std.parseFloat(text);
-			_doCallback(EDIT_EVENT);
-			_doCallback(CHANGE_EVENT);
-		}
-	}
-
-	private function _onPlus():Void
-	{
-		value += stepSize;
-		_doCallback(CLICK_EVENT);
-		_doCallback(CHANGE_EVENT);
-        _doCallback(CLICK_PLUS);
-	}
-
-	private function _onMinus():Void
-	{
-		value -= stepSize;
-		_doCallback(CLICK_EVENT);
-		_doCallback(CHANGE_EVENT);
-        _doCallback(CLICK_MINUS);
-	}
-
-	private function _doCallback(event_name:String):Void
-	{
-		if (broadcastToFlxUI)
-		{
-			FlxUI.event(event_name, this, value, params);
-		}
-	}
-
-    public function setWidth(width:Int){
-        text_field.width = width;
-        text_field.fieldWidth = width;
-        set_stack(stack);
-    }
-}
-
 class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlxUIClickable implements IHasParams {
-    private var _OnChange:Void->Void = null;
+    private var _OnChange:FlxUICustomList->Void = null;
 	
 	private var _btnBack:FlxUIButton;
     private var _lblCuItem:FlxUIText;
@@ -352,13 +40,14 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
         return b;
     }
 
-    public function new(X:Float = 0, Y:Float = 0, ?DataList:Array<String>, ?OnChange:Void->Void){
+    public function new(X:Float = 0, Y:Float = 0, Width:Int = 100, ?DataList:Array<String>, ?OnChange:FlxUICustomList->Void, ?text:FlxUIText){
+        this._OnChange = OnChange;
         super(X, Y);
 
         if(DataList != null){
             list = DataList;
         }else{
-            list = ["NONE"];
+            list = [];
         }
 
         _btnBack = new FlxUIButton(0, 0, "<", function(){c_Index(-1);});
@@ -367,9 +56,14 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
         _btnBack.centerOffsets();
         _btnBack.label.fieldWidth = _btnBack.width;
 
-        _lblCuItem = new FlxUIText(_btnBack.x + _btnBack.width, _btnBack.y + 3, 100, "|None|", 8);
-        _lblCuItem.color = FlxColor.WHITE;
-        _lblCuItem.alignment = CENTER;
+		if(text != null){
+			_lblCuItem = text;
+			_lblCuItem.setPosition(_btnBack.x + _btnBack.width, _btnBack.y + 3);
+		}else{
+			_lblCuItem = new FlxUIText(_btnBack.x + _btnBack.width, _btnBack.y + 3, Width - 40, "|None|", 8);
+			_lblCuItem.color = FlxColor.WHITE;
+			_lblCuItem.alignment = CENTER;
+		}
 
         _btnFront = new FlxUIButton(_lblCuItem.x + _lblCuItem.width, _lblCuItem.y - 3, ">", function(){c_Index(1);});
         _btnFront.setSize(Std.int(20), Std.int(_btnFront.height));
@@ -385,14 +79,21 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
         c_Index();
     }
 
+	public function getText(){return _lblCuItem;}
+    public function contains(x:String):Bool{return list.contains(x);}
+
     private function c_Index(change:Int = 0):Void{
         index += change;
         if(index >= list.length){index = 0;}
         if(index < 0){index = list.length - 1;}
 
-        _lblCuItem.text = list[index];
+		if(list[index] != null){
+			_lblCuItem.text = list[index];
+		}else{
+			_lblCuItem.text = "NONE";
+		}
 
-		if(_OnChange != null){_OnChange();}
+		if(_OnChange != null){_OnChange(this);}
 
         if(change > 0){_doCallback(CLICK_BACK);}
         if(change < 0){_doCallback(CLICK_FRONT);}
@@ -404,8 +105,14 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
         c_Index();
     }
 
+	public function addToData(data:String):Void{
+		list.push(data);
+        c_Index();
+	}
+
     public function setWidth(Width:Float) {
-        if(Width < 45){Width = 40;}
+        Width -= Std.int(_btnBack.width + _btnFront.width);
+        if(Width < (_btnBack.width + _btnFront.width)){Width = (_btnBack.width + _btnFront.width);}
         
         super.setSize(Width, this.height);
 
@@ -413,6 +120,8 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
         _lblCuItem.fieldWidth = Width - 40;
 
         _btnFront.x = _lblCuItem.x + _lblCuItem.width;
+
+        calcBounds();
     }
 
     public function getSelectedLabel():String{
@@ -428,5 +137,121 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
         if(broadcastToFlxUI){
             FlxUI.event(event_name, this, getSelectedIndex(), params);
         }
+    }
+}
+
+class FlxUIValueChanger extends FlxUIGroup implements IFlxUIWidget implements IFlxUIClickable implements IHasParams {
+    private var _OnChange:Float->Void = null;
+	
+	private var _btnMinus:FlxUIButton;
+    private var _lblCuItem:FlxUIInputText;
+    private var _btnPlus:FlxUIButton;
+
+    public static inline var CLICK_MINUS:String = "value_changer_minus";
+    public static inline var CLICK_PLUS:String = "value_changer_plus";
+    public static inline var CHANGE_EVENT:String = "value_changer_change";
+
+    public var params(default, set):Array<Dynamic>;
+	private function set_params(p:Array<Dynamic>):Array<Dynamic>{return params = p;}
+
+    public var skipButtonUpdate(default, set):Bool;
+    private function set_skipButtonUpdate(b:Bool):Bool{
+        skipButtonUpdate = b;
+        return b;
+    }
+    
+    public var value(get, never):Float;
+	inline function get_value():Float {return Std.parseFloat(_lblCuItem.text);}
+
+    public function new(X:Float = 0, Y:Float = 0, Width:Int = 100, ?OnChange:Float->Void, ?text:FlxUIInputText){
+        super(X, Y);
+
+        _btnMinus = new FlxUICustomButton(0, 0, 20, null, "-", FlxColor.fromRGB(255, 66, 66), function(){c_Index(-1);});
+
+		if(text != null){
+			_lblCuItem = text;
+			_lblCuItem.setPosition(_btnMinus.x + _btnMinus.width, _btnMinus.y + 1);
+		}else{
+			_lblCuItem = new FlxUIInputText(_btnMinus.x + _btnMinus.width, _btnMinus.y + 1, Width - 40, "", 8);
+			_lblCuItem.alignment = CENTER;
+		}
+
+        _btnMinus = new FlxUICustomButton(0, 0, 20, Std.int(_lblCuItem.height) + 2, "-", FlxColor.fromRGB(255, 66, 66), function(){c_Index(-1);});
+        _btnPlus = new FlxUICustomButton(_lblCuItem.x + _lblCuItem.width, _lblCuItem.y - 1, 20, Std.int(_lblCuItem.height) + 2, "+", FlxColor.fromRGB(66, 255, 94), function(){c_Index(1);});
+
+        add(_btnMinus);
+        add(_lblCuItem);
+        add(_btnPlus);
+
+        calcBounds();
+    }
+
+	public function getText(){return _lblCuItem;}
+
+    private function c_Index(change:Float = 0):Void{
+		if(_OnChange != null){_OnChange(change);}
+        if(change > 0){_doCallback(CLICK_MINUS);}
+        if(change < 0){_doCallback(CLICK_PLUS);}
+        _doCallback(CHANGE_EVENT);
+    }
+
+    public function setWidth(Width:Float) {
+        Width -= Std.int(_btnMinus.width + _btnPlus.width);
+        if(Width < (_btnMinus.width + _btnPlus.width)){Width = (_btnMinus.width + _btnPlus.width);}
+        
+        super.setSize(Width, this.height);
+
+        _lblCuItem.width = Width - 40;
+        _lblCuItem.fieldWidth = Width - 40;
+
+        _btnPlus.x = _lblCuItem.x + _lblCuItem.width;
+
+        calcBounds();
+    }
+
+    private function _doCallback(event_name:String):Void{
+        if(broadcastToFlxUI){
+            FlxUI.event(event_name, this, Std.parseFloat(_lblCuItem.text), params);
+        }
+    }
+}
+
+class FlxCustomButton extends FlxButton {
+	public function new(X:Float = 0, Y:Float = 0, Width:Null<Int>, Height:Null<Int>, ?Text:String, ?Color:Null<FlxColor>, ?OnClick:() -> Void){
+		super(X, Y, Text, OnClick);
+
+		if(Width == null){Width = Std.int(this.width);}
+		if(Height == null){Height = Std.int(this.height);}
+		
+		this.setSize(Width, Height);
+		this.setGraphicSize(Width, Height);
+		this.centerOffsets();
+		this.label.fieldWidth = this.width;
+		if(Color != null){this.color = Color;}
+	}
+}
+
+class FlxUICustomButton extends FlxUIButton {
+	public function new(X:Float = 0, Y:Float = 0, Width:Null<Int>, Height:Null<Int>, ?Text:String, ?Color:Null<FlxColor>, ?OnClick:() -> Void){
+		super(X, Y, Text, OnClick);
+
+		if(Width == null){Width = Std.int(this.width);}
+		if(Height == null){Height = Std.int(this.height);}
+		
+		this.setSize(Width, Height);
+		this.setGraphicSize(Width, Height);
+		this.centerOffsets();
+		this.label.fieldWidth = this.width;
+		if(Color != null){this.color = Color;}
+	}
+}
+
+class FlxUINumericStepperCustom extends FlxUINumericStepper {
+    public function new(X:Float = 0, Y:Float = 0, Width:Int = 25, StepSize:Float = 1, DefaultValue:Float = 0, Min:Float = -999, Max:Float = 999, Decimals:Int = 0, Stack:Int = FlxUINumericStepper.STACK_HORIZONTAL, ?TextField:FlxText, ?ButtonPlus:FlxUITypedButton<FlxSprite>, ?ButtonMinus:FlxUITypedButton<FlxSprite>, IsPercent:Bool = false){
+        if(TextField == null){
+            TextField = new FlxUIInputText(0, 0, Width);
+            TextField = new FlxUIInputText(0, 0, Std.int(Width - (TextField.height * 2) - 5));
+        }
+        super(X, Y, StepSize, DefaultValue, Min, Max, Decimals, Stack, TextField, ButtonPlus, ButtonMinus, IsPercent);
     }
 }

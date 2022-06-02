@@ -28,10 +28,8 @@ typedef CharacterFile = {
 
 	var position:Array<Float>;
 	var camera:Array<Float>;
-	var zoom:Float;
 
 	var onRight:Bool;
-	var singDuration:Float;
 	var nAntialiasing:Bool;
 
 	var danceIdle:Bool;
@@ -46,7 +44,7 @@ typedef AnimArray = {
 
 	var indices:Array<Int>;
 
-	var loop:Bool;		
+	var loop:Bool;
 }
 
 class Character extends FlxSprite{
@@ -65,13 +63,15 @@ class Character extends FlxSprite{
 			return 0;
 		}
 	}
-
 	public static var cDefault:String = 'Boyfriend';
 
+	public var charFile:CharacterFile;
+
 	public var curCharacter:String = cDefault;
-	public var curType:String = "Normal";
 	public var curSkin:String = "Default";
 	public var curCategory:String = "Default";
+	public var curType:String = "Normal";
+	public var curLayer:Int = 0;
 
 	public var holdTimer:Float = 0;
 	public var specialAnim:Bool = false;
@@ -84,7 +84,6 @@ class Character extends FlxSprite{
 
 	public var positionArray:Array<Float> = [0, 0];
 	public var cameraPosition:Array<Float> = [0, 0];
-	public var cameraZoom:Float = 0.8;
 
 	public var imageFile:String = '';
 	public var noAntialiasing:Bool = false;
@@ -128,7 +127,7 @@ class Character extends FlxSprite{
         return charArray;
 	}
 
-	public function new(x:Float, y:Float, ?character:String = 'Boyfriend', ?category:String = 'Default', ?type:String = "NORMAL", ?toRight:Bool = true, ?nScale:Int = 1){
+	public function new(x:Float, y:Float, ?character:String = 'Boyfriend', ?category:String = 'Default', ?type:String = "NORMAL"){
 		super(x, y);
 
 		antialiasing = true;
@@ -140,16 +139,9 @@ class Character extends FlxSprite{
 		curType = type;
 
 		switch(curCharacter){
-			//case 'your character name in case you want to hardcode him instead':
-
-			default:{
-				setupByCharacterFile(Json.parse(Assets.getText(Paths.getCharacterJSON(curCharacter, curCategory, curSkin))));
-			}
+			default:{setupByCharacterFile();}
 		}
 		
-		this.scale.set(nScale, nScale);
-
-		turnLook(toRight);
 	}
 
 	override function update(elapsed:Float){
@@ -183,44 +175,27 @@ class Character extends FlxSprite{
 		}
 	}
 
-	public function setupByCharacterFile(jCharacter:CharacterFile) {
-		imageFile = jCharacter.image;
+	public function setupByCharacterFile(?jCharacter:CharacterFile){
+		if(jCharacter == null){jCharacter = Json.parse(Paths.getText(Paths.getCharacterJSON(curCharacter, curCategory, curSkin)));}
+		charFile = jCharacter;
 
-		frames = Paths.getCharacterAtlas(curCharacter, imageFile);
+		positionArray = charFile.position;
+		cameraPosition = charFile.camera;
 
-		positionArray = jCharacter.position;
-		cameraPosition = jCharacter.camera;
-		cameraZoom = jCharacter.zoom;
+		healthIcon = charFile.healthicon;
+		
+		this.flipX = !charFile.onRight;
+		this.onRight = true;
 
-		healthIcon = jCharacter.healthicon;
-		//singDuration = jCharacter.singDuration;
-		if(jCharacter.nAntialiasing){
-			antialiasing = false;
-			noAntialiasing = true;
-		}
+		this.dancedIdle = charFile.danceIdle;
 
-		this.onRight = jCharacter.onRight;
-		this.dancedIdle = jCharacter.danceIdle;
+		this.antialiasing = !charFile.nAntialiasing;
 
-		this.antialiasing = !noAntialiasing;
+		imageFile = charFile.image;
+		animationsArray = charFile.anims;
 
-		animationsArray = jCharacter.anims;
-		if(animationsArray != null && animationsArray.length > 0) {
-			for (anim in animationsArray) {
-				var animAnim:String = '' + anim.anim;
-				var animName:String = '' + anim.symbol;
-				var animFps:Int = anim.fps;
-				var animLoop:Bool = !!anim.loop; //Bruh
-				var animIndices:Array<Int> = anim.indices;
-				if(animIndices != null && animIndices.length > 0) {
-					animation.addByIndices(animAnim, animName, animIndices, "", animFps, animLoop);
-				}else{
-					animation.addByPrefix(animAnim, animName, animFps, animLoop);
-				}
-			}
-		}else{
-			quickAnimAdd('idle', 'BF idle dance');
-		}
+		setCharacterGraphic();
+
 		dance();
 	}
 
@@ -254,6 +229,28 @@ class Character extends FlxSprite{
 		if((toRight && !this.onRight) || (!toRight && this.onRight)){
 			this.flipX = !this.flipX;
 			this.onRight = !this.onRight;
+		}
+	}
+
+	public function setCharacterGraphic(?IMAGE:String){
+		if(IMAGE != null){imageFile = IMAGE;}
+
+		frames = Paths.getCharacterAtlas(curCharacter, imageFile);
+		if(animationsArray != null && animationsArray.length > 0) {
+			for (anim in animationsArray) {
+				var animAnim:String = '' + anim.anim;
+				var animName:String = '' + anim.symbol;
+				var animFps:Int = anim.fps;
+				var animLoop:Bool = !!anim.loop; //Bruh
+				var animIndices:Array<Int> = anim.indices;
+				if(animIndices != null && animIndices.length > 0) {
+					animation.addByIndices(animAnim, animName, animIndices, "", animFps, animLoop);
+				}else{
+					animation.addByPrefix(animAnim, animName, animFps, animLoop);
+				}
+			}
+		}else{
+			quickAnimAdd('idle', 'BF idle dance');
 		}
 	}
 }

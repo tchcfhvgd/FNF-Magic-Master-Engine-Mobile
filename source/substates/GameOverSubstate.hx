@@ -14,10 +14,8 @@ class GameOverSubstate extends substates.MusicBeatSubstate
 
 	var stageSuffix:String = "";
 
-	public function new(x:Float, y:Float, character:String){
+	public function new(x:Float = 0, y:Float = 0, character:String = "Boyfriend"){
 		super();
-
-		Conductor.songPosition = 0;
 
 		bf = new Character(x, y, character);
 		add(bf);
@@ -26,7 +24,7 @@ class GameOverSubstate extends substates.MusicBeatSubstate
 		add(camFollow);
 
 		FlxG.sound.play(Paths.sound('fnf_loss_sfx' + stageSuffix));
-		Conductor.changeBPM(100);
+		conductor.changeBPM(100);
 
 		// FlxG.camera.followLerp = 1;
 		// FlxG.camera.focusOn(FlxPoint.get(FlxG.width / 2, FlxG.height / 2));
@@ -65,10 +63,7 @@ class GameOverSubstate extends substates.MusicBeatSubstate
 			FlxG.sound.playMusic(Paths.music('gameOver' + stageSuffix));
 		}
 
-		if (FlxG.sound.music.playing)
-		{
-			Conductor.songPosition = FlxG.sound.music.time;
-		}
+		//if(FlxG.sound.music.playing){Conductor.songPosition = FlxG.sound.music.time;}
 	}
 
 	override function beatHit()

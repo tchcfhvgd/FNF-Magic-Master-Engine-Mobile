@@ -63,7 +63,7 @@ class StrumLineEditorState extends MusicBeatState {
         if(strum != null){
             _strum = strum;
         }else{
-            _strum = cast Json.parse(Assets.getText(Paths.strumJSON(4, typeStrum)));
+            _strum = cast Json.parse(Assets.getText(Paths.getStrumJSON(4, typeStrum)));
         }
 
         FlxG.switchState(new StrumLineEditorState());
@@ -71,7 +71,6 @@ class StrumLineEditorState extends MusicBeatState {
 
     override function create(){
         size = Std.int(FlxG.width / 2);
-        Conductor.songPosition = 0;
 
         FlxG.mouse.visible = true;
 

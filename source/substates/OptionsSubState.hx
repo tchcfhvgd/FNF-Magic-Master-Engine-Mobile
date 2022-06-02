@@ -16,8 +16,6 @@ class OptionsSubState extends MusicBeatSubstate {
 	//Cameras
 	var camHUD:FlxCamera;
 
-	//
-
 	public function new(isPause:Bool = false){
 		super();
 

@@ -75,12 +75,10 @@ class Song{
 	}
 
 	public static function loadFromJson(jsonInput:String, song:String):SwagSong{
-		var rawJson = Assets.getText(Paths.chart(jsonInput, song)).trim();
+		var rawJson:String = Paths.getText(Paths.chart(jsonInput, song)).trim();
 
-		while (!rawJson.endsWith("}"))
-		{
-			rawJson = rawJson.substr(0, rawJson.length - 1);
-		}
+		while (!rawJson.endsWith("}")){rawJson = rawJson.substr(0, rawJson.length - 1);}
+		
 		return parseJSONshit(rawJson, jsonInput);
 	}
 
