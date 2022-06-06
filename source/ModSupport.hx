@@ -23,18 +23,19 @@ class ModSupport {
     public static function init():Void {
         //Adding Mods from Archives
         #if (desktop && sys)
-        var i:Int = 0;
-		for(modFolder in FileSystem.readDirectory('mods')){
-            var modPath:String = FileSystem.absolutePath('mods/$modFolder');
-            
-            var newMod = new Mod(modFolder);
-
-            MODS.push(newMod);
-
-            i++;
+        if(FileSystem.exists('mods')){
+            var i:Int = 0;
+            for(modFolder in FileSystem.readDirectory('mods')){
+                var modPath:String = FileSystem.absolutePath('mods/$modFolder');
+                
+                var newMod = new Mod(modFolder);
+    
+                MODS.push(newMod);
+    
+                i++;
+            }
         }
         #end
-
     }
 
     public static function moveMod(index:Int, toUp:Bool = false){

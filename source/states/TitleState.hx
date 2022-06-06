@@ -49,6 +49,8 @@ class TitleState extends MusicBeatState {
 	}
 
 	override public function create():Void {
+		LangSupport.init();
+		
 		otherStuff.add(new FlxSprite());
 
 		gradient = new FlxSprite().loadGraphic(Paths.image('Gradient'));

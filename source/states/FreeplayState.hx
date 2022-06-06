@@ -42,24 +42,7 @@ class FreeplayState extends MusicBeatState {
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
 
-	override function create()
-	{
-		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
-
-		//for (i in 0...initSonglist.length)
-		//{
-		//	var data:Array<String> = initSonglist[i].split(':');
-		//	songs.push(new SongMetadata(data[0], Std.parseInt(data[2]), data[1]));
-		//}
-
-		/* 
-			if (FlxG.sound.music != null)
-			{
-				if (!FlxG.sound.music.playing)
-					FlxG.sound.playMusic(Paths.music('freakyMenu'));
-			}
-		 */
-
+	override function create(){
 		 #if windows
 		 // Updating Discord Rich Presence
 		 DiscordClient.changePresence("In the Freeplay Menu", null);

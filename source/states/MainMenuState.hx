@@ -89,7 +89,7 @@ class MainMenuState extends MusicBeatState{
 		options = new FlxTypedGroup<FlxText>();
 		add(options);
 		for(i in 0...arrayOptions.length){
-			var option:FlxText = new FlxText(0, FlxG.height - 120, 0, CoolUtil.getLangText(arrayOptions[i]), 72);
+			var option:FlxText = new FlxText(0, FlxG.height - 120, 0, LangSupport.getText(arrayOptions[i]), 72);
 			option.antialiasing = PreSettings.getPreSetting("Antialiasing");
 			option.font = Paths.font("Countryhouse.ttf");
 			option.color = FlxColor.WHITE;

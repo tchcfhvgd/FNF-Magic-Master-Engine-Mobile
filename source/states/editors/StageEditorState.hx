@@ -258,7 +258,7 @@ class StageEditorState extends MusicBeatState {
         btnStageSave.label.fieldWidth = btnStageSave.width;
 
         var btnStageLoad = new FlxButton(btnStageSave.x, btnStageSave.y + btnStageSave.height + 3, "Load", function(){
-            editStage(cast Json.parse(Assets.getText(Paths.getStageJSON(txtStageName.text))));
+            editStage(this.onBack, this.onConfirm, cast Json.parse(Assets.getText(Paths.getStageJSON(txtStageName.text))));
         }); tabMENU.add(btnStageLoad);
         btnStageLoad.setSize(Std.int((txtStageName.width)), Std.int(btnStageLoad.height));
         btnStageLoad.setGraphicSize(Std.int((txtStageName.width)), Std.int(btnStageLoad.height));

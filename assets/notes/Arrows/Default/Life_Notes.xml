@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<TextureAtlas imagePath="Life_Notes.png">
-	<!-- Created with Adobe Animate version 21.0.0.35450 -->
-	<!-- http://www.adobe.com/products/animate.html -->
-	<SubTexture name="Life Blue0000" x="0" y="0" width="204" height="200"/>
-	<SubTexture name="Life Green0000" x="207" y="0" width="204" height="200"/>
-	<SubTexture name="Life Purple0000" x="0" y="203" width="200" height="204"/>
-	<SubTexture name="Life Red0000" x="203" y="203" width="200" height="204"/>
-</TextureAtlas>

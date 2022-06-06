@@ -876,7 +876,7 @@ class ChartEditorState extends MusicBeatState{
 
         _song = Song.loadFromJson(daSong + "-" + cat + "-" + diff, daSong);
 
-        LoadingState.loadAndSwitchState(new ChartEditorState(), _song, false);
+        LoadingState.loadAndSwitchState(new ChartEditorState(this.onBack, this.onConfirm), _song, false);
     }
 
     function loadAudio(daSong:String, cat:String):Void{
