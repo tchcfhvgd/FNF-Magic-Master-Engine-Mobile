@@ -2,6 +2,7 @@ package states.editors;
 
 import flixel.FlxG;
 import flixel.FlxState;
+import haxe.xml.Access;
 import flixel.FlxSprite;
 import flixel.FlxObject;
 import flixel.addons.display.FlxGridOverlay;
@@ -48,6 +49,10 @@ using StringTools;
 
 class CharacterEditorState extends MusicBeatState{
     public static var _character:CharacterFile;
+    private static var _curCharacter:String = "Boyfriend";
+    private static var _curSkin:String = "Default";
+    private static var _curAspect:String = "Default";
+
     var bfStage:Character;
     var healthIcon:HealthIcon;
     var cameraPointer:FlxSprite;
@@ -82,7 +87,7 @@ class CharacterEditorState extends MusicBeatState{
     override function create(){
         FlxG.mouse.visible = true;
 
-        backStage = new Stage("Stage", [["Girlfriend",charPositions[1],1,false,"Default","GF",0],["Fliqpy",charPositions[0],1,true,"Default","NORMAL",0],["Boyfriend",charPositions[2],1,false,"Default","NORMAL",0],["Boyfriend",charPositions[2],1,false,"Default","NORMAL",0]]);
+        backStage = new Stage("Stage", [["Girlfriend",charPositions[1],1,false,"Default","GF",0],["Daddy_Dearest",charPositions[0],1,true,"Default","NORMAL",0],["Boyfriend",charPositions[2],1,false,"Default","NORMAL",0],["Boyfriend",charPositions[2],1,false,"Default","NORMAL",0]]);
         for(char in 0...backStage.character_Length){backStage.getCharacterById(char).alpha = 0.5;}
         backStage.cameras = [camFGame];
         add(backStage);
@@ -144,6 +149,7 @@ class CharacterEditorState extends MusicBeatState{
         bfStage.setupByCharacterFile(_character);
         bfStage.turnLook(chkLEFT.checked);
         bfStage.setPosition(charPos[0] + bfStage.positionArray[0], charPos[1] + bfStage.positionArray[1]);
+        bfStage.playAnim(false, clAnims.getSelectedLabel(), true);
     }
 
     var chkLEFT:FlxUICheckBox;
@@ -172,17 +178,17 @@ class CharacterEditorState extends MusicBeatState{
         tabMENU.name = "1Character";
 
         var lblCharacter = new FlxText(5, 15, 0, "CHARACTER:", 8); tabMENU.add(lblCharacter);
-        txtCharacter = new FlxUIInputText(lblCharacter.x + lblCharacter.width + 5, lblCharacter.y, Std.int(MENU.width - lblCharacter.width - 15), bfStage.curCharacter, 8); tabMENU.add(txtCharacter);
+        txtCharacter = new FlxUIInputText(lblCharacter.x + lblCharacter.width + 5, lblCharacter.y, Std.int(MENU.width - lblCharacter.width - 15), _curCharacter, 8); tabMENU.add(txtCharacter);
         arrayFocus.push(txtCharacter);
         txtCharacter.name = "CHARACTER_NAME";
 
         var lblSkin = new FlxText(lblCharacter.x, txtCharacter.y + txtCharacter.height + 5, 0, "SKIN:", 8); tabMENU.add(lblSkin);
-        txtSkin = new FlxUIInputText(lblSkin.x + lblSkin.width + 5, lblSkin.y, Std.int(MENU.width - lblSkin.width - 15), bfStage.curSkin, 8); tabMENU.add(txtSkin);
+        txtSkin = new FlxUIInputText(lblSkin.x + lblSkin.width + 5, lblSkin.y, Std.int(MENU.width - lblSkin.width - 15), _curSkin, 8); tabMENU.add(txtSkin);
         arrayFocus.push(txtSkin);
         txtSkin.name = "CHARACTER_SKIN";
         
         var lblCat = new FlxText(lblCharacter.x, txtSkin.y + txtSkin.height + 5, 0, "ASPECT:", 8); tabMENU.add(lblCat);
-        txtCategory = new FlxUIInputText(lblCat.x + lblCat.width + 5, lblCat.y, Std.int(MENU.width - lblCat.width - 15), bfStage.curCategory, 8); tabMENU.add(txtCategory);
+        txtCategory = new FlxUIInputText(lblCat.x + lblCat.width + 5, lblCat.y, Std.int(MENU.width - lblCat.width - 15), _curAspect, 8); tabMENU.add(txtCategory);
         arrayFocus.push(txtCategory);
         txtCategory.name = "CHARACTER_CATEGORY";
 
@@ -190,9 +196,9 @@ class CharacterEditorState extends MusicBeatState{
             var newCharacter:Character = new Character(0, 0, txtCharacter.text, txtCategory.text); newCharacter.curSkin = txtSkin.text;
             newCharacter.setupByCharacterFile();
 
-            bfStage.curCharacter = txtCharacter.text;
-            bfStage.curCategory = txtCategory.text;
-            bfStage.curSkin = txtSkin.text;
+            _curCharacter = txtCharacter.text;
+            _curSkin = txtSkin.text;
+            _curAspect = txtCategory.text;
 
             CharacterEditorState.editCharacter(newCharacter.charFile);
         }); tabMENU.add(btnLoadCharacter);
@@ -250,21 +256,11 @@ class CharacterEditorState extends MusicBeatState{
         clAnims = new FlxUICustomList(ttlCharAnims.x, ttlCharAnims.y + ttlCharAnims.height + 5, Std.int(MENU.width - 10), anims); tabMENU.add(clAnims);
         clAnims.name = "CHARACTER_ANIMS";
 
-        var btnAnimAdd:FlxButton = new FlxCustomButton(clAnims.x, clAnims.y + clAnims.height + 5, Std.int(MENU.width / 2) - 10, null, "Add / Update Animation", FlxColor.fromRGB(138, 255, 142), function(){
+        var btnAnimAdd:FlxButton = new FlxCustomButton(clAnims.x, clAnims.y + clAnims.height + 5, Std.int(MENU.width / 4) - 7, null, "Add Anim", FlxColor.fromRGB(138, 255, 142), function(){
             var arrIndices:Array<Int> = [];
-            if(txtAnimIndices.text.trim().split(",").length > 1){for(i in txtAnimIndices.text.trim().split(",")){arrIndices.push(Std.parseInt(i));}}
+            for(i in txtAnimIndices.text.replace("[","").replace("]","").trim().split(",")){arrIndices.push(Std.parseInt(i));}
 
-            if(clAnims.contains(txtAnimName.text)){
-                for(anim in _character.anims){
-                    if(anim.anim == txtAnimName.text){
-                        anim.symbol = txtAnimSymbol.text;
-                        anim.fps = Std.int(stpAnimFrameRate.value);
-                        anim.indices = arrIndices;
-                        anim.loop = chkAnimLoop.checked;
-                        break;
-                    }
-                }
-            }else if(txtAnimName.text.length > 0){
+            if(!clAnims.contains(txtAnimName.text) && txtAnimName.text.length > 0){
                 var nCharAnim:AnimArray = {
                     anim: txtAnimName.text,
                     symbol: txtAnimSymbol.text,
@@ -283,7 +279,28 @@ class CharacterEditorState extends MusicBeatState{
 
             reloadCharacter();
         }); tabMENU.add(btnAnimAdd);
-        var btnAnimDel:FlxButton = new FlxCustomButton(btnAnimAdd.x + btnAnimAdd.width + 10, btnAnimAdd.y, Std.int(MENU.width / 2) - 10, null, "Delete Animation", FlxColor.fromRGB(255, 138, 138), function(){
+        var btnAnimUpd:FlxButton = new FlxCustomButton(btnAnimAdd.x + btnAnimAdd.width + 5, btnAnimAdd.y, Std.int(MENU.width / 4) - 7, null, "Update Anim", FlxColor.fromRGB(138, 255, 142), function(){
+            var arrIndices:Array<Int> = [];
+            for(i in txtAnimIndices.text.replace("[","").replace("]","").trim().split(",")){arrIndices.push(Std.parseInt(i));}
+
+            for(anim in _character.anims){
+                if(anim.anim == clAnims.getSelectedLabel()){
+                    anim.anim = txtAnimName.text;
+                    anim.symbol = txtAnimSymbol.text;
+                    anim.fps = Std.int(stpAnimFrameRate.value);
+                    anim.indices = arrIndices;
+                    anim.loop = chkAnimLoop.checked;
+                    break;
+                }
+            }
+            
+            var anims:Array<String> = []; for(anim in _character.anims){anims.push(anim.anim);}
+            clAnims.setData(anims);
+
+            reloadCharacter();
+        }); tabMENU.add(btnAnimUpd);
+
+        var btnAnimDel:FlxButton = new FlxCustomButton(btnAnimUpd.x + btnAnimUpd.width + 10, btnAnimUpd.y, Std.int(MENU.width / 2) - 10, null, "Delete Animation", FlxColor.fromRGB(255, 138, 138), function(){
             if(clAnims.contains(txtAnimName.text)){
                 for(anim in _character.anims){
                     if(anim.anim == txtAnimName.text){
@@ -320,7 +337,34 @@ class CharacterEditorState extends MusicBeatState{
 
         chkAnimLoop = new FlxUICheckBox(lblAnimFrame.x, lblAnimFrame.y + lblAnimFrame.height + 5, null, null, "Animation Loop", 100); tabMENU.add(chkAnimLoop);
         
-        var btnEditXEML:FlxButton = new FlxCustomButton(chkAnimLoop.x, chkAnimLoop.y + chkAnimLoop.height + 10, Std.int(MENU.width - 10), null, "EDIT POSITION ON XML", null, function(){
+        var btnSetXMLAnims:FlxButton = new FlxCustomButton(chkAnimLoop.x, chkAnimLoop.y + chkAnimLoop.height + 10, Std.int(MENU.width - 10), null, "SET ANIMATIONS FROM XML", null, function(){
+            trace(Paths.getPath('${bfStage.curCharacter}/Sprites/${_character.image}.xml', TEXT, 'characters'));
+            if(Paths.exists(Paths.getPath('${bfStage.curCharacter}/Sprites/${_character.image}.xml', TEXT, 'characters'))){
+                var xml =  Xml.parse(Paths.getText(Paths.getPath('${bfStage.curCharacter}/Sprites/${_character.image}.xml', TEXT, 'characters')));
+                var animSymbols:Array<String> = XMLEditorState.getNamesArray(new Access(xml.firstElement()).elements);
+
+                _character.anims = [];
+                for(symbol in animSymbols){
+                    var nCharAnim:AnimArray = {
+                        anim: symbol,
+                        symbol: symbol,
+                        fps: 24,
+        
+                        indices: [],
+        
+                        loop: false
+                    }
+
+                    _character.anims.push(nCharAnim);
+                }
+                
+                reloadCharacter();
+                var anims:Array<String> = []; for(anim in _character.anims){anims.push(anim.anim);}
+                clAnims.setData(anims);
+            }
+        }); tabMENU.add(btnSetXMLAnims);
+
+        var btnEditXEML:FlxButton = new FlxCustomButton(btnSetXMLAnims.x, btnSetXMLAnims.y + btnSetXMLAnims.height + 10, Std.int(MENU.width - 10), null, "EDIT POSITION ON XML", null, function(){
             FlxG.switchState(new states.editors.XMLEditorState(null, this));
         }); tabMENU.add(btnEditXEML);
 
@@ -401,6 +445,7 @@ class CharacterEditorState extends MusicBeatState{
 
     var _file:FileReference;
     function saveCharacter(name:String){
+        name = Paths.getFileName(name);
         var data:String = Json.stringify(_character);
     
         if((data != null) && (data.length > 0)){

@@ -88,24 +88,13 @@ class Stage extends FlxTypedGroup<Dynamic>{
     public static function getStages():Array<String>{
         var stageArray:Array<String> = [];
 
-        #if windows
+        #if sys
             for(i in FileSystem.readDirectory(FileSystem.absolutePath('assets/stages'))){
                 if(i.endsWith(".json")){
                     var aStage:String = i.replace(".json","");
                     stageArray.push(aStage);
                 }
             }
-        #else
-            stageArray = [
-                "Stage",
-                "Land-Cute",
-                "Land-Cute-Afternoon",
-                "Land-DeadBodys",
-                "Land-Destroyed",
-                "Land-Lol",
-                "Jungle-Land",
-                "Line-Land"
-            ];
         #end
 
         return stageArray;
@@ -246,7 +235,7 @@ class StageSprite extends FlxSprite {
 
         this.setPosition(part.position[0], part.position[1]);
         if(part.stageAnims != null && part.stageAnims.length > 0){
-            frames = Paths.getStageAtlas(part.image, directory);
+            frames = Paths.getAtlas(Paths.getPath('images/${directory}/${part.image}', TEXT, 'stages'));
 
             animArray = part.stageAnims;
             for(anim in animArray){
@@ -259,7 +248,7 @@ class StageSprite extends FlxSprite {
 
             playAnim("idle");
         }else{
-            loadGraphic('stages:assets/stages/images/${directory}/${part.image}');
+            loadGraphic(Paths.image('${directory}/${part.image}', 'stages'));
         }
 
         if(part.antialiasing){antialiasing = PreSettings.getPreSetting("Antialiasing");}

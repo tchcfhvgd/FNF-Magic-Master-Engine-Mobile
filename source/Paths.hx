@@ -21,16 +21,12 @@ import sys.io.File;
 
 using StringTools;
 
-class Paths
-{
+class Paths {
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
 
 	public static function getFileName(key:String, toNormal:Bool = false){
-		if(toNormal){
-			return key.replace("_", " ");
-		}else{
-			return key.replace(" ", "_");
-		}
+		if(toNormal){return key.replace("_", " ");}
+		return key.replace(" ", "_");
 	}
 
 	static var curLibrary:String = "shared";
@@ -57,20 +53,20 @@ class Paths
 			if(Paths.exists(levelPath)){return levelPath;}
 		}
 
-		return getPreloadPath(file);
+		return getForcedPath(file);
 	}
 
 	static public function getLibraryPath(file:String, library = "preload"){
-		return if (library == "preload" || library == "default") getPreloadPath(file); else getLibraryPathForce(file, library);
+		return if (library == "preload" || library == "default") getForcedPath(file); else getLibraryPathForce(file, library);
 	}
 
 	inline static function getLibraryPathForce(file:String, library:String){
-		var path = '$library:assets/$library/$file';
-		if(!Paths.exists(path)){path = getPreloadPath('$library/$file');}
+		var path = getForcedPath('$library/$file');
+		if(!Paths.exists(path)){path = '$library:assets/$library/$file';}
 		return path;
 	}
 
-	inline static function getPreloadPath(file:String){
+	inline static function getForcedPath(file:String){
 		var path = '';
 		for(mod in ModSupport.MODS){
 			#if sys if(FileSystem.exists(path)){break;} #end
@@ -189,7 +185,7 @@ class Paths
 	}
 
 	inline static public function font(key:String){
-		return 'assets/fonts/$key';
+		return getPath('$key', TEXT, 'fonts');
 	}
 
 	inline static public function getStageJSON(key:String){key = Paths.getFileName(key);
@@ -228,10 +224,8 @@ class Paths
 		return FlxAtlasFrames.fromSpriteSheetPacker(Paths.getGraphic(getPath('images/$key.png', IMAGE, library)), Paths.getText(file('images/$key.txt', library)));
 	}
 
-	inline static public function getCharacterAtlas(char:String, key:String){
-		char = Paths.getFileName(char);
-
-		var path = getPath('${char}/Sprites/${key}', IMAGE, 'characters');
+	inline static public function getCharacterAtlas(char:String, key:String){char = Paths.getFileName(char);
+		var path = getPath('${char}/Sprites/${key}.png', IMAGE, 'characters');
 		
 		return getAtlas(path);
 	}
@@ -246,19 +240,7 @@ class Paths
 		return getAtlas(path);
 	}
 
-	inline static public function getStageAtlas(key:String, ?directory:String = "Stage"){
-		var imagePath = getPath('images/${directory}/${key}', IMAGE, 'stages');
-		var path = getPath('images/${directory}/${key.split(".")[0]}', TEXT, 'stages');
-
-		if(!Paths.exists(imagePath)){
-			imagePath = getPath('images/Stage/${key}', IMAGE, 'stages');
-			path = getPath('images/Stage/${key.split(".")[0]}', TEXT, 'stages');
-		}
-
-		return getAtlas(path);
-	}
-
-	inline static public function getAtlas(path:String){
+	inline static public function getAtlas(path:String){path = path.replace(".png", "").replace(".jpg", "");
 		if(Paths.exists('${path}.xml')){return FlxAtlasFrames.fromSparrow(Paths.getGraphic('${path}.png'), Paths.getText('${path}.xml'));}
 		return FlxAtlasFrames.fromSpriteSheetPacker(Paths.getGraphic('${path}.png'), Paths.getText('${path}.txt'));
 	}

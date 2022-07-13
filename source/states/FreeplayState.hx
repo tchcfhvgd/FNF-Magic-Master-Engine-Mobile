@@ -54,92 +54,9 @@ class FreeplayState extends MusicBeatState {
 		isDebug = true;
 		#end
 
-		// LOAD MUSIC FROM WEEKS
-		trace("Adding Week Songs");
-		for(week in substates.StoryMenuSubstate.weekData){
-			var category = week[0];
-
-			for(i in 0...week[1].length){
-				addSong(week[1][i], category);
-			}
+		for(song in Song.getSongList()){
+			addSong(song.song, song.data);
 		}
-		trace("Weeks Songs Added");
-
-		// ADD MUSIC MANUALLY
-		trace("Adding Manually Songs");
-		addSong("Flippin Force", [["Normal", ["Hard"]]]);
-		trace("Manually Songs Added");
-
-		#if sys
-
-		// LOAD MUSIC FROM MODS
-		trace("Adding Mod Songs");
-
-		for(mod in ModSupport.MODS){
-			if(mod.enabled){
-				var modSongs:String = '${mod.path}/assets/songs';
-				if(FileSystem.exists(modSongs) && FileSystem.isDirectory(modSongs)){
-					for(song in FileSystem.readDirectory(modSongs)){
-						var data:Array<Dynamic> = [];
-						if(FileSystem.isDirectory('${modSongs}/${song}') && FileSystem.exists('${modSongs}/${song}/Data')){
-							for(chart in FileSystem.readDirectory('${modSongs}/${song}/Data')){
-								var cStats:Array<String> = chart.replace(".json", "").split("-");
-								if(cStats[1] == null){cStats[1] = "Normal";}
-								if(cStats[2] == null){cStats[2] = "Normal";}
-			
-								var hasCat:Bool = false;
-				
-								for(d in data){
-									if(d[0] == cStats[1]){
-										hasCat = true;
-										d[1].push(cStats[2]);
-									}
-								}
-				
-								if(!hasCat){
-									data.push([cStats[1], [cStats[2]]]);
-								}
-							}
-							addSong(Paths.getFileName(song, true), data);
-						}
-					}
-				}
-			}
-		}
-
-		trace("Mod Songs Added");
-
-		// LOAD MUSIC FROM ARCHIVES
-		trace("Adding Archive Songs");
-
-		var songsDirectory:String = FileSystem.absolutePath("assets/songs");
-		for(song in FileSystem.readDirectory(songsDirectory)){
-			var data:Array<Dynamic> = [];
-			if(FileSystem.isDirectory('${songsDirectory}/${song}') && FileSystem.exists('${songsDirectory}/${song}/Data')){
-				for(chart in FileSystem.readDirectory('${songsDirectory}/${song}/Data')){
-					var cStats:Array<String> = chart.replace(".json", "").split("-");
-					if(cStats[1] == null){cStats[1] = "Normal";}
-					if(cStats[2] == null){cStats[2] = "Normal";}
-
-					var hasCat:Bool = false;
-	
-					for(d in data){
-						if(d[0] == cStats[1]){
-							hasCat = true;
-							d[1].push(cStats[2]);
-						}
-					}
-	
-					if(!hasCat){
-						data.push([cStats[1], [cStats[2]]]);
-					}
-				}
-				addSong(Paths.getFileName(song, true), data);
-			}
-        }
-		trace("Archive Songs Added");
-
-		#end
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
 		bg.antialiasing = true;
@@ -154,7 +71,7 @@ class FreeplayState extends MusicBeatState {
 
 		for (i in 0...songs.length)
 		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false, true);
+			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, Paths.getFileName(songs[i].songName, true), true, false, true);
 			songText.isMenuItem = "freeItem";
 			songText.targetY = i;
 			grpSongs.add(songText);
@@ -216,40 +133,13 @@ class FreeplayState extends MusicBeatState {
 		super.create();
 	}
 
-	public function addSong(songName:String, ?categ:Array<Dynamic>){
+	public function addSong(songName:String, categ:Array<Dynamic>){
 		var hasSong = false;
-		for(i in songs){
-			if(i.songName == songName){hasSong = true;}
-		}
+		for(i in songs){if(i.songName == songName){hasSong = true;}}
 
 		if(!hasSong){
-			if(categ != null){
-				songs.push(new SongMetadata(songName, categ));
-				trace("Song Added: " + songName + " | " + categ);
-			}else{
-				#if desktop
-				var data:Array<Dynamic> = [];
-				for(chart in FileSystem.readDirectory(FileSystem.absolutePath('assets/songs/${songName}/Data'))){
-					var cStats:Array<String> = chart.split("-");
-					var hasCat:Bool = false;
-
-					for(d in data){
-						if(d[0] == cStats[1]){
-							hasCat = true;
-							d[1].push(cStats[2]);
-						}
-					}
-
-					if(!hasCat){
-						data.push([cStats[1], [cStats[2]]]);
-					}
-				}
-				songs.push(new SongMetadata(songName, data));
-				trace("Song Added: " + songName + " | " + data);
-				#else
-				trace("Error: " + songName);
-				#end
-			}
+			songs.push(new SongMetadata(songName, categ));
+			trace("Song Added: " + songName + " | " + categ);
 		}else{
 			trace("Song Already Exists: " + songName);
 		}

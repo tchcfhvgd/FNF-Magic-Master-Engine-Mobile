@@ -19,7 +19,7 @@ class LangSupport {
     private static var LANG:DynamicAccess<Dynamic>;
 
     public static function init():Void {
-        var savedLang:String = FlxG.save.data.language;
+        var savedLang:String = PreSettings.getFromArraySetting("Language");
         if(savedLang == null){savedLang = Language;}
 
         changeLang(savedLang);

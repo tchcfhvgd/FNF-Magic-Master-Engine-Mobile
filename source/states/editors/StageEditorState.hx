@@ -5,17 +5,6 @@ import flixel.input.mouse.FlxMouse;
 import flixel.FlxCamera;
 import flixel.addons.ui.FlxUIText;
 import haxe.zip.Writer;
-import FlxCustom.FlxUICustomList;
-import FlxCustom.FlxUINumericStepperCustom;
-import Conductor.BPMChangeEvent;
-import Section.SwagGeneralSection;
-import Section.SwagSection;
-import Song;
-import Song.SwagSong;
-import Song.SwagStrum;
-import Stage.StageData;
-import Stage.StageSprite;
-import Stage.StageAnim;
 import flixel.FlxState;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -49,10 +38,24 @@ import openfl.media.Sound;
 import openfl.net.FileReference;
 import openfl.utils.ByteArray;
 
+import Conductor.BPMChangeEvent;
+import Section.SwagGeneralSection;
+import Section.SwagSection;
+import Song;
+import Song.SwagSong;
+import Song.SwagStrum;
+import Stage.StageData;
+import Stage.StageSprite;
+import Stage.StageAnim;
+import FlxCustom.FlxCustomButton;
+import FlxCustom.FlxUINumericStepperCustom;
+import FlxCustom.FlxUICustomList;
+
 using StringTools;
 
 class StageEditorState extends MusicBeatState {
     public static var _stage:StageData;
+    private static var _curStage:String = "Stage";
     var curStage:Stage;
     
     public static var curObj:Int = 0;
@@ -72,6 +75,7 @@ class StageEditorState extends MusicBeatState {
         if(stage == null){stage = cast Json.parse(Assets.getText(Paths.getStageJSON("Stage")));}
         _stage = stage;
 
+        FlxG.sound.music.stop();
         FlxG.switchState(new StageEditorState(onConfirm, onBack));
     }
 
@@ -84,7 +88,7 @@ class StageEditorState extends MusicBeatState {
         backGrid.cameras = [camGame];
         add(backGrid);
 
-        curStage = new Stage(null, [["Girlfriend",[400,130],1,false,"Default","GF",0],["Fliqpy",[100,100],1,true,"Default","NORMAL",0],["Boyfriend",[770,100],1,false,"Default","NORMAL",0]], true);
+        curStage = new Stage(null, [["Girlfriend",[400,130],1,false,"Default","GF",0],["Daddy_Dearest",[100,100],1,true,"Default","NORMAL",0],["Boyfriend",[770,100],1,false,"Default","NORMAL",0]], true);
         curStage.cameras = [camFGame];
         add(curStage);
 
@@ -232,6 +236,7 @@ class StageEditorState extends MusicBeatState {
     var sprScl:FlxUINumericStepper;
     var sprAng:FlxUINumericStepper;
     var sprAlp:FlxUINumericStepper;
+    var sprStageInitChar:FlxUINumericStepper;
     //Menu Animations
     var sprFrame:FlxUINumericStepper;
     var cbxLoop:FlxUICheckBox;
@@ -245,25 +250,18 @@ class StageEditorState extends MusicBeatState {
         var tabMENU = new FlxUI(null, MENU);
         tabMENU.name = "General";
 
-        var lblStageName = new FlxText(5, 20, MENU.width - 10, "Stage Name:", 8); tabMENU.add(lblStageName);
-        txtStageName = new FlxUIInputText(lblStageName.x, lblStageName.y + 15, Std.int(lblStageName.width), curStage.curStage, 8); tabMENU.add(txtStageName);
+        var lblStageName = new FlxText(5, 0, MENU.width - 10, "Stage Name:", 8); tabMENU.add(lblStageName);
+        txtStageName = new FlxUIInputText(lblStageName.x, lblStageName.y + 15, Std.int(lblStageName.width), _curStage, 8); tabMENU.add(txtStageName);
         arrayFocus.push(txtStageName);
 
-        var btnStageSave = new FlxButton(txtStageName.x, txtStageName.y + txtStageName.height + 3, "Save", function(){
+        var btnStageSave:FlxButton = new FlxCustomButton(txtStageName.x, txtStageName.y + txtStageName.height + 3, Std.int(txtStageName.width), null, "Save", null, function(){
             saveStage(txtStageName.text);
         }); tabMENU.add(btnStageSave);
-        btnStageSave.setSize(Std.int((txtStageName.width)), Std.int(btnStageSave.height));
-        btnStageSave.setGraphicSize(Std.int((txtStageName.width)), Std.int(btnStageSave.height));
-        btnStageSave.centerOffsets();
-        btnStageSave.label.fieldWidth = btnStageSave.width;
 
-        var btnStageLoad = new FlxButton(btnStageSave.x, btnStageSave.y + btnStageSave.height + 3, "Load", function(){
+        var btnStageLoad:FlxButton = new FlxCustomButton(btnStageSave.x, btnStageSave.y + btnStageSave.height + 3, Std.int(txtStageName.width), null, "Load", null, function(){
+            _curStage = txtStageName.text;
             editStage(this.onBack, this.onConfirm, cast Json.parse(Assets.getText(Paths.getStageJSON(txtStageName.text))));
         }); tabMENU.add(btnStageLoad);
-        btnStageLoad.setSize(Std.int((txtStageName.width)), Std.int(btnStageLoad.height));
-        btnStageLoad.setGraphicSize(Std.int((txtStageName.width)), Std.int(btnStageLoad.height));
-        btnStageLoad.centerOffsets();
-        btnStageLoad.label.fieldWidth = btnStageLoad.width;
 
         var line1 = new FlxSprite(5, btnStageLoad.y + btnStageLoad.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line1);
 
@@ -281,7 +279,14 @@ class StageEditorState extends MusicBeatState {
 		sprStageChroma.name = 'stageChroma';
 		tabMENU.add(sprStageChroma);
 
-        var lblStageDirectory = new FlxText(5, sprStageChroma.y + sprStageChroma.height + 5, txtStageName.width, "Stage Directory:", 8); tabMENU.add(lblStageDirectory);
+        var lblStageInitChar = new FlxText(sprStageZoom.x, sprStageZoom.y + sprStageZoom.height + 5, 0, "Stage Character Position Initial:", 8); tabMENU.add(lblStageInitChar);
+        sprStageInitChar = new FlxUINumericStepper(lblStageInitChar.x + 3, lblStageInitChar.y + lblStageInitChar.height + 2, 1, 0, -999, 999, 1);
+            @:privateAccess arrayFocus.push(cast sprStageInitChar.text_field);
+            sprStageInitChar.value = _stage.initChar;
+            sprStageInitChar.name = 'stageInitChar';
+		tabMENU.add(sprStageInitChar);
+
+        var lblStageDirectory = new FlxText(5, sprStageInitChar.y + sprStageInitChar.height + 5, txtStageName.width, "Stage Directory:", 8); tabMENU.add(lblStageDirectory);
         txtStageDirect = new FlxUIInputText(lblStageDirectory.x, lblStageDirectory.y + 15, Std.int(lblStageDirectory.width), curStage.directory, 8); tabMENU.add(txtStageDirect);
         txtStageDirect.name = "STAGE_DIRECTORY";
         arrayFocus.push(txtStageDirect);
@@ -291,19 +296,10 @@ class StageEditorState extends MusicBeatState {
         var ttlChangeItem = new FlxText(5, line2.y + line2.height + 5, Std.int(MENU.width - 10), "Change Item", 8); tabMENU.add(ttlChangeItem);
         ttlChangeItem.alignment = CENTER;
 
-        var btnBack = new FlxButton(5, ttlChangeItem.y + ttlChangeItem.height, "<", function(){curObj--;}); tabMENU.add(btnBack);
-        btnBack.setSize(Std.int((ttlChangeItem.width / 2)), Std.int(btnBack.height));
-        btnBack.setGraphicSize(Std.int((ttlChangeItem.width / 2)), Std.int(btnBack.height));
-        btnBack.centerOffsets();
-        btnBack.label.fieldWidth = btnBack.width;
+        var btnBack:FlxButton = new FlxCustomButton(5, ttlChangeItem.y + ttlChangeItem.height, Std.int((ttlChangeItem.width / 2)), null, "<", null, function(){curObj--;}); tabMENU.add(btnBack);
+        var btnFront:FlxButton = new FlxCustomButton(btnBack.x + btnBack.width, btnBack.y, Std.int((ttlChangeItem.width / 2)), null, ">", null, function(){curObj++;}); tabMENU.add(btnFront);
 
-        var btnFront = new FlxButton(btnBack.x + btnBack.width, btnBack.y, ">", function(){curObj++;}); tabMENU.add(btnFront);
-        btnFront.setSize(Std.int((ttlChangeItem.width / 2)), Std.int(btnFront.height));
-        btnFront.setGraphicSize(Std.int((ttlChangeItem.width / 2)), Std.int(btnFront.height));
-        btnFront.centerOffsets();
-        btnFront.label.fieldWidth = btnFront.width;
-
-        var btnPushNew = new FlxButton(5, btnBack.y + btnBack.height + 7, "Push New Item Current", function(){
+        var btnPushNew:FlxButton = new FlxCustomButton(5, btnBack.y + btnBack.height + 7, Std.int((MENU.width) - 10), null, "Push New Item Current", null, function(){
             var nStagePart:StagePart = {
                 image: "",
                 position: [0, 0],
@@ -323,21 +319,13 @@ class StageEditorState extends MusicBeatState {
             _stage.StageData.insert(curObj - 1, nStagePart);
             reloadStage();
         }); tabMENU.add(btnPushNew);
-        btnPushNew.setSize(Std.int((MENU.width) - 10), Std.int(btnPushNew.height));
-        btnPushNew.setGraphicSize(Std.int((MENU.width) - 10), Std.int(btnPushNew.height));
-        btnPushNew.centerOffsets();
-        btnPushNew.label.fieldWidth = btnPushNew.width;
 
-        var btnDelCur = new FlxButton(btnPushNew.x, btnPushNew.y + btnPushNew.height + 2, "Delete Current Item", function(){
+        var btnDelCur:FlxButton = new FlxCustomButton(btnPushNew.x, btnPushNew.y + btnPushNew.height + 2, Std.int((MENU.width) - 10), null, "Delete Current Item", null, function(){
             if(_stage.StageData.length > 1){
                 _stage.StageData.remove(curObject);
                 reloadStage();
             }
         }); tabMENU.add(btnDelCur);
-        btnDelCur.setSize(Std.int((MENU.width) - 10), Std.int(btnDelCur.height));
-        btnDelCur.setGraphicSize(Std.int((MENU.width) - 10), Std.int(btnDelCur.height));
-        btnDelCur.centerOffsets();
-        btnDelCur.label.fieldWidth = btnDelCur.width;
 
         //
         var line3 = new FlxSprite(5, btnDelCur.y + btnDelCur.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line3);
@@ -423,21 +411,13 @@ class StageEditorState extends MusicBeatState {
         btnResFlip.updateHitbox();
         tabMENU.add(btnResFlip);
 
-        var btnHoriz = new FlxButton(lblFlip.x, lblFlip.y + 17, "Horizontal", function(){
+        var btnHoriz:FlxButton = new FlxCustomButton(lblFlip.x, lblFlip.y + 17, Std.int((MENU.width / 2) - 5), null, "Horizontal", null, function(){
             curObject.dflipX = !curObject.dflipX;
         }); tabMENU.add(btnHoriz);
-        btnHoriz.setSize(Std.int((MENU.width / 2) - 5), Std.int(btnHoriz.height));
-        btnHoriz.setGraphicSize(Std.int((MENU.width / 2) - 5), Std.int(btnHoriz.height));
-        btnHoriz.centerOffsets();
-        btnHoriz.label.fieldWidth = btnHoriz.width;
 
-        var btnVert = new FlxButton(lblFlip.x + btnHoriz.width, btnHoriz.y, "Vertical", function(){
+        var btnVert:FlxButton = new FlxCustomButton(lblFlip.x + btnHoriz.width, btnHoriz.y, Std.int((MENU.width / 2) - 5), null, "Vertical", null, function(){
             curObject.dflipY = !curObject.dflipY;
         }); tabMENU.add(btnVert);
-        btnVert.setSize(Std.int((MENU.width / 2) - 5), Std.int(btnVert.height));
-        btnVert.setGraphicSize(Std.int((MENU.width / 2) - 5), Std.int(btnVert.height));
-        btnVert.centerOffsets();
-        btnVert.label.fieldWidth = btnVert.width;
 
         //
         var line4 = new FlxSprite(5, btnHoriz.y + btnHoriz.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line4);
@@ -458,7 +438,7 @@ class StageEditorState extends MusicBeatState {
 		arrayFocus.push(txtAnimIndices);
         tabMENU.add(txtAnimIndices);
 
-        var btnAnimUpdate = new FlxButton(txtAnimName.x + txtAnimName.width + 5, lblAnimName.y, "Update", function(){
+        var btnAnimUpdate:FlxButton = new FlxCustomButton(txtAnimName.x + txtAnimName.width + 5, lblAnimName.y, 50, null, "Update", null, function(){
             if(curObject.stageAnims != null && curObject.stageAnims.length > 0){
                 for(anim in curObject.stageAnims){
                     if(anim.anim == txtAnimName.text){
@@ -481,13 +461,9 @@ class StageEditorState extends MusicBeatState {
             }
             reloadStage();
         });
-        btnAnimUpdate.setGraphicSize(Std.int(50), Std.int(btnAnimUpdate.height));
-        btnAnimUpdate.updateHitbox();
-        btnAnimUpdate.label.updateHitbox();
-        for(p in btnAnimUpdate.labelOffsets){p.set(-17, 3);}
         tabMENU.add(btnAnimUpdate);
 
-        var btnAnimAdd = new FlxButton(btnAnimUpdate.x, btnAnimUpdate.y + btnAnimUpdate.height + 2, "Add", function(){
+        var btnAnimAdd:FlxButton = new FlxCustomButton(btnAnimUpdate.x, btnAnimUpdate.y + btnAnimUpdate.height + 2, 50, null, "Add", null, function(){
             var indices:Array<Int> = [];
             var indicesStr:Array<String> = txtAnimIndices.text.trim().split(',');
             if(indicesStr.length > 1) {
@@ -509,13 +485,9 @@ class StageEditorState extends MusicBeatState {
             curObject.stageAnims.push(nStageAnim);
             reloadStage();
         });
-        btnAnimAdd.setGraphicSize(Std.int(50), Std.int(btnAnimAdd.height));
-        btnAnimAdd.updateHitbox();
-        btnAnimAdd.label.updateHitbox();
-        for(p in btnAnimAdd.labelOffsets){p.set(-17, 3);}
         tabMENU.add(btnAnimAdd);
 
-        var btnAnimDel = new FlxButton(btnAnimAdd.x, btnAnimAdd.y + btnAnimAdd.height + 7, "Delete", function(){
+        var btnAnimDel:FlxButton = new FlxCustomButton(btnAnimAdd.x, btnAnimAdd.y + btnAnimAdd.height + 7, 50, null, "Delete", null, function(){
             if(curObject.stageAnims != null && curObject.stageAnims.length > 0){
                 for(anim in curObject.stageAnims){
                     if(anim.anim == txtAnimName.text){
@@ -526,10 +498,6 @@ class StageEditorState extends MusicBeatState {
             }
             reloadStage();
         });
-        btnAnimDel.setGraphicSize(Std.int(50), Std.int(btnAnimDel.height));
-        btnAnimDel.updateHitbox();
-        btnAnimDel.label.updateHitbox();
-        for(p in btnAnimDel.labelOffsets){p.set(-17, 3);}
         tabMENU.add(btnAnimDel);
 
         var lblAnimFrame = new FlxText(5, txtAnimIndices.y + txtAnimIndices.height + 5, 0, "FrameRate: ", 8); tabMENU.add(lblAnimFrame);
@@ -603,7 +571,8 @@ class StageEditorState extends MusicBeatState {
             FlxG.log.add(wname);
             switch(wname){
                 case 'stageZoom':{_stage.CamZoom = nums.value;}
-                case 'stageChroma':{_stage.CamZoom = nums.value;}
+                //case 'stageChroma':{_stage.CamZoom = nums.value;}
+                case 'stageInitChar':{_stage.initChar = Std.int(nums.value); reloadStage();}
                 case 'posX':{curObject.position[0] = nums.value;}
                 case 'posY':{curObject.position[1] = nums.value;}
                 case 'scrollX':{curObject.scrollFactor[0] = nums.value;}
@@ -617,6 +586,7 @@ class StageEditorState extends MusicBeatState {
 
     function reloadStage(){
         curStage.reload(_stage);
+        curStage.setCharacters([["Girlfriend",[400,130],1,false,"Default","GF",0],["Daddy_Dearest",[100,100],1,true,"Default","NORMAL",0],["Boyfriend",[770,100],1,false,"Default","NORMAL",0]]);
     }
 
     function replaceStage(id1:Int, id2:Int){

@@ -196,13 +196,13 @@ class XMLEditorState extends MusicBeatState {
 
     
 
-    private function getNamesArray(arr:Iterator<Access>):Array<String>{
+    public static function getNamesArray(arr:Iterator<Access>):Array<String>{
         var toReturn:Array<String> = new Array<String>();
 
         for(chr in arr){
             var toDel:String = "";
             for(i in 0...chr.att.name.length){if(i >= chr.att.name.length - 4){toDel = toDel + chr.att.name.charAt(i);}}
-            var nChar = chr.att.name.replace(toDel, ""); trace(nChar);
+            var nChar = chr.att.name.replace(toDel, "");
             if(!toReturn.contains(nChar)){toReturn.push(nChar);}
         }
 
