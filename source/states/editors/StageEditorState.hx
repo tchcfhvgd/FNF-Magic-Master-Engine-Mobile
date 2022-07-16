@@ -72,7 +72,7 @@ class StageEditorState extends MusicBeatState {
     var arrayFocus:Array<FlxUIInputText> = [];
 
     public static function editStage(?onConfirm:FlxState, ?onBack:FlxState, ?stage:StageData){
-        if(stage == null){stage = cast Json.parse(Assets.getText(Paths.getStageJSON("Stage")));}
+        if(stage == null){stage = cast Json.parse(Paths.getText(Paths.getStageJSON("Stage")));}
         _stage = stage;
 
         FlxG.sound.music.stop();

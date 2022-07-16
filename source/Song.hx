@@ -57,6 +57,12 @@ typedef WeekData = {
 	var onlyThis:Bool;
 	var weeks:Array<ItemWeek>;
 }
+typedef FreeplayData = {
+	var showArchiveSongs:Bool;
+	var freeplay:Array<ItemSong>;
+}
+
+
 typedef ItemWeek = {
 	var name:String;
 	var display:String;
@@ -67,11 +73,6 @@ typedef ItemWeek = {
 	var hiddenOnWeeks:Bool;
 	var hiddenOnFreeplay:Bool;
 }
-
-typedef FreeplayData = {
-	var showArchiveSongs:Bool;
-	var freeplay:Array<ItemSong>;
-}
 typedef ItemSong = {
 	var song:String;
 	var data:Array<Dynamic>;
@@ -79,19 +80,22 @@ typedef ItemSong = {
 }
 
 class Song{
-	public static function addToList(item:Dynamic, list:Dynamic):Void {
+	public static function addSongToList(name:String, cats:Array<Dynamic>, locked:Bool, list:Dynamic):Void {
 		if((list is Array<ItemSong>)){
 			var list:Array<ItemSong> = cast list;
 			var isTrue:Bool = false;
 
-			for(lItem in list){
-				if(item.song == lItem.song){
-					isTrue = true;
-					break;
-				}
-			}
+			for(lItem in list){if(name == lItem.song){isTrue = true; break;}}
 
-			if(!isTrue){list.push(item);}
+			if(!isTrue){
+				var item:ItemSong = {
+					song: name,
+					data: cats,
+					lock: locked
+				};
+
+				list.push(item);
+			}
 		}
 		
 	}
@@ -99,108 +103,51 @@ class Song{
 	public static function getSongList():Array<ItemSong> {
 		var SongList:Array<ItemSong> = [];
 
-		//Adding Base Weeks
-		var bWeeks:WFData = Json.parse(Assets.getText('assets/data/weeks.json'));
-		for(week in bWeeks.weekData.weeks){
-			if(!week.hiddenOnFreeplay){
-				var cats:Array<Dynamic> = week.data;
-				var lock:Bool = week.lock;
+		for(i in Paths.readFile('assets/data/', 'weeks.json')){
+			var bWeek:WFData = Json.parse(Paths.getText(i));
 
-				for(song in week.songs){
-					var item:ItemSong = {
-						song: song,
-						data: cats,
-						lock: lock
-					};
+			for(week in bWeek.weekData.weeks){
+				if(!week.hiddenOnFreeplay){
+					var cats:Array<Dynamic> = week.data;
+					var lock:Bool = week.lock;
+	
+					for(song in week.songs){addSongToList(song, cats, lock, SongList);}
+				}			
+			}
 
-					addToList(item, SongList);
-				}
-			}			
-		}
+			for(song in bWeek.freeplayData.freeplay){
+				var cats:Array<Dynamic> = song.data;
+				var lock:Bool = song.lock;
+	
+				addSongToList(song.song, cats, lock, SongList);	
+			}
 
-		for(song in bWeeks.freeplayData.freeplay){
-			var cats:Array<Dynamic> = song.data;
-			var lock:Bool = song.lock;
+			#if sys
+			if(bWeek.freeplayData.showArchiveSongs){
+				var songsDirectory:String = i;
+				songsDirectory = songsDirectory.replace('data/weeks.json', 'songs');
 
-			var item:ItemSong = {
-				song: song.song,
-				data: cats,
-				lock: lock
-			};
-
-			addToList(item, SongList);	
-		}
-
-		for(mod in ModSupport.MODS){var path = '${mod.path}/assets/data/weeks.json';
-			if(mod.enabled && Paths.exists(path)){
-				var bWeeks:WFData = Json.parse(Paths.getText(path));
-				for(week in bWeeks.weekData.weeks){
-					if(!week.hiddenOnFreeplay){
-						var cats:Array<Dynamic> = week.data;
-						var lock:Bool = week.lock;
-
-						for(song in week.songs){
-							var item:ItemSong = {
-								song: song,
-								data: cats,
-								lock: lock
-							};
-
-							addToList(item, SongList);
-						}
-					}			
-				}
-
-				for(song in bWeeks.freeplayData.freeplay){
-					var cats:Array<Dynamic> = song.data;
-					var lock:Bool = song.lock;
-
-					var item:ItemSong = {
-						song: song.song,
-						data: cats,
-						lock: lock
-					};
-
-					addToList(item, SongList);	
-				}
-
-				#if sys
-				if(bWeeks.freeplayData.showArchiveSongs){
-					var songsDirectory:String = FileSystem.absolutePath('${mod.path}/assets/songs');
-					for(song in FileSystem.readDirectory(songsDirectory)){
+				for(song in FileSystem.readDirectory(songsDirectory)){
+					if(FileSystem.isDirectory('${songsDirectory}/${song}') && FileSystem.exists('${songsDirectory}/${song}/Data')){
 						var data:Array<Dynamic> = [];
-						if(FileSystem.isDirectory('${songsDirectory}/${song}') && FileSystem.exists('${songsDirectory}/${song}/Data')){
-							for(chart in FileSystem.readDirectory('${songsDirectory}/${song}/Data')){
-								var cStats:Array<String> = chart.replace(".json", "").split("-");
-								if(cStats[1] == null){cStats[1] = "Normal";}
-								if(cStats[2] == null){cStats[2] = "Normal";}
-
-								var hasCat:Bool = false;
-				
-								for(d in data){
-									if(d[0] == cStats[1]){
-										hasCat = true;
-										d[1].push(cStats[2]);
-									}
+						for(chart in FileSystem.readDirectory('${songsDirectory}/${song}/Data')){
+							var cStats:Array<String> = chart.replace(".json", "").split("-");
+							if(cStats[1] == null){cStats[1] = "Normal";}
+							if(cStats[2] == null){cStats[2] = "Normal";}
+							var hasCat:Bool = false;
+							for(d in data){
+								if(d[0] == cStats[1]){
+									hasCat = true;
+									d[1].push(cStats[2]);
 								}
-				
-								if(!hasCat){
-									data.push([cStats[1], [cStats[2]]]);
-								}
-
-								var item:ItemSong = {
-									song: Paths.getFileName(song, true),
-									data: data,
-									lock: false
-								}; 
-								
-								addToList(item, SongList);
 							}
+							if(!hasCat){data.push([cStats[1], [cStats[2]]]);}
 						}
+						addSongToList(song, data, false, SongList);
 					}
 				}
-				#end	
 			}
+			#end
 		}
 
 		return SongList;
@@ -260,7 +207,7 @@ class Song{
 
 		if(aSong.get("song") == null){
 			if(sName.split("-")[2] != null){
-				aSong.set("song", Paths.getFileName(sName.split("-")[0], true));
+				aSong.set("song", sName.split("-")[0]);
 			}else{
 				aSong.set("song", "PlaceHolderName");
 			}

@@ -98,31 +98,21 @@ class Character extends FlxSprite{
 	public var controls:Controls;
 
 	public static function getCharacters():Array<String>{
-		var charArray:Array<String> = [];
+		var charArray:Array<String> = [
+			"Boyfriend",
+			"Dad_and_Mom",
+			"Daddy_Dearest",
+			"Girlfriend",
+			"Mom",
+			"Monster",
+			"Pico",
+			"Senpai",
+			"Spirit",
+			"Spooky_Kids",
+			"Tankman"
+		];
 
-        #if windows
-            for(i in FileSystem.readDirectory(FileSystem.absolutePath('assets/characters'))){
-                var aChar:String = i.replace("_"," ");
-                charArray.push(aChar);
-            }
-        #else
-			charArray = [
-                "Boyfriend",
-				"Boyfriend Militar",
-				"Boyfriend Pixel",
-				"Cuddles",
-				"Daddy Dearest",
-				"Fliqpy",
-				"Fliqpy Kpow",
-				"Girlfriend",
-				"Girlfriend Invisible",
-				"Girlfriend Pixel",
-				"Lumpy",
-				"RussellLammy",
-				"Sniffles",
-				"Toothy"
-            ];
-        #end
+        #if sys charArray = []; for(i in Paths.readDirectory('assets/characters')){charArray.push(i);} #end
 
         return charArray;
 	}

@@ -69,9 +69,8 @@ class FreeplayState extends MusicBeatState {
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
 
-		for (i in 0...songs.length)
-		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, Paths.getFileName(songs[i].songName, true), true, false, true);
+		for (i in 0...songs.length){
+			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, Paths.getFileName(songs[i].songName), true, false, true);
 			songText.isMenuItem = "freeItem";
 			songText.targetY = i;
 			grpSongs.add(songText);
@@ -209,15 +208,14 @@ class FreeplayState extends MusicBeatState {
 
 		if (accepted){
 			// adjusting the song name to be compatible
-			var songFormat = StringTools.replace(songs[curSelected].songName, " ", "_");
 			trace("Selected Song: " + songs[curSelected].songName);
 
-			var poop:String = Highscore.formatSong(songFormat, songs[curSelected].curDiff, songs[curSelected].curCategory);
+			var poop:String = Highscore.formatSong(songs[curSelected].songName, songs[curSelected].curDiff, songs[curSelected].curCategory);
 
 			trace("Song Format: " + poop);
 			
 			PlayState.SongListData.resetVariables();
-			PlayState.SongListData.addSong(Song.loadFromJson(poop, songFormat));
+			PlayState.SongListData.addSong(Song.loadFromJson(poop, songs[curSelected].songName));
 			PlayState.SongListData.playWeek();
 		}
 	}

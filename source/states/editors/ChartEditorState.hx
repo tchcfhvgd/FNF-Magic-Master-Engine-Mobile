@@ -1244,7 +1244,7 @@ class ChartEditorState extends MusicBeatState{
     }
 
     function getNoteJSON(strum:Int, noteData:Int):NoteJSON{
-        var cJson:StrumLineNoteJSON = cast Json.parse(Assets.getText(Paths.getStrumJSON(getStrumKeys(strum))));
+        var cJson:StrumLineNoteJSON = cast Json.parse(Paths.getText(Paths.getStrumJSON(getStrumKeys(strum))));
 
         return cJson.gameplayNotes[noteData];
     }

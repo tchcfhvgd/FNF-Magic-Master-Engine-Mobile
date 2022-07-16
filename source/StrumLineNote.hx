@@ -578,7 +578,7 @@ class Note extends StrumNote {
     }
 
     //Static Methods
-    public static function getJSONDATA():DynamicAccess<Dynamic> {return cast Json.parse(Paths.getText(Paths.getPath('notes/NoteData.json', TEXT, 'notes')));}
+    public static function getJSONDATA():DynamicAccess<Dynamic> {return cast Json.parse(Paths.getText(Paths.getPath('NoteData.json', TEXT, 'notes')));}
 
     public static function getNotePresets():DynamicAccess<Dynamic> {return getJSONDATA().get("Note_Presets");}
     public static function getNoteSpecials():DynamicAccess<Dynamic> {return getJSONDATA().get("Note_Specials");}

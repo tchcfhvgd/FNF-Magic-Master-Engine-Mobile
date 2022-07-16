@@ -24,9 +24,9 @@ using StringTools;
 class Paths {
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
 
-	public static function getFileName(key:String, toNormal:Bool = false){
-		if(toNormal){return key.replace("_", " ");}
-		return key.replace(" ", "_");
+	public static function getFileName(key:String, toFile:Bool = false){
+		if(toFile){return key.replace(" ", "_");}
+		return key.replace("_", " ");
 	}
 
 	static var curLibrary:String = "shared";
@@ -40,6 +40,28 @@ class Paths {
 		#if sys	if(FileSystem.exists(FileSystem.absolutePath(path))){return true;} #end
 
 		return false;
+	}
+
+	inline public static function readDirectory(file:String):Array<Dynamic>{
+		var toReturn:Array<Dynamic> = [];
+
+		#if sys
+		for(i in FileSystem.readDirectory(FileSystem.absolutePath(file))){if(!toReturn.contains(i)){toReturn.push(i);}}
+		for(mod in ModSupport.MODS){if(mod.enabled){for(i in FileSystem.readDirectory(FileSystem.absolutePath('${mod.path}/$file'))){if(!toReturn.contains(i)){toReturn.push(i);}}}}
+		#end
+
+		return toReturn;
+	}
+
+	inline public static function readFile(path:String, file:String):Array<Dynamic>{
+		var toReturn:Array<Dynamic> = [];
+
+		#if sys
+		if(FileSystem.exists(FileSystem.absolutePath('$path/$file'))){toReturn.push(FileSystem.absolutePath('$path/$file'));}
+		for(mod in ModSupport.MODS){if(mod.enabled && FileSystem.exists(FileSystem.absolutePath('${mod.path}/$path/$file'))){toReturn.push(FileSystem.absolutePath('${mod.path}/$path/$file'));}}
+		#end
+
+		return toReturn;
 	}
 
 	public static function getPath(file:String, type:AssetType, library:Null<String>){
@@ -188,7 +210,7 @@ class Paths {
 		return getPath('$key', TEXT, 'fonts');
 	}
 
-	inline static public function getStageJSON(key:String){key = Paths.getFileName(key);
+	inline static public function getStageJSON(key:String){
 		var path = getPath('${key}.json', TEXT, 'stages');
 
 		if(!Paths.exists(path)){path = getPath('Stage.json', TEXT, 'stages');}
@@ -206,7 +228,7 @@ class Paths {
 		return path; 
 	}
 
-	inline static public function getCharacterJSON(char:String, cat:String, skin:String){char = Paths.getFileName(char); cat = Paths.getFileName(cat); skin = Paths.getFileName(skin);
+	inline static public function getCharacterJSON(char:String, cat:String, skin:String){
 		var path = getPath('${char}/Skins/${char}-${cat}-${skin}.json', TEXT, 'characters');
 
 		if(!Paths.exists(path)){path = getPath('${char}/Skins/${char}-Default-${skin}.json', TEXT, 'characters');}
@@ -224,7 +246,7 @@ class Paths {
 		return FlxAtlasFrames.fromSpriteSheetPacker(Paths.getGraphic(getPath('images/$key.png', IMAGE, library)), Paths.getText(file('images/$key.txt', library)));
 	}
 
-	inline static public function getCharacterAtlas(char:String, key:String){char = Paths.getFileName(char);
+	inline static public function getCharacterAtlas(char:String, key:String){
 		var path = getPath('${char}/Sprites/${key}.png', IMAGE, 'characters');
 		
 		return getAtlas(path);

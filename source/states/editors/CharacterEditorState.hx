@@ -445,7 +445,6 @@ class CharacterEditorState extends MusicBeatState{
 
     var _file:FileReference;
     function saveCharacter(name:String){
-        name = Paths.getFileName(name);
         var data:String = Json.stringify(_character);
     
         if((data != null) && (data.length > 0)){
