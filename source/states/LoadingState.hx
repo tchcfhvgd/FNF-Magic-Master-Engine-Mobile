@@ -77,7 +77,6 @@ class LoadingState extends MusicBeatState{
 		#end
 
 		loadSong();
-		loadStage();
 		loadCharacters();
 
 		FlxG.camera.fade(FlxG.camera.bgColor, FADE_TIME, true);
@@ -124,27 +123,6 @@ class LoadingState extends MusicBeatState{
 					}
 				}
 			}
-		#end
-	}
-
-	function loadStage(){
-		trace('Loading Song [${SONG.song}] Stage [${SONG.stage}]');
-
-		var sJson:StageData = cast Json.parse(Paths.getText(Paths.getStageJSON(SONG.stage)));
-
-		#if sys
-			if(FileSystem.exists(FileSystem.absolutePath('assets/stages/images/${sJson.Directory}'))){
-				for(file in FileSystem.readDirectory(FileSystem.absolutePath('assets/stages/images/${sJson.Directory}'))){
-					if(file.endsWith(".png") || file.endsWith(".jpg")){
-						var sPath:String = 'stages:assets/stages/images/${sJson.Directory}/' + file;
-						checkBitMap(Std.string(sPath));
-					}
-				}
-			}else{
-				trace('Song [${SONG.song}] Stage [${SONG.stage}]: Doesn\'t Exist');
-			}
-		#else
-			for(sprite in sJson.StageData){checkBitMap('stages:assets/stages/images/${sJson.Directory}/${sprite.image}');}
 		#end
 	}
 

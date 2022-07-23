@@ -16,7 +16,7 @@ class MusicBeatState extends FlxUIState {
 
 	public var onBack:FlxState;
 	public var onConfirm:FlxState;
-
+	
 	private var lastBeat:Float = 0;
 	private var lastStep:Float = 0;
 
@@ -27,19 +27,22 @@ class MusicBeatState extends FlxUIState {
 	inline function get_principal_controls():Controls{return PlayerSettings.getPlayer(0).controls;}
 
 	private function getOtherControls(ID:Int):Controls{return PlayerSettings.getPlayer(ID).controls;}
-
 	private var canControlle:Bool = false;
+
+	private var script(get, never):Script;
+	inline function get_script():Script{return ModSupport.StScripts.get(Type.getClassName(Type.getClass(this)));}
 
 	private var camGame:FlxCamera = new FlxCamera();
 	private var camFGame:FlxCamera = new FlxCamera();
 	private var camBHUD:FlxCamera = new FlxCamera();
 	private var camHUD:FlxCamera = new FlxCamera();
 	private var camFHUD:FlxCamera = new FlxCamera();
-	private var camSubStates:FlxCamera = new FlxCamera();
-
+	
 	public function new(?onConfirm:FlxState, ?onBack:FlxState){
 		this.onBack = onBack;
 		this.onConfirm = onConfirm;
+
+		if(script != null){script.execute();}
 
 		super();
 	}
@@ -51,17 +54,16 @@ class MusicBeatState extends FlxUIState {
 		camBHUD.bgColor.alpha = 0;
 		camHUD.bgColor.alpha = 0;
 		camFHUD.bgColor.alpha = 0;
-		camSubStates.bgColor.alpha = 0;
 
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camFGame);
 		FlxG.cameras.add(camBHUD);
 		FlxG.cameras.add(camHUD);
 		FlxG.cameras.add(camFHUD);
-		FlxG.cameras.add(camSubStates);
 
 		FlxCamera.defaultCameras = [camGame];
 
+		if(script != null){script.exFunction('create');}
 		super.create();
 
 		canControlle = true;
@@ -75,10 +77,11 @@ class MusicBeatState extends FlxUIState {
 		updateBeat();
 
 		if(oldStep != curStep && curStep > 0){stepHit();}
+		
+		if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED) && onConfirm != null){FlxG.switchState(onConfirm);}
+		if(principal_controls.checkAction("Menu_Back", JUST_PRESSED) && onBack != null){FlxG.switchState(onBack);}
 
-		if(onBack != null && principal_controls.checkAction("Menu_Back", JUST_PRESSED)){FlxG.switchState(onBack);}
-		if(onConfirm != null && principal_controls.checkAction("Menu_Accept", JUST_PRESSED)){FlxG.switchState(onConfirm);}
-
+		if(script != null){script.exFunction('update');}
 		super.update(elapsed);
 	}
 
@@ -98,11 +101,15 @@ class MusicBeatState extends FlxUIState {
 	}
 
 	public function stepHit():Void {
-		if (curStep % 4 == 0){beatHit();}
+		if(curStep % 4 == 0){beatHit();}
+
+		if(script != null){script.exFunction('stepHit');}
 	}
 
 	public function beatHit():Void {
 		//do literally nothing dumbass
+
+		if(script != null){script.exFunction('beatHit');}
 	}
 
 	override function openSubState(SubState:FlxSubState){
@@ -118,10 +125,10 @@ class MusicBeatState extends FlxUIState {
 	public function trace(toTrace:String){
 		var arrToTrace:Array<String> = toTrace.split("\n");
 		for(t in arrToTrace){
-			trace(' | $t');
+			trace('[${Type.getClassName(Type.getClass(this))}]: $t');
 		}
 	}
 	
-	override public function onFocus():Void{}
-	override public function onFocusLost():Void{}
+	override public function onFocus():Void{if(script != null){script.exFunction('onFocus');}}
+	override public function onFocusLost():Void{if(script != null){script.exFunction('onFocusLost');}}
 }

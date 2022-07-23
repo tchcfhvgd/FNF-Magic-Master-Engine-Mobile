@@ -98,6 +98,16 @@ class Paths {
 		return path;
 	}
 
+	inline static function getModPath(file:String, modName:String){
+		for(mod in ModSupport.MODS){
+			if(mod.name == modName){
+				return '${mod.path}/assets/$file';
+			}
+		}
+
+		return null;
+	}
+
 	inline static public function file(file:String, type:AssetType = TEXT, ?library:String){
 		return getPath(file, type, library);
 	}
@@ -210,10 +220,10 @@ class Paths {
 		return getPath('$key', TEXT, 'fonts');
 	}
 
-	inline static public function getStageJSON(key:String){
-		var path = getPath('${key}.json', TEXT, 'stages');
+	inline static public function stage(key:String){
+		var path = getPath('${key}.hx', TEXT, 'stages');
 
-		if(!Paths.exists(path)){path = getPath('Stage.json', TEXT, 'stages');}
+		if(!Paths.exists(path)){path = getPath('Stage.hx', TEXT, 'stages');}
 
 		return path;
 	}

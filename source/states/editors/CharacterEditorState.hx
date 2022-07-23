@@ -86,13 +86,8 @@ class CharacterEditorState extends MusicBeatState{
 
     override function create(){
         FlxG.mouse.visible = true;
-
-        backStage = new Stage("Stage", [["Girlfriend",charPositions[1],1,false,"Default","GF",0],["Daddy_Dearest",charPositions[0],1,true,"Default","NORMAL",0],["Boyfriend",charPositions[2],1,false,"Default","NORMAL",0],["Boyfriend",charPositions[2],1,false,"Default","NORMAL",0]]);
-        for(char in 0...backStage.character_Length){backStage.getCharacterById(char).alpha = 0.5;}
-        backStage.cameras = [camFGame];
-        add(backStage);
         
-        bfStage = backStage.getCharacterById(3);
+        //bfStage = backStage.getCharacterById(3);
         bfStage.setupByCharacterFile(_character);
         bfStage.alpha = 1;
 

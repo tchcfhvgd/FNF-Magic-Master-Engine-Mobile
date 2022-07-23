@@ -54,7 +54,6 @@ import StrumLineNote.StrumStaticNotes;
 import Song;
 import Song.SwagSong;
 import Song.SwagStrum;
-import Stage.StageData;
 import states.PlayState.SongListData;
 
 using StringTools;
@@ -330,24 +329,6 @@ class ChartEditorState extends MusicBeatState{
             dArrow.alpha = 0;
         }
 
-        var char:Character = null;
-        if(chkFocusChar.checked){
-            char = backStage.getCharacterById(Std.int(stpCharID.value));
-        }else{
-            if(FlxG.sound.music.playing){
-                char = backStage.getCharacterById(Character.getFocusCharID(_song, Std.int(curStep / 16)));
-            }else{
-                char = backStage.getCharacterById(Std.int(_song.sectionStrums[curStrum].charToSing[_song.generalSection[curSection].charToFocus]));
-                if(char == null){char = backStage.getCharacterById(Std.int(_song.sectionStrums[curStrum].charToSing[_song.sectionStrums[_song.generalSection[curSection].strumToFocus].charToSing.length - 1]));}
-            }
-        }
-
-        if(char != null){
-            backFollow.setPosition(char.getMidpoint().x, char.getMidpoint().y);
-        }else{
-            backFollow.screenCenter();
-        }
-
         if(!chkMuteInst.checked){FlxG.sound.music.volume = 1;}else{FlxG.sound.music.volume = 0;}
         if(FlxG.sound.music.playing){
             backGrid.alpha = 0.3;
@@ -359,20 +340,6 @@ class ChartEditorState extends MusicBeatState{
                 for(daNote in renderStrum){
                     if(daNote.strumTime < conductor.songPosition && !checkPressedNote([daNote.strumTime, daNote.noteData], i)){
                         strumStatics.members[i].members[Std.int(daNote.noteData % getStrumKeys(i))].playAnim("confirm", true);
-                        if(_song.sectionStrums[i] != null){
-                            var char:Array<Int> = _song.sectionStrums[i].charToSing;
-                            if(_song.sectionStrums[i].notes[curSection].changeSing){char = _song.sectionStrums[i].notes[curSection].charToSing;}
-                            if(daNote.otherData.exists('Set_CharToSing')){char = daNote.otherData.get('Set_CharToSing');}
-
-                            for(c in char){
-                                var char:Character = backStage.getCharacterById(c);
-
-                                if(char != null){
-                                    char.playAnim(false, daNote.chAnim, true);
-                                    char.holdTimer = elapsed * 10;
-                                }
-                            }
-                        }
 
                         if(sHitsArray[i] && daNote.typeHit == "Press"){FlxG.sound.play(Paths.sound("CLAP"));}
 
@@ -557,12 +524,6 @@ class ChartEditorState extends MusicBeatState{
         if(strumLine.width != Std.int(curGrid.width)){strumLine.makeGraphic(Std.int(curGrid.width), 4);}
         gridBLine.makeGraphic(2, Std.int(curGrid.height), FlxColor.BLACK);
 
-        if(FlxG.sound.music.playing){
-            for(char in backStage.charData){char.alpha = 1;}
-        }else{
-            for(char in backStage.charData){if(char.ID == _song.generalSection[curSection].charToFocus){char.alpha = 1;}else{char.alpha = 0.5;}}
-        }
-
 		if(_song.generalSection[curSection].changeBPM && _song.generalSection[curSection].bpm > 0){
 			conductor.changeBPM(_song.generalSection[curSection].bpm);
 			FlxG.log.add('CHANGED BPM!');
@@ -599,13 +560,6 @@ class ChartEditorState extends MusicBeatState{
         updateStrumValues();
 
         updateNoteValues();
-
-        for(i in 0...backStage.character_Length){
-			var cChar:Character = backStage.getCharacterById(i);
-			if(cChar.holdTimer <= 0){
-				cChar.dance();
-			}
-		}
     }
 
     var prevNote:Note = null;
@@ -2247,8 +2201,6 @@ class ChartEditorState extends MusicBeatState{
                         _song.characters[Std.int(stpCharID.value)][3] = check.checked;
                     }
 
-                    backStage.setCharacters(_song.characters);
-
                     updateSection();
                 }
                 case "Change Chars":{
@@ -2275,8 +2227,6 @@ class ChartEditorState extends MusicBeatState{
                         _song.characters[Std.int(stpCharID.value)][4] = input.text;
                     }
 
-                    backStage.setCharacters(_song.characters);
-
                     updateSection();
                 }
             }
@@ -2293,8 +2243,6 @@ class ChartEditorState extends MusicBeatState{
                         _song.characters[Std.int(stpCharID.value)][0] = drop.selectedLabel;
                     }
 
-                    backStage.setCharacters(_song.characters);
-
                     updateSection();
                 }
             }
@@ -2307,16 +2255,12 @@ class ChartEditorState extends MusicBeatState{
                         _song.characters[Std.int(stpCharID.value)][1][0] = nums.value;
                     }
 
-                    backStage.setCharacters(_song.characters);
-
                     updateSection();
                 }
                 case "CHARACTER_Y":{
                     if(_song.characters[Std.int(stpCharID.value)] != null){
                         _song.characters[Std.int(stpCharID.value)][1][1] = nums.value;
                     }
-
-                    backStage.setCharacters(_song.characters);
 
                     updateSection();
                 }
@@ -2409,16 +2353,12 @@ class ChartEditorState extends MusicBeatState{
                         _song.characters[Std.int(stpCharID.value)][2] = nums.value;
                     }
 
-                    backStage.setCharacters(_song.characters);
-
                     updateSection();
                 }
                 case "CHARACTER_LAYOUT":{
                     if(_song.characters[Std.int(stpCharID.value)] != null){
                         _song.characters[Std.int(stpCharID.value)][6] = Std.int(nums.value);
                     }
-
-                    backStage.setCharacters(_song.characters);
 
                     updateSection();
                 }

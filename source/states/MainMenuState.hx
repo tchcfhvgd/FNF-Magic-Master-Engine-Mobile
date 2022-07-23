@@ -18,6 +18,7 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+import flixel.util.FlxGradient;
 import io.newgrounds.NG;
 import lime.app.Application;
 import flixel.math.FlxMath;
@@ -35,6 +36,7 @@ class MainMenuState extends MusicBeatState{
 		"FreePlay",
 		"Skins",
 		"Options",
+		"Mods",
 		"Extras",
 		"Credits"
 	];
@@ -131,16 +133,6 @@ class MainMenuState extends MusicBeatState{
 		switch(typeMenu){
 			case "MainMenuState":{
 				FlxG.camera.zoom = FlxMath.lerp(FlxG.camera.zoom, arrayOther[curSelected][2], 0.05);
-				if(stage.charData.members[arrayOther[curSelected][0]] != null){
-					//var curChar = stage.charData.members[arrayOther[curSelected][0]];
-//
-					//var toX = curChar.getMidpoint().x + curChar.cameraPosition[0];
-					//var toY = curChar.getMidpoint().y + curChar.cameraPosition[1];
-//
-					//var nextFollow:Array<Float> = [toX + arrayOther[curSelected][1][0], toY + arrayOther[curSelected][1][1]];
-//
-					//camFollow.setPosition(nextFollow[0], nextFollow[1]);
-				}
 
 				if(canControlle){
 					if(principal_controls.checkAction("Menu_Left", JUST_PRESSED)){changeSelect(-1);}
@@ -163,7 +155,7 @@ class MainMenuState extends MusicBeatState{
 
 					if(FlxG.keys.justPressed.ONE){states.editors.ChartEditorState.editChart(null, new MainMenuState());}
 					if(FlxG.keys.justPressed.FOUR){states.editors.CharacterEditorState.editCharacter(null, new MainMenuState());}
-					if(FlxG.keys.justPressed.TWO){states.editors.StageEditorState.editStage(null, new MainMenuState());}
+					//if(FlxG.keys.justPressed.TWO){states.editors.StageEditorState.editStage(null, new MainMenuState());}
 					if(FlxG.keys.justPressed.THREE){states.editors.XMLEditorState.editXML(null, new MainMenuState());}
 				}
 			}
@@ -171,10 +163,6 @@ class MainMenuState extends MusicBeatState{
 			case "OptionState":{
 				FlxG.camera.zoom = FlxMath.lerp(FlxG.camera.zoom, 1, 0.05);
 				camFollow.setPosition(250, 150);
-
-				stage.charData.forEach(function(char:Character){
-					char.alpha = FlxMath.lerp(char.alpha, 1, 2);
-				});
 			}
 		}
 	}

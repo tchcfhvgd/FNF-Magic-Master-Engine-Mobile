@@ -3,6 +3,7 @@ package;
 import states.ModListState;
 import FlxCustom.FlxUICustomButton;
 import flixel.addons.ui.*;
+import flash.geom.*;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -10,16 +11,19 @@ import flixel.group.FlxGroup;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;
 import flixel.math.FlxMath;
+import flixel.math.FlxPoint;
 import haxe.DynamicAccess;
 import haxe.Json;
+
+import flixel.addons.ui.interfaces.IFlxUIButton;
 
 import ModSupport.Mod;
 
 class ItemMod extends FlxUITabMenu {
     public var refMod:Mod;
+    public var mScript:Script;
 
     public var _selected:Bool = false;
-    public var _isSimpleMod:Bool = false;
 
     public var _btnToggle:FlxUIButton;
     public var _btnMoveUp:FlxUIButton;
@@ -28,44 +32,31 @@ class ItemMod extends FlxUITabMenu {
     public function new(mod:Mod){
         this.refMod = mod;
 
-        var modPrefix:String = "Unknown Mod";
-        var modTitle:String = "Unknown Mod";
-        var modDescription:String = "Unknown Description";
+        mScript = new Script();
+        mScript.setVariable("instance", this);
+        mScript.setVariable("refMod", refMod);
+        mScript.exScript(Paths.getText('${refMod.path}/itemMod.hx'));
 
-        modPrefix = mod.prefix;
-        modTitle = mod.name;
-        modDescription = mod.description;
+        var back_:FlxSprite = mScript.getVariable("back_");
+        var tabs_:Array<IFlxUIButton> = mScript.getVariable("tabs_");
+        var tab_names_and_labels_:Array<{name:String, label:String}> = mScript.getVariable("tab_names_and_labels_");
+        var tab_offset:FlxPoint = mScript.getVariable("tab_offset");
+        var stretch_tabs:Bool = mScript.getVariable("stretch_tabs");
+        var tab_spacing:Null<Float> = mScript.getVariable("tab_spacing");
+        var tab_stacking:Array<String> = mScript.getVariable("tab_stacking");
 
-        var cInfoTabs = [
-            {name: "2ModDetails", label: 'Mod Details'},
-        ];
-        cInfoTabs.push({name: "1ModName", label: modPrefix});
+        if(tab_names_and_labels_ == null){
+            tab_names_and_labels_ = [
+                {name: "1ModName", label: refMod.prefix}
+            ];
+        }
 
-        super(null, null, cInfoTabs);
+        super(back_, tabs_, tab_names_and_labels_, tab_offset, stretch_tabs, tab_spacing, tab_stacking);
         resize(Std.int(FlxG.width - 20), 300);
 
+        mScript.exFunction("create");
+
         for(tab in this._tabs){tab.autoResizeLabel = false;}
-
-        // Adding General Tabs
-        var tabMod = new FlxUI(null, this);
-        tabMod.name = "1ModName";
-
-        var lblName = new FlxText(5, 5, 0, modTitle, 16);
-        tabMod.add(lblName);
-
-        var lblDesc = new FlxText(lblName.x, lblName.y + lblName.height + 5, 0, modDescription, 8);
-        tabMod.add(lblDesc);
-
-        this.addGroup(tabMod);
-
-        // UNSELECTED TAB
-        var tabUnSelect = new FlxUI(null, this);
-        tabUnSelect.name = "ModUnSelected";
-
-        var lblName = new FlxText(5, 5, 0, modTitle, 16);
-        tabUnSelect.add(lblName);
-
-        this.addGroup(tabUnSelect);
 
         _btnToggle = new FlxUICustomButton(0,0, 100, null, "...", null, function(){setToggleEnableMod();});
         _btnToggle.x = width - _btnToggle.width;
@@ -100,19 +91,16 @@ class ItemMod extends FlxUITabMenu {
     override function update(elapsed:Float){
 		super.update(elapsed);
 
-        if(_selected && !_isSimpleMod){
+        mScript.exFunction("update", [elapsed]);
+
+        if(_selected){
             for(tab in this._tabs){if(!tab.alive){tab.revive();}}
 
             var cHeight = 300;
             if(this.height != cHeight){resize(Std.int(FlxG.width - 20), FlxMath.lerp(this.height, cHeight, 0.1));}
-        }else{
-            for(tab in this._tabs){if(tab.alive){tab.kill();}}
-            getTab('1ModName', 2).revive();
-            
+        }else{            
             var cHeight = 75;
             if(this.height != cHeight){resize(Std.int(FlxG.width - 20), FlxMath.lerp(this.height, cHeight, 0.1));}
-            
-            showTabId("ModUnSelected");
         }
 	}
 }

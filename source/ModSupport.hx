@@ -14,28 +14,52 @@ import sys.io.File;
 using StringTools;
 
 class ModSupport {
-    public static var exSOURCE:Array<Class<Dynamic>> = [
-        ModSupport,
-    ];
-
     public static var MODS:Array<Mod> = [];
+
+    public static var StScripts:Map<String, Script> = [];
+    public static var exScripts:Array<String> = [
+        "ModListState.hx",
+        "PreLoaderState.hx"
+    ];
 
     public static function init():Void {
         //Adding Mods from Archives
         #if (desktop && sys)
         if(FileSystem.exists('mods')){
-            var i:Int = 0;
             for(modFolder in FileSystem.readDirectory('mods')){
                 var modPath:String = FileSystem.absolutePath('mods/$modFolder');
                 
                 var newMod = new Mod(modFolder);
     
                 MODS.push(newMod);
-    
-                i++;
             }
         }
         #end
+
+        reloadStScripts();
+    }
+
+    public static function reloadStScripts():Void{
+        #if sys
+
+        StScripts.clear();
+
+        for(mod in MODS){
+            var mPath = FileSystem.absolutePath('${mod.path}/scripts/states');
+            if(mod.enabled && FileSystem.exists(mPath)){
+                for(i in FileSystem.readDirectory(mPath)){
+                    if(!StScripts.exists(i) && !exScripts.contains(i)){
+                        var nScript = new Script();
+                        nScript.loadScript(Paths.getText('$mPath/$i'));
+                        
+                        StScripts.set('states.${i.replace('.hx','')}', nScript);
+                    }
+                }
+            }            
+        }
+
+        #end
+        trace(StScripts);
     }
 
     public static function moveMod(index:Int, toUp:Bool = false){
@@ -68,7 +92,7 @@ class Mod {
         this.enabled = enabled;
 
         #if (desktop && sys)
-            var identifierJSON:DynamicAccess<Dynamic> = cast Json.parse(sys.io.File.getContent('$path/mod.json').trim());
+            var identifierJSON:DynamicAccess<Dynamic> = cast Json.parse(File.getContent('$path/mod.json').trim());
             if(identifierJSON != null){
                 name = identifierJSON.get('name');
                 prefix = identifierJSON.get('prefix');

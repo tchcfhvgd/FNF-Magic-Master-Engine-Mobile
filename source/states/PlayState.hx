@@ -272,15 +272,6 @@ class PlayState extends MusicBeatState {
 				var char = SONG.sectionStrums[i].charToSing;
 				if(SONG.sectionStrums[i].notes[Std.int(curStep / 16)].changeSing){char = SONG.sectionStrums[i].notes[Std.int(curStep / 16)].charToSing;}
 				if(note.otherData.exists('Set_CharToSing')){char = note.otherData.get('Set_CharToSing');}
-
-				for(i in char){
-					var char:Character = stage.getCharacterById(i);
-
-					if(char != null){
-						char.playAnim(false, note.chAnim, true);
-						char.holdTimer = FlxG.elapsed * 10;
-					}
-				}
 			}
 
 			strumLine.onMISS = function(note:Note) {
@@ -288,15 +279,6 @@ class PlayState extends MusicBeatState {
 				var char = SONG.sectionStrums[i].charToSing;
 				if(SONG.sectionStrums[i].notes[Std.int(curStep / 16)].changeSing){char = SONG.sectionStrums[i].notes[Std.int(curStep / 16)].charToSing;}
 				if(note.otherData.exists('Set_CharToSing')){char = note.otherData.get('Set_CharToSing');}
-
-				for(i in char){
-					var char:Character = stage.getCharacterById(i);
-
-					if(char != null){
-						char.playAnim(false, note.chAnim + "-miss", true);
-						char.holdTimer = FlxG.elapsed * 10;
-					}
-				}
 			}
 
 			strumLine.controls = principal_controls;
@@ -392,13 +374,13 @@ class PlayState extends MusicBeatState {
 					var cStrum = PlayState.SONG.sectionStrums[daStrumline.ID];
 					var cSection = PlayState.SONG.sectionStrums[daStrumline.ID].notes[Std.int(curStep / 16)];
 
-					if(cSection.changeSing && cSection.charToSing != null){
-						char = stage.getCharacterById(cSection.charToSing[gSection.charToFocus]);
-						if(char == null){stage.getCharacterById(cSection.charToSing[cSection.charToSing.length - 1]);}
-					}else{
-						char = stage.getCharacterById(cStrum.charToSing[gSection.charToFocus]);
-						if(char == null){stage.getCharacterById(cStrum.charToSing[cStrum.charToSing.length - 1]);}
-					}
+					//if(cSection.changeSing && cSection.charToSing != null){
+					//	char = stage.getCharacterById(cSection.charToSing[gSection.charToFocus]);
+					//	if(char == null){stage.getCharacterById(cSection.charToSing[cSection.charToSing.length - 1]);}
+					//}else{
+					//	char = stage.getCharacterById(cStrum.charToSing[gSection.charToFocus]);
+					//	if(char == null){stage.getCharacterById(cStrum.charToSing[cStrum.charToSing.length - 1]);}
+					//}
 
 					var getStrumLeftX = 100;
 					var getStrumMiddleX = (FlxG.width / 2) - (daStrumline.strumSize / 2);
@@ -493,7 +475,8 @@ class PlayState extends MusicBeatState {
 				camMoveX += offsetX;
 				camMoveY += offsetY;
 
-				var cCharacter = stage.getCharacterById(Character.getFocusCharID(SONG, Std.int(curStep / 16)));
+				var cCharacter = null;
+				//var cCharacter = stage.getCharacterById(Character.getFocusCharID(SONG, Std.int(curStep / 16)));
 
 				if(cCharacter == null){
 					camMoveX += FlxG.width / 2;
@@ -624,12 +607,12 @@ class PlayState extends MusicBeatState {
 	override function beatHit(){
 		super.beatHit();
 
-		for(i in 0...stage.character_Length){
-			var cChar:Character = stage.getCharacterById(i);
-			if(cChar.holdTimer <= 0){
-				cChar.dance();
-			}
-		}
+		//for(i in 0...stage.character_Length){
+		//	var cChar:Character = stage.getCharacterById(i);
+		//	if(cChar.holdTimer <= 0){
+		//		cChar.dance();
+		//	}
+		//}
 
 		if (SONG.generalSection[Math.floor(curStep / 16)] != null){
 			if (SONG.generalSection[Math.floor(curStep / 16)].changeBPM){

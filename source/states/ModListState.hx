@@ -1,5 +1,6 @@
 package states;
 
+import Discord.DiscordClient;
 import flixel.math.FlxMath;
 #if desktop
 import Discord.DiscordClient;
@@ -49,7 +50,7 @@ class ModListState extends MusicBeatState {
     private var btnEnableAll:FlxUIButton;
     private var btnDisableAll:FlxUIButton;
 
-	override public function create():Void {
+	override public function create():Void {if(script != null){script.execute();}
 		var bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.antialiasing = true;
 		add(bg);
@@ -100,6 +101,8 @@ class ModListState extends MusicBeatState {
             if(i == index){modCard.y = FlxMath.lerp(modCard.y, ((FlxG.height / 2) - (modCard.height / 2)) + ((modCard.height + 10) * (i - index)), 0.1);}
             if(i > index){modCard.y = FlxMath.lerp(modCard.y, (selectedCard.y + selectedCard.height + 10) + ((modCard.height + 10) * ((i - 1) - index)), 0.3);}
         }
+
+        DiscordClient.changePresence('> ${selectedCard.refMod.name} [${selectedCard.refMod.enabled ? "✓": "X"}] <', '[Checking Mods]');
 	}
 
     public static function changeIndex(change:Int = 0){
