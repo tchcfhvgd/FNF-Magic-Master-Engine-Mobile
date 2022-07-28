@@ -6,16 +6,18 @@ import flixel.addons.ui.*;
 import flixel.addons.ui.interfaces.*;
 import flixel.ui.*;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxMath;
 import flixel.math.FlxRect;
-import flixel.addons.ui.FlxUI.NamedFloat;
 import flixel.text.FlxText;
-import flixel.util.FlxArrayUtil;
 import flixel.math.FlxPoint;
+import flixel.system.FlxSound;
+import flixel.util.FlxArrayUtil;
 import flixel.util.FlxStringUtil;
 import flixel.util.FlxDestroyUtil;
-import flixel.system.FlxSound;
+import flixel.group.FlxSpriteGroup;
+import flixel.addons.ui.FlxUI.NamedFloat;
 
 class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlxUIClickable implements IHasParams {
     private var _OnChange:FlxUICustomList->Void = null;
@@ -25,7 +27,13 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
     private var _btnFront:FlxUIButton;
 
     private var list:Array<String>;
+    private var prefix:String = "";
+    private var suffix:String = "";
+
     private var index:Int = 0;
+
+    public var lenght(get, never):Int;
+    public function get_lenght():Int{return list.length;}
 
     public static inline var CLICK_BACK:String = "click_back_list";
     public static inline var CLICK_FRONT:String = "click_front_list";
@@ -82,23 +90,30 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
 	public function getText(){return _lblCuItem;}
     public function contains(x:String):Bool{return list.contains(x);}
 
-    private function c_Index(change:Int = 0):Void{
+    private function c_Index(change:Int = 0, force:Bool = false):Void{
         index += change;
+        if(force){index = change;}
+        
         if(index >= list.length){index = 0;}
         if(index < 0){index = list.length - 1;}
 
 		if(list[index] != null){
-			_lblCuItem.text = list[index];
+			_lblCuItem.text = prefix + list[index] + suffix;
 		}else{
 			_lblCuItem.text = "NONE";
 		}
 
 		if(_OnChange != null){_OnChange(this);}
 
-        if(change > 0){_doCallback(CLICK_BACK);}
-        if(change < 0){_doCallback(CLICK_FRONT);}
+        if(!force){
+            if(change > 0){_doCallback(CLICK_BACK);}
+            if(change < 0){_doCallback(CLICK_FRONT);}
+        }
         _doCallback(CHANGE_EVENT);
     }
+
+    public function setIndex(i:Int){c_Index(i, true);}
+    public function setLabel(s:String){for(i in 0...list.length){if(list[i] == s){c_Index(i, true); break;}}}
 
     public function setData(DataList:Array<String>):Void{
         list = DataList;
@@ -124,14 +139,11 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
         calcBounds();
     }
 
-    public function getSelectedLabel():String{
-        return list[index];
-    }
+    public function getSelectedLabel():String{return list[index];}
+	public function getSelectedIndex():Int{return index;}
 
-	public function getSelectedIndex():Int{
-        return index;
-    }
-
+    public function setPrefix(p:String){prefix = p;}
+    public function setSuffix(s:String){suffix = s;}
 
     private function _doCallback(event_name:String):Void{
         if(broadcastToFlxUI){
@@ -166,7 +178,7 @@ class FlxUIValueChanger extends FlxUIGroup implements IFlxUIWidget implements IF
     public function new(X:Float = 0, Y:Float = 0, Width:Int = 100, ?OnChange:Float->Void, ?text:FlxUIInputText){
         super(X, Y);
 
-        _btnMinus = new FlxUICustomButton(0, 0, 20, null, "-", FlxColor.fromRGB(255, 66, 66), function(){c_Index(-1);});
+        _btnMinus = new FlxUICustomButton(0, 0, 20, null, "-", null, function(){c_Index(-1);});
 
 		if(text != null){
 			_lblCuItem = text;
@@ -176,11 +188,11 @@ class FlxUIValueChanger extends FlxUIGroup implements IFlxUIWidget implements IF
 			_lblCuItem.alignment = CENTER;
 		}
 
-        _btnMinus = new FlxUICustomButton(0, 0, 20, Std.int(_lblCuItem.height) + 2, "-", FlxColor.fromRGB(255, 66, 66), function(){c_Index(-1);});
-        _btnPlus = new FlxUICustomButton(_lblCuItem.x + _lblCuItem.width, _lblCuItem.y - 1, 20, Std.int(_lblCuItem.height) + 2, "+", FlxColor.fromRGB(66, 255, 94), function(){c_Index(1);});
+        _btnMinus = new FlxUICustomButton(0, 0, 20, Std.int(_lblCuItem.height) + 2, "-", null, function(){c_Index(-1);});
+        _btnPlus = new FlxUICustomButton(_lblCuItem.x + _lblCuItem.width, _lblCuItem.y - 1, 20, Std.int(_lblCuItem.height) + 2, "+", null, function(){c_Index(1);});
 
-        add(_btnMinus);
         add(_lblCuItem);
+        add(_btnMinus);
         add(_btnPlus);
 
         calcBounds();
@@ -246,7 +258,7 @@ class FlxUICustomButton extends FlxUIButton {
 	}
 }
 
-class FlxUINumericStepperCustom extends FlxUINumericStepper {
+class FlxUICustomNumericStepper extends FlxUINumericStepper {
     public function new(X:Float = 0, Y:Float = 0, Width:Int = 25, StepSize:Float = 1, DefaultValue:Float = 0, Min:Float = -999, Max:Float = 999, Decimals:Int = 0, Stack:Int = FlxUINumericStepper.STACK_HORIZONTAL, ?TextField:FlxText, ?ButtonPlus:FlxUITypedButton<FlxSprite>, ?ButtonMinus:FlxUITypedButton<FlxSprite>, IsPercent:Bool = false){
         if(TextField == null){
             TextField = new FlxUIInputText(0, 0, Width);

@@ -19,4 +19,6 @@ typedef SwagGeneralSection = {
 
 	var strumToFocus:Int;
 	var charToFocus:Int;
+
+	var events:Array<Dynamic>;
 }

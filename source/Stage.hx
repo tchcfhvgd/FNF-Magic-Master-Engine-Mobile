@@ -20,6 +20,8 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
+import ModSupport;
+
 using StringTools;
 
 class Stage extends FlxTypedGroup<Dynamic>{
@@ -27,10 +29,8 @@ class Stage extends FlxTypedGroup<Dynamic>{
         var stageArray:Array<String> = [];
 
         for(i in Paths.readDirectory('assets/stages')){
-            if(i.endsWith(".json")){
-                var aStage:String = i.replace(".json","");
-                stageArray.push(aStage);
-            }
+            var aStage:String = i;
+            if(aStage.contains(".hx")){stageArray.push(aStage.replace(".hx",""));}
         }
 
         return stageArray;
@@ -67,8 +67,14 @@ class Stage extends FlxTypedGroup<Dynamic>{
     }
 
     public function loadStage(name:String):Void{
+        if(script != null){script.destroy();}
+
         script = new Script();
+        script.Name = name;
+
         script.setVariable("instance", stageData);
+        script.setVariable("stage", this);
+
         script.exScript(Paths.getText(Paths.stage(name)));
         reload();
     }
@@ -88,7 +94,11 @@ class Stage extends FlxTypedGroup<Dynamic>{
         for(sPart in stageData){
             add(sPart);
             for(char in characterData){
-                if(char.curLayer == numCont){
+                var cLyr:Int = Std.int(initChar + char.curLayer);
+                if(cLyr < 0){cLyr = 0;}
+                if(cLyr >= stageData.members.length){cLyr = stageData.members.length - 1;}
+
+                if(cLyr == numCont){
                     char.scrollFactor.set(sPart.scrollFactor.x, sPart.scrollFactor.y);
                     add(char);
                 }
@@ -99,6 +109,8 @@ class Stage extends FlxTypedGroup<Dynamic>{
     }
 
     public function setCharacters(chars:Array<Dynamic>){
+        characterData = [];
+
         var i:Int = 0;
         for(c in chars){
             var nChar = new Character(c[1][0], c[1][1], c[0], c[4], c[5]);
@@ -110,9 +122,7 @@ class Stage extends FlxTypedGroup<Dynamic>{
 
             nChar.ID = i;
 
-            nChar.curLayer = Std.int(initChar + c[6]);
-            if(nChar.curLayer < 0){nChar.curLayer = 0;}
-            if(nChar.curLayer >= stageData.members.length){nChar.curLayer = stageData.members.length - 1;}
+            nChar.curLayer = c[6];
 
             characterData.push(nChar);
 
@@ -120,5 +130,20 @@ class Stage extends FlxTypedGroup<Dynamic>{
         }
 
         reload();
+    }
+
+    public function getCharacterById(id:Int):Character {
+        for(char in characterData){if(char.ID == id){return char;}}
+        return null;
+    }
+
+    public function getCharacterByName(name:String):Character {
+        for(char in characterData){if(char.curCharacter == name){return char;}}
+        return null;
+    }
+
+    public function getCharacterByType(type:String):Character {
+        for(char in characterData){if(char.curType == type){return char;}}
+        return null;
     }
 }

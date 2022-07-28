@@ -23,6 +23,10 @@ import sys.io.File;
 using StringTools;
 
 typedef CharacterFile = {
+	var name:String;
+	var skin:String;
+	var aspect:String;
+
 	var image:String;
 	var healthicon:String;
 
@@ -147,7 +151,7 @@ class Character extends FlxSprite{
 			}
 
 			if(animation.curAnim.finished && animation.getByName(animation.curAnim.name + '-loop') != null){
-				playAnim(false, animation.curAnim.name + '-loop');
+				playAnim(animation.curAnim.name + '-loop');
 			}
 		}
 
@@ -166,11 +170,12 @@ class Character extends FlxSprite{
 	}
 
 	public function setupByCharacterFile(?jCharacter:CharacterFile){
-		if(jCharacter == null){jCharacter = Json.parse(Paths.getText(Paths.getCharacterJSON(curCharacter, curCategory, curSkin)));}
+		if(jCharacter == null){jCharacter = Json.parse(Paths.getText(Paths.getCharacterJSON(curCharacter, curSkin, curCategory)));}
 		charFile = jCharacter;
 
-		positionArray = charFile.position;
-		cameraPosition = charFile.camera;
+		curCharacter = charFile.name;
+		curSkin = charFile.skin;
+		curCategory = charFile.aspect;
 
 		healthIcon = charFile.healthicon;
 		
@@ -183,6 +188,9 @@ class Character extends FlxSprite{
 
 		imageFile = charFile.image;
 		animationsArray = charFile.anims;
+		
+		if(charFile.position != null){positionArray = charFile.position;}
+		if(charFile.camera != null){cameraPosition = charFile.camera;}
 
 		setCharacterGraphic();
 
@@ -193,20 +201,20 @@ class Character extends FlxSprite{
 		if(!specialAnim){
 			if(dancedIdle){
 				if(animation.curAnim != null && animation.curAnim.name == 'danceRight'){
-					playAnim(false, 'danceLeft');
+					playAnim('danceLeft');
 				}else{
-					playAnim(false, 'danceRight');
+					playAnim('danceRight');
 				}
 			}else{
-				playAnim(false, 'idle');
+				playAnim('idle');
 			}
 		}
 	}
 
-	public function playAnim(special:Bool = false, AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void{
+	public function playAnim(AnimName:String, Force:Bool = false, Special:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void{
 		if(!specialAnim && animation.getByName(AnimName) != null){
 			
-			specialAnim = special;
+			specialAnim = Special;
 			animation.play(AnimName, Force, Reversed, Frame);
 		}
 	}

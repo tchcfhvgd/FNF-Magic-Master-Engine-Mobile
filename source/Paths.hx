@@ -46,8 +46,23 @@ class Paths {
 		var toReturn:Array<Dynamic> = [];
 
 		#if sys
-		for(i in FileSystem.readDirectory(FileSystem.absolutePath(file))){if(!toReturn.contains(i)){toReturn.push(i);}}
-		for(mod in ModSupport.MODS){if(mod.enabled){for(i in FileSystem.readDirectory(FileSystem.absolutePath('${mod.path}/$file'))){if(!toReturn.contains(i)){toReturn.push(i);}}}}
+		if(FileSystem.exists(FileSystem.absolutePath(file)) && FileSystem.isDirectory(FileSystem.absolutePath(file))){
+			for(i in FileSystem.readDirectory(FileSystem.absolutePath(file))){
+				if(!toReturn.contains(i)){
+					toReturn.push(i);
+				}
+			}
+		}
+		
+		for(mod in ModSupport.MODS){
+			if(mod.enabled && FileSystem.exists(FileSystem.absolutePath('${mod.path}/$file')) && FileSystem.isDirectory(FileSystem.absolutePath('${mod.path}/$file'))){
+				for(i in FileSystem.readDirectory(FileSystem.absolutePath('${mod.path}/$file'))){
+					if(!toReturn.contains(i)){
+						toReturn.push(i);
+					}
+				}
+			}
+		}
 		#end
 
 		return toReturn;
@@ -112,7 +127,7 @@ class Paths {
 		return getPath(file, type, library);
 	}
 	
-	private static var savedMap:Map<String, Dynamic> = new Map<String, Dynamic>();
+	public static var savedMap:Map<String, Dynamic> = new Map<String, Dynamic>();
 	private static function getSound(file:String):Sound{
 		if(!savedMap.exists(file)){savedMap.set(file, Assets.exists(file) ? Assets.getSound(file) : Sound.fromFile(file));}
 		return savedMap.get(file);
@@ -204,7 +219,6 @@ class Paths {
 
 		if(!Paths.exists(path)){path = getPath('${song}/Audio/Inst.$SOUND_EXT', MUSIC, 'songs');}
 		
-		trace(path);
 		return getSound(path);
 	}
 
@@ -238,10 +252,10 @@ class Paths {
 		return path; 
 	}
 
-	inline static public function getCharacterJSON(char:String, cat:String, skin:String){
-		var path = getPath('${char}/Skins/${char}-${cat}-${skin}.json', TEXT, 'characters');
+	inline static public function getCharacterJSON(char:String, skin:String, cat:String){
+		var path = getPath('${char}/Skins/${char}-${skin}-${cat}.json', TEXT, 'characters');
 
-		if(!Paths.exists(path)){path = getPath('${char}/Skins/${char}-Default-${skin}.json', TEXT, 'characters');}
+		if(!Paths.exists(path)){path = getPath('${char}/Skins/${char}-${skin}-Default.json', TEXT, 'characters');}
 		if(!Paths.exists(path)){path = getPath('${char}/Skins/${char}-Default-Default.json', TEXT, 'characters');}
 		if(!Paths.exists(path)){path = getPath('Boyfriend/Skins/Boyfriend-Default-Default.json', TEXT, 'characters');}
 

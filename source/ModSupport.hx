@@ -17,9 +17,10 @@ class ModSupport {
     public static var MODS:Array<Mod> = [];
 
     public static var StScripts:Map<String, Script> = [];
+    public static var tempScripts:Map<String, Script> = [];
     public static var exScripts:Array<String> = [
-        "ModListState.hx",
-        "PreLoaderState.hx"
+        "states.ModListState.hx",
+        "states.PreLoaderState.hx"
     ];
 
     public static function init():Void {

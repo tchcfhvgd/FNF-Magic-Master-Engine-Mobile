@@ -24,8 +24,7 @@ typedef SwagSong = {
 	var bpm:Float;
 	var speed:Float;
 
-	var hasCharVoices:Bool;
-	var voices:Array<String>;
+	var hasVoices:Bool;
 
 	var validScore:Bool;
 
@@ -160,7 +159,7 @@ class Song{
 	public var bpm:Float;
 	public var speed:Float = 1;
 	
-	public var voices:Array<String> = ["General"];
+	public var hasVoices:Bool = true;
 
 	public var strumToPlay:Int = 0;
 	
@@ -168,9 +167,9 @@ class Song{
 
 	public var stage:String = '';
 	public var characters:Array<Dynamic> = [
-		["Fliqpy", [140, 210], true, "Default", "NORMAL"],
-		["Boyfriend", [140, 210], false, "Default", "NORMAL"],
-		["Girlfriend", [140, 210], false, "Default", "GF"]
+		["Daddy_Dearest", [100, 100], true, "Default", "NORMAL"],
+		["Boyfriend", [770, 100], false, "Default", "NORMAL"],
+		["Girlfriend", [400, 130], false, "Default", "GF"]
 	];
 
 	public var generalSection:Array<SwagGeneralSection>;
@@ -236,22 +235,10 @@ class Song{
 						aSong.set("category", "Normal");
 					}
 				}
-
-
-				if(aSong.get("voices") == null){
-					if(aSong.get("needsVoices") != null){
-						if(aSong.get("needsVoices") == true){
-							if(aSong.get("doubleVoices") == true){
-								aSong.set("voices", ["Default_1", "Default_2"]);
-							}else{
-								aSong.set("voices", ["Default"]);
-							}
-						}else{
-							aSong.set("voices", []);
-						}
-					}else{
-						aSong.set("voices", []);
-					}
+				
+				if(aSong.get("hasVoices") == null){
+					aSong.set("hasVoices", aSong.get("needsVoices"));
+					if(aSong.get("hasVoices") == null){aSong.set("hasVoices", true);}
 				}
 
 				if(aSong.get("characters") == null){
@@ -259,17 +246,17 @@ class Song{
 
 					if(aSong.get("player1") != null){
 						if((aSong.get("player1") is Array<Dynamic>)){
-							chrs.push([aSong.get("player1")[0],[770,74],1,false,"Default","NORMAL",0]);
+							chrs.push([aSong.get("player1")[0],[770,100],1,false,"Default","NORMAL",0]);
 						}else{
-							chrs.push([aSong.get("player1"),[770,74],1,false,"Default","NORMAL",0]);
+							chrs.push([aSong.get("player1"),[770,100],1,false,"Default","NORMAL",0]);
 						}
 					}
 
 					if(aSong.get("player2") != null){
 						if((aSong.get("player2") is Array<Dynamic>)){
-							chrs.push([aSong.get("player2")[0],[100,381],1,false,"Default","NORMAL",0]);
+							chrs.push([aSong.get("player2")[0],[100,100],1,false,"Default","NORMAL",0]);
 						}else{
-							chrs.push([aSong.get("player2"),[100,381],1,false,"Default","NORMAL",0]);
+							chrs.push([aSong.get("player2"),[100,100],1,false,"Default","NORMAL",0]);
 						}
 					}
 
@@ -304,7 +291,9 @@ class Song{
 
 								lengthInSteps: iLengthInSteps,
 								strumToFocus: iStrumToFocus,
-								charToFocus: 0
+								charToFocus: 0,
+
+								events: []
 							};
 
 							gSec.push(cgSec);
@@ -314,6 +303,14 @@ class Song{
 					}else{
 						aSong.set("generalSection", []);
 					}
+				}else{
+					var gen:Array<SwagGeneralSection> = aSong.get("generalSection");
+					
+					for(g in gen){
+						if(g.events == null){g.events = [];}
+					}
+
+					aSong.set("generalSection", gen);
 				}
 
 				if(aSong.get("sectionStrums") == null){

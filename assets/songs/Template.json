@@ -13,7 +13,7 @@
 	    "uiStyle": "Default",
 
 	    "stage":"Stage",
-	    "characters": [["Girlfriend",[400,130],1,false,"Default","GF",0],["Fliqpy",[85,394],1,true,"Default","NORMAL",0],["Boyfriend",[833,100],1,false,"Default","NORMAL",0]],
+	    "characters": [["Girlfriend",[400,130],1,false,"Default","GF",0],["Daddy_Dearest",[100,100],1,true,"Default","NORMAL",0],["Boyfriend",[770,100],1,false,"Default","NORMAL",0]],
 
 	    "generalSection": [
             {

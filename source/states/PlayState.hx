@@ -244,13 +244,13 @@ class PlayState extends MusicBeatState {
 		conductor.changeBPM(songData.bpm);
 
 		//Loading Instrumental
-		inst.loadEmbedded(Paths.inst(SONG.song.replace(" ", "_"), SONG.category), false);
+		inst.loadEmbedded(Paths.inst(songData.song, songData.category), false);
 
 		//Loading Voices
 		voices.sounds = [];
-        if(songData.voices != null && songData.voices.length > 0){
-            for(i in 0...songData.voices.length){
-                var voice = new FlxSound().loadEmbedded(Paths.voice(i, songData.voices[i], songData.song.replace(" ", "_"), songData.category));
+		if(songData.hasVoices){
+            for(i in 0...songData.characters.length){
+                var voice = new FlxSound().loadEmbedded(Paths.voice(i, songData.characters[i][0], songData.song, songData.category));
                 FlxG.sound.list.add(voice);
                 voices.add(voice);
             }
@@ -269,16 +269,20 @@ class PlayState extends MusicBeatState {
 			strumLine.onHIT = function(note:Note) {
 				//trace("HITS++ | TOTAL HITS: " +  strumLine.HITS);
 
-				var char = SONG.sectionStrums[i].charToSing;
+				var char:Array<Int> = SONG.sectionStrums[i].charToSing;
 				if(SONG.sectionStrums[i].notes[Std.int(curStep / 16)].changeSing){char = SONG.sectionStrums[i].notes[Std.int(curStep / 16)].charToSing;}
-				if(note.otherData.exists('Set_CharToSing')){char = note.otherData.get('Set_CharToSing');}
+				if(note.otherData.exists('Set_CharToSing')){char = cast note.otherData.get('Set_CharToSing');}
+
+				for(i in char){stage.getCharacterById(i).playAnim(note.chAnim);}
 			}
 
 			strumLine.onMISS = function(note:Note) {
 				//trace("MISS++ | TOTAL MISSES: " +  strumLine.MISSES);
-				var char = SONG.sectionStrums[i].charToSing;
+				var char:Array<Int> = SONG.sectionStrums[i].charToSing;
 				if(SONG.sectionStrums[i].notes[Std.int(curStep / 16)].changeSing){char = SONG.sectionStrums[i].notes[Std.int(curStep / 16)].charToSing;}
-				if(note.otherData.exists('Set_CharToSing')){char = note.otherData.get('Set_CharToSing');}
+				if(note.otherData.exists('Set_CharToSing')){char = cast note.otherData.get('Set_CharToSing');}
+				
+				for(i in char){stage.getCharacterById(i).playAnim('${note.chAnim}miss');}
 			}
 
 			strumLine.controls = principal_controls;
@@ -374,13 +378,13 @@ class PlayState extends MusicBeatState {
 					var cStrum = PlayState.SONG.sectionStrums[daStrumline.ID];
 					var cSection = PlayState.SONG.sectionStrums[daStrumline.ID].notes[Std.int(curStep / 16)];
 
-					//if(cSection.changeSing && cSection.charToSing != null){
-					//	char = stage.getCharacterById(cSection.charToSing[gSection.charToFocus]);
-					//	if(char == null){stage.getCharacterById(cSection.charToSing[cSection.charToSing.length - 1]);}
-					//}else{
-					//	char = stage.getCharacterById(cStrum.charToSing[gSection.charToFocus]);
-					//	if(char == null){stage.getCharacterById(cStrum.charToSing[cStrum.charToSing.length - 1]);}
-					//}
+					if(cSection.changeSing && cSection.charToSing != null){
+						char = stage.getCharacterById(cSection.charToSing[gSection.charToFocus]);
+						if(char == null){stage.getCharacterById(cSection.charToSing[cSection.charToSing.length - 1]);}
+					}else{
+						char = stage.getCharacterById(cStrum.charToSing[gSection.charToFocus]);
+						if(char == null){stage.getCharacterById(cStrum.charToSing[cStrum.charToSing.length - 1]);}
+					}
 
 					var getStrumLeftX = 100;
 					var getStrumMiddleX = (FlxG.width / 2) - (daStrumline.strumSize / 2);
@@ -476,7 +480,7 @@ class PlayState extends MusicBeatState {
 				camMoveY += offsetY;
 
 				var cCharacter = null;
-				//var cCharacter = stage.getCharacterById(Character.getFocusCharID(SONG, Std.int(curStep / 16)));
+				var cCharacter = stage.getCharacterById(Character.getFocusCharID(SONG, Std.int(curStep / 16)));
 
 				if(cCharacter == null){
 					camMoveX += FlxG.width / 2;
@@ -484,6 +488,9 @@ class PlayState extends MusicBeatState {
 				}else{
 					camMoveX += cCharacter.getMidpoint().x;
 					camMoveY += cCharacter.getMidpoint().y;
+					
+					camMoveX += cCharacter.cameraPosition[0];
+					camMoveY += cCharacter.cameraPosition[1];
 
 					if(cCharacter.animation.curAnim != null){
 						switch(cCharacter.animation.curAnim.name){
@@ -607,12 +614,7 @@ class PlayState extends MusicBeatState {
 	override function beatHit(){
 		super.beatHit();
 
-		//for(i in 0...stage.character_Length){
-		//	var cChar:Character = stage.getCharacterById(i);
-		//	if(cChar.holdTimer <= 0){
-		//		cChar.dance();
-		//	}
-		//}
+		for(char in stage.characterData){if(char.holdTimer <= 0){char.dance();}}
 
 		if (SONG.generalSection[Math.floor(curStep / 16)] != null){
 			if (SONG.generalSection[Math.floor(curStep / 16)].changeBPM){

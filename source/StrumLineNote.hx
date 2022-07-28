@@ -165,7 +165,7 @@ class StrumLine extends FlxGroup{
         var daLength:Float = note[2];
         var daHits:Int = note[3];
         var daHasMerge:Dynamic = note[4];
-        var daOtherData:DynamicAccess<Dynamic> = note[5];
+        var daOtherData:Map<String, Array<Dynamic>> = note[5];
     
         //noteJSON:NoteJSON, typeCheck:String, strumTime:Float, noteData:Int, ?specialType:Int = 0, ?otherData:Array<NoteData>
         var swagNote:Note = new Note(daStrumTime, daNoteData, daLength, daHits, daOtherData);
@@ -557,13 +557,14 @@ class StrumNote extends FlxSprite{
 }
 
 class Note extends StrumNote {
-    public static function getNoteDynamicData(note:Array<Dynamic> = null, details:Bool = false):Array<Dynamic>{
+    //Static Methods
+    public static function getNoteDynamicData(note:Array<Dynamic> = null, details:Bool = false):Array<Dynamic> {
         var strumTime:Float = 0;
         var noteData:Int = 0;
         var noteLenght:Float = 0;
         var noteHits:Float = 0;
         var nextNote:Dynamic = null;
-        var otherData:DynamicAccess<Dynamic> = {};
+        var otherData:Map<String, Array<Dynamic>> = [];
 
         if(note != null){
             if(note[0] != null){strumTime = note[0];}
@@ -577,11 +578,49 @@ class Note extends StrumNote {
         return [strumTime, noteData, noteLenght, noteHits, nextNote, otherData];
     }
 
-    //Static Methods
-    public static function getJSONDATA():DynamicAccess<Dynamic> {return cast Json.parse(Paths.getText(Paths.getPath('NoteData.json', TEXT, 'notes')));}
+    public static function getEventDynamicData(event:Array<Dynamic> = null):Array<Dynamic> {
+        var strumTime:Float = 0;
+        var eventlist:Map<String, Array<Dynamic>> = [];
 
-    public static function getNotePresets():DynamicAccess<Dynamic> {return getJSONDATA().get("Note_Presets");}
-    public static function getNoteSpecials():DynamicAccess<Dynamic> {return getJSONDATA().get("Note_Specials");}
+        if(event != null){
+            if(event[0] != null && (event[0] is Float)){strumTime = event[0];}
+            if(event[1] != null){
+                eventlist = event[1];
+
+                for(e in eventlist.keys()){
+                    var eFunc:String = e;
+                    var eArgs:Array<Dynamic> = [];
+                    if(eventlist.exists(eFunc) && (eventlist.get(eFunc) is Array<Dynamic>)){eArgs = eventlist.get(eFunc);}
+
+                    eventlist.set(eFunc, eArgs);
+                }
+
+                event[1] = eventlist;
+            }
+        }
+
+        return [strumTime, eventlist];
+    }
+
+    public static function getEvents(?stage:String){
+        var events = [];
+
+        #if sys 
+            for(i in Paths.readDirectory('assets/data/events')){
+                var cEvent:String = i;
+                if(cEvent.endsWith(".hx")){events.push(cEvent.replace(".hx", ""));}
+            }
+            
+            if(stage != null){
+                for(i in Paths.readDirectory('assets/stages/${stage}/events')){
+                    var cEvent:String = i;
+                    if(cEvent.endsWith(".hx")){events.push(cEvent.replace(".hx", ""));}
+                }
+            }
+        #end
+
+        return events;
+    }
     
     //General Variables
     public var nextNote:Note = null;
@@ -596,7 +635,7 @@ class Note extends StrumNote {
     public var typeHit:String = "Press"; // [Press | Normal Hits] [Hold | Hold Hits] [Release | Release Hits] [Always | Just Hit] [Ghost | Just Hit Withowt Strum Anim] [None | Can't Hit]
 
 	public var noteData:Int = 0;
-	public var otherData:DynamicAccess<Dynamic> = new DynamicAccess<Dynamic>();
+	public var otherData:Map<String, Array<Dynamic>> = [];
 
     public var chAnim:String = null;
 
@@ -624,7 +663,7 @@ class Note extends StrumNote {
         return styleArray;
     }
 
-	public function new(strumTime:Float, noteData:Int, noteLength:Float = 0, noteHits:Int = 0, otherData:DynamicAccess<Dynamic> = null){
+	public function new(strumTime:Float, noteData:Int, noteLength:Float = 0, noteHits:Int = 0, otherData:Map<String, Array<Dynamic>> = null){
         this.strumTime = strumTime;
 		this.noteData = noteData;
         this.noteLength = noteLength;
@@ -654,7 +693,7 @@ class Note extends StrumNote {
     override public function loadGraphicNote(newJSON:NoteJSON, newTypeNote:String = "Default", newImage:String = null){
         if(newJSON != null){chAnim = newJSON.chAnim;}
 
-        if(newImage == null && otherData.exists("New_Image")){newImage = otherData.get("New_Image");}
+        if(newImage == null && otherData.exists("New_Image")){newImage = otherData.get("New_Image")[0];}
 
         super.loadGraphicNote(newJSON, newTypeNote, newImage);
     }
@@ -662,7 +701,7 @@ class Note extends StrumNote {
     override public function playAnim(anim:String, force:Bool = false){
 		animation.play(anim, force);
 
-        if(!otherData.exists("Change_Color") || otherData.get("Change_Color")){this.color = FlxColor.fromString(nColor);}
+        if(!otherData.exists("Change_Color") || otherData.get("Change_Color")[0]){this.color = FlxColor.fromString(nColor);}
 	}
 }
 
@@ -693,7 +732,7 @@ class NoteSplash extends FlxSprite {
         this.setPosition(X, Y);
 
         if(note != null){
-            if(!note.otherData.exists("Change_Color") || note.otherData.get("Change_Color")){nColor = note.nColor;}
+            if(!note.otherData.exists("Change_Color") || note.otherData.get("Change_Color")[0]){nColor = note.nColor;}
         }
 
         frames = Paths.getNoteAtlas(image);

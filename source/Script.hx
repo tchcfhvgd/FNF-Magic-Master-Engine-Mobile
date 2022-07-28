@@ -11,7 +11,10 @@ class Script extends FlxBasic {
     var interp = new hscript.Interp();
     var program = null;
 
+    public var Name:String;
+
     public override function new(){
+        parser.allowTypes = true;
         super();
 
         preVariables();
@@ -32,10 +35,18 @@ class Script extends FlxBasic {
         var nFunc = function(){};
 
         setVariable('create', nFunc);
-        setVariable('update', nFunc);
+
+        setVariable('update', function(elapsed:Float) {});
+        setVariable('beatHit', function(curBeat:Int) {});
+        setVariable('stepHit', function(curStep:Int) {});
 
         setVariable("presset", function(name:String, func:Any){setVariable(name, func);});
         setVariable('destroy', function(){this.program = null; this.destroy();});
+        
+        setVariable("pushGlobal", function(){ModSupport.tempScripts.set(Name, this);});
+        setVariable("quitGlobal", function(){ModSupport.tempScripts.remove(Name);});
+        
+		setVariable('getState', function():Class<Dynamic>{return null;});
 
         setVariable("import", function(imp:String, ?val:String){
             var toSet:Bool = true;
@@ -56,7 +67,7 @@ class Script extends FlxBasic {
         var toReturn = null;
         if(args != null){
             try{
-                toReturn = FUNCT(args);
+                toReturn = Reflect.callMethod(null, FUNCT, args);
             }catch(e){
                 trace('[Function Error](${name}): ${e}');
             }
@@ -77,7 +88,8 @@ class Script extends FlxBasic {
     }
 
     public override function destroy(){
-        program = null;    
+        ModSupport.tempScripts.remove(Name);
+        program = null;
         super.destroy();
     }
 }
