@@ -127,10 +127,6 @@ class ChartEditorState extends MusicBeatState{
 
         curSection = lastSection;
         
-        var bgGrid:FlxSprite = FlxGridOverlay.create(10, 10, FlxG.width, FlxG.height, true, 0xff4d4d4d, 0xff333333);
-        bgGrid.cameras = [camGame];
-        add(bgGrid);
-        
         backStage = new Stage(_song.stage, _song.characters);
         backStage.cameras = [camBHUD];
         add(backStage);

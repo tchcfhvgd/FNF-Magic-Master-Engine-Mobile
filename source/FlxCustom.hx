@@ -184,7 +184,7 @@ class FlxUIValueChanger extends FlxUIGroup implements IFlxUIWidget implements IF
 			_lblCuItem = text;
 			_lblCuItem.setPosition(_btnMinus.x + _btnMinus.width, _btnMinus.y + 1);
 		}else{
-			_lblCuItem = new FlxUIInputText(_btnMinus.x + _btnMinus.width, _btnMinus.y + 1, Width - 40, "", 8);
+			_lblCuItem = new FlxUIInputText(_btnMinus.x + _btnMinus.width, _btnMinus.y + 1, Width - 40, "0", 8);
 			_lblCuItem.alignment = CENTER;
 		}
 
@@ -200,12 +200,14 @@ class FlxUIValueChanger extends FlxUIGroup implements IFlxUIWidget implements IF
 
 	public function getText(){return _lblCuItem;}
 
+    var isMinus:Bool = false;
     private function c_Index(change:Float = 0):Void{
 		if(_OnChange != null){_OnChange(change);}
-        if(change > 0){_doCallback(CLICK_MINUS);}
-        if(change < 0){_doCallback(CLICK_PLUS);}
+        if(change > 0){isMinus = true; _doCallback(CLICK_PLUS);}
+        if(change < 0){isMinus = false; _doCallback(CLICK_MINUS);}
         _doCallback(CHANGE_EVENT);
     }
+    public function change(minus:Bool = false){if(minus){c_Index(-1);}else{c_Index(1);}}
 
     public function setWidth(Width:Float) {
         Width -= Std.int(_btnMinus.width + _btnPlus.width);
@@ -223,7 +225,7 @@ class FlxUIValueChanger extends FlxUIGroup implements IFlxUIWidget implements IF
 
     private function _doCallback(event_name:String):Void{
         if(broadcastToFlxUI){
-            FlxUI.event(event_name, this, Std.parseFloat(_lblCuItem.text), params);
+            FlxUI.event(event_name, this, isMinus, params);
         }
     }
 }
