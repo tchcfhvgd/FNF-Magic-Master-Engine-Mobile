@@ -11,12 +11,8 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
 
-
-#if windows
-import Discord.DiscordClient;
-#end
-
 #if desktop
+import Discord.DiscordClient;
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -43,10 +39,11 @@ class FreeplayState extends MusicBeatState {
 	private var curPlaying:Bool = false;
 
 	override function create(){
-		 #if windows
-		 // Updating Discord Rich Presence
-		 DiscordClient.changePresence("In the Freeplay Menu", null);
-		 #end
+		#if desktop
+		// Updating Discord Rich Presence
+		DiscordClient.changePresence('Selecting', '[Freeplay]');
+		MagicStuff.setWindowTitle('Freeplay', 1);
+		#end
 
 		var isDebug:Bool = false;
 
@@ -70,8 +67,8 @@ class FreeplayState extends MusicBeatState {
 		add(grpSongs);
 
 		for (i in 0...songs.length){
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, Paths.getFileName(songs[i].songName), true, false, true);
-			songText.isMenuItem = "freeItem";
+			var songText:Alphabet = new Alphabet(0, 0, Paths.getFileName(songs[i].songName), true, false, true);
+			songText.menuItem = "freeItem";
 			songText.targetY = i;
 			grpSongs.add(songText);
 		}
@@ -321,8 +318,7 @@ class FreeplayState extends MusicBeatState {
 		#end
 	}
 
-	function changeSelection(change:Int = 0)
-	{
+	function changeSelection(change:Int = 0){
 		#if !switch
 		// NGio.logEvent('Fresh');
 		#end

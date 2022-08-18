@@ -1,5 +1,6 @@
 package substates;
 
+import states.MusicBeatState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
@@ -14,8 +15,7 @@ import flixel.util.FlxColor;
 
 import states.PlayState.SongListData;
 
-class PauseSubState extends MusicBeatSubstate
-{
+class PauseSubState extends MusicBeatSubstate{
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
 	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Options', 'Exit to menu'];
@@ -23,31 +23,26 @@ class PauseSubState extends MusicBeatSubstate
 
 	var pauseMusic:FlxSound;
 
-	public function new()
-	{
-		super();
+	public function new(onClose:Void->Void){
+		super(onClose);
 
-		pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
-		pauseMusic.volume = 0;
+		pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true); pauseMusic.volume = 0;
 		pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
-
 		FlxG.sound.list.add(pauseMusic);
 
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		bg.alpha = 0;
-		bg.scrollFactor.set();
-		add(bg);
+		bg.scrollFactor.set(); bg.alpha = 0; add(bg);
 
 		var levelInfo:FlxText = new FlxText(20, 15, 0, "", 32);
+		levelInfo.setFormat(Paths.font("vcr.ttf"), 32);
 		levelInfo.text += states.PlayState.SONG.song;
 		levelInfo.scrollFactor.set();
-		levelInfo.setFormat(Paths.font("vcr.ttf"), 32);
 		levelInfo.updateHitbox();
 		add(levelInfo);
 
 		var levelDifficulty:FlxText = new FlxText(20, 15 + 32, 0, states.PlayState.SONG.difficulty, 32);
-		levelDifficulty.scrollFactor.set();
 		levelDifficulty.setFormat(Paths.font('vcr.ttf'), 32);
+		levelDifficulty.scrollFactor.set();
 		levelDifficulty.updateHitbox();
 		add(levelDifficulty);
 
@@ -64,10 +59,9 @@ class PauseSubState extends MusicBeatSubstate
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
 		add(grpMenuShit);
 
-		for (i in 0...menuItems.length)
-		{
+		for (i in 0...menuItems.length){
 			var songText:Alphabet = new Alphabet(10, (70 * i) + 30, menuItems[i], true, false);
-			songText.isMenuItem = "optionItem";
+			songText.menuItem = "optionItem";
 			songText.targetY = i;
 			grpMenuShit.add(songText);
 		}
@@ -77,10 +71,8 @@ class PauseSubState extends MusicBeatSubstate
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 	}
 
-	override function update(elapsed:Float)
-	{
-		if (pauseMusic.volume < 0.5)
-			pauseMusic.volume += 0.01 * elapsed;
+	override function update(elapsed:Float){
+		if(pauseMusic.volume < 0.5){pauseMusic.volume += 0.01 * elapsed;}
 
 		super.update(elapsed);
 
@@ -104,14 +96,14 @@ class PauseSubState extends MusicBeatSubstate
 			switch (daSelected)
 			{
 				case "Resume":
-					close();
+					toClose();
 				case "Options":
-					openSubState(new OptionsSubState(true));
+					openSubState(new OptionsSubState());
 				case "Restart Song":
 					FlxG.resetState();
 				case "Exit to menu":
 					SongListData.resetVariables();
-					FlxG.switchState(new states.MainMenuState());
+					MusicBeatState.switchState(new states.MainMenuState());
 			}
 		}
 
@@ -155,4 +147,6 @@ class PauseSubState extends MusicBeatSubstate
 			}
 		}
 	}
+
+	function toClose(){close(); onClose();}
 }

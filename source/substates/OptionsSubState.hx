@@ -12,53 +12,31 @@ import flash.geom.Rectangle;
 
 import flixel.addons.ui.*;
 
-class OptionsSubState extends MusicBeatSubstate {	
-	//Cameras
-	var camHUD:FlxCamera;
-
-	public function new(isPause:Bool = false){
+class OptionsSubState extends MusicBeatSubstate {
+	public function new(){
+		FlxG.mouse.visible = true;
 		super();
 
-		FlxG.mouse.visible = true;
-
-		camHUD = new FlxCamera();
-		camHUD.bgColor.alpha = 0;
-		camHUD.alpha = 0;
-
-		FlxG.cameras.add(camHUD);
-		
-		var ttlOptions:FlxSprite = new FlxSprite();
-
-		FlxTween.tween(camHUD, {alpha: 1}, 0.5);
+		var menuTabs = [
+            {name: "1Settings", label: 'Settings'},
+            {name: "2Note", label: 'Note/Event'},
+            {name: "3Section/Strum", label: 'Section/Strum'},
+            {name: "4Song", label: 'Song'}
+        ];
+        var MENU = new FlxUITabMenu(null, menuTabs, true);
+        MENU.resize(Std.int(FlxG.width) - 200, Std.int(FlxG.height) - 200);
+		MENU.setPosition(100, 100);
+        //addMENUTABS();        
+        add(MENU);
 	}
 
 	override function update(elapsed:Float){
 		super.update(elapsed);
 
-		if(principal_controls.checkAction("Menu_Back", JUST_PRESSED)){
-			FlxTween.tween(camHUD, {alpha: 0}, 0.5, {onComplete: function(twn:FlxTween){
-				camHUD.alpha = 0;
-				close();
-			}});
-		}
+		if(principal_controls.checkAction("Menu_Back", JUST_PRESSED)){close();}
+	}
 
-		//TextButtom.setValue("Menu_Options", TABOPTIONS.curTAB);
-		//TextButtom.INPUTS.forEach(function(buttom:TextButtom){
-		//	switch(buttom.type){
-		//		case "Radio":{
-		//			if(buttom.pressed){
-		//				if(buttom.tag == "Menu_Options"){TABOPTIONS.curTAB = buttom.name;}
-		//			}
-		//		}
-		//		case "Buttom":{
-		//			if(buttom.pressed){
-		//				switch(buttom.name){
-		//					case "GoTo-StageEditor":{StageEditorState.editStage();}
-		//					case "GoTo-ChartEditor":{ChartEditorState.editChart();}
-		//				}
-		//			}
-		//		}
-		//	}
-		//});
+	public function doClose(){
+		//FlxTween.tween(camSubStates, {alpha: 0}, 0.5, {onComplete: function(twn:FlxTween){camSubStates.alpha = 1; close();}});
 	}
 }

@@ -30,6 +30,15 @@ enum KeyboardScheme {
  * Uses FlxActions to funnel various inputs to a single action.
  */
 class Controls extends FlxActionSet {
+	public static function getStateByInt(i:Int):FlxInputState {
+		switch(i){
+			case -1:{return FlxInputState.JUST_RELEASED;}
+			default:{return FlxInputState.RELEASED;}
+			case 1:{return FlxInputState.PRESSED;}
+			case 2:{return FlxInputState.JUST_PRESSED;}
+		}
+	}
+
     public static var STATIC_ACTIONS:Map<String, Array<Array<Int>>> = [
 		//Menu General Movement Actions
         "Menu_Up" => [// Action Name
@@ -386,9 +395,7 @@ class Controls extends FlxActionSet {
 		var toReturn:Array<Bool> = [];
 		var tag:String = '${keys}keys_';
 
-		for(i in 0...keys){
-			toReturn.push(checkAction('${tag}${i}', state));
-		}
+		for(i in 0...keys){toReturn.push(checkAction('${tag}${i}', state));}
 
 		return toReturn;
     }

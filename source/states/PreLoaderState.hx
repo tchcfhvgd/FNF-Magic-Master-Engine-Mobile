@@ -1,6 +1,5 @@
 package states;
 
-import substates.GameOverSubstate;
 import substates.PauseSubState;
 #if desktop
 import Discord.DiscordClient;
@@ -78,21 +77,19 @@ class PreLoaderState extends FlxUIState {
 		diamond.persist = true;
 		diamond.destroyOnNoUse = false;
 
-		FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 1, new FlxPoint(0, -1), {asset: diamond, width: 32, height: 32}, new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
-		FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 0.7, new FlxPoint(0, 1), {asset: diamond, width: 32, height: 32}, new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
-
-		transIn = FlxTransitionableState.defaultTransIn;
-		transOut = FlxTransitionableState.defaultTransOut;
+		MagicStuff.setGlobalTransition("Default", new TransitionData(FADE, FlxColor.BLACK, 1, new FlxPoint(0, -1), {asset: diamond, width: 32, height: 32}, new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4)), MagicStuff.TransitionType.transIn);
+		MagicStuff.setGlobalTransition("Default", new TransitionData(FADE, FlxColor.BLACK, 0.7, new FlxPoint(0, 1), {asset: diamond, width: 32, height: 32}, new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4)), MagicStuff.TransitionType.transOut);
+		MagicStuff.changeTransitionType("Default");
 
 		#if (desktop && sys)
 		var modsDirectory:String = FileSystem.absolutePath("mods");
 		if(FileSystem.exists(modsDirectory) && FileSystem.readDirectory(modsDirectory).length > 0){
-        	FlxG.switchState(new states.ModListState(new states.TitleState()));
+        	MusicBeatState.switchState(new states.ModListState(states.TitleState));
 		}else{
-        	FlxG.switchState(new states.TitleState());
+        	MusicBeatState.switchState(new states.TitleState());
 		}
 		#else
-        	FlxG.switchState(new states.TitleState());
+        	MusicBeatState.switchState(new states.TitleState());
 		#end
 	}
 }

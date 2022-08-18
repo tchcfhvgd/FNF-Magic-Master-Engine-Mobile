@@ -27,7 +27,8 @@ import FlxCustom.FlxUICustomList;
 import FlxCustom.FlxUICustomNumericStepper;
 import FlxCustom.FlxUIValueChanger;
 
-#if windows
+#if desktop
+import Discord.DiscordClient;
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -44,6 +45,7 @@ class XMLEditorState extends MusicBeatState {
     var tabSPRITE:FlxUITabMenu;
     
     var point:FlxSprite;
+    var camPoint:FlxSprite;
 
     var imgIcon:FlxSprite;
     var bSprite:FlxSprite;
@@ -53,12 +55,17 @@ class XMLEditorState extends MusicBeatState {
 
     var camFollow:FlxObject;
 
-    public static function editXML(?onConfirm:FlxState, ?onBack:FlxState){
+    public static function editXML(?onConfirm:Class<FlxState>, ?onBack:Class<FlxState>){
         FlxG.sound.music.stop();
-        FlxG.switchState(new XMLEditorState(onConfirm, onBack));
+        MusicBeatState.switchState(new XMLEditorState(onConfirm, onBack));
     }
 
     override function create(){
+        #if desktop
+		// Updating Discord Rich Presence
+		DiscordClient.changePresence('Editing', '[XML Editor]');
+		MagicStuff.setWindowTitle('On XML Editor', 1);
+		#end
         FlxG.mouse.visible = true;
 
         var bgGrid:FlxSprite = FlxGridOverlay.create(10, 10, FlxG.width, FlxG.height, true, 0xff4d4d4d, 0xff333333);
@@ -85,6 +92,10 @@ class XMLEditorState extends MusicBeatState {
         point = new FlxSprite(100, 50).makeGraphic(5, 5, FlxColor.WHITE);
         point.cameras = [camFGame];
         add(point);
+        
+        camPoint = new FlxSprite(0, 0).makeGraphic(5, 5, FlxColor.WHITE);
+        camPoint.cameras = [camFGame];
+        add(camPoint);
 
         tabFILE = new FlxUITabMenu(null, [{name: "Files", label: 'Files'}], true);
         tabFILE.resize(250, 130);
@@ -124,6 +135,8 @@ class XMLEditorState extends MusicBeatState {
 
         bSprite.setPosition(point.x, point.y);
         eSprite.setPosition(point.x, point.y);
+
+        camPoint.setPosition(eSprite.getGraphicMidpoint().x, eSprite.getGraphicMidpoint().y);
 
         var arrayControlle = true;
         for(item in arrayFocus){if(item.hasFocus){arrayControlle = false;}}
@@ -173,14 +186,13 @@ class XMLEditorState extends MusicBeatState {
 	}
     
     private function loadArchives():Void{
-        #if desktop
+        #if sys
             if(txtIMAGE.text.length > 0){
                 _IMG = BitmapData.fromFile(txtIMAGE.text); _IMG.lock();
                 IMG_ = txtIMAGE.text;
             }
             if(txtXML.text.length > 0){
-                _XML = new Access((Xml.parse(sys.io.File.getContent(txtXML.text))).firstElement());
-
+                _XML = new Access((Xml.parse(File.getContent(txtXML.text))).firstElement());
                 for(elm in _XML.elements){
                     if(!elm.has.x){elm.att.x = "0";}
                     if(!elm.has.y){elm.att.y = "0";}
@@ -196,15 +208,15 @@ class XMLEditorState extends MusicBeatState {
     }
 
     private function loadGhostSprites():Void {
-        if(_IMG != null && _XML != null){
-            bSprite.frames = FlxAtlasFrames.fromSparrow(_IMG, _XML.x.toString());
+        #if sys
+            bSprite.frames = FlxAtlasFrames.fromSparrow(BitmapData.fromFile(txtIMAGE.text), File.getContent(txtXML.text));
 
-            var animArr = getNamesArray(_XML.elements);
+            var animArr = getNamesArray(new Access((Xml.parse(File.getContent(txtXML.text))).firstElement()).elements);
             for(anim in animArr){bSprite.animation.addByPrefix(anim, anim);}
             clGCurAnim.setData(animArr);
 
             stpGCurFrame.value = 0;
-        }
+        #end
     }
     private function loadNormalSprites():Void {
         loadESprite();
@@ -252,8 +264,20 @@ class XMLEditorState extends MusicBeatState {
         var Name = AnimName + nFrames;
 
         var aElements:Access = _XML != null ? _XML : null;
-        if(aElements != null && aElements.elements != null){for(i in aElements.elements){if(i.att.name == Name){return i;}}}
-        return hasNull ? null : new Access(Xml.parse('<TextureAtlas><SubTexture name="n0000" x="0" y="0" width="0" height="0" frameX="0" frameY="0" frameWidth="0" frameHeight="0"/></TextureAtlas>'));
+        if(aElements != null && aElements.elements != null){for(i in aElements.elements){
+            if(i.att.name == Name){
+                if(!i.has.x){i.att.x = "0";}
+                if(!i.has.y){i.att.y = "0";}
+                if(!i.has.width){i.att.width = "0";}
+                if(!i.has.height){i.att.height = "0";}
+                if(!i.has.frameX){i.att.frameX = "0";}
+                if(!i.has.frameY){i.att.frameY = "0";}
+                if(!i.has.frameWidth){i.att.frameWidth = "0";}
+                if(!i.has.frameHeight){i.att.frameHeight = "0";}
+                return i;
+            }
+        }}
+        return hasNull ? null : new Access(Xml.parse('<SubTexture name="n0000" x="0" y="0" width="0" height="0" frameX="0" frameY="0" frameWidth="0" frameHeight="0"/>').firstElement());
     }
 
     public function playAnim(?AnimName:String, ?Frame:Int):Void{
@@ -339,7 +363,7 @@ class XMLEditorState extends MusicBeatState {
         var btnXML:FlxButton = new FlxCustomButton(txtXML.x + txtXML.width + 5, txtXML.y - 3, 30, null, "GET", null, function(){getFile(txtXML);}); uiFile.add(btnXML);
 
         var btnImport:FlxButton = new FlxCustomButton(lblXML.x, btnXML.y + btnXML.height + 5, Std.int(tabFILE.width / 2) - 7, null, "IMPORT", null, function(){loadArchives(); loadNormalSprites();}); uiFile.add(btnImport);
-        var btnGhostImport:FlxButton = new FlxCustomButton(btnImport.x + btnImport.width + 5, btnImport.y, Std.int(tabFILE.width / 2) - 7, null, "IMPORT GHOST", null, function(){loadArchives(); loadGhostSprites();}); uiFile.add(btnGhostImport);
+        var btnGhostImport:FlxButton = new FlxCustomButton(btnImport.x + btnImport.width + 5, btnImport.y, Std.int(tabFILE.width / 2) - 7, null, "IMPORT GHOST", null, function(){loadGhostSprites();}); uiFile.add(btnGhostImport);
 
         var btnSave:FlxButton = new FlxCustomButton(5, btnGhostImport.y + btnGhostImport.height + 7, Std.int(tabFILE.width) - 10, null, "Save XML", null, function(){save();}); uiFile.add(btnSave);
 
@@ -437,7 +461,30 @@ class XMLEditorState extends MusicBeatState {
         lblCurFrameHeight = new FlxText(lblCurFrameWidth.x, lblCurFrameWidth.y + lblCurFrameWidth.height + 3, 0, "FrameHeight: [0]"); uiBase.add(lblCurFrameHeight);
         vchCurFrameHeight = new FlxUIValueChanger(tabSPRITE.width - 105, lblCurFrameHeight.y - 1, 100, function(value:Float){}); uiBase.add(vchCurFrameHeight); vchCurFrameHeight.name = "SPRITE_FRAMEHEIGHT";
 
-        var lblFrameName = new FlxText(5, lblCurFrameHeight.y + lblCurFrameHeight.height + 10, Std.int(tabSPRITE.width) - 10, "[Frame Name]"); uiBase.add(lblFrameName);
+        var btnSetFrameSize = new FlxUICustomButton(5, lblCurFrameHeight.y + lblCurFrameHeight.height + 5, Std.int(tabSPRITE.width) - 10, null, "Set FrameSize to 0", null, function(){
+            if(eSprite == null || eSprite.animation.curAnim == null){return;}
+            if(chkSetToAllSprite.checked){
+                for(e in _XML.elements){
+                    e.att.frameWidth = "0";
+                    e.att.frameHeight = "0";
+                }
+                loadESprite(); playAnim();
+                return;
+            }
+            if(chkSetToAllFrames.checked){
+                for(i in 0...eSprite.animation.curAnim.frames.length){
+                    getAccess(null, i).att.frameWidth = "0";
+                    getAccess(null, i).att.frameHeight = "0";
+                }
+                loadESprite(); playAnim();
+                return;
+            }
+            getAccess().att.frameWidth = "0";
+            getAccess().att.frameHeight = "0";
+            loadESprite(); playAnim();
+        }); uiBase.add(btnSetFrameSize);
+
+        var lblFrameName = new FlxText(5, btnSetFrameSize.y + btnSetFrameSize.height + 10, Std.int(tabSPRITE.width) - 10, "[Frame Name]"); uiBase.add(lblFrameName);
         lblFrameName.alignment = CENTER;
         var txtFrameName = new FlxUIInputText(5, lblFrameName.y + lblFrameName.height, Std.int(tabSPRITE.width) - 10, ""); uiBase.add(txtFrameName);
         var btnAddFrame = new FlxUICustomButton(5, txtFrameName.y + txtFrameName.height + 3, Std.int(tabSPRITE.width / 2) - 7, null, "Create Frame", FlxColor.fromRGB(94, 255, 99), function(){
@@ -452,8 +499,6 @@ class XMLEditorState extends MusicBeatState {
         tabSPRITE.scrollFactor.set();
         tabSPRITE.showTabId("General");
     }
-
-    private function setValue(a, b){}
     
     override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>){
         if((sender is FlxUICheckBox)){
@@ -660,7 +705,6 @@ class XMLEditorState extends MusicBeatState {
             switch(id){
                 case FlxUICustomList.CHANGE_EVENT:{
                     switch(wname){
-                        default:{trace("[FlxUICustomList]: Works!");}
                     }
                 }
             }

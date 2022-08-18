@@ -72,7 +72,7 @@ class StageEditorState extends MusicBeatState {
 //        _stage = stage;
 //
 //        FlxG.sound.music.stop();
-//        FlxG.switchState(new StageEditorState(onConfirm, onBack));
+//        MusicBeatState.switchState(new StageEditorState(onConfirm, onBack));
 //    }
 //
 //    override function create(){

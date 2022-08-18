@@ -15,6 +15,9 @@ var halloweenBG:FlxSprite = null;
 
 var beat:Int = 0;
 function create(){
+    Paths.save(Paths.getPath('sounds/thunder_1.'+Paths.SOUND_EXT, "SOUND", "shared"), "SOUND");
+    Paths.save(Paths.getPath('sounds/thunder_2.'+Paths.SOUND_EXT, "SOUND", "shared"), "SOUND");
+
     halloweenBG = new FlxSprite(-200, -100);
     
     if(PreSettings.getPreSetting("BackgroundAnimated")){
@@ -43,5 +46,5 @@ function lightningStrikeShit(){
 	lightningStrikeBeat = beat;
 	lightningOffset = FlxG.random.int(8, 24);
 
-    for(i in 0...stage.character_Length){stage.getCharacterById(i).playAnim('scared');}
+    for(i in 0...stage.character_Length){stage.getCharacterById(i).playAnim('scared', true);}
 }

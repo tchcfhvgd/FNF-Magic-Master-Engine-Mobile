@@ -14,7 +14,7 @@ import flash.media.Sound;
 import haxe.io.Path;
 import haxe.Json;
 
-#if desktop
+#if sys
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -128,6 +128,15 @@ class Paths {
 	}
 	
 	public static var savedMap:Map<String, Dynamic> = new Map<String, Dynamic>();
+	inline static public function save(file:String, type:AssetType = TEXT):Void{
+		if(!Paths.exists(file)){return;}
+		switch(type){
+			default:{savedMap.set(file, getText(file));}
+			case IMAGE:{savedMap.set(file, getGraphic(file));}
+			case SOUND:{savedMap.set(file, getSound(file));}
+		}
+	}
+
 	private static function getSound(file:String):Sound{
 		if(!savedMap.exists(file)){savedMap.set(file, Assets.exists(file) ? Assets.getSound(file) : Sound.fromFile(file));}
 		return savedMap.get(file);
@@ -202,11 +211,8 @@ class Paths {
 	inline static public function voice(id:Int, char:String, song:String, category:String):Sound {
 		var path = getPath('${song}/Audio/${id}-${char}-${category}.$SOUND_EXT', SOUND, 'songs');
 
-		if(!Paths.exists(path)){path = getPath('${song}/Audio/${id}-${char}.$SOUND_EXT', SOUND, 'songs');}
-		if(!Paths.exists(path)){path = getPath('${song}/Audio/${id}-${char}Voice-${category}.$SOUND_EXT', SOUND, 'songs');}
-
-		if(!Paths.exists(path)){path = getPath('${song}/Audio/${id}-Voice-${category}.$SOUND_EXT', SOUND, 'songs');}
-		if(!Paths.exists(path)){path = getPath('${song}/Audio/${id}-Voice.$SOUND_EXT', SOUND, 'songs');}
+		if(!Paths.exists(path)){path = getPath('${song}/Audio/${id}-Default-${category}.$SOUND_EXT', SOUND, 'songs');}
+		if(!Paths.exists(path)){path = getPath('${song}/Audio/${id}-Default.$SOUND_EXT', SOUND, 'songs');}
 			
 		if(!Paths.exists(path) && id == 0){path = getPath('${song}/Audio/Voices-${category}.$SOUND_EXT', SOUND, 'songs');}
 		if(!Paths.exists(path) && id == 0){path = getPath('${song}/Audio/Voices.$SOUND_EXT', SOUND, 'songs');}
@@ -240,8 +246,29 @@ class Paths {
 		if(!Paths.exists(path)){path = getPath('Stage.hx', TEXT, 'stages');}
 
 		return path;
+	}	
+
+	inline static public function note(key:String, typeCheck:String = "Default"){
+		var typeNotes:String = PreSettings.getFromArraySetting("NoteSyle");
+		
+		var path:String = getPath('${typeNotes}/${typeCheck}/${key}.png', IMAGE, 'notes');
+		if(!Paths.exists(path)){path = getPath('${typeNotes}/Default/${key}.png', IMAGE, 'notes');}
+		if(!Paths.exists(path)){path =  getPath('Default/Default/${key}.png', IMAGE, 'notes');}
+		
+		return path;
 	}
 
+	inline static public function notePresset(key:String){
+		var path = getPath('$key.json', TEXT, 'notes');
+		return path;
+	}
+
+	inline static public function event(key:String){
+		var path = getPath('events/${key}.hx', TEXT, 'data');
+
+		return path;
+	}
+	
 	inline static public function getStrumJSON(keys:Int, typeStrum:String = null){
 		if(typeStrum == null){typeStrum = PreSettings.getFromArraySetting("NoteSyle");}
 		var path = getPath('${typeStrum}/${keys}k.json', TEXT, 'notes');
@@ -273,16 +300,6 @@ class Paths {
 	inline static public function getCharacterAtlas(char:String, key:String){
 		var path = getPath('${char}/Sprites/${key}.png', IMAGE, 'characters');
 		
-		return getAtlas(path);
-	}
-
-	inline static public function getNoteAtlas(key:String, typeCheck:String = "Default"){
-		var typeNotes:String = PreSettings.getFromArraySetting("NoteSyle");
-
-		var path:String = getPath('${typeNotes}/${typeCheck}/${key}', IMAGE, 'notes');
-		if(!Paths.exists('${path}.png')){path = getPath('${typeNotes}/Default/${key}', IMAGE, 'notes');}
-		if(!Paths.exists('${path}.png')){path =  getPath('Default/Default/${key}', IMAGE, 'notes');}
-
 		return getAtlas(path);
 	}
 

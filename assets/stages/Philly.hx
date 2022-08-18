@@ -35,6 +35,8 @@ var phillyCityLights:Array<Int> = [
 ];
 
 function create(){
+    Paths.save(Paths.getPath('sounds/train_passes.'+Paths.SOUND_EXT, "SOUND"), "SOUND", "shared");
+
     var bg = new FlxSprite(-100, 0).loadGraphic(Paths.image('sky', 'stages/philly'));
     bg.scrollFactor.set(0.1, 0.1);
     instance.add(bg);
@@ -83,7 +85,7 @@ function update(elapsed){
 function updateTrainPos(){
 		if(trainSound.time >= 4700){
 			startedMoving = true;
-            for(i in 0...stage.character_Length){stage.getCharacterById(i).playAnim('hairBlow');}
+            for(i in 0...stage.character_Length){stage.getCharacterById(i).playAnim('hairBlow', true);}
 		}
 
 		if(startedMoving){
@@ -101,7 +103,7 @@ function updateTrainPos(){
 	}
 
 function trainReset(){
-    for(i in 0...stage.character_Length){stage.getCharacterById(i).playAnim('hairFall');}
+    for(i in 0...stage.character_Length){stage.getCharacterById(i).playAnim('hairFall', true);}
 	phillyTrain.x = FlxG.width + 200;
 	trainMoving = false;
 	// trainSound.stop();

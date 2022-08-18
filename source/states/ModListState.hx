@@ -1,11 +1,6 @@
 package states;
 
-import Discord.DiscordClient;
 import flixel.math.FlxMath;
-#if desktop
-import Discord.DiscordClient;
-import sys.thread.Thread;
-#end
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -33,7 +28,9 @@ import haxe.DynamicAccess;
 import openfl.Assets;
 import haxe.Json;
 
-#if (desktop && sys)
+#if desktop
+import Discord.DiscordClient;
+import sys.thread.Thread;
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -50,7 +47,7 @@ class ModListState extends MusicBeatState {
     private var btnEnableAll:FlxUIButton;
     private var btnDisableAll:FlxUIButton;
 
-	override public function create():Void {if(script != null){script.execute();}
+	override public function create():Void{        
 		var bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.antialiasing = true;
 		add(bg);
@@ -85,6 +82,7 @@ class ModListState extends MusicBeatState {
 	override function update(elapsed:Float){
 		super.update(elapsed);
 
+        if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED)){ModSupport.reloadScripts();}
         if(FlxG.keys.justPressed.UP){changeIndex(-1);}
         if(FlxG.keys.justPressed.DOWN){changeIndex(1);}
         if(FlxG.mouse.wheel > 0){changeIndex(-1);}
@@ -102,7 +100,7 @@ class ModListState extends MusicBeatState {
             if(i > index){modCard.y = FlxMath.lerp(modCard.y, (selectedCard.y + selectedCard.height + 10) + ((modCard.height + 10) * ((i - 1) - index)), 0.3);}
         }
 
-        DiscordClient.changePresence('> ${selectedCard.refMod.name} [${selectedCard.refMod.enabled ? "✓": "X"}] <', '[Checking Mods]');
+        #if desktop MagicStuff.setWindowTitle('Checking Mods > ${selectedCard.refMod.name} [${selectedCard.refMod.enabled ? "O" : "X"}] <'); DiscordClient.changePresence('> ${selectedCard.refMod.name} [${selectedCard.refMod.enabled ? "✓": "X"}] <', '[Checking Mods]'); #end
 	}
 
     public static function changeIndex(change:Int = 0){

@@ -16,8 +16,7 @@ using StringTools;
 class ModSupport {
     public static var MODS:Array<Mod> = [];
 
-    public static var StScripts:Map<String, Script> = [];
-    public static var tempScripts:Map<String, Script> = [];
+    public static var staticScripts:Map<String, Script> = [];
     public static var exScripts:Array<String> = [
         "states.ModListState.hx",
         "states.PreLoaderState.hx"
@@ -36,32 +35,37 @@ class ModSupport {
             }
         }
         #end
-
-        reloadStScripts();
     }
 
-    public static function reloadStScripts():Void{
-        #if sys
+    #if sys
+    public static function reloadScripts():Void{
+        staticScripts.clear();
 
-        StScripts.clear();
+        for(mod in MODS){if(mod.enabled){checkToScript('${mod.path}/scripts', true);}}
 
-        for(mod in MODS){
-            var mPath = FileSystem.absolutePath('${mod.path}/scripts/states');
-            if(mod.enabled && FileSystem.exists(mPath)){
-                for(i in FileSystem.readDirectory(mPath)){
-                    if(!StScripts.exists(i) && !exScripts.contains(i)){
-                        var nScript = new Script();
-                        nScript.loadScript(Paths.getText('$mPath/$i'));
-                        
-                        StScripts.set('states.${i.replace('.hx','')}', nScript);
-                    }
+        trace(staticScripts);
+    }
+
+    static var toRemove:String = "";
+    public static function checkToScript(file:String, first:Bool = false){
+        var aFile = FileSystem.absolutePath(file);
+
+        if(!FileSystem.exists(aFile)){return;}
+
+        if(first){toRemove = file.replace("/", ".");}
+        for(i in FileSystem.readDirectory(aFile)){
+            if(FileSystem.isDirectory('$aFile/$i')){checkToScript('${file}/${i}');}else{
+                var id:String = '${file}/${i.replace(".hx", "")}'; var id = id.replace("/", ".").replace('$toRemove.', "");
+                if(!staticScripts.exists(id) && !exScripts.contains(id)){
+                    var nScript = new Script(); nScript.Name = id;
+                    nScript.exScript(Paths.getText('$file/$i'));
+                    
+                    staticScripts.set(id, nScript);
                 }
-            }            
+            }
         }
-
-        #end
-        trace(StScripts);
     }
+    #end
 
     public static function moveMod(index:Int, toUp:Bool = false){
         var mod_1:Mod = MODS[index];

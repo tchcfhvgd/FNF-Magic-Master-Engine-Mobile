@@ -1,19 +1,20 @@
 package;
 
-import flixel.FlxObject;
-import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.animation.FlxBaseAnimation;
+import flixel.system.FlxAssets;
 import flixel.tweens.FlxTween;
+import haxe.format.JsonParser;
+import flixel.group.FlxGroup;
+import flixel.math.FlxPoint;
 import flixel.util.FlxSort;
 import Section.SwagSection;
 import openfl.utils.Assets;
-import haxe.Json;
-import haxe.format.JsonParser;
-import flixel.group.FlxGroup;
-import flixel.system.FlxAssets;
+import flixel.FlxObject;
+import flixel.FlxSprite;
 import flixel.FlxBasic;
+import flixel.FlxG;
+import haxe.Json;
 
 #if windows
 import sys.FileSystem;
@@ -43,7 +44,8 @@ class Stage extends FlxTypedGroup<Dynamic>{
 
     public var script:Script = null;
     public var zoom:Float = 0.7;
-    public var chrome:Float = 0;
+    public var camP_1:FlxPoint;
+    public var camP_2:FlxPoint;
 
     private var initChar:Int = 0;
 
@@ -81,7 +83,9 @@ class Stage extends FlxTypedGroup<Dynamic>{
 
     public function reload(){
         zoom = script.getVariable("zoom");
-        chrome = script.getVariable("chrome");
+
+        camP_1 = script.getVariable("camP_1");
+        camP_2 = script.getVariable("camP_2");
 
         initChar = script.getVariable("initChar");
 

@@ -1,0 +1,5 @@
+<TextureAtlas imagePath="flag.png">
+	<!-- Created with Adobe Animate version 19.2.1.408 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="0" frameWidth="155" y="0" frameX="-10" name="Flag0000" frameHeight="105" frameY="0" width="135" height="100"/>
+</TextureAtlas>

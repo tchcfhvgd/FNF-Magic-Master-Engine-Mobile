@@ -85,7 +85,7 @@ class TitleState extends MusicBeatState {
 					skipIntro(true);
 				}else{
 					FlxTween.tween(gradient, {y: FlxG.height}, 1, {ease: FlxEase.quadIn});
-					FlxTween.tween(logo, {y: FlxG.height}, 1, {ease: FlxEase.quadIn, onComplete: function(twn){FlxG.switchState(new MainMenuState());}});
+					FlxTween.tween(logo, {y: FlxG.height}, 1, {ease: FlxEase.quadIn, onComplete: function(twn){MusicBeatState.switchState(new MainMenuState());}});
 				}
 			}
 	

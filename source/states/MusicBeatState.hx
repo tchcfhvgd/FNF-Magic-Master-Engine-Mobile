@@ -12,65 +12,80 @@ import flixel.math.FlxRect;
 import flixel.util.FlxTimer;
 import flixel.FlxObject;
 
-class MusicBeatState extends FlxUIState {
-	private var conductor:Conductor = new Conductor();
+using StringTools;
 
-	public var onBack:FlxState;
-	public var onConfirm:FlxState;
+class MusicBeatState extends FlxUIState {
+	public static var state:MusicBeatState;
+
+	public var conductor:Conductor = new Conductor();
+
+	public var onBack:Class<FlxState>;
+	public var onConfirm:Class<FlxState>;
 	
 	private var lastBeat:Float = 0;
 	private var lastStep:Float = 0;
 
-	private var curStep:Int = 0;
-	private var curBeat:Int = 0;
+	public var curStep:Int = 0;
+	public var curBeat:Int = 0;
 
-	private var principal_controls(get, never):Controls;
+	public var principal_controls(get, never):Controls;
 	inline function get_principal_controls():Controls{return PlayerSettings.getPlayer(0).controls;}
 
 	private function getOtherControls(ID:Int):Controls{return PlayerSettings.getPlayer(ID).controls;}
 	private var canControlle:Bool = false;
 
+	public var tempVariables:Map<String, Dynamic>= [];
+    public var tempScripts:Map<String, Script> = [];
+	public var scripts(get, never):Array<Script>;
+	inline function get_scripts():Array<Script>{
+		var toReturn:Array<Script> = [];
+		for(s in ModSupport.staticScripts.keys()){if(!s.contains('.')){toReturn.push(ModSupport.staticScripts.get(s));}}
+		return toReturn;
+	}
 	private var script(get, never):Script;
 	inline function get_script():Script{
 		if(ModSupport.exScripts.contains(Type.getClassName(Type.getClass(this)))){return null;}
-		return ModSupport.StScripts.get(Type.getClassName(Type.getClass(this)));
+
+		var stateScript = null;
+		if(ModSupport.staticScripts.exists(Type.getClassName(Type.getClass(this)))){stateScript = ModSupport.staticScripts.get(Type.getClassName(Type.getClass(this)));}
+
+		return stateScript;
 	}
 
-	private var camGame:FlxCamera = new FlxCamera();
-	private var camFGame:FlxCamera = new FlxCamera();
-	private var camBHUD:FlxCamera = new FlxCamera();
-	private var camHUD:FlxCamera = new FlxCamera();
-	private var camFHUD:FlxCamera = new FlxCamera();
+	public var camGame:FlxCamera = new FlxCamera();
+	public var camFGame:FlxCamera = new FlxCamera();
+	public var camBHUD:FlxCamera = new FlxCamera();
+	public var camHUD:FlxCamera = new FlxCamera();
+	public var camFHUD:FlxCamera = new FlxCamera();
+	public var camSubState:FlxCamera = new FlxCamera();
 	
-	public function new(?onConfirm:FlxState, ?onBack:FlxState){
+	public function new(?onConfirm:Class<FlxState>, ?onBack:Class<FlxState>){
 		this.onBack = onBack;
 		this.onConfirm = onConfirm;
-
-		for(spt in ModSupport.tempScripts){spt.setVariable('getState', function(){return this;});}
-		if(script != null){
-			script.setVariable('getState', function(){return this;});
-			script.execute();
-		}
 
 		super();
 	}
 
 	override function create(){
+		state = this;
 		if(transIn != null){trace('reg ' + transIn.region);}
 
 		camFGame.bgColor.alpha = 0;
 		camBHUD.bgColor.alpha = 0;
 		camHUD.bgColor.alpha = 0;
 		camFHUD.bgColor.alpha = 0;
+		camSubState.bgColor.alpha = 0;
 
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camFGame);
 		FlxG.cameras.add(camBHUD);
 		FlxG.cameras.add(camHUD);
 		FlxG.cameras.add(camFHUD);
+		FlxG.cameras.add(camSubState);
 
 		FlxCamera.defaultCameras = [camGame];
 
+		for(s in scripts){s.exFunction('create');}
 		if(script != null){script.exFunction('create');}
 		super.create();
 
@@ -85,14 +100,16 @@ class MusicBeatState extends FlxUIState {
 		updateBeat();
 
 		if(oldStep != curStep && curStep > 0){stepHit();}
-		
-		if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED) && onConfirm != null){FlxG.switchState(onConfirm);}
-		if(principal_controls.checkAction("Menu_Back", JUST_PRESSED) && onBack != null){FlxG.switchState(onBack);}
-		
-		if(FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.P){trace("Assets Reset"); Paths.savedMap.clear();}
+
+		if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED) && onConfirm != null){MusicBeatState.switchState(Type.createInstance(onConfirm, []));}
+		if(principal_controls.checkAction("Menu_Back", JUST_PRESSED) && onBack != null){MusicBeatState.switchState(Type.createInstance(onBack, []));}
+
+		if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.P){trace("Assets Reset"); Paths.savedMap.clear();}
+		if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.L){trace("Static Scripts Reset"); ModSupport.reloadScripts();}
 
 		if(script != null){script.exFunction('update', [elapsed]);}
-		for(spt in ModSupport.tempScripts){spt.exFunction('update', [elapsed]);}
+		for(spt in tempScripts){spt.exFunction('update', [elapsed]);}
+		for(s in scripts){s.exFunction('update', [elapsed]);}
 		super.update(elapsed);
 	}
 
@@ -115,24 +132,16 @@ class MusicBeatState extends FlxUIState {
 		if(curStep % 4 == 0){beatHit();}
 
 		if(script != null){script.exFunction('stepHit', [curStep]);}
-		for(spt in ModSupport.tempScripts){spt.exFunction('stepHit', [curStep]);}
+		for(spt in tempScripts){spt.exFunction('stepHit', [curStep]);}
+		for(s in scripts){s.exFunction('stepHit', [curStep]);}
 	}
 
 	public function beatHit():Void {
 		//do literally nothing dumbass
 
 		if(script != null){script.exFunction('beatHit', [curBeat]);}
-		for(spt in ModSupport.tempScripts){spt.exFunction('beatHit', [curBeat]);}
-	}
-
-	override function openSubState(SubState:FlxSubState){
-		canControlle = false;	
-		super.openSubState(SubState);
-	}
-
-	override function closeSubState(){
-		canControlle = true;	
-		super.closeSubState();
+		for(spt in tempScripts){spt.exFunction('beatHit', [curBeat]);}
+		for(s in scripts){s.exFunction('beatHit', [curBeat]);}
 	}
 
 	public function trace(toTrace:String){
@@ -144,10 +153,34 @@ class MusicBeatState extends FlxUIState {
 	
 	override public function onFocus():Void{
 		if(script != null){script.exFunction('onFocus');}
-		for(spt in ModSupport.tempScripts){spt.exFunction('onFocus');}
+		for(spt in tempScripts){spt.exFunction('onFocus');}
+		for(s in scripts){s.exFunction('onFocus');}
 	}
 	override public function onFocusLost():Void{
 		if(script != null){script.exFunction('onFocusLost');}
-		for(spt in ModSupport.tempScripts){spt.exFunction('onFocusLost');}
+		for(spt in tempScripts){spt.exFunction('onFocusLost');}
+		for(s in scripts){s.exFunction('onFocusLost');}
+	}
+
+	override function openSubState(SubState:FlxSubState){
+		if(script != null){script.exFunction('openSubState');}
+		for(spt in tempScripts){spt.exFunction('openSubState');}
+		for(s in scripts){s.exFunction('openSubState');}
+
+		super.openSubState(SubState);
+	}
+
+	override function closeSubState(){
+		if(script != null){script.exFunction('closeSubState');}
+		for(spt in tempScripts){spt.exFunction('closeSubState');}
+		for(s in scripts){s.exFunction('closeSubState');}
+
+		super.closeSubState();
+	}
+
+	public static function switchState(nextState:FlxState):Void {
+		var nScript = ModSupport.staticScripts.get(Type.getClassName(Type.getClass(nextState)));
+		if(nScript != null && nScript.getVariable('CustomState')){FlxG.switchState(new CustomScriptState(nScript));}
+		FlxG.switchState(nextState);
 	}
 }

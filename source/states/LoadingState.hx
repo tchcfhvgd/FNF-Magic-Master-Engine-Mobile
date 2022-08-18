@@ -41,7 +41,7 @@ class LoadingState extends MusicBeatState{
 	private var bg:FlxSprite;
 
 	public static function loadAndSwitchState(target:FlxState, song:SwagSong, withMusic:Bool = true){
-		var load:Void->Void = function(){FlxG.switchState(new LoadingState(target, song));};
+		var load:Void->Void = function(){MusicBeatState.switchState(new LoadingState(target, song));};
 		
 		if(!withMusic){
 			FlxTween.tween(FlxG.sound.music, {volume: 0}, 1, {onComplete: function(twn:FlxTween){
@@ -84,7 +84,7 @@ class LoadingState extends MusicBeatState{
 	}
 
 	private function onLoad(){
-		FlxG.switchState(TARGET);
+		MusicBeatState.switchState(TARGET);
 	}
 
 	function loadSong(){

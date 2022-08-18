@@ -43,25 +43,29 @@ class Script extends FlxBasic {
         setVariable("presset", function(name:String, func:Any){setVariable(name, func);});
         setVariable('destroy', function(){this.program = null; this.destroy();});
         
-        setVariable("pushGlobal", function(){ModSupport.tempScripts.set(Name, this);});
-        setVariable("quitGlobal", function(){ModSupport.tempScripts.remove(Name);});
+        setVariable("pushGlobal", function(){states.MusicBeatState.state.tempScripts.set(Name, this);});
+        setVariable("quitGlobal", function(){states.MusicBeatState.state.tempScripts.remove(Name);});
         
-		setVariable('getState', function():Class<Dynamic>{return null;});
+        setVariable('this', this);
+		setVariable('getState', function(){return states.MusicBeatState.state;});
+        setVariable('getStaticScript', function(name:String):Script{return ModSupport.staticScripts.get(name);});
 
         setVariable("import", function(imp:String, ?val:String){
-            var toSet:Bool = true;
-
-            if(imp == null){toSet = false;}
-            if(Type.resolveClass(imp) == null){Lib.application.window.alert('This Lib Class [${imp}] is Null', "Null Import"); trace('Null Lib [${imp}]'); toSet = false;}
-
-            if(toSet){setVariable(val != null ? val : imp, Type.resolveClass(imp));}
-		});
+            var cl = Type.resolveClass(imp);
+            var en = Type.resolveEnum(imp);
+            if(cl == null && en == null){Lib.application.window.alert('This Lib Class/Enum [${imp}] is Null', "Null Import"); return;}
+            if(en != null){
+                var nEnum = {}; for(c in en.getConstructors()){Reflect.setField(nEnum, c, en.createByName(c));}
+                setVariable(val != null ? val : imp, nEnum);
+            }
+            if(cl != null){setVariable(val != null ? val : imp, cl);}
+        });
     }
     
     public function execute():Void{if(program != null){interp.execute(program);}}
     public function exFunction(name:String, ?args:Array<Any>):Dynamic {
-        if(program == null){trace("Null Script"); return null;}
-        if(!interp.variables.exists(name)){trace('Null Function [${name}]'); return null;}
+        if(program == null){trace('{${Name}}: Null Script'); return null;}
+        if(!interp.variables.exists(name)){trace('{${Name}}: Null Function [${name}]'); return null;}
 
         var FUNCT = interp.variables.get(name);
         var toReturn = null;
@@ -69,13 +73,13 @@ class Script extends FlxBasic {
             try{
                 toReturn = Reflect.callMethod(null, FUNCT, args);
             }catch(e){
-                trace('[Function Error](${name}): ${e}');
+                trace('{${Name}}: [Function Error](${name}): ${e}');
             }
         }else{
             try{
                 toReturn = FUNCT();
             }catch(e){
-                trace('[Function Error](${name}): ${e}');
+                trace('{${Name}}: [Function Error](${name}): ${e}');
             }
         }
 
@@ -88,7 +92,7 @@ class Script extends FlxBasic {
     }
 
     public override function destroy(){
-        ModSupport.tempScripts.remove(Name);
+        states.MusicBeatState.state.tempScripts.remove(Name);
         program = null;
         super.destroy();
     }

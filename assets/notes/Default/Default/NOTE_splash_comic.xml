@@ -3,9 +3,9 @@
 	<!-- Created with Adobe Animate version 19.2.1.408 -->
 	<!-- http://www.adobe.com/products/animate.html -->
 	<SubTexture x="0" y="0" frameWidth="154" name="SizeBase0000" frameX="0" frameHeight="157" frameY="0" width="154" height="157"/>
-	<SubTexture x="0" frameWidth="242" y="0" frameX="34" name="Idle0000" frameHeight="280" frameY="20" width="179" height="167"/>
-	<SubTexture x="179" frameWidth="242" y="0" frameX="59" name="Idle0001" frameHeight="280" frameY="66" width="221" height="262"/>
-	<SubTexture x="0" frameWidth="242" y="262" frameX="64" name="Idle0002" frameHeight="280" frameY="70" width="232" height="270"/>
-	<SubTexture x="232" frameWidth="242" y="262" frameX="66" name="Idle0003" frameHeight="280" frameY="73" width="236" height="275"/>
-	<SubTexture x="0" frameWidth="242" y="537" frameX="69" name="Idle0004" frameHeight="280" frameY="75" width="242" height="280"/>
+	<SubTexture x="0" frameWidth="242" y="0" frameX="34" name="Splash0000" frameHeight="280" frameY="20" width="179" height="167"/>
+	<SubTexture x="179" frameWidth="242" y="0" frameX="59" name="Splash0001" frameHeight="280" frameY="66" width="221" height="262"/>
+	<SubTexture x="0" frameWidth="242" y="262" frameX="64" name="Splash0002" frameHeight="280" frameY="70" width="232" height="270"/>
+	<SubTexture x="232" frameWidth="242" y="262" frameX="66" name="Splash0003" frameHeight="280" frameY="73" width="236" height="275"/>
+	<SubTexture x="0" frameWidth="242" y="537" frameX="69" name="Splash0004" frameHeight="280" frameY="75" width="242" height="280"/>
 </TextureAtlas>

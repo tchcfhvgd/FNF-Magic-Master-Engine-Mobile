@@ -59,11 +59,11 @@ class GitarooPause extends MusicBeatState
 		{
 			if (replaySelect)
 			{
-				FlxG.switchState(new states.PlayState());
+				MusicBeatState.switchState(new states.PlayState());
 			}
 			else
 			{
-				FlxG.switchState(new states.MainMenuState());
+				MusicBeatState.switchState(new states.MainMenuState());
 			}
 		}
 

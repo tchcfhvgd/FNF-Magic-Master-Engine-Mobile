@@ -45,6 +45,12 @@ import FlxCustom.FlxCustomButton;
 import FlxCustom.FlxUICustomNumericStepper;
 import FlxCustom.FlxUICustomList;
 
+#if desktop
+import Discord.DiscordClient;
+import sys.FileSystem;
+import sys.io.File;
+#end
+
 using StringTools;
 
 class CharacterEditorState extends MusicBeatState{
@@ -73,15 +79,20 @@ class CharacterEditorState extends MusicBeatState{
     
     var camFollow:FlxObject;
 
-    public static function editCharacter(?onConfirm:FlxState, ?onBack:FlxState, ?character:CharacterFile){
+    public static function editCharacter(?onConfirm:Class<FlxState>, ?onBack:Class<FlxState>, ?character:CharacterFile){
         if(character == null){character = new Character(0, 0).charFile;}
         _character = character;
 
         FlxG.sound.music.stop();
-        FlxG.switchState(new CharacterEditorState(onConfirm, onBack));
+        MusicBeatState.switchState(new CharacterEditorState(onConfirm, onBack));
     }
 
     override function create(){
+        #if desktop
+		// Updating Discord Rich Presence
+		DiscordClient.changePresence('[${_character.name}-${_character.skin}-${_character.aspect}]', '[Character Editor]');
+		MagicStuff.setWindowTitle('Editing [${_character.name}-${_character.skin}-${_character.aspect}]', 1);
+		#end
         FlxG.mouse.visible = true;
 
         var bgGrid:FlxSprite = FlxGridOverlay.create(10, 10, FlxG.width, FlxG.height, true, 0xff4d4d4d, 0xff333333);
@@ -104,6 +115,7 @@ class CharacterEditorState extends MusicBeatState{
         
         chrStage = backStage.getCharacterById(3);
         chrStage.setupByCharacterFile(_character);
+        chrStage.onDebug = true;
         chrStage.alpha = 1;
 
         var menuTabs = [
@@ -160,10 +172,16 @@ class CharacterEditorState extends MusicBeatState{
             }else{
                 if(FlxG.mouse.wheel != 0){camFGame.zoom += (FlxG.mouse.wheel * 0.01);}
                 
-                if(FlxG.keys.justPressed.W){_character.camera[1]--; reloadCharacter();}
-                if(FlxG.keys.justPressed.A){_character.camera[0]--; reloadCharacter();}
-                if(FlxG.keys.justPressed.S){_character.camera[1]++; reloadCharacter();}
-                if(FlxG.keys.justPressed.D){_character.camera[0]++; reloadCharacter();}
+                if(FlxG.keys.justPressed.W){_character.position[1]--; reloadCharacter();}
+                if(FlxG.keys.justPressed.A){_character.position[0]--; reloadCharacter();}
+                if(FlxG.keys.justPressed.S){_character.position[1]++; reloadCharacter();}
+                if(FlxG.keys.justPressed.D){_character.position[0]++; reloadCharacter();}
+                
+                
+                if(FlxG.keys.justPressed.I){_character.camera[1] --; reloadCharacter();}
+                if(FlxG.keys.justPressed.J){_character.camera[0] --; reloadCharacter();}
+                if(FlxG.keys.justPressed.K){_character.camera[1] ++; reloadCharacter();}
+                if(FlxG.keys.justPressed.L){_character.camera[0] ++; reloadCharacter();}
             }
 
             if(FlxG.keys.justPressed.SPACE){chrStage.playAnim(clAnims.getSelectedLabel(), true);}
@@ -201,6 +219,7 @@ class CharacterEditorState extends MusicBeatState{
     var txtCategory:FlxUIInputText;
     var txtImage:FlxUIInputText;
     var txtIcon:FlxUIInputText;
+    var txtDeathChar:FlxUIInputText;
     var stpCharacterX:FlxUINumericStepper;
     var stpCharacterY:FlxUINumericStepper;
     var stpCameraX:FlxUINumericStepper;
@@ -260,8 +279,13 @@ class CharacterEditorState extends MusicBeatState{
         txtIcon = new FlxUIInputText(lblIcon.x + lblIcon.width + 5, lblIcon.y, Std.int(MENU.width - lblIcon.width - 15), _character.healthicon, 8); tabMENU.add(txtIcon);
         arrayFocus.push(txtIcon);
         txtIcon.name = "CHARACTER_ICON";
+        
+        var lblDeathChar = new FlxText(lblIcon.x, lblIcon.y + lblIcon.height + 5, 0, "Death Character:", 8); tabMENU.add(lblDeathChar);
+        txtDeathChar = new FlxUIInputText(lblDeathChar.x + lblDeathChar.width + 5, lblDeathChar.y, Std.int(MENU.width - lblDeathChar.width - 15), _character.deathCharacter, 8); tabMENU.add(txtDeathChar);
+        arrayFocus.push(txtDeathChar);
+        txtDeathChar.name = "CHARACTER_DEATHCHAR";
 
-        lblOriPos = new FlxText(lblIcon.x, lblIcon.y + lblIcon.height + 10, Std.int(MENU.width) - 10, 'Character Position: [${charPos[0]}, ${charPos[1]}]', 8); tabMENU.add(lblOriPos); lblOriPos.alignment = CENTER;
+        lblOriPos = new FlxText(lblDeathChar.x, lblDeathChar.y + lblDeathChar.height + 10, Std.int(MENU.width) - 10, 'Character Position: [${charPos[0]}, ${charPos[1]}]', 8); tabMENU.add(lblOriPos); lblOriPos.alignment = CENTER;
         var lblCharX = new FlxText(lblOriPos.x, lblOriPos.y + lblOriPos.height + 5, 0, "Offset [X]:", 8); tabMENU.add(lblCharX);
         stpCharacterX = new FlxUICustomNumericStepper(lblCharX.x + lblCharX.width + 5, lblCharX.y, Std.int(MENU.width - lblCharX.width - 15), 1, _character.position[0], -99999, 99999, 1); tabMENU.add(stpCharacterX);
             @:privateAccess arrayFocus.push(cast stpCharacterX.text_field);
@@ -424,7 +448,7 @@ class CharacterEditorState extends MusicBeatState{
         }); tabMENU.add(btnSetXMLAnims);
 
         var btnEditXEML:FlxButton = new FlxCustomButton(btnSetXMLAnims.x, btnSetXMLAnims.y + btnSetXMLAnims.height + 10, Std.int(MENU.width - 10), null, "EDIT POSITION ON XML", null, function(){
-            FlxG.switchState(new states.editors.XMLEditorState(null, new CharacterEditorState(onConfirm, onBack)));
+            MusicBeatState.switchState(new states.editors.XMLEditorState(null, CharacterEditorState));
         }); tabMENU.add(btnEditXEML);
 
 
@@ -458,6 +482,7 @@ class CharacterEditorState extends MusicBeatState{
                     healthIcon.setIcon(_character.healthicon);
                     healthIcon.x = FlxG.width - healthIcon.width;
                 }
+                case "CHARACTER_DEATHCHAR":{_character.deathCharacter = input.text;}
                 case "CHARACTER_IMAGE":{_character.image = input.text; reloadCharacter();}
             }
         }else if(id == FlxUIDropDownMenu.CLICK_EVENT && (sender is FlxUIDropDownMenu)){
@@ -504,14 +529,14 @@ class CharacterEditorState extends MusicBeatState{
 
     var _file:FileReference;
     function saveCharacter(name:String){
-        var data:String = Json.stringify(_character);
+        var data:String = Json.stringify(_character, "\t");
     
         if((data != null) && (data.length > 0)){
             _file = new FileReference();
             _file.addEventListener(Event.COMPLETE, onSaveComplete);
             _file.addEventListener(Event.CANCEL, onSaveCancel);
             _file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-            _file.save(data, '${_character.name}-${_character.skin}-${_character.aspect}.json');
+            _file.save(data, '${name}.json');
         }
     }
 
