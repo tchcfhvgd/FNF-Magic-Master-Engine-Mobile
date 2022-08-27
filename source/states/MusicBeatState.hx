@@ -1,16 +1,17 @@
 package states;
 
-import haxe.rtti.CType.Abstractdef;
-import Conductor.BPMChangeEvent;
-import flixel.FlxG;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.ui.FlxUIState;
+import haxe.rtti.CType.Abstractdef;
+import Conductor.BPMChangeEvent;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxTimer;
+import flixel.math.FlxRect;
+import flixel.FlxSubState;
+import flixel.FlxObject;
 import flixel.FlxCamera;
 import flixel.FlxState;
-import flixel.FlxSubState;
-import flixel.math.FlxRect;
-import flixel.util.FlxTimer;
-import flixel.FlxObject;
+import flixel.FlxG;
 
 using StringTools;
 
@@ -42,8 +43,9 @@ class MusicBeatState extends FlxUIState {
 		for(s in ModSupport.staticScripts.keys()){if(!s.contains('.')){toReturn.push(ModSupport.staticScripts.get(s));}}
 		return toReturn;
 	}
+
 	private var script(get, never):Script;
-	inline function get_script():Script{
+	function get_script():Script{
 		if(ModSupport.exScripts.contains(Type.getClassName(Type.getClass(this)))){return null;}
 
 		var stateScript = null;
@@ -88,6 +90,12 @@ class MusicBeatState extends FlxUIState {
 		for(s in scripts){s.exFunction('create');}
 		if(script != null){script.exFunction('create');}
 		super.create();
+
+		FlxTween.tween(camFGame, {alpha: 1}, 0.5);
+		FlxTween.tween(camBHUD, {alpha: 1}, 0.5);
+		FlxTween.tween(camHUD, {alpha: 1}, 0.5);
+		FlxTween.tween(camFHUD, {alpha: 1}, 0.5);
+		FlxTween.tween(camSubState, {alpha: 1}, 0.5);
 
 		canControlle = true;
 	}
@@ -179,8 +187,10 @@ class MusicBeatState extends FlxUIState {
 	}
 
 	public static function switchState(nextState:FlxState):Void {
+		var toSwitch:FlxState = nextState;
 		var nScript = ModSupport.staticScripts.get(Type.getClassName(Type.getClass(nextState)));
-		if(nScript != null && nScript.getVariable('CustomState')){FlxG.switchState(new CustomScriptState(nScript));}
-		FlxG.switchState(nextState);
+		if(nScript != null && nScript.getVariable('CustomState')){toSwitch = new CustomScriptState(nScript);}
+		
+		FlxG.switchState(toSwitch);
 	}
 }

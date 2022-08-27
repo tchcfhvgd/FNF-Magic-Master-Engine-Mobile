@@ -41,7 +41,11 @@ class ModSupport {
     public static function reloadScripts():Void{
         staticScripts.clear();
 
-        for(mod in MODS){if(mod.enabled){checkToScript('${mod.path}/scripts', true);}}
+        for(mod in MODS){
+            if(!mod.enabled){continue;}
+            checkToScript('${mod.path}/scripts', true);
+            if(mod.onlyThis){break;}
+        }
 
         trace(staticScripts);
     }
@@ -75,8 +79,6 @@ class ModSupport {
             MODS[index] = mod_2;
             if(toUp){MODS[index - 1] = mod_1;}else{MODS[index + 1] = mod_1;}
         }
-
-        ModListState.rePositionItems();
     }
 }
 
@@ -86,9 +88,8 @@ class Mod {
     public var description:String = "A Friday Night Funkin' Mod.";
 
     public var enabled:Bool = true;
-
-    public var source:Array<Class<Dynamic>> = [];
-    public var scripts:Array<Interp> = [];
+    public var onlyThis:Bool = false;
+    public var hideVanilla:Bool = false;
 
     public var path:String;
 
@@ -102,6 +103,9 @@ class Mod {
                 name = identifierJSON.get('name');
                 prefix = identifierJSON.get('prefix');
                 description = identifierJSON.get('description');
+
+                onlyThis = identifierJSON.get('onlyThis');
+                hideVanilla = identifierJSON.get('hideVanilla');
             }
         #end
     }

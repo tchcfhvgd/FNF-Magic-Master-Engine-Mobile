@@ -61,8 +61,6 @@ class PauseSubState extends MusicBeatSubstate{
 
 		for (i in 0...menuItems.length){
 			var songText:Alphabet = new Alphabet(10, (70 * i) + 30, menuItems[i], true, false);
-			songText.menuItem = "optionItem";
-			songText.targetY = i;
 			grpMenuShit.add(songText);
 		}
 
@@ -130,22 +128,6 @@ class PauseSubState extends MusicBeatSubstate{
 		if (curSelected >= menuItems.length)
 			curSelected = 0;
 
-		var bullShit:Int = 0;
-
-		for (item in grpMenuShit.members)
-		{
-			item.targetY = bullShit - curSelected;
-			bullShit++;
-
-			item.alpha = 0.6;
-			// item.setGraphicSize(Std.int(item.width * 0.8));
-
-			if (item.targetY == 0)
-			{
-				item.alpha = 1;
-				// item.setGraphicSize(Std.int(item.width));
-			}
-		}
 	}
 
 	function toClose(){close(); onClose();}

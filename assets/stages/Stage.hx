@@ -1,11 +1,15 @@
 import("PreSettings");
 import("Paths");
 
+import("flixel.math.FlxPoint", "FlxPoint");
 import("flixel.FlxSprite", "FlxSprite");
 
 presset("initChar", 1);
 presset("chrome", 0);
 presset("zoom", 0.9);
+
+presset("camP_1", new FlxPoint(400, 250));
+presset("camP_2", new FlxPoint(900, 600));
 
 function create(){
     var stageback = new FlxSprite(-600, -200).loadGraphic(Paths.image('stageback', 'stages/stage'));

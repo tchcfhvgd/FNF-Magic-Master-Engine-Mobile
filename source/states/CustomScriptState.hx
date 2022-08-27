@@ -34,6 +34,8 @@ using StringTools;
 class CustomScriptState extends MusicBeatState {
     public var SCRIPT:Script = null;
 
+	override function get_script():Script {return SCRIPT;}
+
     public function new(nScript:Script = null, ?onConfirm:Class<FlxState>, ?onBack:Class<FlxState>):Void {
         if(nScript != null){SCRIPT = nScript;}
         super(onConfirm, onBack);

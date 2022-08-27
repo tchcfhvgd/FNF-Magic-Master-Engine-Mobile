@@ -128,7 +128,7 @@ class PlayState extends MusicBeatState {
 		if(SongListData.songPlaylist.length > 0){
 			SONG = SongListData.songPlaylist[0];
 		}else{
-			SONG = Song.loadFromJson('Flippy_Roll-Normal-Hard', 'Flippy_Roll');
+			SONG = Song.loadFromJson('Tutorial-Normal-Normal');
 		}
 
 		conductor.mapBPMChanges(SONG);
@@ -529,7 +529,7 @@ class PlayState extends MusicBeatState {
 
 		if (SONG.validScore){
 			#if !switch
-			Highscore.saveScore(SONG.song, stats_Score, SONG.difficulty, SONG.category);
+			Highscore.saveSongScore(SONG.song, stats_Score, SONG.difficulty, SONG.category);
 			#end
 		}
 

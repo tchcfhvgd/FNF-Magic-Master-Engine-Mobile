@@ -46,7 +46,9 @@ class Paths {
 		var toReturn:Array<Dynamic> = [];
 
 		#if sys
-		if(FileSystem.exists(FileSystem.absolutePath(file)) && FileSystem.isDirectory(FileSystem.absolutePath(file))){
+		var hideVan:Bool = false;
+		for(mod in ModSupport.MODS){if(mod.hideVanilla){hideVan = true;}}
+		if(!hideVan && FileSystem.exists(FileSystem.absolutePath(file)) && FileSystem.isDirectory(FileSystem.absolutePath(file))){
 			for(i in FileSystem.readDirectory(FileSystem.absolutePath(file))){
 				if(!toReturn.contains(i)){
 					toReturn.push(i);
@@ -61,6 +63,8 @@ class Paths {
 						toReturn.push(i);
 					}
 				}
+
+				if(mod.onlyThis){break;}
 			}
 		}
 		#end
@@ -68,12 +72,25 @@ class Paths {
 		return toReturn;
 	}
 
-	inline public static function readFile(path:String, file:String):Array<Dynamic>{
+	inline public static function readFileToArray(path:String, file:String):Array<Dynamic> {
 		var toReturn:Array<Dynamic> = [];
 
 		#if sys
-		if(FileSystem.exists(FileSystem.absolutePath('$path/$file'))){toReturn.push(FileSystem.absolutePath('$path/$file'));}
-		for(mod in ModSupport.MODS){if(mod.enabled && FileSystem.exists(FileSystem.absolutePath('${mod.path}/$path/$file'))){toReturn.push(FileSystem.absolutePath('${mod.path}/$path/$file'));}}
+		var hideVan:Bool = false;
+		for(mod in ModSupport.MODS){if(mod.enabled && mod.hideVanilla){hideVan = true;}}
+		if(!hideVan && FileSystem.exists(FileSystem.absolutePath('$path/$file'))){toReturn.push(FileSystem.absolutePath('$path/$file'));}
+		for(mod in ModSupport.MODS){if(mod.enabled && FileSystem.exists(FileSystem.absolutePath('${mod.path}/$path/$file'))){toReturn.push(FileSystem.absolutePath('${mod.path}/$path/$file')); if(mod.onlyThis){break;}}}
+		#end
+
+		return toReturn;
+	}
+	inline public static function readFileToMap(path:String, file:String):Map<String, Dynamic> {
+		var toReturn:Map<String, Dynamic> = [];
+		#if sys
+		var hideVan:Bool = false; var i:Int = 0;
+		for(mod in ModSupport.MODS){if(mod.enabled && mod.hideVanilla){hideVan = true;}}
+		if(!hideVan && FileSystem.exists(FileSystem.absolutePath('$path/$file'))){toReturn.set('$i|Friday Night Funkin', FileSystem.absolutePath('$path/$file')); i++;}
+		for(mod in ModSupport.MODS){if(mod.enabled && FileSystem.exists(FileSystem.absolutePath('${mod.path}/$path/$file'))){toReturn.set('$i|${mod.name}', FileSystem.absolutePath('${mod.path}/$path/$file')); i++; if(mod.onlyThis){break;}}}
 		#end
 
 		return toReturn;
@@ -107,7 +124,7 @@ class Paths {
 		var path = '';
 		for(mod in ModSupport.MODS){
 			#if sys if(FileSystem.exists(path)){break;} #end
-			if(mod.enabled){path = '${mod.path}/assets/$file';}
+			if(mod.enabled){path = '${mod.path}/assets/$file'; if(mod.onlyThis){break;}}
 		}
 		#if sys if(!FileSystem.exists(path)){path = 'assets/$file';} #else path = 'assets/$file'; #end
 		return path;
@@ -116,7 +133,7 @@ class Paths {
 	inline static function getModPath(file:String, modName:String){
 		for(mod in ModSupport.MODS){
 			if(mod.name == modName){
-				return '${mod.path}/assets/$file';
+				#if sys return FileSystem.absolutePath('${mod.path}/assets/$file'); #end
 			}
 		}
 
@@ -137,11 +154,11 @@ class Paths {
 		}
 	}
 
-	private static function getSound(file:String):Sound{
+	inline public static function getSound(file:String):Sound{
 		if(!savedMap.exists(file)){savedMap.set(file, Assets.exists(file) ? Assets.getSound(file) : Sound.fromFile(file));}
 		return savedMap.get(file);
 	}
-	private static function getGraphic(file):Any{
+	inline public static function getGraphic(file):Any{
 		if(savedMap.exists(file)){return savedMap.get(file);}
 
 		var bit:BitmapData = BitmapData.fromFile(file);
@@ -156,7 +173,7 @@ class Paths {
 		
 		return savedMap.get(file);
 	}
-	public static function getText(file:String):String{
+	inline public static function getText(file:String):String{
 		if(savedMap.exists(file)){return savedMap.get(file);}
 		
 		#if sys
@@ -228,8 +245,8 @@ class Paths {
 		return getSound(path);
 	}
 
-	inline static public function chart(jsonInput:String, song:String):String {
-		var path = getPath('${song}/Data/${jsonInput}.json', TEXT, 'songs');
+	inline static public function chart(jsonInput:String):String {
+		var path = getPath('${jsonInput.split('-')[0]}/Data/${jsonInput}.json', TEXT, 'songs');
 
 		if(!Paths.exists(path)){path = getPath('Template.json', TEXT, 'songs');}
 

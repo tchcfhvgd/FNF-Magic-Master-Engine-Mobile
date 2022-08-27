@@ -1,114 +1,103 @@
 {
-    "weekData": {
-        "onlyThis": false,
-        "weeks": [
-            {
-                "name": "Tutorial",
-                "display": "Tutorial",
-                "title": "",
-                "data": [
-                    ["Normal", ["Easy", "Normal","Hard"]]
-                ],
-                "songs":["Tutorial"],
-                "lock": false,
-                "hiddenOnWeeks": false,
-                "hiddenOnFreeplay": false
-            },
-            {
-                "name": "Week1",
-                "display": "Week 1",
-                "title": "Daddy Dearest",
-                "data": [
-                    ["Normal", ["Easy", "Normal","Hard"]]
-                ],
-                "songs":["Bopeebo", "Fresh", "Dadbattle"],
-                "lock": false,
-                "hiddenOnWeeks": false,
-                "hiddenOnFreeplay": false
-            },
-            {
-                "name": "Week2",
-                "display": "Week 2",
-                "title": "Spooky Month",
-                "data": [
-                    ["Normal", ["Easy", "Normal","Hard"]]
-                ],
-                "songs":["Spookeez", "South", "Monster"],
-                "lock": false,
-                "hiddenOnWeeks": false,
-                "hiddenOnFreeplay": false
-            },
-            {
-                "name": "Week3",
-                "display": "Week 3",
-                "title": "PICO",
-                "data": [
-                    ["Normal", ["Easy", "Normal","Hard"]]
-                ],
-                "songs":["Pico", "Philly", "Blammed"],
-                "lock": false,
-                "hiddenOnWeeks": false,
-                "hiddenOnFreeplay": false
-            },
-            {
-                "name": "Week4",
-                "display": "Week 4",
-                "title": "MOMMY MUST MURDER",
-                "data": [
-                    ["Normal", ["Easy", "Normal","Hard"]]
-                ],
-                "songs":["Satin_Panties", "High", "Milf"],
-                "lock": false,
-                "hiddenOnWeeks": false,
-                "hiddenOnFreeplay": false
-            },
-            {
-                "name": "Week5",
-                "display": "Week 5",
-                "title": "RED SNOW",
-                "data": [
-                    ["Normal", ["Easy", "Normal","Hard"]]
-                ],
-                "songs":["Cocoa", "Eggnog", "Winter_Horrorland"],
-                "lock": false,
-                "hiddenOnWeeks": false,
-                "hiddenOnFreeplay": false
-            },
-            {
-                "name": "Week6",
-                "display": "Week 6",
-                "title": "hating simulator ft. moawling",
-                "data": [
-                    ["Normal", ["Easy", "Normal","Hard"]]
-                ],
-                "songs":["Senpai", "Roses", "Thorns"],
-                "lock": false,
-                "hiddenOnWeeks": false,
-                "hiddenOnFreeplay": false
-            },
-            {
-                "name": "Week7",
-                "display": "Week 7",
-                "title": "Tankman",
-                "data": [
-                    ["Normal", ["Easy", "Normal","Hard"]]
-                ],
-                "songs":["Ugh", "Guns", "Stress"],
-                "lock": false,
-                "hiddenOnWeeks": false,
-                "hiddenOnFreeplay": false
-            }
-        ]
-    },
+    "weekData": [
+        {
+            "name": "Tutorial",
+            "display": "Tutorial",
+            "title": "",
+            "data": [
+                ["Normal", ["Easy", "Normal","Hard"]]
+            ],
+            "songs":["Tutorial"],
+            "keyLock": null,
+            "hiddenOnWeeks": false,
+            "hiddenOnFreeplay": false
+        },
+        {
+            "name": "Week1",
+            "display": "Week 1",
+            "title": "Daddy Dearest",
+            "data": [
+                ["Normal", ["Easy", "Normal","Hard"]]
+            ],
+            "songs":["Bopeebo", "Fresh", "Dadbattle"],
+            "keyLock": null,
+            "hiddenOnWeeks": false,
+            "hiddenOnFreeplay": false
+        },
+        {
+            "name": "Week2",
+            "display": "Week 2",
+            "title": "Spooky Month",
+            "data": [
+                ["Normal", ["Easy", "Normal","Hard"]]
+            ],
+            "songs":["Spookeez", "South", "Monster"],
+            "keyLock": null,
+            "hiddenOnWeeks": false,
+            "hiddenOnFreeplay": false
+        },
+        {
+            "name": "Week3",
+            "display": "Week 3",
+            "title": "PICO",
+            "data": [
+                ["Normal", ["Easy", "Normal","Hard"]]
+            ],
+            "songs":["Pico", "Philly", "Blammed"],
+            "keyLock": null,
+            "hiddenOnWeeks": false,
+            "hiddenOnFreeplay": false
+        },
+        {
+            "name": "Week4",
+            "display": "Week 4",
+            "title": "MOMMY MUST MURDER",
+            "data": [
+                ["Normal", ["Easy", "Normal","Hard"]]
+            ],
+            "songs":["Satin_Panties", "High", "Milf"],
+            "keyLock": null,
+            "hiddenOnWeeks": false,
+            "hiddenOnFreeplay": false
+        },
+        {
+            "name": "Week5",
+            "display": "Week 5",
+            "title": "RED SNOW",
+            "data": [
+                ["Normal", ["Easy", "Normal","Hard"]]
+            ],
+            "songs":["Cocoa", "Eggnog", "Winter_Horrorland"],
+            "keyLock": null,
+            "hiddenOnWeeks": false,
+            "hiddenOnFreeplay": false
+        },
+        {
+            "name": "Week6",
+            "display": "Week 6",
+            "title": "hating simulator ft. moawling",
+            "data": [
+                ["Normal", ["Easy", "Normal","Hard"]]
+            ],
+            "songs":["Senpai", "Roses", "Thorns"],
+            "keyLock": null,
+            "hiddenOnWeeks": false,
+            "hiddenOnFreeplay": false
+        },
+        {
+            "name": "Week7",
+            "display": "Week 7",
+            "title": "Tankman",
+            "data": [
+                ["Normal", ["Easy", "Normal","Hard"]]
+            ],
+            "songs":["Ugh", "Guns", "Stress"],
+            "keyLock": null,
+            "hiddenOnWeeks": false,
+            "hiddenOnFreeplay": false
+        }
+    ],
 
-    "freeplayData": {
-        "showArchiveSongs": true,
-        "freeplay": [
-            {
-                "song": "Master_Egg",
-                "data": [["Normal", ["Magic"]]],
-                "lock": false
-            }
-        ]
-    }
+    "freeplayData": [],
+    "showArchiveSongs": false
 }

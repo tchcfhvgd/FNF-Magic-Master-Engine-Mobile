@@ -30,10 +30,6 @@ class Alphabet extends FlxSpriteGroup {
     public var delay:Float = 0.05;
 	public var paused:Bool = false;
 
-	//Menu Stuff
-	public var targetY:Float = 0;
-	public var menuItem:String = "";
-
     var spaceWidth:Float = 25;
     var xMultiplier:Float = 1;
     var yMultiplier:Float = 1;
@@ -127,28 +123,7 @@ class Alphabet extends FlxSpriteGroup {
         }
     }
     
-    override function update(elapsed:Float){
-        switch(menuItem){
-            case 'optionItem':{
-                var scaledY = FlxMath.remapToRange(targetY, 0, 1, 0, 1.3);
-    
-                y = FlxMath.lerp(y, (scaledY * 120) + (FlxG.height * 0.48), 0.30);
-                //x = FlxMath.lerp(x, (targetY * 20) + 90, 0.30);
-            }
-            case 'freeItem':{
-                y = FlxG.height * 0.90;
-                x = FlxMath.lerp(x, -1000, 0.30);
-                if(targetY == 0){x = FlxMath.lerp(x, 1000, 0.30);}
-            }
-            case 'mainItem':{
-                var scaledY = FlxMath.remapToRange(targetY, 0, 1, 0, 1.3);
-    
-                y = FlxMath.lerp(y, (scaledY * 120) + (FlxG.height * 0.48), 0.30);
-                x = FlxMath.lerp(x, (targetY * 70) + 350, 0.30);
-                if(targetY == 0){x = FlxMath.lerp(x, (targetY * 70) + 400, 0.30);}
-            }		
-        }
-    
+    override function update(elapsed:Float){    
         super.update(elapsed);
     }
 }

@@ -309,8 +309,12 @@ class StrumLine extends FlxGroup{
             var curScrollspeed:Float = getScrollSpeed();
 
             //var yStuff:Float = 0.45 * (strumConductor.songPosition - daNote.strumTime) * curScrollspeed;
-            var yStuff:Float = 0.45 * (strumConductor.songPosition - daNote.strumTime) * curScrollspeed;
-            if(daNote.prevStrumTime != null){yStuff = (0.005 * Math.pow(strumConductor.songPosition - daNote.strumTime, 2) + (3 * (strumConductor.songPosition - daNote.strumTime)));}
+            var yStuff:Float = 0.0045 * (Math.pow(strumConductor.songPosition - daNote.strumTime, 2) + ((300) * (strumConductor.songPosition - daNote.strumTime)));
+            //if(daNote.noteStatus == "MultiTap"){
+            //    yStuff = 
+            //}else{
+            //    yStuff = 0.45 * (strumConductor.songPosition - daNote.strumTime) * curScrollspeed;
+            //}
 
             if(staticNotes.members[daNote.noteData] != null){
                 if(pre_TypeScroll == "DownScroll"){
@@ -411,7 +415,7 @@ class StrumLine extends FlxGroup{
             }
         }
 
-        if(daNote.noteHits > 0 && daNote.noteLength > 20){
+        if(daNote.noteHits > 0){
             daNote.prevStrumTime = daNote.strumTime;
             daNote.strumTime += daNote.noteLength;
             

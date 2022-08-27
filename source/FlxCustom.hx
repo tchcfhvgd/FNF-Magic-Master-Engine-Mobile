@@ -1,6 +1,7 @@
 
 package;
 
+import flixel.graphics.FlxGraphic;
 import flixel.util.*;
 import flixel.addons.ui.*;
 import flixel.addons.ui.interfaces.*;
@@ -231,12 +232,13 @@ class FlxUIValueChanger extends FlxUIGroup implements IFlxUIWidget implements IF
 }
 
 class FlxCustomButton extends FlxButton {
-	public function new(X:Float = 0, Y:Float = 0, Width:Null<Int>, Height:Null<Int>, ?Text:String, ?Color:Null<FlxColor>, ?OnClick:() -> Void){
+	public function new(X:Float = 0, Y:Float = 0, Width:Null<Int>, Height:Null<Int>, ?Text:String, ?GraphicArgs:Array<Dynamic>, ?Color:Null<FlxColor>, ?OnClick:() -> Void){
 		super(X, Y, Text, OnClick);
 
 		if(Width == null){Width = Std.int(this.width);}
 		if(Height == null){Height = Std.int(this.height);}
 		
+        if(GraphicArgs != null){Reflect.callMethod(null, this.loadGraphic, GraphicArgs);}
 		this.setSize(Width, Height);
 		this.setGraphicSize(Width, Height);
 		this.centerOffsets();
@@ -246,12 +248,13 @@ class FlxCustomButton extends FlxButton {
 }
 
 class FlxUICustomButton extends FlxUIButton {
-	public function new(X:Float = 0, Y:Float = 0, Width:Null<Int>, Height:Null<Int>, ?Text:String, ?Color:Null<FlxColor>, ?OnClick:() -> Void){
+	public function new(X:Float = 0, Y:Float = 0, Width:Null<Int>, Height:Null<Int>, ?Text:String, ?GraphicArgs:Array<Dynamic>, ?Color:Null<FlxColor>, ?OnClick:() -> Void){
 		super(X, Y, Text, OnClick);
 
 		if(Width == null){Width = Std.int(this.width);}
 		if(Height == null){Height = Std.int(this.height);}
-		
+
+        if(GraphicArgs != null){Reflect.callMethod(null, this.loadGraphic, GraphicArgs);}
 		this.setSize(Width, Height);
 		this.setGraphicSize(Width, Height);
 		this.centerOffsets();

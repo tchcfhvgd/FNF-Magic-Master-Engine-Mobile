@@ -252,14 +252,14 @@ class CharacterEditorState extends MusicBeatState{
         arrayFocus.push(txtCategory);
         txtCategory.name = "CHARACTER_CATEGORY";
 
-        var btnLoadCharacter:FlxButton = new FlxCustomButton(lblCat.x, lblCat.y + lblCat.height + 5, Std.int(MENU.width / 2) - 10, null, "Load Character", null, function(){
+        var btnLoadCharacter:FlxButton = new FlxCustomButton(lblCat.x, lblCat.y + lblCat.height + 5, Std.int(MENU.width / 2) - 10, null, "Load Character", null, null, function(){
             var newCharacter:Character = new Character(0, 0, Paths.getFileName(txtCharacter.text, true), Paths.getFileName(txtCategory.text, true)); newCharacter.curSkin = Paths.getFileName(txtSkin.text, true);
             newCharacter.setupByCharacterFile();
 
             CharacterEditorState.editCharacter(onConfirm, onBack, newCharacter.charFile);
         }); tabMENU.add(btnLoadCharacter);
 
-        var btnSaveCharacter:FlxButton = new FlxCustomButton(btnLoadCharacter.x + btnLoadCharacter.width + 10, btnLoadCharacter.y, Std.int(MENU.width / 2) - 10, null, "Save Character", null, function(){saveCharacter('${txtCharacter.text}-${txtSkin.text}-${txtCategory.text}');}); tabMENU.add(btnSaveCharacter);
+        var btnSaveCharacter:FlxButton = new FlxCustomButton(btnLoadCharacter.x + btnLoadCharacter.width + 10, btnLoadCharacter.y, Std.int(MENU.width / 2) - 10, null, "Save Character", null, null, function(){saveCharacter('${txtCharacter.text}-${txtSkin.text}-${txtCategory.text}');}); tabMENU.add(btnSaveCharacter);
 
         var line0 = new FlxSprite(5, btnLoadCharacter.y + btnLoadCharacter.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line0);
 
@@ -324,7 +324,7 @@ class CharacterEditorState extends MusicBeatState{
         clAnims = new FlxUICustomList(ttlCharAnims.x, ttlCharAnims.y + ttlCharAnims.height + 5, Std.int(MENU.width - 10), anims); tabMENU.add(clAnims);
         clAnims.name = "CHARACTER_ANIMS";
 
-        var btnAnimAdd:FlxButton = new FlxCustomButton(clAnims.x, clAnims.y + clAnims.height + 5, Std.int(MENU.width / 4) - 7, null, "Add Anim", FlxColor.fromRGB(138, 255, 142), function(){
+        var btnAnimAdd:FlxButton = new FlxCustomButton(clAnims.x, clAnims.y + clAnims.height + 5, Std.int(MENU.width / 4) - 7, null, "Add Anim", null, FlxColor.fromRGB(138, 255, 142), function(){
             var arrIndices:Array<Int> = [];
             var anmIndices:String = txtAnimIndices.text.replace("[","").replace("]","").trim();
             if(
@@ -361,7 +361,7 @@ class CharacterEditorState extends MusicBeatState{
 
             reloadCharacter();
         }); tabMENU.add(btnAnimAdd);
-        var btnAnimUpd:FlxButton = new FlxCustomButton(btnAnimAdd.x + btnAnimAdd.width + 5, btnAnimAdd.y, Std.int(MENU.width / 4) - 7, null, "Update Anim", FlxColor.fromRGB(138, 255, 142), function(){
+        var btnAnimUpd:FlxButton = new FlxCustomButton(btnAnimAdd.x + btnAnimAdd.width + 5, btnAnimAdd.y, Std.int(MENU.width / 4) - 7, null, "Update Anim", null, FlxColor.fromRGB(138, 255, 142), function(){
             var arrIndices:Array<Int> = [];
             var anmIndices:String = txtAnimIndices.text.replace("[","").replace("]","").trim();
             if(anmIndices.contains(",")){for(i in anmIndices.split(",")){arrIndices.push(Std.parseInt(i));}}
@@ -383,7 +383,7 @@ class CharacterEditorState extends MusicBeatState{
             reloadCharacter();
         }); tabMENU.add(btnAnimUpd);
 
-        var btnAnimDel:FlxButton = new FlxCustomButton(btnAnimUpd.x + btnAnimUpd.width + 10, btnAnimUpd.y, Std.int(MENU.width / 2) - 10, null, "Delete Animation", FlxColor.fromRGB(255, 138, 138), function(){
+        var btnAnimDel:FlxButton = new FlxCustomButton(btnAnimUpd.x + btnAnimUpd.width + 10, btnAnimUpd.y, Std.int(MENU.width / 2) - 10, null, "Delete Animation", null, FlxColor.fromRGB(255, 138, 138), function(){
             if(clAnims.contains(txtAnimName.text)){
                 for(anim in _character.anims){
                     if(anim.anim == txtAnimName.text){
@@ -420,7 +420,7 @@ class CharacterEditorState extends MusicBeatState{
 
         chkAnimLoop = new FlxUICheckBox(lblAnimFrame.x, lblAnimFrame.y + lblAnimFrame.height + 5, null, null, "Animation Loop", 100); tabMENU.add(chkAnimLoop);
         
-        var btnSetXMLAnims:FlxButton = new FlxCustomButton(chkAnimLoop.x, chkAnimLoop.y + chkAnimLoop.height + 10, Std.int(MENU.width - 10), null, "SET ANIMATIONS FROM XML", null, function(){
+        var btnSetXMLAnims:FlxButton = new FlxCustomButton(chkAnimLoop.x, chkAnimLoop.y + chkAnimLoop.height + 10, Std.int(MENU.width - 10), null, "SET ANIMATIONS FROM XML", null, null, function(){
             trace(Paths.getPath('${chrStage.curCharacter}/Sprites/${_character.image}.xml', TEXT, 'characters'));
             if(Paths.exists(Paths.getPath('${chrStage.curCharacter}/Sprites/${_character.image}.xml', TEXT, 'characters'))){
                 var xml =  Xml.parse(Paths.getText(Paths.getPath('${chrStage.curCharacter}/Sprites/${_character.image}.xml', TEXT, 'characters')));
@@ -447,7 +447,7 @@ class CharacterEditorState extends MusicBeatState{
             }
         }); tabMENU.add(btnSetXMLAnims);
 
-        var btnEditXEML:FlxButton = new FlxCustomButton(btnSetXMLAnims.x, btnSetXMLAnims.y + btnSetXMLAnims.height + 10, Std.int(MENU.width - 10), null, "EDIT POSITION ON XML", null, function(){
+        var btnEditXEML:FlxButton = new FlxCustomButton(btnSetXMLAnims.x, btnSetXMLAnims.y + btnSetXMLAnims.height + 10, Std.int(MENU.width - 10), null, "EDIT POSITION ON XML", null, null, function(){
             MusicBeatState.switchState(new states.editors.XMLEditorState(null, CharacterEditorState));
         }); tabMENU.add(btnEditXEML);
 

@@ -119,7 +119,7 @@ class ChartEditorState extends MusicBeatState{
     var lblSongInfo:FlxText;
 
     public static function editChart(?onConfirm:Class<FlxState>, ?onBack:Class<FlxState>, ?chart:SwagSong){
-        if(chart == null){chart = Song.loadFromJson("Test-Normal-Normal", "Test");}
+        if(chart == null){chart = Song.loadFromJson("Test-Normal-Normal");}
         _song = chart;
 
         FlxG.sound.music.stop();
@@ -587,12 +587,12 @@ class ChartEditorState extends MusicBeatState{
                 strumStatics.add(newStrumStatic);
             }
 
-            var btnSoundHit:FlxUIButton = new FlxUICustomButton(newGrid.x + (newGrid.width / 8), newGrid.y + newGrid.height + 5, Std.int(newGrid.width / 4), null, "Sound Hits", sHitsArray[i] ? FlxColor.fromRGB(122, 255, 131) : FlxColor.fromRGB(255, 122, 122), function(){sHitsArray[i] = !sHitsArray[i]; updateSection();});
+            var btnSoundHit:FlxUIButton = new FlxUICustomButton(newGrid.x + (newGrid.width / 8), newGrid.y + newGrid.height + 5, Std.int(newGrid.width / 4), null, "Sound Hits", null, sHitsArray[i] ? FlxColor.fromRGB(122, 255, 131) : FlxColor.fromRGB(255, 122, 122), function(){sHitsArray[i] = !sHitsArray[i]; updateSection();});
             btnSoundHit.scrollFactor.set(1, 1);
             stuffGroup.add(btnSoundHit);
 
             if(_song.hasVoices){
-                var btnVoiceMute:FlxUIButton = new FlxUICustomButton(newGrid.x + newGrid.width - (newGrid.width / 8) - (newGrid.width / 4), newGrid.y + newGrid.height + 5, Std.int(newGrid.width / 4), null, "Voice", !sVoicesArray[i] ? FlxColor.fromRGB(122, 255, 131) : FlxColor.fromRGB(255, 122, 122), function(){sVoicesArray[i] = !sVoicesArray[i]; updateSection();});
+                var btnVoiceMute:FlxUIButton = new FlxUICustomButton(newGrid.x + newGrid.width - (newGrid.width / 8) - (newGrid.width / 4), newGrid.y + newGrid.height + 5, Std.int(newGrid.width / 4), null, "Voice", null, !sVoicesArray[i] ? FlxColor.fromRGB(122, 255, 131) : FlxColor.fromRGB(255, 122, 122), function(){sVoicesArray[i] = !sVoicesArray[i]; updateSection();});
                 btnVoiceMute.scrollFactor.set(1, 1);
                 stuffGroup.add(btnVoiceMute);
             }
@@ -944,9 +944,8 @@ class ChartEditorState extends MusicBeatState{
 		FlxG.sound.music.time = 0;
         changeSection();
 
-        daSong = daSong.replace(" ", "_");
-
-        _song = Song.loadFromJson(daSong + "-" + cat + "-" + diff, daSong);
+        daSong = Song.fileSong(daSong, cat, diff);
+        _song = Song.loadFromJson(daSong);
 
         LoadingState.loadAndSwitchState(new ChartEditorState(this.onBack, this.onConfirm), _song, false);
     }
@@ -1514,25 +1513,25 @@ class ChartEditorState extends MusicBeatState{
         chkMuteInst = new FlxUICheckBox(5, 10, null, null, "Mute Instrumental", Std.int(MENU.width-10)); tabSETTINGS.add(chkMuteInst);
 
         chkMuteVoices = new FlxUICheckBox(5, chkMuteInst.y + chkMuteInst.height + 7, null, null, "Mute Voices", Std.int(MENU.width-10)); tabSETTINGS.add(chkMuteVoices);
-        var btnEnVoices = new FlxUICustomButton(5, chkMuteVoices.y + chkMuteVoices.height + 5, Std.int(MENU.width / 3) - 8, null, "Enable Voices", FlxColor.fromRGB(117, 255, 120), function(){
+        var btnEnVoices = new FlxUICustomButton(5, chkMuteVoices.y + chkMuteVoices.height + 5, Std.int(MENU.width / 3) - 8, null, "Enable Voices", null, FlxColor.fromRGB(117, 255, 120), function(){
             for(i in 0...sVoicesArray.length){sVoicesArray[i] = false;} updateSection();
         }); tabSETTINGS.add(btnEnVoices);
-        var btnTgVoices = new FlxUICustomButton(btnEnVoices.x + btnEnVoices.width + 5, btnEnVoices.y, Std.int(MENU.width / 3) - 8, null, "Toggle Voices", null, function(){
+        var btnTgVoices = new FlxUICustomButton(btnEnVoices.x + btnEnVoices.width + 5, btnEnVoices.y, Std.int(MENU.width / 3) - 8, null, "Toggle Voices", null, null, function(){
             for(i in 0...sVoicesArray.length){sVoicesArray[i] = !sVoicesArray[i];} updateSection();
         }); tabSETTINGS.add(btnTgVoices);
-        var btnDiVoices = new FlxUICustomButton(btnTgVoices.x + btnTgVoices.width + 5, btnTgVoices.y, Std.int(MENU.width / 3) - 8, null, "Disable Voices", FlxColor.fromRGB(255, 94, 94), function(){
+        var btnDiVoices = new FlxUICustomButton(btnTgVoices.x + btnTgVoices.width + 5, btnTgVoices.y, Std.int(MENU.width / 3) - 8, null, "Disable Voices", null, FlxColor.fromRGB(255, 94, 94), function(){
             for(i in 0...sVoicesArray.length){sVoicesArray[i] = true;} updateSection();
         }); tabSETTINGS.add(btnDiVoices);
 
         
         chkMuteHitSounds = new FlxUICheckBox(5, btnEnVoices.y + btnEnVoices.height + 7, null, null, "Mute HitSounds", Std.int(MENU.width-10)); tabSETTINGS.add(chkMuteHitSounds);
-        var btnEnHits = new FlxUICustomButton(5, chkMuteHitSounds.y + chkMuteHitSounds.height + 5, Std.int(MENU.width / 3) - 8, null, "Enable Hits", FlxColor.fromRGB(117, 255, 120), function(){
+        var btnEnHits = new FlxUICustomButton(5, chkMuteHitSounds.y + chkMuteHitSounds.height + 5, Std.int(MENU.width / 3) - 8, null, "Enable Hits", null, FlxColor.fromRGB(117, 255, 120), function(){
             for(i in 0...sHitsArray.length){sHitsArray[i] = true;} updateSection();
         }); tabSETTINGS.add(btnEnHits);
-        var btnTgHits = new FlxUICustomButton(btnEnHits.x + btnEnHits.width + 5, btnEnHits.y, Std.int(MENU.width / 3) - 8, null, "Toggle Hits", null, function(){
+        var btnTgHits = new FlxUICustomButton(btnEnHits.x + btnEnHits.width + 5, btnEnHits.y, Std.int(MENU.width / 3) - 8, null, "Toggle Hits", null, null, function(){
             for(i in 0...sHitsArray.length){sHitsArray[i] = !sHitsArray[i];} updateSection();
         }); tabSETTINGS.add(btnTgHits);
-        var btnDiHits = new FlxUICustomButton(btnTgHits.x + btnTgHits.width + 5, btnTgHits.y, Std.int(MENU.width / 3) - 8, null, "Disable Hits", FlxColor.fromRGB(255, 94, 94), function(){
+        var btnDiHits = new FlxUICustomButton(btnTgHits.x + btnTgHits.width + 5, btnTgHits.y, Std.int(MENU.width / 3) - 8, null, "Disable Hits", null, FlxColor.fromRGB(255, 94, 94), function(){
             for(i in 0...sHitsArray.length){sHitsArray[i] = false;} updateSection();
         }); tabSETTINGS.add(btnDiHits);
 
@@ -1549,7 +1548,7 @@ class ChartEditorState extends MusicBeatState{
         var tabMENU = new FlxUI(null, MENU);
         tabMENU.name = "4Song";
 
-        var btnPlaySong:FlxButton = new FlxCustomButton(5, 10, Std.int(MENU.width - 10), null, "Play Song", null, function(){
+        var btnPlaySong:FlxButton = new FlxCustomButton(5, 10, Std.int(MENU.width - 10), null, "Play Song", null, null, function(){
             SongListData.playSong(Song.convertJSON('${_song.song}-${_song.category}-${_song.difficulty}', _song));
         }); tabMENU.add(btnPlaySong);
 
@@ -1570,13 +1569,13 @@ class ChartEditorState extends MusicBeatState{
         arrayFocus.push(txtDiff);
         txtDiff.name = "SONG_DIFFICULTY";
 
-        var btnSave:FlxButton = new FlxCustomButton(lblDiff.x, lblDiff.y + lblDiff.height + 5, Std.int((MENU.width / 3) - 8), null, "Save Song", null, function(){saveSong();}); tabMENU.add(btnSave);
+        var btnSave:FlxButton = new FlxCustomButton(lblDiff.x, lblDiff.y + lblDiff.height + 5, Std.int((MENU.width / 3) - 8), null, "Save Song", null, null, function(){saveSong();}); tabMENU.add(btnSave);
 
-        var btnLoad:FlxButton = new FlxCustomButton(btnSave.x + btnSave.width + 5, btnSave.y, Std.int((MENU.width / 3) - 5), null, "Load Song", null, function(){
+        var btnLoad:FlxButton = new FlxCustomButton(btnSave.x + btnSave.width + 5, btnSave.y, Std.int((MENU.width / 3) - 5), null, "Load Song", null, null, function(){
             loadSong(_song.song, _song.category, _song.difficulty);
         }); tabMENU.add(btnLoad);
 
-        var btnImport:FlxButton = new FlxCustomButton(btnLoad.x + btnLoad.width + 5, btnLoad.y, Std.int((MENU.width / 3) - 8), null, "Import Chart", null, function(){
+        var btnImport:FlxButton = new FlxCustomButton(btnLoad.x + btnLoad.width + 5, btnLoad.y, Std.int((MENU.width / 3) - 8), null, "Import Chart", null, null, function(){
                 getFile(function(str){
                     var fChart:SwagSong = Song.parseJSONshit(Paths.getText(str).trim(), '${_song.song}-${_song.category}-${_song.difficulty}');
                     fChart.song = _song.song;
@@ -1630,7 +1629,7 @@ class ChartEditorState extends MusicBeatState{
 
         chkFocusChar = new FlxUICheckBox(lblCharacters.x, lblCharacters.y + lblCharacters.height + 3, null, null, "Focus Current Character", 300); tabMENU.add(chkFocusChar);
 
-        var btnPrevChar:FlxButton = new FlxCustomButton(chkFocusChar.x, chkFocusChar.y + chkFocusChar.height + 5, 20, 20, "<", null, function(){
+        var btnPrevChar:FlxButton = new FlxCustomButton(chkFocusChar.x, chkFocusChar.y + chkFocusChar.height + 5, 20, 20, "<", null, null, function(){
             focusChar--;
             updateCharacters();
             updateCharacterValues();
@@ -1645,7 +1644,7 @@ class ChartEditorState extends MusicBeatState{
         clCharacters.setLabel(gChar);
         clCharacters.name = "CHARACTERS";
 
-        var btnNextChar:FlxButton = new FlxCustomButton(clCharacters.x + clCharacters.width + 5, clCharacters.y, 20, 20, ">", null, function(){
+        var btnNextChar:FlxButton = new FlxCustomButton(clCharacters.x + clCharacters.width + 5, clCharacters.y, 20, 20, ">", null, null, function(){
             focusChar++;
             updateCharacters();
             updateCharacterValues();
@@ -1653,14 +1652,14 @@ class ChartEditorState extends MusicBeatState{
 
         lblCurChar = new FlxText(btnNextChar.x + btnNextChar.width + 5, btnNextChar.y, 0, '[${focusChar}/${_song.characters.length - 1}]', 12); tabMENU.add(lblCurChar);
 
-        var btnAddChar:FlxButton = new FlxCustomButton(chkFocusChar.x, btnPrevChar.y + btnPrevChar.height + 5, Std.int((MENU.width / 2) - 8), null, "Add Character", FlxColor.fromRGB(82, 255, 128), function(){
+        var btnAddChar:FlxButton = new FlxCustomButton(chkFocusChar.x, btnPrevChar.y + btnPrevChar.height + 5, Std.int((MENU.width / 2) - 8), null, "Add Character", null, FlxColor.fromRGB(82, 255, 128), function(){
             _song.characters.push(["Boyfriend", [100, 100], 1, false, "Default", "NORMAL", 0]);
             updateCharacters();
             updateCharacterValues();
         }); tabMENU.add(btnAddChar);
         btnAddChar.label.color = FlxColor.WHITE;
 
-        var btnDelChar:FlxButton = new FlxCustomButton(btnAddChar.x + btnAddChar.width + 5, btnAddChar.y, Std.int((MENU.width / 2) - 8), null, "Del Cur Character", FlxColor.fromRGB(255, 94, 94), function(){
+        var btnDelChar:FlxButton = new FlxCustomButton(btnAddChar.x + btnAddChar.width + 5, btnAddChar.y, Std.int((MENU.width / 2) - 8), null, "Del Cur Character", null, FlxColor.fromRGB(255, 94, 94), function(){
             _song.characters.remove(_song.characters[focusChar]);
             updateCharacters();
             updateCharacterValues();
@@ -1696,7 +1695,7 @@ class ChartEditorState extends MusicBeatState{
 
         var line4 = new FlxSprite(5, lblCharY.y + lblCharY.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line4);
 
-        var btnClearSong:FlxButton = new FlxCustomButton(5, line4.y + line4.height + 5, Std.int((MENU.width - 15)), null, "Clear Song Notes", null, function(){
+        var btnClearSong:FlxButton = new FlxCustomButton(5, line4.y + line4.height + 5, Std.int((MENU.width - 15)), null, "Clear Song Notes", null, null, function(){
             for(i in _song.sectionStrums){
                 for(ii in i.notes){
                     ii.sectionNotes = [];
@@ -1708,7 +1707,7 @@ class ChartEditorState extends MusicBeatState{
         var stpCSongStrm = new FlxUINumericStepper(btnClearSong.x, btnClearSong.y + btnClearSong.height + 8, 1, 0, 0, 999); tabMENU.add(stpCSongStrm);
             @:privateAccess arrayFocus.push(cast stpCSongStrm.text_field);
         stpCSongStrm.name = "Strums_Length";
-        var btnClearSongStrum:FlxButton = new FlxCustomButton(stpCSongStrm.x + stpCSongStrm.width + 5, stpCSongStrm.y - 3, Std.int((MENU.width - 15) - stpCSongStrm.width), null, "Clear Song Strum Notes", null, function(){
+        var btnClearSongStrum:FlxButton = new FlxCustomButton(stpCSongStrm.x + stpCSongStrm.width + 5, stpCSongStrm.y - 3, Std.int((MENU.width - 15) - stpCSongStrm.width), null, "Clear Song Strum Notes", null, null, function(){
             if(_song.sectionStrums[Std.int(stpCSongStrm.value)] != null){
                 for(i in _song.sectionStrums[Std.int(stpCSongStrm.value)].notes){
                     i.sectionNotes = [];
@@ -1718,7 +1717,7 @@ class ChartEditorState extends MusicBeatState{
             updateSection();
         }); tabMENU.add(btnClearSongStrum);
         
-        var btnClearSongEvents:FlxButton = new FlxCustomButton(5, stpCSongStrm.y + stpCSongStrm.height + 5, Std.int((MENU.width - 10)), null, "Clear Song Events", null, function(){
+        var btnClearSongEvents:FlxButton = new FlxCustomButton(5, stpCSongStrm.y + stpCSongStrm.height + 5, Std.int((MENU.width - 10)), null, "Clear Song Events", null, null, function(){
             for(i in _song.generalSection){i.events = [];}
             updateSection();
         }); tabMENU.add(btnClearSongEvents);
@@ -1731,7 +1730,7 @@ class ChartEditorState extends MusicBeatState{
         var lblStrum = new FlxText(5, 5, MENU.width - 10, "Current Strum"); tabSTRUM.add(lblStrum);
         lblStrum.alignment = CENTER;
 
-        var btnStrmToBack:FlxButton = new FlxCustomButton(lblStrum.x, lblStrum.y + lblStrum.height + 5, Std.int((MENU.width / 2) - 8), null, "Send to Back", FlxColor.fromRGB(214, 212, 71), function(){
+        var btnStrmToBack:FlxButton = new FlxCustomButton(lblStrum.x, lblStrum.y + lblStrum.height + 5, Std.int((MENU.width / 2) - 8), null, "Send to Back", null, FlxColor.fromRGB(214, 212, 71), function(){
             var strum = _song.sectionStrums[curStrum];
 
             var index = curStrum - 1;
@@ -1745,7 +1744,7 @@ class ChartEditorState extends MusicBeatState{
         }); tabSTRUM.add(btnStrmToBack);
         btnStrmToBack.label.color = FlxColor.WHITE;
 
-        var btnStrmToFront:FlxButton = new FlxCustomButton(btnStrmToBack.x + btnStrmToBack.width + 5, btnStrmToBack.y, Std.int((MENU.width / 2) - 8), null, "Send to Front", FlxColor.fromRGB(214, 212, 71), function(){
+        var btnStrmToFront:FlxButton = new FlxCustomButton(btnStrmToBack.x + btnStrmToBack.width + 5, btnStrmToBack.y, Std.int((MENU.width / 2) - 8), null, "Send to Front", null, FlxColor.fromRGB(214, 212, 71), function(){
             var strum = _song.sectionStrums[curStrum];
 
             var index = curStrum + 1;
@@ -1765,7 +1764,7 @@ class ChartEditorState extends MusicBeatState{
         stpSrmKeys.name = "STRUM_KEYS";
 
         var lblStyle = new FlxText(stpSrmKeys.x + stpSrmKeys.width + 5, stpSrmKeys.y + 2, 0, "Style:", 8); tabSTRUM.add(lblStyle);
-        var btnBackStyle:FlxButton = new FlxCustomButton(lblStyle.x + lblStyle.width, lblStyle.y - 2, 20, null, "<", null, function(){
+        var btnBackStyle:FlxButton = new FlxCustomButton(lblStyle.x + lblStyle.width, lblStyle.y - 2, 20, null, "<", null, null, function(){
             var styles = Note.getStyles();
             var id = 0;
 
@@ -1791,7 +1790,7 @@ class ChartEditorState extends MusicBeatState{
         backText.setSize(Std.int(lblNoteStyle.fieldWidth), Std.int(btnBackStyle.height));
         backText.makeGraphic(Std.int(lblNoteStyle.fieldWidth), Std.int(btnBackStyle.height));
 
-        var btnFrontStyle:FlxButton = new FlxCustomButton(lblNoteStyle.x + lblNoteStyle.width, backText.y, 20, null, ">", null, function(){
+        var btnFrontStyle:FlxButton = new FlxCustomButton(lblNoteStyle.x + lblNoteStyle.width, backText.y, 20, null, ">", null, null, function(){
             var styles = Note.getStyles();
             var id = 0;
 
@@ -1812,7 +1811,7 @@ class ChartEditorState extends MusicBeatState{
         var stpCharsID = new FlxUINumericStepper(lblAddChar.x + lblAddChar.width, lblAddChar.y, 1, 0, -999, 999); tabSTRUM.add(stpCharsID);
             @:privateAccess arrayFocus.push(cast stpCharsID.text_field);
         stpCharsID.name = "Chars_Length";
-        var btnAddCharToSing:FlxButton = new FlxCustomButton(stpCharsID.x + stpCharsID.width + 5, stpCharsID.y - 3, 20, 20, "+", FlxColor.fromRGB(94, 255, 99), function(){
+        var btnAddCharToSing:FlxButton = new FlxCustomButton(stpCharsID.x + stpCharsID.width + 5, stpCharsID.y - 3, 20, 20, "+", null, FlxColor.fromRGB(94, 255, 99), function(){
             if(!_song.sectionStrums[curStrum].charToSing.contains(Std.int(stpCharsID.value))){
                 _song.sectionStrums[curStrum].charToSing.push(Std.int(stpCharsID.value));
             }
@@ -1820,7 +1819,7 @@ class ChartEditorState extends MusicBeatState{
             updateStrumValues();
         }); tabSTRUM.add(btnAddCharToSing);
 
-        var btnDelCharToSing:FlxButton = new FlxCustomButton(btnAddCharToSing.x + btnAddCharToSing.width + 5, btnAddCharToSing.y, 20, null, "-", FlxColor.fromRGB(255, 94, 94), function(){
+        var btnDelCharToSing:FlxButton = new FlxCustomButton(btnAddCharToSing.x + btnAddCharToSing.width + 5, btnAddCharToSing.y, 20, null, "-", null, FlxColor.fromRGB(255, 94, 94), function(){
             if(_song.sectionStrums[curStrum].charToSing.contains(Std.int(stpCharsID.value))){
                 _song.sectionStrums[curStrum].charToSing.remove(Std.int(stpCharsID.value));
             }
@@ -1872,19 +1871,19 @@ class ChartEditorState extends MusicBeatState{
         chkKeys = new FlxUICheckBox(stpKeys.x + stpKeys.width + 5, stpKeys.y - 1, null, null, "Change Keys"); tabSTRUM.add(chkKeys);
         chkKeys.checked = _song.sectionStrums[curStrum].notes[curSection].changeKeys;
 
-        var btnDelAllSec:FlxButton = new FlxCustomButton(lblKeys.x, lblKeys.y + lblKeys.height + 5, Std.int((MENU.width / 2) - 8), null, "Clear All Section", FlxColor.fromRGB(255, 94, 94), function(){
+        var btnDelAllSec:FlxButton = new FlxCustomButton(lblKeys.x, lblKeys.y + lblKeys.height + 5, Std.int((MENU.width / 2) - 8), null, "Clear All Section", null, FlxColor.fromRGB(255, 94, 94), function(){
             for(strum in _song.sectionStrums){strum.notes[curSection].sectionNotes = [];}
             updateSection();
         }); tabSTRUM.add(btnDelAllSec);
         btnDelAllSec.label.color = FlxColor.WHITE;
 
-        var btnDelStrSec:FlxButton = new FlxCustomButton(btnDelAllSec.x + btnDelAllSec.width + 5, btnDelAllSec.y, Std.int((MENU.width / 2) - 8), null, "Clear Strum Section", FlxColor.fromRGB(255, 94, 94), function(){
+        var btnDelStrSec:FlxButton = new FlxCustomButton(btnDelAllSec.x + btnDelAllSec.width + 5, btnDelAllSec.y, Std.int((MENU.width / 2) - 8), null, "Clear Strum Section", null, FlxColor.fromRGB(255, 94, 94), function(){
             _song.sectionStrums[curStrum].notes[curSection].sectionNotes = [];
             updateSection();
         }); tabSTRUM.add(btnDelStrSec);
         btnDelStrSec.label.color = FlxColor.WHITE;
 
-        var btnCopyAllSec:FlxButton = new FlxCustomButton(btnDelAllSec.x, btnDelAllSec.y + btnDelAllSec.height + 5, Std.int((MENU.width / 3) - 10), null, "Copy Section", FlxColor.fromRGB(10, 25, 191), function(){
+        var btnCopyAllSec:FlxButton = new FlxCustomButton(btnDelAllSec.x, btnDelAllSec.y + btnDelAllSec.height + 5, Std.int((MENU.width / 3) - 10), null, "Copy Section", null, FlxColor.fromRGB(10, 25, 191), function(){
             copySection = [curSection, []];
             for(i in 0..._song.sectionStrums.length){
                 copySection[1].push([]);
@@ -1898,7 +1897,7 @@ class ChartEditorState extends MusicBeatState{
         }); tabSTRUM.add(btnCopyAllSec);
         btnCopyAllSec.label.color = FlxColor.WHITE;
 
-        var btnPasteAllSec:FlxButton = new FlxCustomButton(btnCopyAllSec.x + btnCopyAllSec.width + 5, btnCopyAllSec.y, Std.int((MENU.width / 3) - 6), null, "Paste Section", FlxColor.fromRGB(10, 25, 191), function(){
+        var btnPasteAllSec:FlxButton = new FlxCustomButton(btnCopyAllSec.x + btnCopyAllSec.width + 5, btnCopyAllSec.y, Std.int((MENU.width / 3) - 6), null, "Paste Section", null, FlxColor.fromRGB(10, 25, 191), function(){
             for(i in 0..._song.sectionStrums.length){
                 if(copySection[1][i] != null){
                     var secNotes:Array<Dynamic> = copySection[1][i];
@@ -1914,20 +1913,20 @@ class ChartEditorState extends MusicBeatState{
         }); tabSTRUM.add(btnPasteAllSec);
         btnPasteAllSec.label.color = FlxColor.WHITE;
 
-        var btnSetAllSec:FlxButton = new FlxCustomButton(btnPasteAllSec.x + btnPasteAllSec.width + 5, btnPasteAllSec.y, Std.int((MENU.width / 3) - 3), null, "Set Last Section", FlxColor.fromRGB(10, 25, 191), function(){
+        var btnSetAllSec:FlxButton = new FlxCustomButton(btnPasteAllSec.x + btnPasteAllSec.width + 5, btnPasteAllSec.y, Std.int((MENU.width / 3) - 3), null, "Set Last Section", null, FlxColor.fromRGB(10, 25, 191), function(){
             stpLastSec.value = curSection - copySection[0];
             stpLastSec2.value = curSection - copySection[0];
         }); tabSTRUM.add(btnSetAllSec);
         btnSetAllSec.label.color = FlxColor.WHITE;
 
-        var btnCopLastAllSec:FlxButton = new FlxCustomButton(btnCopyAllSec.x, btnCopyAllSec.y + btnCopyAllSec.height + 5, Std.int((MENU.width / 2) - 20), null, "Paste Last Section", FlxColor.fromRGB(10, 25, 191), function(){
+        var btnCopLastAllSec:FlxButton = new FlxCustomButton(btnCopyAllSec.x, btnCopyAllSec.y + btnCopyAllSec.height + 5, Std.int((MENU.width / 2) - 20), null, "Paste Last Section", null, FlxColor.fromRGB(10, 25, 191), function(){
             for(i in 0..._song.sectionStrums.length){copyLastSection(Std.int(stpLastSec.value), i);}
         }); tabSTRUM.add(btnCopLastAllSec);
         btnCopLastAllSec.label.color = FlxColor.WHITE;
         stpLastSec = new FlxUINumericStepper(btnCopLastAllSec.x + btnCopLastAllSec.width + 5, btnCopLastAllSec.y + 3, 1, 0, -999, 999); tabSTRUM.add(stpLastSec);
             @:privateAccess arrayFocus.push(cast stpLastSec.text_field);
 
-        var btnCopLastStrum:FlxButton = new FlxCustomButton(btnCopLastAllSec.x, btnCopLastAllSec.y + btnCopLastAllSec.height + 5, Std.int((MENU.width / 2) - 20), null, "Paste Last Strum", FlxColor.fromRGB(10, 25, 191), function(){
+        var btnCopLastStrum:FlxButton = new FlxCustomButton(btnCopLastAllSec.x, btnCopLastAllSec.y + btnCopLastAllSec.height + 5, Std.int((MENU.width / 2) - 20), null, "Paste Last Strum", null, FlxColor.fromRGB(10, 25, 191), function(){
             copyLastStrum(Std.int(stpLastSec2.value), Std.int(stpLastStrm.value));
         }); tabSTRUM.add(btnCopLastStrum);
         btnCopLastStrum.label.color = FlxColor.WHITE;
@@ -1936,7 +1935,7 @@ class ChartEditorState extends MusicBeatState{
         stpLastStrm = new FlxUINumericStepper(stpLastSec2.x + stpLastSec2.width + 5, stpLastSec2.y, 1, 0, 0, 999); tabSTRUM.add(stpLastStrm);
             @:privateAccess arrayFocus.push(cast stpLastStrm.text_field);
 
-        var btnSwapStrum:FlxButton = new FlxCustomButton(btnCopLastStrum.x, btnCopLastStrum.y + btnCopLastStrum.height + 5, Std.int((MENU.width / 2) - 3), null, "Swap Strum", FlxColor.fromRGB(69, 214, 173), function(){
+        var btnSwapStrum:FlxButton = new FlxCustomButton(btnCopLastStrum.x, btnCopLastStrum.y + btnCopLastStrum.height + 5, Std.int((MENU.width / 2) - 3), null, "Swap Strum", null, FlxColor.fromRGB(69, 214, 173), function(){
             var sec1 = _song.sectionStrums[curStrum].notes[curSection].sectionNotes;
             var sec2 = _song.sectionStrums[Std.int(stpSwapSec.value)].notes[curSection].sectionNotes;
 
@@ -1950,26 +1949,26 @@ class ChartEditorState extends MusicBeatState{
             @:privateAccess arrayFocus.push(cast stpSwapSec.text_field);
         stpSwapSec.name = "Strums_Length";
 
-        var btnMirror:FlxButton = new FlxCustomButton(btnSwapStrum.x, btnSwapStrum.y + btnSwapStrum.height + 5, Std.int((MENU.width / 2) - 8), null, "Mirror Strum", FlxColor.fromRGB(214, 212, 71), function(){
+        var btnMirror:FlxButton = new FlxCustomButton(btnSwapStrum.x, btnSwapStrum.y + btnSwapStrum.height + 5, Std.int((MENU.width / 2) - 8), null, "Mirror Strum", null, FlxColor.fromRGB(214, 212, 71), function(){
             trace("|-Strum Mirror-|");
             mirrorNotes();
             trace("|-Strum Mirror End-|");
         }); tabSTRUM.add(btnMirror);
         btnMirror.label.color = FlxColor.WHITE;
 
-        var btnMirrorAll:FlxButton = new FlxCustomButton(btnMirror.x + btnMirror.width + 5, btnMirror.y, Std.int((MENU.width / 2) - 8), null, "Mirror Section", FlxColor.fromRGB(214, 212, 71), function(){
+        var btnMirrorAll:FlxButton = new FlxCustomButton(btnMirror.x + btnMirror.width + 5, btnMirror.y, Std.int((MENU.width / 2) - 8), null, "Mirror Section", null, FlxColor.fromRGB(214, 212, 71), function(){
             trace("|-Section Mirror-|");
             for(i in 0..._song.sectionStrums.length){mirrorNotes(i);}
             trace("|-Section Mirror End-|");
         }); tabSTRUM.add(btnMirrorAll);
         btnMirrorAll.label.color = FlxColor.WHITE;
 
-        var btnSync:FlxButton = new FlxCustomButton(btnMirror.x, btnMirror.y + btnMirror.height + 5, Std.int((MENU.width) - 10), null, "Synchronize Notes", FlxColor.fromRGB(214, 212, 71), function(){
+        var btnSync:FlxButton = new FlxCustomButton(btnMirror.x, btnMirror.y + btnMirror.height + 5, Std.int((MENU.width) - 10), null, "Synchronize Notes", null, FlxColor.fromRGB(214, 212, 71), function(){
             syncNotes();
         }); tabSTRUM.add(btnSync);
         btnSync.label.color = FlxColor.WHITE;
 
-        var btnMiguel:FlxButton = new FlxCustomButton(btnSync.x, btnSync.y + btnSync.height + 5, Std.int((MENU.width) - 10), null, "Miguel2", FlxColor.fromRGB(0, 0, 255), function(){}); tabSTRUM.add(btnMiguel);
+        var btnMiguel:FlxButton = new FlxCustomButton(btnSync.x, btnSync.y + btnSync.height + 5, Std.int((MENU.width) - 10), null, "Miguel2", null, FlxColor.fromRGB(0, 0, 255), function(){}); tabSTRUM.add(btnMiguel);
         btnMiguel.label.color = FlxColor.WHITE;
 
         chkSwitchChars = new FlxUICheckBox(btnMiguel.x, btnMiguel.y + btnMiguel.height + 5, null, null, "Change Characters to Sing", 0); tabSTRUM.add(chkSwitchChars);
@@ -1978,7 +1977,7 @@ class ChartEditorState extends MusicBeatState{
         var stpCharsSecID = new FlxUINumericStepper(lblAddSecChar.x + lblAddSecChar.width, lblAddSecChar.y, 1, 0, -999, 999); tabSTRUM.add(stpCharsSecID);
             @:privateAccess arrayFocus.push(cast stpCharsSecID.text_field);
         stpCharsSecID.name = "Chars_Length";
-        var btnAddSecCharToSing:FlxButton = new FlxCustomButton(stpCharsSecID.x + stpCharsSecID.width + 5, stpCharsSecID.y - 3, 20, null, "+", FlxColor.fromRGB(94, 255, 99), function(){
+        var btnAddSecCharToSing:FlxButton = new FlxCustomButton(stpCharsSecID.x + stpCharsSecID.width + 5, stpCharsSecID.y - 3, 20, null, "+", null, FlxColor.fromRGB(94, 255, 99), function(){
             if(!_song.sectionStrums[curStrum].notes[curSection].charToSing.contains(Std.int(stpCharsSecID.value))){
                 _song.sectionStrums[curStrum].notes[curSection].charToSing.push(Std.int(stpCharsSecID.value));
             }
@@ -1986,7 +1985,7 @@ class ChartEditorState extends MusicBeatState{
             updateSectionValues();
         }); tabSTRUM.add(btnAddSecCharToSing);
 
-        var btnDelSecCharToSing:FlxButton = new FlxCustomButton(btnAddSecCharToSing.x + btnAddSecCharToSing.width + 5, btnAddSecCharToSing.y, 20, null, "-", FlxColor.fromRGB(255, 94, 94), function(){
+        var btnDelSecCharToSing:FlxButton = new FlxCustomButton(btnAddSecCharToSing.x + btnAddSecCharToSing.width + 5, btnAddSecCharToSing.y, 20, null, "-", null, FlxColor.fromRGB(255, 94, 94), function(){
             if(_song.sectionStrums[curStrum].notes[curSection].charToSing.contains(Std.int(stpCharsSecID.value))){
                 _song.sectionStrums[curStrum].notes[curSection].charToSing.remove(Std.int(stpCharsSecID.value));
             }
@@ -2035,7 +2034,7 @@ class ChartEditorState extends MusicBeatState{
         clNotePressets.setPrefix("Note Presset: ["); clNotePressets.setSuffix("]");
         clNotePressets.setIndex(0);
 
-        var btnMerge:FlxButton = new FlxCustomButton(5, clNotePressets.y + clNotePressets.height + 10, Std.int(MENU.width - 10), null, "Add Merge Note", FlxColor.fromRGB(133, 233, 255), function(){
+        var btnMerge:FlxButton = new FlxCustomButton(5, clNotePressets.y + clNotePressets.height + 10, Std.int(MENU.width - 10), null, "Add Merge Note", null, FlxColor.fromRGB(133, 233, 255), function(){
             var note = getSongNote(selNote[1], curStrum); if(note == null){return;}
             if(note[2] <= 0){note[2] = (conductor.stepCrochet * 0.5);}
             var merge = Note.getNoteDynamicData();
@@ -2049,7 +2048,7 @@ class ChartEditorState extends MusicBeatState{
         clEventListToNote.setPrefix("Event List: ["); clEventListToNote.setSuffix("]");
         clEventListToNote.setIndex(0);
 
-        var btnAddEventToNote = new FlxUICustomButton(clEventListToNote.x + clEventListToNote.width + 5, clEventListToNote.y, 20, null, "+", FlxColor.fromRGB(117, 255, 120), function(){
+        var btnAddEventToNote = new FlxUICustomButton(clEventListToNote.x + clEventListToNote.width + 5, clEventListToNote.y, 20, null, "+", null, FlxColor.fromRGB(117, 255, 120), function(){
             var note = getSongNote(selNote[1]); if(note == null){return;}
             var event:Array<Dynamic> = note[6]; if(event == null){event = [];}
             event.push([clEventListToNote.getSelectedLabel(), []]);
@@ -2071,7 +2070,7 @@ class ChartEditorState extends MusicBeatState{
         clEventListNote.setPrefix("Note Event: ["); clEventListNote.setSuffix("]");
         clEventListNote.setIndex(0);
         
-        var btnDelEventToNote = new FlxUICustomButton(clEventListNote.x + clEventListNote.width + 5, clEventListNote.y, 20, null, "-", FlxColor.fromRGB(255, 56, 56), function(){
+        var btnDelEventToNote = new FlxUICustomButton(clEventListNote.x + clEventListNote.width + 5, clEventListNote.y, 20, null, "-", null, FlxColor.fromRGB(255, 56, 56), function(){
             var note = getSongNote(selNote[1]); if(note == null){return;}
             var event:Array<Dynamic> = note[6]; if(event == null || event[clEventListNote.getSelectedIndex()] == null){return;}
             event.remove(event[clEventListNote.getSelectedIndex()]);
@@ -2105,7 +2104,7 @@ class ChartEditorState extends MusicBeatState{
         clEventListToEvents.setPrefix("Event List: ["); clEventListToEvents.setSuffix("]");
         clEventListToEvents.setIndex(0);
 
-        var btnAddEventToEvents = new FlxUICustomButton(clEventListToEvents.x + clEventListToEvents.width + 5, clEventListToEvents.y, 20, null, "+", FlxColor.fromRGB(117, 255, 120), function(){
+        var btnAddEventToEvents = new FlxUICustomButton(clEventListToEvents.x + clEventListToEvents.width + 5, clEventListToEvents.y, 20, null, "+", null, FlxColor.fromRGB(117, 255, 120), function(){
             var note = getSongEvent(selEvent); if(note == null){return;}
             var event:Array<Dynamic> = note[1]; if(event == null){event = [];}
             event.push([clEventListToEvents.getSelectedLabel(), []]);
@@ -2126,7 +2125,7 @@ class ChartEditorState extends MusicBeatState{
         clEventListEvents.setPrefix("Current Event: ["); clEventListEvents.setSuffix("]");
         clEventListEvents.setIndex(0);
         
-        var btnDelEventToNote = new FlxUICustomButton(clEventListEvents.x + clEventListEvents.width + 5, clEventListEvents.y, 20, null, "-", FlxColor.fromRGB(255, 56, 56), function(){
+        var btnDelEventToNote = new FlxUICustomButton(clEventListEvents.x + clEventListEvents.width + 5, clEventListEvents.y, 20, null, "-", null, FlxColor.fromRGB(255, 56, 56), function(){
             var note = getSongEvent(selEvent); if(note == null){return;}
             var event:Array<Dynamic> = note[1]; if(event == null || event[clEventListEvents.getSelectedIndex()] == null){return;}
             event.remove(event[clEventListEvents.getSelectedIndex()]);

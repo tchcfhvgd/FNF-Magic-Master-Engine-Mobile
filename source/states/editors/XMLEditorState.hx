@@ -355,17 +355,17 @@ class XMLEditorState extends MusicBeatState {
         var lblIMAGE = new FlxText(5, 5, 0, "IMAGE (File):", 8); uiFile.add(lblIMAGE);
         txtIMAGE = new FlxUIInputText(lblIMAGE.x + lblIMAGE.width + 5, lblIMAGE.y, Std.int(tabFILE.width - lblIMAGE.width - 50), "", 8); uiFile.add(txtIMAGE);
         txtIMAGE.name = "FILE_IMAGE";
-        var btnImage:FlxButton = new FlxCustomButton(txtIMAGE.x + txtIMAGE.width + 5, txtIMAGE.y - 3, 30, null, "GET", null, function(){getFile(txtIMAGE);}); uiFile.add(btnImage);
+        var btnImage:FlxButton = new FlxCustomButton(txtIMAGE.x + txtIMAGE.width + 5, txtIMAGE.y - 3, 30, null, "GET", null, null, function(){getFile(txtIMAGE);}); uiFile.add(btnImage);
 
         var lblXML = new FlxText(lblIMAGE.x, lblIMAGE.y + txtIMAGE.height + 10, 0, "XML (File):", 8); uiFile.add(lblXML);
         txtXML = new FlxUIInputText(lblXML.x + lblXML.width + 5, lblXML.y, Std.int(tabFILE.width - lblXML.width - 50), "", 8); uiFile.add(txtXML);
         txtXML.name = "FILE_XML";        
-        var btnXML:FlxButton = new FlxCustomButton(txtXML.x + txtXML.width + 5, txtXML.y - 3, 30, null, "GET", null, function(){getFile(txtXML);}); uiFile.add(btnXML);
+        var btnXML:FlxButton = new FlxCustomButton(txtXML.x + txtXML.width + 5, txtXML.y - 3, 30, null, "GET", null, null, function(){getFile(txtXML);}); uiFile.add(btnXML);
 
-        var btnImport:FlxButton = new FlxCustomButton(lblXML.x, btnXML.y + btnXML.height + 5, Std.int(tabFILE.width / 2) - 7, null, "IMPORT", null, function(){loadArchives(); loadNormalSprites();}); uiFile.add(btnImport);
-        var btnGhostImport:FlxButton = new FlxCustomButton(btnImport.x + btnImport.width + 5, btnImport.y, Std.int(tabFILE.width / 2) - 7, null, "IMPORT GHOST", null, function(){loadGhostSprites();}); uiFile.add(btnGhostImport);
+        var btnImport:FlxButton = new FlxCustomButton(lblXML.x, btnXML.y + btnXML.height + 5, Std.int(tabFILE.width / 2) - 7, null, "IMPORT", null, null, function(){loadArchives(); loadNormalSprites();}); uiFile.add(btnImport);
+        var btnGhostImport:FlxButton = new FlxCustomButton(btnImport.x + btnImport.width + 5, btnImport.y, Std.int(tabFILE.width / 2) - 7, null, "IMPORT GHOST", null, null, function(){loadGhostSprites();}); uiFile.add(btnGhostImport);
 
-        var btnSave:FlxButton = new FlxCustomButton(5, btnGhostImport.y + btnGhostImport.height + 7, Std.int(tabFILE.width) - 10, null, "Save XML", null, function(){save();}); uiFile.add(btnSave);
+        var btnSave:FlxButton = new FlxCustomButton(5, btnGhostImport.y + btnGhostImport.height + 7, Std.int(tabFILE.width) - 10, null, "Save XML", null, null, function(){save();}); uiFile.add(btnSave);
 
         tabFILE.addGroup(uiFile);
         tabFILE.scrollFactor.set();
@@ -461,7 +461,7 @@ class XMLEditorState extends MusicBeatState {
         lblCurFrameHeight = new FlxText(lblCurFrameWidth.x, lblCurFrameWidth.y + lblCurFrameWidth.height + 3, 0, "FrameHeight: [0]"); uiBase.add(lblCurFrameHeight);
         vchCurFrameHeight = new FlxUIValueChanger(tabSPRITE.width - 105, lblCurFrameHeight.y - 1, 100, function(value:Float){}); uiBase.add(vchCurFrameHeight); vchCurFrameHeight.name = "SPRITE_FRAMEHEIGHT";
 
-        var btnSetFrameSize = new FlxUICustomButton(5, lblCurFrameHeight.y + lblCurFrameHeight.height + 5, Std.int(tabSPRITE.width) - 10, null, "Set FrameSize to 0", null, function(){
+        var btnSetFrameSize = new FlxUICustomButton(5, lblCurFrameHeight.y + lblCurFrameHeight.height + 5, Std.int(tabSPRITE.width) - 10, null, "Set FrameSize to 0", null, null, function(){
             if(eSprite == null || eSprite.animation.curAnim == null){return;}
             if(chkSetToAllSprite.checked){
                 for(e in _XML.elements){
@@ -487,10 +487,10 @@ class XMLEditorState extends MusicBeatState {
         var lblFrameName = new FlxText(5, btnSetFrameSize.y + btnSetFrameSize.height + 10, Std.int(tabSPRITE.width) - 10, "[Frame Name]"); uiBase.add(lblFrameName);
         lblFrameName.alignment = CENTER;
         var txtFrameName = new FlxUIInputText(5, lblFrameName.y + lblFrameName.height, Std.int(tabSPRITE.width) - 10, ""); uiBase.add(txtFrameName);
-        var btnAddFrame = new FlxUICustomButton(5, txtFrameName.y + txtFrameName.height + 3, Std.int(tabSPRITE.width / 2) - 7, null, "Create Frame", FlxColor.fromRGB(94, 255, 99), function(){
+        var btnAddFrame = new FlxUICustomButton(5, txtFrameName.y + txtFrameName.height + 3, Std.int(tabSPRITE.width / 2) - 7, null, "Create Frame", null, FlxColor.fromRGB(94, 255, 99), function(){
             
         }); uiBase.add(btnAddFrame);
-        var btnDelFrame = new FlxUICustomButton(btnAddFrame.x + btnAddFrame.width + 5, btnAddFrame.y, Std.int(tabSPRITE.width / 2) - 7, null, "Delete Frame", FlxColor.fromRGB(255, 94, 94), function(){
+        var btnDelFrame = new FlxUICustomButton(btnAddFrame.x + btnAddFrame.width + 5, btnAddFrame.y, Std.int(tabSPRITE.width / 2) - 7, null, "Delete Frame", null, FlxColor.fromRGB(255, 94, 94), function(){
             
         }); uiBase.add(btnDelFrame);
 

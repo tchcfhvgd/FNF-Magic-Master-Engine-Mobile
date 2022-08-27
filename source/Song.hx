@@ -1,11 +1,11 @@
 package;
 
-import Section.SwagSection;
 import Section.SwagGeneralSection;
-import haxe.Json;
 import haxe.format.JsonParser;
-import lime.utils.Assets;
+import Section.SwagSection;
 import haxe.DynamicAccess;
+import lime.utils.Assets;
+import haxe.Json;
 
 import StrumLineNote.Note;
 
@@ -47,20 +47,11 @@ typedef SwagStrum = {
 }
 
 //
-typedef WFData = {
-	var weekData:WeekData;
-	var freeplayData:FreeplayData;
-}
-
-typedef WeekData = {
-	var onlyThis:Bool;
-	var weeks:Array<ItemWeek>;
-}
-typedef FreeplayData = {
+typedef SongsData = {
+	var weekData:Array<ItemWeek>;
+	var freeplayData:Array<ItemSong>;
 	var showArchiveSongs:Bool;
-	var freeplay:Array<ItemSong>;
 }
-
 
 typedef ItemWeek = {
 	var name:String;
@@ -68,62 +59,79 @@ typedef ItemWeek = {
 	var title:String;
 	var data:Array<Dynamic>;
 	var songs:Array<String>;
-	var lock:Bool;
+	var keyLock:String;
 	var hiddenOnWeeks:Bool;
 	var hiddenOnFreeplay:Bool;
 }
 typedef ItemSong = {
 	var song:String;
 	var data:Array<Dynamic>;
-	var lock:Bool;
+	var keyLock:String;
+	var hidden:Bool;
+}
+typedef ModSongs = {
+	var mod:String;
+	var songs:Array<ItemSong>;
 }
 
 class Song{
-	public static function addSongToList(name:String, cats:Array<Dynamic>, locked:Bool, list:Dynamic):Void {
-		if((list is Array<ItemSong>)){
-			var list:Array<ItemSong> = cast list;
-			var isTrue:Bool = false;
-
-			for(lItem in list){if(name == lItem.song){isTrue = true; break;}}
-
-			if(!isTrue){
-				var item:ItemSong = {
-					song: name,
-					data: cats,
-					lock: locked
-				};
-
-				list.push(item);
-			}
+	public static function addSongToList(songItem:ItemSong, list:Array<ItemSong>):Void {
+		for(lItem in list){if(songItem.song == lItem.song){return;}}
+		list.push(songItem);
+	}
+	public static function addSongToModList(songItem:ItemSong, data:Array<Dynamic>, list:Array<ModSongs>):Void {
+		for(lItem in list){
+			if(lItem.mod != data[0]){continue;}
+			for(song in lItem.songs){if(songItem.song == song.song){return;}}
+			lItem.songs.push(songItem); return;
 		}
-		
 	}
 
-	public static function getSongList():Array<ItemSong> {
-		var SongList:Array<ItemSong> = [];
+	public static function getSongModList():Array<ModSongs> {
+		var SongList:Array<ModSongs> = [];
 
-		for(i in Paths.readFile('assets/data/', 'weeks.json')){
-			var bWeek:WFData = Json.parse(Paths.getText(i));
+		var weeks:Map<String, Dynamic> = Paths.readFileToMap('assets/data/', 'weeks.json');
+		for(i in weeks.keys()){
+			var bWeek:SongsData = cast Json.parse(Paths.getText(weeks.get(i)));
+			var mod = i.split("|")[1];
 
-			for(week in bWeek.weekData.weeks){
-				if(!week.hiddenOnFreeplay){
-					var cats:Array<Dynamic> = week.data;
-					var lock:Bool = week.lock;
-	
-					for(song in week.songs){addSongToList(song, cats, lock, SongList);}
-				}			
+			SongList.push({mod: mod, songs: []});
+
+			for(week in bWeek.weekData){
+				if(week.hiddenOnFreeplay){continue;}
+
+				var cats:Array<Dynamic> = week.data;
+				var lock:String = week.keyLock;
+
+				for(song in week.songs){
+					var songItem:ItemSong = {
+						song: song,
+						data: cats,
+						keyLock: lock,
+						hidden: false
+					};
+					addSongToModList(songItem, [mod], SongList);
+				}
 			}
 
-			for(song in bWeek.freeplayData.freeplay){
+			for(song in bWeek.freeplayData){
+				if(song.hidden){continue;}
+
 				var cats:Array<Dynamic> = song.data;
-				var lock:Bool = song.lock;
-	
-				addSongToList(song.song, cats, lock, SongList);	
+				var lock:String = song.keyLock;
+					
+				var songItem:ItemSong = {
+					song: song.song,
+					data: cats,
+					keyLock: lock,
+					hidden: false
+				};
+				addSongToModList(songItem, [mod], SongList);
 			}
 
 			#if sys
-			if(bWeek.freeplayData.showArchiveSongs){
-				var songsDirectory:String = i;
+			if(bWeek.showArchiveSongs){
+				var songsDirectory:String = weeks.get(i);
 				songsDirectory = songsDirectory.replace('data/weeks.json', 'songs');
 
 				for(song in FileSystem.readDirectory(songsDirectory)){
@@ -135,14 +143,21 @@ class Song{
 							if(cStats[2] == null){cStats[2] = "Normal";}
 							var hasCat:Bool = false;
 							for(d in data){
-								if(d[0] == cStats[1]){
-									hasCat = true;
-									d[1].push(cStats[2]);
-								}
+								if(d[0] == cStats[1]){continue;}
+								
+								hasCat = true;
+								d[1].push(cStats[2]);
 							}
 							if(!hasCat){data.push([cStats[1], [cStats[2]]]);}
 						}
-						addSongToList(song, data, false, SongList);
+						
+						var songItem:ItemSong = {
+							song: song,
+							data: data,
+							keyLock: null,
+							hidden: false
+						};
+						addSongToModList(songItem, [mod], SongList);
 					}
 				}
 			}
@@ -150,6 +165,15 @@ class Song{
 		}
 
 		return SongList;
+	}
+
+	public static function fileSong(song:String, cat:String, diff:String):String {
+		var daSong:String = Paths.getFileName(song, true);
+
+		daSong += '-' + Paths.getFileName(cat, true);
+		daSong += '-' + Paths.getFileName(diff, true);
+
+		return daSong;
 	}
 
 	public var song:String;
@@ -183,21 +207,21 @@ class Song{
 		this.bpm = bpm;
 	}
 
-	public static function loadFromJson(jsonInput:String, song:String):SwagSong{
-		var rawJson:String = Paths.getText(Paths.chart(jsonInput, song)).trim();
+	public static function loadFromJson(songFormat:String):SwagSong {
+		var rawJson:String = Paths.getText(Paths.chart(songFormat)).trim();
 
-		while (!rawJson.endsWith("}")){rawJson = rawJson.substr(0, rawJson.length - 1);}
+		while(!rawJson.endsWith("}")){rawJson = rawJson.substr(0, rawJson.length - 1);}
 		
-		return parseJSONshit(rawJson, jsonInput);
+		return parseJSONshit(rawJson, songFormat);
 	}
 
-	public static function parseJSONshit(rawJson:String, sName:String):SwagSong{
+	public static function parseJSONshit(rawJson:String, sName:String):SwagSong {
 		var swagShit:SwagSong = convertJSON(sName, cast Json.parse(rawJson).song);
 		swagShit.validScore = true;
 		return swagShit;
 	}
 
-	public static function convertJSON(sName:String, songJSON:Dynamic):SwagSong{
+	public static function convertJSON(sName:String, songJSON:Dynamic):SwagSong {
 		var aSong:DynamicAccess<Dynamic> = songJSON;
 
 		//Adding General Values

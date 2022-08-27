@@ -2,8 +2,9 @@ package;
 
 import flixel.FlxG;
 
-class Highscore
-{
+using StringTools;
+
+class Highscore {
 	#if (haxe >= "4.0.0")
 	public static var songScores:Map<String, Int> = new Map();
 	#else
@@ -11,82 +12,61 @@ class Highscore
 	#end
 
 
-	public static function saveScore(song:String, score:Int = 0, ?diff:String = "Hard", ?cat:String = "Normal"):Void{
-		var daSong:String = formatSong(song, diff, cat);
+	public static function saveSongScore(song:String, score:Int = 0, ?diff:String = "Hard", ?cat:String = "Normal"):Void {
+		var daSong:String = Song.fileSong(song, diff, cat);
+
+		if(PreSettings.getPreSetting("BotPlay") || (songScores.exists(daSong) && songScores.get(daSong) > score)){return;}
 
 		#if !switch
 		NGio.postScore(score, song);
 		#end
 
-		if(PreSettings.getPreSetting("BotPlay")){
-			if(songScores.exists(daSong)){
-				if(songScores.get(daSong) < score){
-					setScore(daSong, score);
-				}
-			}
-			else{
-				setScore(daSong, score);
-			}
-		}
+		setScore(daSong, score);
 	}
 
-	public static function saveWeekScore(week:Int = 1, score:Int = 0, ?diff:String = "Hard", ?cat:String = "Normal"):Void{
+	public static function saveWeekScore(weekName:String, score:Int = 0, ?diff:String = "Hard", ?cat:String = "Normal"):Void {
+		var daWeek:String = Song.fileSong('Week_$weekName', diff, cat);
+
 		#if !switch
-		NGio.postScore(score, "Week " + week);
+		NGio.postScore(score, "Week " + weekName);
 		#end
 
+		if(PreSettings.getPreSetting("BotPlay") || (songScores.exists(daWeek) && songScores.get(daWeek) > score)){return;}
 
-		var daWeek:String = formatSong('week' + week, diff, cat);
-
-		if(songScores.exists(daWeek)){
-			if(songScores.get(daWeek) < score){
-				setScore(daWeek, score);
-			}
-		}
-		else{
-			setScore(daWeek, score);
-		}
+		setScore(daWeek, score);
 	}
 
 	/**
 	 * YOU SHOULD FORMAT SONG WITH formatSong() BEFORE TOSSING IN SONG VARIABLE
 	 */
-	static function setScore(song:String, score:Int):Void
-	{
+	static function setScore(song:String, score:Int):Void {
 		// Reminder that I don't need to format this song, it should come formatted!
 		songScores.set(song, score);
 		FlxG.save.data.songScores = songScores;
 		FlxG.save.flush();
 	}
 
-	public static function formatSong(song:String, diff:String, cat:String):String{
-		var daSong:String = song;
-
-		daSong += '-' + cat;
-		daSong += '-' + diff;
-
-		return daSong;
-	}
-
 	public static function getScore(song:String, diff:String, cat:String):Int {
-		if (!songScores.exists(formatSong(song, diff, cat)))
-			setScore(formatSong(song, diff, cat), 0);
+		var daSong:String = Song.fileSong(song, diff, cat);
 
-		return songScores.get(formatSong(song, diff, cat));
+		if(!songScores.exists(daSong)){return 0;}
+		return songScores.get(daSong);
 	}
 
-	public static function getWeekScore(week:Int, diff:String, cat:String):Int{
-		if (!songScores.exists(formatSong('week' + week, diff, cat)))
-			setScore(formatSong('week' + week, diff, cat), 0);
+	public static function getWeekScore(weekName:String, diff:String, cat:String):Int {
+		var daWeek:String = Song.fileSong('Week_$weekName', diff, cat);
 
-		return songScores.get(formatSong('week' + week, diff, cat));
+		if(!songScores.exists(daWeek)){return 0;}
+		return songScores.get(daWeek);
 	}
 
-	public static function load():Void
-	{
-		if (FlxG.save.data.songScores != null)
-		{
-			songScores = FlxG.save.data.songScores;
-		}
+	public static function checkLock(key:String, isWeek:Bool = false):Bool {
+		if(key == null){return false;}
+		for(get in songScores.keys()){if(get.contains(isWeek ? 'Week_$key-' : '$key-')){return false;}}
+		return true;
+	}
+
+	public static function load():Void {
+		if(FlxG.save.data.songScores != null){songScores = FlxG.save.data.songScores;}
 	}
 }
