@@ -93,7 +93,11 @@ class ModListState extends MusicBeatState {
 	override function update(elapsed:Float){
 		super.update(elapsed);
 
-        if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED)){Paths.savedMap.clear(); ModSupport.reloadScripts();}
+        if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED)){
+            Paths.savedMap.clear();
+            ModSupport.reloadScripts();
+        }
+
         if(FlxG.keys.justPressed.UP){changeIndex(-1);}
         if(FlxG.keys.justPressed.DOWN){changeIndex(1);}
         if(FlxG.mouse.wheel > 0){changeIndex(-1);}

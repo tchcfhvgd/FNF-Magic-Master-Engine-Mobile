@@ -8,4 +8,5 @@
 	<SubTexture x="0" frameWidth="242" y="262" frameX="64" name="Splash0002" frameHeight="280" frameY="70" width="232" height="270"/>
 	<SubTexture x="232" frameWidth="242" y="262" frameX="66" name="Splash0003" frameHeight="280" frameY="73" width="236" height="275"/>
 	<SubTexture x="0" frameWidth="242" y="537" frameX="69" name="Splash0004" frameHeight="280" frameY="75" width="242" height="280"/>
+	<SubTexture x="0" frameWidth="242" y="0" frameX="0" name="Splash0005" frameHeight="280" frameY="0" width="1" height="1"/>
 </TextureAtlas>

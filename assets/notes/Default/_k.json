@@ -1,636 +1,82 @@
 {
-    "staticNotes":[
-        {
-            "arrayAnims":[
-                {
-                    "anim": "static",
-                    "symbol": "StaticMiddle",
-                    "offset": [0, 0],
+    "static_notes":{
+        "general_animations":[],
+        "notes":[
+            {
+                "animations":[
+                    {
+                        "anim": "static",
+                        "symbol": "StaticMiddle",
+    
+                        "fps": 32,
+                        "loop": false
+                    },
+                    {
+                        "anim": "pressed",
+                        "symbol": "PressMiddle",
+    
+                        "fps": 32,
+                        "loop": false
+                    },
+                    {
+                        "anim": "confirm",
+                        "symbol": "ConfirmMiddle",
+    
+                        "fps": 32,
+                        "loop": false
+                    }
+                ],
+                "antialiasing": true,
+                "color": "#63ffcb"
+            }
+        ]
+    },
+    "gameplay_notes":{
+        "general_animations":[
+            {
+                "anim": "sustain",
+                "symbol": "HoldPiece",
 
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "pressed",
-                    "symbol": "PressMiddle",
-                    "offset": [0, 0],
+                "fps": 32,
+                "loop": false
+            },
+            {
+                "anim": "end",
+                "symbol": "HoldEnd",
 
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "confirm",
-                    "symbol": "ConfirmMiddle",
-                    "offset": [-13, -13],
+                "fps": 32,
+                "loop": false
+            },
+            {
+                "anim": "merge",
+                "symbol": "SwitchHold",
 
-                    "fps": 32,
-                    "loop": false
-                }
-            ],
-            "alpha": 1,
-            "scale": 1,
-            "antialiasing": true
-        },
-        {
-            "arrayAnims":[
-                {
-                    "anim": "static",
-                    "symbol": "StaticMiddle",
-                    "offset": [0, 0],
+                "fps": 32,
+                "loop": false
+            },
+            {
+                "anim": "switch",
+                "symbol": "SwitchPiece",
 
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "pressed",
-                    "symbol": "PressMiddle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "confirm",
-                    "symbol": "ConfirmMiddle",
-                    "offset": [-13, -13],
-
-                    "fps": 32,
-                    "loop": false
-                }
-            ],
-            "alpha": 1,
-            "scale": 1,
-            "antialiasing": true
-        },
-        {
-            "arrayAnims":[
-                {
-                    "anim": "static",
-                    "symbol": "StaticMiddle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "pressed",
-                    "symbol": "PressMiddle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "confirm",
-                    "symbol": "ConfirmMiddle",
-                    "offset": [-13, -13],
-
-                    "fps": 32,
-                    "loop": false
-                }
-            ],
-            "alpha": 1,
-            "scale": 1,
-            "antialiasing": true
-        },
-        {
-            "arrayAnims":[
-                {
-                    "anim": "static",
-                    "symbol": "StaticMiddle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "pressed",
-                    "symbol": "PressMiddle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "confirm",
-                    "symbol": "ConfirmMiddle",
-                    "offset": [-13, -13],
-
-                    "fps": 32,
-                    "loop": false
-                }
-            ],
-            "alpha": 1,
-            "scale": 1,
-            "antialiasing": true
-        },
-        {
-            "arrayAnims":[
-                {
-                    "anim": "static",
-                    "symbol": "StaticMiddle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "pressed",
-                    "symbol": "PressMiddle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "confirm",
-                    "symbol": "ConfirmMiddle",
-                    "offset": [-13, -13],
-
-                    "fps": 32,
-                    "loop": false
-                }
-            ],
-            "alpha": 1,
-            "scale": 1,
-            "antialiasing": true
-        },
-        {
-            "arrayAnims":[
-                {
-                    "anim": "static",
-                    "symbol": "StaticMiddle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "pressed",
-                    "symbol": "PressMiddle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "confirm",
-                    "symbol": "ConfirmMiddle",
-                    "offset": [-13, -13],
-
-                    "fps": 32,
-                    "loop": false
-                }
-            ],
-            "alpha": 1,
-            "scale": 1,
-            "antialiasing": true
-        },
-        {
-            "arrayAnims":[
-                {
-                    "anim": "static",
-                    "symbol": "StaticMiddle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "pressed",
-                    "symbol": "PressMiddle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "confirm",
-                    "symbol": "ConfirmMiddle",
-                    "offset": [-13, -13],
-
-                    "fps": 32,
-                    "loop": false
-                }
-            ],
-            "alpha": 1,
-            "scale": 1,
-            "antialiasing": true
-        },
-        {
-            "arrayAnims":[
-                {
-                    "anim": "static",
-                    "symbol": "StaticMiddle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "pressed",
-                    "symbol": "PressMiddle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "confirm",
-                    "symbol": "ConfirmMiddle",
-                    "offset": [-13, -13],
-
-                    "fps": 32,
-                    "loop": false
-                }
-            ],
-            "alpha": 1,
-            "scale": 1,
-            "antialiasing": true
-        },
-        {
-            "arrayAnims":[
-                {
-                    "anim": "static",
-                    "symbol": "StaticMiddle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "pressed",
-                    "symbol": "PressMiddle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "confirm",
-                    "symbol": "ConfirmMiddle",
-                    "offset": [-13, -13],
-
-                    "fps": 32,
-                    "loop": false
-                }
-            ],
-            "alpha": 1,
-            "scale": 1,
-            "antialiasing": true
-        },
-        {
-            "arrayAnims":[
-                {
-                    "anim": "static",
-                    "symbol": "StaticMiddle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "pressed",
-                    "symbol": "PressMiddle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "confirm",
-                    "symbol": "ConfirmMiddle",
-                    "offset": [-13, -13],
-
-                    "fps": 32,
-                    "loop": false
-                }
-            ],
-            "alpha": 1,
-            "scale": 1,
-            "antialiasing": true
-        }
-    ],
-    "gameplayNotes":[
-        {
-            "colorHSL":[0, 100, 100],
-            "arrayAnims":[
-                {
-                    "anim": "static",
-                    "symbol": "Middle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "sustain",
-                    "symbol": "HoldPiece",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "end",
-                    "symbol": "HoldEnd",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                }
-            ],
-            "alpha": 1,
-            "scale": 1,
-            "antialiasing": true
-        },
-        {
-            "colorHSL":[0, 100, 100],
-            "arrayAnims":[
-                {
-                    "anim": "static",
-                    "symbol": "Middle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "sustain",
-                    "symbol": "HoldPiece",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "end",
-                    "symbol": "HoldEnd",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                }
-            ],
-            "alpha": 1,
-            "scale": 1,
-            "antialiasing": true
-        },
-        {
-            "colorHSL":[0, 100, 100],
-            "arrayAnims":[
-                {
-                    "anim": "static",
-                    "symbol": "Middle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "sustain",
-                    "symbol": "HoldPiece",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "end",
-                    "symbol": "HoldEnd",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                }
-            ],
-            "alpha": 1,
-            "scale": 1,
-            "antialiasing": true
-        },
-        {
-            "colorHSL":[0, 100, 100],
-            "arrayAnims":[
-                {
-                    "anim": "static",
-                    "symbol": "Middle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "sustain",
-                    "symbol": "HoldPiece",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "end",
-                    "symbol": "HoldEnd",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                }
-            ],
-            "alpha": 1,
-            "scale": 1,
-            "antialiasing": true
-        },
-        {
-            "colorHSL":[0, 100, 100],
-            "arrayAnims":[
-                {
-                    "anim": "static",
-                    "symbol": "Middle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "sustain",
-                    "symbol": "HoldPiece",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "end",
-                    "symbol": "HoldEnd",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                }
-            ],
-            "alpha": 1,
-            "scale": 1,
-            "antialiasing": true
-        },
-        {
-            "colorHSL":[0, 100, 100],
-            "arrayAnims":[
-                {
-                    "anim": "static",
-                    "symbol": "Middle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "sustain",
-                    "symbol": "HoldPiece",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "end",
-                    "symbol": "HoldEnd",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                }
-            ],
-            "alpha": 1,
-            "scale": 1,
-            "antialiasing": true
-        },
-        {
-            "colorHSL":[0, 100, 100],
-            "arrayAnims":[
-                {
-                    "anim": "static",
-                    "symbol": "Middle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "sustain",
-                    "symbol": "HoldPiece",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "end",
-                    "symbol": "HoldEnd",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                }
-            ],
-            "alpha": 1,
-            "scale": 1,
-            "antialiasing": true
-        },
-        {
-            "colorHSL":[0, 100, 100],
-            "arrayAnims":[
-                {
-                    "anim": "static",
-                    "symbol": "Middle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "sustain",
-                    "symbol": "HoldPiece",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "end",
-                    "symbol": "HoldEnd",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                }
-            ],
-            "alpha": 1,
-            "scale": 1,
-            "antialiasing": true
-        },
-        {
-            "colorHSL":[0, 100, 100],
-            "arrayAnims":[
-                {
-                    "anim": "static",
-                    "symbol": "Middle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "sustain",
-                    "symbol": "HoldPiece",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "end",
-                    "symbol": "HoldEnd",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                }
-            ],
-            "alpha": 1,
-            "scale": 1,
-            "antialiasing": true
-        },
-        {
-            "colorHSL":[0, 100, 100],
-            "arrayAnims":[
-                {
-                    "anim": "static",
-                    "symbol": "Middle",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "sustain",
-                    "symbol": "HoldPiece",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                },
-                {
-                    "anim": "end",
-                    "symbol": "HoldEnd",
-                    "offset": [0, 0],
-
-                    "fps": 32,
-                    "loop": false
-                }
-            ],
-            "alpha": 1,
-            "scale": 1,
-            "antialiasing": true
-        }
-    ]
+                "fps": 32,
+                "loop": false
+            }
+        ],
+        "notes":[
+            {
+                "sing_animation": "singMIDDLE",
+                "animations":[
+                    {
+                        "anim": "static",
+                        "symbol": "Middle",
+    
+                        "fps": 32,
+                        "loop": false
+                    }
+                ],
+                "antialiasing": true,
+                "color": "#63ffcb"
+            }
+        ]
+    }
 }

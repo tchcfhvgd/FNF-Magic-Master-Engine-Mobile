@@ -17,11 +17,13 @@ import flixel.FlxG;
 import haxe.Json;
 
 import FlxCustom.FlxUICustomNumericStepper;
+import states.PlayState.SongListData;
 import FlxCustom.FlxUICustomButton;
 import FlxCustom.FlxUICustomList;
 import Song.SongsData;
 import Song.ItemSong;
 import Song.ModSongs;
+import Song.SwagSong;
 import MagicStuff;
 
 #if desktop
@@ -95,7 +97,7 @@ class FreeplayState extends MusicBeatState {
 		for(b in grpMods){b.scrollFactor.set();}
 		add(grpMods);
 
-		var btnPlay:FlxUIButton = new FlxUICustomButton(0, 0, 300, 100, "PLAY");
+		var btnPlay:FlxUIButton = new FlxUICustomButton(0, 0, 300, 100, "PLAY", null, null, function(){chooseSong();});
 		btnPlay.setPosition(FlxG.width - btnPlay.width , FlxG.height - btnPlay.height);
 		btnPlay.scrollFactor.set();
 		add(btnPlay);
@@ -150,5 +152,11 @@ class FreeplayState extends MusicBeatState {
 			for(song in modList[i].songs){if(songList[curSong].song == song.song){curMod = i; cBreak = true; break;}}
 			if(cBreak){break;}
 		}
+	}
+
+	public function chooseSong():Void {
+		var songInput:String = Song.fileSong(songList[curSong].song, "Normal", "Hard");
+		var songdata:SwagSong = Song.loadFromJson(songInput);
+		SongListData.playSong(songdata);
 	}
 }

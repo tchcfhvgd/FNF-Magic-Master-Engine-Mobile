@@ -35,23 +35,30 @@ class MusicBeatState extends FlxUIState {
 	private function getOtherControls(ID:Int):Controls{return PlayerSettings.getPlayer(ID).controls;}
 	private var canControlle:Bool = false;
 
-	public var tempVariables:Map<String, Dynamic>= [];
     public var tempScripts:Map<String, Script> = [];
-	public var scripts(get, never):Array<Script>;
-	inline function get_scripts():Array<Script>{
-		var toReturn:Array<Script> = [];
-		for(s in ModSupport.staticScripts.keys()){if(!s.contains('.')){toReturn.push(ModSupport.staticScripts.get(s));}}
-		return toReturn;
+	public function pushTempScript(key:String):Void {
+		if(tempScripts.exists(key) || ModSupport.staticScripts.exists(key)){return;}
+		var nScript = new Script(); nScript.Name = key;
+		nScript.exScript(Paths.getText(Paths.event(key)));
+		tempScripts.set(key, nScript);
 	}
 
 	private var script(get, never):Script;
-	function get_script():Script{
+	function get_script():Script {
 		if(ModSupport.exScripts.contains(Type.getClassName(Type.getClass(this)))){return null;}
 
 		var stateScript = null;
 		if(ModSupport.staticScripts.exists(Type.getClassName(Type.getClass(this)))){stateScript = ModSupport.staticScripts.get(Type.getClassName(Type.getClass(this)));}
 
 		return stateScript;
+	}
+	public var scripts(get, never):Array<Script>;
+	function get_scripts():Array<Script> {
+		var toReturn:Array<Script> = [];
+		if(script != null){toReturn.push(script);}
+		for(sc in tempScripts.keys()){toReturn.push(tempScripts.get(sc));}
+		for(sc in ModSupport.staticScripts.keys()){if(!sc.contains(".")){toReturn.push(ModSupport.staticScripts.get(sc));}}
+		return toReturn;
 	}
 
 	public var camGame:FlxCamera = new FlxCamera();
@@ -88,7 +95,6 @@ class MusicBeatState extends FlxUIState {
 		FlxCamera.defaultCameras = [camGame];
 
 		for(s in scripts){s.exFunction('create');}
-		if(script != null){script.exFunction('create');}
 		super.create();
 
 		FlxTween.tween(camFGame, {alpha: 1}, 0.5);
@@ -114,9 +120,8 @@ class MusicBeatState extends FlxUIState {
 
 		if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.P){trace("Assets Reset"); Paths.savedMap.clear();}
 		if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.L){trace("Static Scripts Reset"); ModSupport.reloadScripts();}
+		if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.M){for(s in scripts){trace(s.Name);}}
 
-		if(script != null){script.exFunction('update', [elapsed]);}
-		for(spt in tempScripts){spt.exFunction('update', [elapsed]);}
 		for(s in scripts){s.exFunction('update', [elapsed]);}
 		super.update(elapsed);
 	}
@@ -139,16 +144,12 @@ class MusicBeatState extends FlxUIState {
 	public function stepHit():Void {
 		if(curStep % 4 == 0){beatHit();}
 
-		if(script != null){script.exFunction('stepHit', [curStep]);}
-		for(spt in tempScripts){spt.exFunction('stepHit', [curStep]);}
 		for(s in scripts){s.exFunction('stepHit', [curStep]);}
 	}
 
 	public function beatHit():Void {
 		//do literally nothing dumbass
 
-		if(script != null){script.exFunction('beatHit', [curBeat]);}
-		for(spt in tempScripts){spt.exFunction('beatHit', [curBeat]);}
 		for(s in scripts){s.exFunction('beatHit', [curBeat]);}
 	}
 
@@ -160,27 +161,19 @@ class MusicBeatState extends FlxUIState {
 	}
 	
 	override public function onFocus():Void{
-		if(script != null){script.exFunction('onFocus');}
-		for(spt in tempScripts){spt.exFunction('onFocus');}
 		for(s in scripts){s.exFunction('onFocus');}
 	}
 	override public function onFocusLost():Void{
-		if(script != null){script.exFunction('onFocusLost');}
-		for(spt in tempScripts){spt.exFunction('onFocusLost');}
 		for(s in scripts){s.exFunction('onFocusLost');}
 	}
 
 	override function openSubState(SubState:FlxSubState){
-		if(script != null){script.exFunction('openSubState');}
-		for(spt in tempScripts){spt.exFunction('openSubState');}
 		for(s in scripts){s.exFunction('openSubState');}
 
 		super.openSubState(SubState);
 	}
 
 	override function closeSubState(){
-		if(script != null){script.exFunction('closeSubState');}
-		for(spt in tempScripts){spt.exFunction('closeSubState');}
 		for(s in scripts){s.exFunction('closeSubState');}
 
 		super.closeSubState();

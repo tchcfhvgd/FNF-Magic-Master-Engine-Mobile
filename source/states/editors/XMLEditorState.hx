@@ -380,9 +380,9 @@ class XMLEditorState extends MusicBeatState {
         var uiGhost = new FlxUI(null, tabGHOST);
         uiGhost.name = "Ghost";
 
-        clGCurAnim = new FlxUICustomList(5, 5, Std.int(tabGHOST.width - 10), [], function(lst:FlxUICustomList){
+        clGCurAnim = new FlxUICustomList(5, 5, Std.int(tabGHOST.width - 10), [], function(){
             stpGCurFrame.value = 0;
-            playGhost(lst.getSelectedLabel(), Std.int(stpGCurFrame.value));
+            playGhost(clGCurAnim.getSelectedLabel(), Std.int(stpGCurFrame.value));
         }); uiGhost.add(clGCurAnim);
 
         var lblbGCurFrame = new FlxText(clGCurAnim.x, clGCurAnim.y + clGCurAnim.height + 7, 0, "[Current Frame]: ", 8); uiGhost.add(lblbGCurFrame);
@@ -425,9 +425,9 @@ class XMLEditorState extends MusicBeatState {
         var uiBase = new FlxUI(null, tabSPRITE);
         uiBase.name = "General";
 
-        clCurAnim = new FlxUICustomList(5, 5, Std.int(tabSPRITE.width - 10), [], function(lst:FlxUICustomList){
+        clCurAnim = new FlxUICustomList(5, 5, Std.int(tabSPRITE.width - 10), [], function(){
             stpCurFrame.value = 0;
-            playAnim(lst.getSelectedLabel(), Std.int(stpCurFrame.value));
+            playAnim(clCurAnim.getSelectedLabel(), Std.int(stpCurFrame.value));
         }); uiBase.add(clCurAnim);
         clCurAnim.name = "BASE_CHANGE";
 

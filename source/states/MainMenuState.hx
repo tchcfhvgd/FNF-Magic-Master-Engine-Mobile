@@ -37,7 +37,7 @@ import sys.io.File;
 
 using StringTools;
 
-class MainMenuState extends MusicBeatState{
+class MainMenuState extends MusicBeatState {
     var camFollow:FlxObject;
 	var stage:Stage;
 
@@ -76,10 +76,10 @@ class MainMenuState extends MusicBeatState{
 		conductor.songPosition = FlxG.sound.music.time;
 
 		if(canControlle){			
-			if(FlxG.keys.justPressed.ONE){states.editors.ChartEditorState.editChart(null, MainMenuState);}
-			if(FlxG.keys.justPressed.FOUR){states.editors.CharacterEditorState.editCharacter(null, MainMenuState);}
-			//if(FlxG.keys.justPressed.TWO){states.editors.StageEditorState.editStage(null, new MainMenuState());}
+			if(FlxG.keys.justPressed.ONE){MusicBeatState.switchState(new states.editors.ChartEditorState(null, MainMenuState));}
+			if(FlxG.keys.justPressed.TWO){MusicBeatState.switchState(new states.editors.SpriteTestState(null, MainMenuState));}
 			if(FlxG.keys.justPressed.THREE){states.editors.XMLEditorState.editXML(null, MainMenuState);}
+			if(FlxG.keys.justPressed.FOUR){states.editors.CharacterEditorState.editCharacter(null, MainMenuState);}
 
 			if(FlxG.mouse.justPressed){
 				for(i in 0...stage.character_Length){

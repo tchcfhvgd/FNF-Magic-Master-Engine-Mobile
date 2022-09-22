@@ -64,14 +64,14 @@ class Character extends FlxSprite{
 		return "Default";
 	}
 
-	public static function getFocusCharID(SONG:SwagSong, cSection:Int):Int{
-		var sStrums = SONG.sectionStrums;
-		var focusStrum = SONG.generalSection[cSection].strumToFocus;
-		var gChar = SONG.generalSection[cSection].charToFocus;
+	public static function getFocusCharID(song:SwagSong, section:Int, ?strum:Int):Int{
+		var strum_list = song.sectionStrums;
+		var focused_strum = strum != null ? strum : song.generalSection[section].strumToFocus;
+		var focused_character = song.generalSection[section].charToFocus;
 
-		if(sStrums == null || sStrums[focusStrum] == null){return 0;}
-		if(sStrums[focusStrum].notes[cSection].changeSing){return sStrums[focusStrum].notes[cSection].charToSing[gChar];}
-		return sStrums[focusStrum].charToSing[gChar];
+		if(strum_list == null || strum_list[focused_strum] == null){return 0;}
+		if(strum_list[focused_strum].notes[section].changeSing){return strum_list[focused_strum].notes[section].charToSing[focused_character];}
+		return strum_list[focused_strum].charToSing[focused_character];
 	}
 
 	public static function setCameraToCharacter(char:Character, cam:FlxObject){
@@ -226,7 +226,7 @@ class Character extends FlxSprite{
 	public function setCharacterGraphic(?IMAGE:String){
 		if(IMAGE != null){imageFile = IMAGE;}
 
-		frames = Paths.getCharacterAtlas(curCharacter, imageFile);
+		frames = Paths.getAtlas(Paths.character(curCharacter, imageFile));
 		if(animationsArray != null && animationsArray.length > 0) {
 			for(anim in animationsArray){
 				var animAnim:String = '' + anim.anim;

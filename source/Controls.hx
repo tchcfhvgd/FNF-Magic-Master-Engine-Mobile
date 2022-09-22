@@ -30,13 +30,10 @@ enum KeyboardScheme {
  * Uses FlxActions to funnel various inputs to a single action.
  */
 class Controls extends FlxActionSet {
-	public static function getStateByInt(i:Int):FlxInputState {
-		switch(i){
-			case -1:{return FlxInputState.JUST_RELEASED;}
-			default:{return FlxInputState.RELEASED;}
-			case 1:{return FlxInputState.PRESSED;}
-			case 2:{return FlxInputState.JUST_PRESSED;}
-		}
+	public function getNoteDataFromKey(key:FlxKey, keys:Int):Int {
+		var cont:Array<Dynamic> = STATIC_STRUMCONTROLS.get(keys);		
+		for(i in 0...cont.length){if(cont[i][0].contains(key)){return i;}}
+		return -1;
 	}
 
     public static var STATIC_ACTIONS:Map<String, Array<Array<Int>>> = [

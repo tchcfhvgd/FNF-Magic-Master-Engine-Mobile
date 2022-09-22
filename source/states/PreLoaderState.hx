@@ -1,5 +1,6 @@
 package states;
 
+import Note.NoteSplash;
 import substates.PauseSubState;
 #if desktop
 import Discord.DiscordClient;

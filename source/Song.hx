@@ -7,7 +7,7 @@ import haxe.DynamicAccess;
 import lime.utils.Assets;
 import haxe.Json;
 
-import StrumLineNote.Note;
+import Note;
 
 #if desktop
 import sys.FileSystem;
@@ -75,6 +75,18 @@ typedef ModSongs = {
 }
 
 class Song{
+	public static function getStrumKeys(strum:SwagStrum, section:Int):Int {
+		if(strum.notes[section].changeKeys){return strum.notes[section].keys;}
+        return strum.keys;
+	}
+
+	public static function getNoteCharactersToSing(note:Note, strum:SwagStrum, section:Int):Array<Int> {
+		if(note.singCharacters != null){return note.singCharacters;}
+		if(strum.notes[section].changeSing){return strum.notes[section].charToSing;}
+		return strum.charToSing;
+	}
+
+
 	public static function addSongToList(songItem:ItemSong, list:Array<ItemSong>):Void {
 		for(lItem in list){if(songItem.song == lItem.song){return;}}
 		list.push(songItem);
@@ -217,7 +229,48 @@ class Song{
 
 	public static function parseJSONshit(rawJson:String, sName:String):SwagSong {
 		var swagShit:SwagSong = convertJSON(sName, cast Json.parse(rawJson).song);
+		
+		if(swagShit.song == null){swagShit.song = "PlaceHolder";}
+		if(swagShit.difficulty == null){swagShit.difficulty = "Normal";}
+		if(swagShit.category == null){swagShit.category = "Normal";}
+		if(swagShit.bpm <= 0){swagShit.bpm = 100;}
+		if(swagShit.speed <= 0){swagShit.speed = 3.0;}
+		if(swagShit.uiStyle == null){swagShit.uiStyle = "Default";}
+		if(swagShit.stage == null){swagShit.stage = "Stage";}
+
+		if(swagShit.characters == null){
+			swagShit.characters = [
+				["Daddy_Dearest", [100, 100], true, "Default", "NORMAL"],
+				["Boyfriend", [770, 100], false, "Default", "NORMAL"],
+				["Girlfriend", [400, 130], false, "Default", "GF"]
+			];
+		}
+		if(swagShit.generalSection == null){swagShit.generalSection = [];}else{for(gen in swagShit.generalSection){if(gen.events == null){gen.events = [];}}}
+		if(swagShit.sectionStrums == null){
+			swagShit.sectionStrums = [];
+			swagShit.sectionStrums.push({
+				noteStyle: swagShit.uiStyle,
+				keys: 4,
+				charToSing: [],
+				notes: []
+			});
+		}else{
+			for(strum in swagShit.sectionStrums){
+				if(strum.charToSing == null){strum.charToSing = [];}
+				if(strum.keys <= 0){strum.keys = 4;}
+				if(strum.noteStyle == null){strum.noteStyle = swagShit.uiStyle;}
+				if(strum.notes == null){strum.notes = [];}else{
+					for(sec in strum.notes){
+						if(sec.charToSing == null){sec.charToSing = [];}
+						if(sec.keys <= 0){sec.keys = strum.keys;}
+						if(sec.sectionNotes == null){sec.sectionNotes = [];}
+					}
+				}
+			}
+		}
+		
 		swagShit.validScore = true;
+		
 		return swagShit;
 	}
 
@@ -319,8 +372,6 @@ class Song{
 				var in2:Array<Dynamic> = [];
 				if(iNotes != null){
 					for(n in iNotes){
-						n = Note.getNoteDynamicData(n);
-
 						if(cSec.get("mustHitSection") == true){
 							if(n[1] < 4){in2.push(n);}
 							if(n[1] > 3){n[1] = n[1] % 4; in1.push(n);}
@@ -401,7 +452,7 @@ class Song{
 			if(g.bpm == 0){g.bpm = aSong.get("bpm");}
 			if(g.lengthInSteps == 0){g.lengthInSteps = 16;}
 			if(g.events == null){g.events = [];}
-			if(g.events.length > 0){for(event in g.events){event = Note.getEventDynamicData(event);}}
+			if(g.events.length > 0){g.events.sort((a, b) -> (a[0] - b[0]));}
 		}
 		aSong.set("generalSection", gen);
 
@@ -424,7 +475,7 @@ class Song{
 				for(sNotes in strum.notes){
 					if(sNotes.charToSing == null){sNotes.charToSing = [];}
 					if(sNotes.sectionNotes == null){sNotes.sectionNotes = [];}
-					if(sNotes.sectionNotes.length > 0){for(nNote in sNotes.sectionNotes){nNote = Note.getNoteDynamicData(nNote);}}
+					if(sNotes.sectionNotes.length > 0){sNotes.sectionNotes.sort((a, b) -> (a[0] - b[0]));}
 				}
 			}
 		}

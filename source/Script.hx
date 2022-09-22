@@ -1,5 +1,6 @@
 package;
 
+import states.MusicBeatState;
 import flixel.FlxBasic;
 import hscript.Interp;
 import openfl.Lib;
@@ -7,6 +8,11 @@ import openfl.Lib;
 using StringTools;
 
 class Script extends FlxBasic {
+    public static function getScript(key:String){
+        if(MusicBeatState.state.tempScripts.exists(key)){return MusicBeatState.state.tempScripts.get(key);}
+        return ModSupport.staticScripts.get(key);
+    }
+
     public static var parser = new hscript.Parser();
     var interp = new hscript.Interp();
     var program = null;
@@ -43,12 +49,11 @@ class Script extends FlxBasic {
         setVariable("presset", function(name:String, func:Any){setVariable(name, func);});
         setVariable('destroy', function(){this.program = null; this.destroy();});
         
-        setVariable("pushGlobal", function(){states.MusicBeatState.state.tempScripts.set(Name, this);});
-        setVariable("quitGlobal", function(){states.MusicBeatState.state.tempScripts.remove(Name);});
+        setVariable("pushGlobal", function(){states.MusicBeatState.state.tempScripts.set(this.Name, this);});
         
         setVariable('this', this);
 		setVariable('getState', function(){return states.MusicBeatState.state;});
-        setVariable('getStaticScript', function(name:String):Script{return ModSupport.staticScripts.get(name);});
+        setVariable('getScript', function(key:String):Script{return getScript(key);});
 
         setVariable("import", function(imp:String, ?val:String){
             var cl = Type.resolveClass(imp);

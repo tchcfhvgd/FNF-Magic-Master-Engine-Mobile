@@ -1,0 +1,8 @@
+{
+    "Events":[
+        ["Set_Note_Function", ["loadNote", ["HEALTH_NOTE_assets", null, "Arrows"]], "OnCreate"],
+        ["Set_Note_Property", ["playColor", "0xffffff"], "OnCreate"],
+        ["Set_Note_Property", ["ignoreMiss", true], "OnCreate"],
+        ["Set_Note_Property", ["hitHealth", 0.05], "OnCreate"]
+    ]
+}

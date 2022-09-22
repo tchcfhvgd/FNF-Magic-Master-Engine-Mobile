@@ -1,17 +1,18 @@
 package;
 
-import flixel.FlxG;
+import flixel.graphics.frames.FlxFramesCollection;
 import flixel.graphics.frames.FlxAtlasFrames;
-import openfl.utils.Assets;
-import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
-import openfl.utils.AssetLibrary;
 import openfl.utils.AssetManifest;
 import flixel.graphics.FlxGraphic;
+import openfl.utils.AssetLibrary;
 import openfl.display.BitmapData;
+import openfl.utils.AssetType;
 import haxe.format.JsonParser;
+import openfl.utils.Assets;
 import flash.media.Sound;
 import haxe.io.Path;
+import flixel.FlxG;
 import haxe.Json;
 
 #if sys
@@ -200,6 +201,11 @@ class Paths {
 
 		return getGraphic(path);
 	}
+	
+
+	inline static public function font(key:String){
+		return getPath('$key', TEXT, 'fonts');
+	}
 
 	inline static public function txt(key:String, ?library:String){
 		return getPath('data/$key.txt', TEXT, library);
@@ -252,9 +258,9 @@ class Paths {
 
 		return path;
 	}
-
-	inline static public function font(key:String){
-		return getPath('$key', TEXT, 'fonts');
+	
+	inline static public function character(char:String, key:String){
+		return getPath('${char}/Sprites/${key}.png', IMAGE, 'characters');
 	}
 
 	inline static public function stage(key:String){
@@ -263,14 +269,23 @@ class Paths {
 		if(!Paths.exists(path)){path = getPath('Stage.hx', TEXT, 'stages');}
 
 		return path;
-	}	
+	}
 
-	inline static public function note(key:String, typeCheck:String = "Default"){
-		var typeNotes:String = PreSettings.getFromArraySetting("NoteSyle");
+	inline static public function colorNote(key:String):String {
+		var fileName:String = key.split("/").pop();
+		var toReturn:String = "None";
+		if(!Paths.exists(key.replace(fileName,"") + "colors.txt")){return toReturn;}
+		var arrColors:Array<String> = Paths.getText(key.replace(fileName,"") + "colors.txt").split("\n");
+		for(t in arrColors){var tt:Array<String> = t.split(":"); if(tt[0] == fileName){toReturn = tt[1];}}
+		return toReturn;
+	}
+	
+	inline static public function note(image:String, style:String, ?type:String){
+		if(type == null){type = PreSettings.getFromArraySetting("NoteType");}
 		
-		var path:String = getPath('${typeNotes}/${typeCheck}/${key}.png', IMAGE, 'notes');
-		if(!Paths.exists(path)){path = getPath('${typeNotes}/Default/${key}.png', IMAGE, 'notes');}
-		if(!Paths.exists(path)){path =  getPath('Default/Default/${key}.png', IMAGE, 'notes');}
+		var path:String = getPath('${type}/${style}/${image}.png', IMAGE, 'notes');
+		if(!Paths.exists(path)){path = getPath('${type}/Default/${image}.png', IMAGE, 'notes');}
+		if(!Paths.exists(path)){path =  getPath('Default/Default/${image}.png', IMAGE, 'notes');}
 		
 		return path;
 	}
@@ -282,18 +297,41 @@ class Paths {
 
 	inline static public function event(key:String){
 		var path = getPath('events/${key}.hx', TEXT, 'data');
+		if(!Paths.exists(path)){path = getPath('note_events/${key}.hx', TEXT, 'data');}
 
 		return path;
 	}
 	
-	inline static public function getStrumJSON(keys:Int, typeStrum:String = null){
-		if(typeStrum == null){typeStrum = PreSettings.getFromArraySetting("NoteSyle");}
-		var path = getPath('${typeStrum}/${keys}k.json', TEXT, 'notes');
+	inline static public function strumline_json(keys:Int, ?type:String):StrumLine.StrumLine_Graphic_Data {
+		if(type == null){type = PreSettings.getFromArraySetting("NoteType");}
 
+		var path = getPath('${type}/${keys}k.json', TEXT, 'notes');
 		if(!Paths.exists(path)){path = getPath('Default/${keys}k.json', TEXT, 'notes');}
 		if(!Paths.exists(path)){path = getPath('Default/_k.json', TEXT, 'notes');}
 
-		return path; 
+		return Json.parse(getText(path));
+	}
+
+	inline static public function note_json(data:Int, keys:Int, ?type:String):Note.Note_Graphic_Data {
+		if(type == null){type = PreSettings.getFromArraySetting("NoteType");}
+
+		var strumJSON:StrumLine.StrumLine_Graphic_Data = strumline_json(keys, type);
+		var noteJSON:Note.Note_Graphic_Data = strumJSON.gameplay_notes.notes[data % keys];
+
+		if(strumJSON.gameplay_notes.general_animations == null || strumJSON.gameplay_notes.general_animations.length <= 0){return noteJSON;}
+		for(anim in strumJSON.gameplay_notes.general_animations){noteJSON.animations.push(anim);}
+		return noteJSON;
+	}
+
+	inline static public function strum_json(data:Int, keys:Int, ?type:String):Note.Note_Graphic_Data {
+		if(type == null){type = PreSettings.getFromArraySetting("NoteType");}
+
+		var strumJSON:StrumLine.StrumLine_Graphic_Data = strumline_json(keys, type);
+		var noteJSON:Note.Note_Graphic_Data = strumJSON.static_notes.notes[data % keys];
+		
+		if(strumJSON.static_notes.general_animations == null || strumJSON.static_notes.general_animations.length <= 0){return noteJSON;}
+		for(anim in strumJSON.static_notes.general_animations){noteJSON.animations.push(anim);}
+		return noteJSON;
 	}
 
 	inline static public function getCharacterJSON(char:String, skin:String, cat:String){
@@ -314,13 +352,10 @@ class Paths {
 		return FlxAtlasFrames.fromSpriteSheetPacker(Paths.getGraphic(getPath('images/$key.png', IMAGE, library)), Paths.getText(file('images/$key.txt', library)));
 	}
 
-	inline static public function getCharacterAtlas(char:String, key:String){
-		var path = getPath('${char}/Sprites/${key}.png', IMAGE, 'characters');
-		
-		return getAtlas(path);
-	}
+	inline static public function getAtlas(path:String){
+		if(!Paths.exists(path)){return null;}
 
-	inline static public function getAtlas(path:String){path = path.replace(".png", "").replace(".jpg", "");
+		path = path.replace(".png", "").replace(".jpg", "");
 		if(Paths.exists('${path}.xml')){return FlxAtlasFrames.fromSparrow(Paths.getGraphic('${path}.png'), Paths.getText('${path}.xml'));}
 		return FlxAtlasFrames.fromSpriteSheetPacker(Paths.getGraphic('${path}.png'), Paths.getText('${path}.txt'));
 	}

@@ -1,5 +1,7 @@
-<TextureAtlas imagePath="flag.png">
+﻿<TextureAtlas imagePath="Pc.png">
 	<!-- Created with Adobe Animate version 19.2.1.408 -->
 	<!-- http://www.adobe.com/products/animate.html -->
-	<SubTexture x="0" frameWidth="155" y="0" frameX="-10" name="Flag0000" frameHeight="105" frameY="0" width="135" height="100"/>
+	<SubTexture x="0" frameWidth="111" y="0" frameX="0" name="SizeBase0000" frameHeight="100" frameY="0" width="111" height="100"/>
+	<SubTexture x="0" frameWidth="0" y="0" frameX="0" name="Event0000" frameHeight="0" frameY="0" width="111" height="100"/>
+	<SubTexture x="0" frameWidth="0" y="100" frameX="0" name="Event0001" frameHeight="0" frameY="0" width="111" height="100"/>
 </TextureAtlas>

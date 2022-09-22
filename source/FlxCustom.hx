@@ -21,7 +21,7 @@ import flixel.group.FlxSpriteGroup;
 import flixel.addons.ui.FlxUI.NamedFloat;
 
 class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlxUIClickable implements IHasParams {
-    private var _OnChange:FlxUICustomList->Void = null;
+    private var _OnChange:Void->Void = null;
 	
 	private var _btnBack:FlxUIButton;
     private var _lblCuItem:FlxUIText;
@@ -49,15 +49,12 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
         return b;
     }
 
-    public function new(X:Float = 0, Y:Float = 0, Width:Int = 100, ?DataList:Array<String>, ?OnChange:FlxUICustomList->Void, ?text:FlxUIText){
+    public function new(X:Float = 0, Y:Float = 0, Width:Int = 100, ?DataList:Array<String>, ?OnChange:Void->Void, ?text:FlxUIText, ?DefaultValue:Dynamic){
         this._OnChange = OnChange;
         super(X, Y);
 
-        if(DataList != null){
-            list = DataList;
-        }else{
-            list = [];
-        }
+        list = [];
+        if(DataList != null){list = DataList;}
 
         _btnBack = new FlxUIButton(0, 0, "<", function(){c_Index(-1);});
         _btnBack.setSize(Std.int(20), Std.int(_btnBack.height));
@@ -85,26 +82,25 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
         add(_btnFront);
 
         calcBounds();
-        c_Index();
+
+        if((DefaultValue is Int)){index = DefaultValue;}
+        if((DefaultValue is String)){for(i in 0...list.length){if(list[i] == DefaultValue){index = i;}}}
+
+        updateText();
     }
 
 	public function getText(){return _lblCuItem;}
     public function contains(x:String):Bool{return list.contains(x);}
 
-    private function c_Index(change:Int = 0, force:Bool = false):Void{
+    private function c_Index(change:Int = 0, force:Bool = false, func:Bool = true):Void{
         index += change;
         if(force){index = change;}
         
         if(index >= list.length){index = 0;}
         if(index < 0){index = list.length - 1;}
 
-		if(list[index] != null){
-			_lblCuItem.text = prefix + list[index] + suffix;
-		}else{
-			_lblCuItem.text = "NONE";
-		}
-
-		if(_OnChange != null){_OnChange(this);}
+		if(_OnChange != null && func){_OnChange();}
+        updateText();
 
         if(!force){
             if(change > 0){_doCallback(CLICK_BACK);}
@@ -113,18 +109,13 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
         _doCallback(CHANGE_EVENT);
     }
 
-    public function setIndex(i:Int){c_Index(i, true);}
-    public function setLabel(s:String){for(i in 0...list.length){if(list[i] == s){c_Index(i, true); break;}}}
+    public function setIndex(i:Int, shadow:Bool = false){c_Index(i, true, !shadow);}
+    public function setLabel(s:String, shadow:Bool = false){for(i in 0...list.length){if(list[i] == s){c_Index(i, true, !shadow); break;}}}
+    
+    public function updateText():Void {_lblCuItem.text = prefix + "NONE" + suffix; if(list[index] != null){_lblCuItem.text = prefix + list[index] + suffix;}}
 
-    public function setData(DataList:Array<String>):Void{
-        list = DataList;
-        c_Index();
-    }
-
-	public function addToData(data:String):Void{
-		list.push(data);
-        c_Index();
-	}
+    public function setData(DataList:Array<String>):Void{list = DataList; if(index >= list.length){setIndex(list.length - 1, true);} updateText();}
+	public function addToData(data:String):Void{list.push(data);}
 
     public function setWidth(Width:Float) {
         Width -= Std.int(_btnBack.width + _btnFront.width);
@@ -143,8 +134,8 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
     public function getSelectedLabel():String{return list[index];}
 	public function getSelectedIndex():Int{return index;}
 
-    public function setPrefix(p:String){prefix = p;}
-    public function setSuffix(s:String){suffix = s;}
+    public function setPrefix(p:String){prefix = p; updateText();}
+    public function setSuffix(s:String){suffix = s; updateText();}
 
     private function _doCallback(event_name:String):Void{
         if(broadcastToFlxUI){

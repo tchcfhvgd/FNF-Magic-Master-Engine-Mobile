@@ -110,6 +110,8 @@ class PauseSubState extends MusicBeatSubstate{
 			// for reference later!
 			// PlayerSettings.player1.controls.replaceBinding(Control.LEFT, Keys, FlxKey.J, null);
 		}
+
+		MagicStuff.sortMembersByY(cast grpMenuShit, (FlxG.height / 2) - (grpMenuShit.members[curSelected].height / 2), curSelected);
 	}
 
 	override function destroy()
@@ -128,6 +130,10 @@ class PauseSubState extends MusicBeatSubstate{
 		if (curSelected >= menuItems.length)
 			curSelected = 0;
 
+		for(i in 0...grpMenuShit.members.length){
+			grpMenuShit.members[i].alpha = 0.5;
+			if(i == curSelected){grpMenuShit.members[i].alpha = 1;}
+		}
 	}
 
 	function toClose(){close(); onClose();}

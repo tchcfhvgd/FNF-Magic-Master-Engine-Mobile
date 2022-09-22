@@ -16,9 +16,10 @@ class PreSettings {
         "ScrollSpeed" => 1,
         //Visual Settings
         "TypeHUD" => [0, ["MagicHUD", "Original", "Minimized", "OnlyNotes"]],
-        "NoteSyle" => [0, ["Arrows", "Circles", "Rhombuses", "Bars"]],
+        "NoteType" => [0, ["Arrows", "Circles", "Rhombuses", "Bars"]],
         "TypeScroll" => [0, ["UpScroll", "DownScroll"]],
-        "ForceMiddleScroll" => false,
+        "DefaultStrumPos" => [0, ["Middle", "Right", "Left"]],
+        "TypeMiddleScroll" => [0, ["None", "OnlyPlayer", "FadeOthers"]],
         "TypeCamera" => [1, ["Static", "MoveToSing"]],
         "TypeLightStrums" => [0, ["All", "OnlyMyStrum", "OnlyOtherStrums", "None"]],
         "TypeSplash" => [0, "OnSick", "TransparencyOnRate", "None"],
@@ -88,6 +89,7 @@ class PreSettings {
 
     public static function getFromArraySetting(setting:String){
         var pre:Array<Dynamic> = PRESETTINGS.get(setting);
+        if(pre == null){return null;}
         return pre[1][pre[0]];
     }
 

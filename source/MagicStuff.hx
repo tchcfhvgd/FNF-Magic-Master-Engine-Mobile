@@ -8,12 +8,13 @@ import flixel.graphics.FlxGraphic;
 import flixel.util.FlxSave;
 import flixel.math.FlxMath;
 import flixel.FlxObject;
+import flixel.FlxSprite;
 import flixel.FlxG;
 
 import openfl.Lib;
 
 class MagicStuff {
-	public static final version:String = "0.6";
+	public static final version:String = "0.9";
     
     inline public static function setWindowTitle(title:String, type:Int = 0){
         switch(type){
@@ -93,9 +94,20 @@ class MagicStuff {
             upHeight -= curObj.height + offset;
             curObj.y = FlxMath.lerp(curObj.y, upHeight, delay);
             current--;
-        }
-        
+        }   
     }
+
+    public static function doToMember(grp:FlxTypedGroup<FlxSprite>, index:Int, selFun:FlxSprite->Void, odFun:FlxSprite->Void):Void {
+        if(grp == null || grp.length <= 0){return;}
+
+        for(i in 0...grp.members.length){
+            if(i == index){selFun(grp.members[i]);}
+            else{odFun(grp.members[i]);}
+        }
+    }
+
+    public static function lerpX(obj:FlxObject, dest:Float, ?radio:Float = 0.1):Void {obj.x = FlxMath.lerp(obj.x, dest, radio);}
+    public static function lerpY(obj:FlxObject, dest:Float, ?radio:Float = 0.1):Void {obj.y = FlxMath.lerp(obj.y, dest, radio);}
 }
 
 enum TransitionType {
