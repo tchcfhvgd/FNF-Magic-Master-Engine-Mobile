@@ -407,7 +407,7 @@ class ColorFilterShader extends FlxShader {
             uniform float cjk_alpha;
 		    uniform int checkColor;
 		    uniform vec3 replaceColor;
-		    uniform bool active;
+		    uniform bool isEnabled;
 
 		    /**
 		    * Helper method that normalizes an RGB value (in the 0-255 range) to a value between 0-1.
@@ -417,7 +417,7 @@ class ColorFilterShader extends FlxShader {
 		   void main(){
 			    vec4 pixel = texture2D(bitmap, openfl_TextureCoordv);
 
-			    if(!active){gl_FragColor = pixel; return;}
+			    if(!isEnabled){gl_FragColor = pixel; return;}
 
                 vec3 normRepColor = normalizeColor(replaceColor);
 
@@ -441,7 +441,7 @@ class ColorFilterShader extends FlxShader {
                 }
 		    }
     ')
-    #end
+    #end 
 
     public function new(checkColor:String = "None", replaceColor:FlxColor = FlxColor.GREEN){
         super();
@@ -449,7 +449,7 @@ class ColorFilterShader extends FlxShader {
         setReplaceColor(replaceColor);
         setCheckColor(checkColor);
 
-        this.active.value = [true];
+        this.isEnabled.value = [true];
         this.cjk_alpha.value = [1];
     }
 

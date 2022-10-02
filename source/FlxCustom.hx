@@ -12,7 +12,7 @@ import flixel.FlxSprite;
 import flixel.math.FlxMath;
 import flixel.math.FlxRect;
 import flixel.text.FlxText;
-import flash.display.Shader;
+import openfl.display.Shader;
 import flixel.math.FlxPoint;
 import flixel.system.FlxSound;
 import flixel.util.FlxArrayUtil;

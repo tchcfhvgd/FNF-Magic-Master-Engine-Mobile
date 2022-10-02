@@ -22,6 +22,7 @@ import flixel.FlxSprite;
 import io.newgrounds.NG;
 import flixel.FlxCamera;
 import flixel.FlxG;
+import states.editors.StageBuilder;
 
 import FlxCustom.FlxUICustomList;
 import FlxCustom.FlxUICustomButton;
@@ -80,7 +81,7 @@ class MainMenuState extends MusicBeatState {
 			if(FlxG.keys.justPressed.TWO){MusicBeatState.switchState(new states.editors.SpriteTestState(null, MainMenuState));}
 			if(FlxG.keys.justPressed.THREE){states.editors.XMLEditorState.editXML(null, MainMenuState);}
 			if(FlxG.keys.justPressed.FOUR){states.editors.CharacterEditorState.editCharacter(null, MainMenuState);}
-
+			
 			if(FlxG.mouse.justPressed){
 				for(i in 0...stage.character_Length){
 					var nChar = stage.getCharacterById(i);
@@ -92,6 +93,8 @@ class MainMenuState extends MusicBeatState {
 		if(stage.camP_1 != null && stage.camP_2 != null){
 			camFollow.setPosition((stage.camP_1.x + (FlxG.mouse.x * (stage.camP_2.x - stage.camP_1.x) / FlxG.width)), (stage.camP_1.y + (FlxG.mouse.y * (stage.camP_2.y - stage.camP_1.y) / FlxG.height)));
 		}
+
+		
 		
 
 		super.update(elapsed);		

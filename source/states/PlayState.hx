@@ -46,6 +46,7 @@ import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
 import haxe.Timer;
+import states.editors.StageBuilder;
 
 import StrumLine;
 import Note.Note;
@@ -334,6 +335,12 @@ class PlayState extends MusicBeatState {
 	var curStrumLinePos:String = "";
 	var exEvents:Array<Dynamic> = [];
 	override public function update(elapsed:Float){
+
+		if (FlxG.keys.justPressed.NINE) {
+			StageBuilder.daStage = SONG.stage; 
+			StageBuilder.char = SONG.characters;
+			MusicBeatState.switchState(new StageBuilder());
+		}
 		super.update(elapsed);
 
 		curSection = Std.int(curStep / 16);
