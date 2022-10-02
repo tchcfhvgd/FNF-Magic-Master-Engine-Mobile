@@ -12,6 +12,7 @@ import flixel.FlxSprite;
 import flixel.math.FlxMath;
 import flixel.math.FlxRect;
 import flixel.text.FlxText;
+import flash.display.Shader;
 import flixel.math.FlxPoint;
 import flixel.system.FlxSound;
 import flixel.util.FlxArrayUtil;
@@ -271,7 +272,7 @@ class FlxUICustomNumericStepper extends FlxUINumericStepper {
 }
 
 class FlxCustomShader extends Shader {
-    public function new():Void {}
+    public function new():Void {super();}
 
     public function setVertexSource(src:String):Void {#if openfl this.glVertexSource = src; #end}
     public function setFragmentSource(src:String):Void {#if openfl this.glFragmentSource = src; #end}

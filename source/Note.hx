@@ -5,17 +5,17 @@ import flixel.util.*;
 import flixel.addons.ui.*;
 import flixel.addons.ui.interfaces.*;
 
-import flixel.system.FlxAssets.FlxShader;
-import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import openfl.utils.Assets;
-import haxe.Json;
+import flixel.system.FlxAssets.FlxShader;
 import haxe.format.JsonParser;
-import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
 import flixel.util.FlxColor;
+import openfl.utils.Assets;
 import haxe.DynamicAccess;
+import flixel.FlxSprite;
+import haxe.Json;
 
 #if windows
 import sys.FileSystem;
@@ -400,12 +400,9 @@ class NoteSplash extends FlxSprite {
     }
 }
 
-class ColorFilterShader extends FlxCustomShader {
-
-    public function new(checkColor:String = "None", replaceColor:FlxColor = FlxColor.GREEN){
-        super();
-
-        setFragmentSource('
+class ColorFilterShader extends FlxShader {
+    #if openfl
+    @:glFragmentSource('
 		#pragma header
             uniform float cjk_alpha;
 		    uniform int checkColor;
@@ -443,7 +440,11 @@ class ColorFilterShader extends FlxCustomShader {
                     }
                 }
 		    }
-        ');
+    ')
+    #end
+
+    public function new(checkColor:String = "None", replaceColor:FlxColor = FlxColor.GREEN){
+        super();
 
         setReplaceColor(replaceColor);
         setCheckColor(checkColor);

@@ -38,7 +38,7 @@ class Script extends FlxBasic {
 
     public function getVariable(name:String):Dynamic{return interp.variables.get(name);}
     public function setVariable(name:String, toSet:Dynamic){interp.variables.set(name, toSet);}
-    public function preVariables():Void{
+    public function preVariables():Void {
         var nFunc = function(){};
 
         setVariable('create', nFunc);
@@ -50,24 +50,27 @@ class Script extends FlxBasic {
 
         setVariable("presset", function(name:String, func:Any){setVariable(name, func);});
         setVariable('destroy', function(){this.program = null; this.destroy();});
-        
+
         setVariable("pushGlobal", function(){states.MusicBeatState.state.tempScripts.set(this.Name, this);});
-        
+
         setVariable('this', this);
 		setVariable('getState', function(){return states.MusicBeatState.state;});
         setVariable('getScript', function(key:String):Script{return getScript(key);});
         setVariable('getModData', function(){return ModSupport.modDataScripts.get(Mod);});
 
-        setVariable("import", function(imp:String, ?val:String){
-            var cl = Type.resolveClass(imp);
-            var en = Type.resolveEnum(imp);
-            if(cl == null && en == null){Lib.application.window.alert('This Lib Class/Enum [${imp}] is Null', "Null Import"); return;}
-            if(en != null){
-                var nEnum = {}; for(c in en.getConstructors()){Reflect.setField(nEnum, c, en.createByName(c));}
-                setVariable(val != null ? val : imp, nEnum);
+        setVariable("import", 
+            function(imp:String, ?val:String){
+                var cl = Type.resolveClass(imp);
+                var en = Type.resolveEnum(imp);
+                if(cl == null && en == null){Lib.application.window.alert('This Lib Class/Enum [${imp}] is Null', "Null Import"); return;}
+                if(en != null){ 
+                    var nEnum = {};
+                    for(c in en.getConstructors()){Reflect.setField(nEnum, c, en.createByName(c));}
+                    setVariable(val != null ? val : imp, nEnum);
+                }
+                if(cl != null){setVariable(val != null ? val : imp, cl);}
             }
-            if(cl != null){setVariable(val != null ? val : imp, cl);}
-        });
+        );
     }
     
     public function execute():Void{if(program != null){interp.execute(program);}}

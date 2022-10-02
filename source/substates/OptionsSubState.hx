@@ -18,9 +18,8 @@ class OptionsSubState extends MusicBeatSubstate {
 	private var gpOptions:FlxTypedGroup<OptionItem>;
 
 	private var curCategory:Int = 0;
-	private var choosedCat:Bool = false;
-
 	private var curOption:Int = 0;
+	private var choosedCat:Bool = false;
 
 	public function new(_backGround:Bool = true){
 		FlxG.mouse.visible = true;
@@ -67,17 +66,60 @@ class OptionsSubState extends MusicBeatSubstate {
 		MagicStuff.sortMembersByY(cast gpCategory, FlxG.height / 2, curCategory);
 
 		if(canControlle){
+			if(principal_controls.checkAction("Menu_Left", JUST_PRESSED)){changeOption(-1);}
+			if(principal_controls.checkAction("Menu_Right", JUST_PRESSED)){changeOption(1);}
+
 			if(principal_controls.checkAction("Menu_Up", JUST_PRESSED)){changeValue(-1);}
 			if(principal_controls.checkAction("Menu_Down", JUST_PRESSED)){changeValue(1);}
-			
+
 			if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED)){
-				selCat(true);
+				if(!choosedCat){selCat(true);}
 			}
 
 			if(principal_controls.checkAction("Menu_Back", JUST_PRESSED)){
 				if(choosedCat){selCat(false);}else{doClose();}
 			}
 		}
+	}
+
+	public function changeOption(change:Int = 0):Void {
+		if(!choosedCat){return;}trace('si');
+
+		var cur_category:String = gpCategory.members[curCategory].curText;
+		var cur_option_item:OptionItem = gpOptions.members[curOption];
+		var cur_option:String = cur_option_item.setting;
+		var pre_Current:Dynamic = null;
+		switch(cur_category){
+			case "KeysControls":{
+
+			}
+			case "Controls":{
+
+			}
+			default:{
+				pre_Current = PreSettings.CURRENT_SETTINGS.get(cur_category).get(cur_option);
+				if((pre_Current is Bool)){PreSettings.CURRENT_SETTINGS.get(cur_category).set(cur_option, !(cast(pre_Current,Bool)));}
+				if((pre_Current is Int)){
+					pre_Current += change;
+					PreSettings.CURRENT_SETTINGS.get(cur_category).set(cur_option, pre_Current);
+				}
+				if((pre_Current is Float)){
+					pre_Current += change;
+					PreSettings.CURRENT_SETTINGS.get(cur_category).set(cur_option, pre_Current);
+				}
+				if((pre_Current is Array)){
+					pre_Current[0] += change;
+					if(pre_Current[0] < 0){pre_Current[0] = pre_Current[1].lenght - 1;}
+					if(pre_Current[0] >= pre_Current[1].lenght){pre_Current[0] = 0;}
+					PreSettings.CURRENT_SETTINGS.get(cur_category).set(cur_option, pre_Current);
+				}
+			}
+		}
+
+		cur_option_item.curText = pre_Current;
+		cur_option_item.setText();
+
+		changeValue();
 	}
 
 	public function changeValue(change:Int = 0):Void {
