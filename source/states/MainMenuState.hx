@@ -104,7 +104,7 @@ class MainMenuState extends MusicBeatState {
 		beatLogo.setGraphicSize(Std.int(FlxG.width / 4));
 		beatLogo.updateHitbox();
 		beatLogo.y = 10; beatLogo.screenCenter(X);
-		beatLogo.antialiasing = PreSettings.getPreSetting("Antialiasing");
+		beatLogo.antialiasing = PreSettings.getPreSetting("Antialiasing", "Graphic Settings");
 		beatLogo.camera = camHUD;
 		add(beatLogo);
 
@@ -131,7 +131,7 @@ class MainMenuState extends MusicBeatState {
 		btnCredits.camera = camHUD;
 		grpOptions.add(btnCredits);
 
-		var btnOptions:FlxUIButton = new FlxUICustomButton(btnCredits.x + btnCredits.width + 25, btnCredits.y, 200, 50, "Options", null, null, function(){});
+		var btnOptions:FlxUIButton = new FlxUICustomButton(btnCredits.x + btnCredits.width + 25, btnCredits.y, 200, 50, "Options", null, null, function(){openSubState(new substates.OptionsSubState());});
 		btnOptions.camera = camHUD;
 		grpOptions.add(btnOptions);
 		

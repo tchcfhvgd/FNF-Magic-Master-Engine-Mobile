@@ -49,6 +49,8 @@ class Stage extends FlxTypedGroup<Dynamic>{
 
     private var initChar:Int = 0;
 
+    public var showCamPoints:Bool = false;
+
     public var character_Length(get, never):Int;
 	inline function get_character_Length():Int {
         var cLenght:Int = 0;
@@ -68,7 +70,9 @@ class Stage extends FlxTypedGroup<Dynamic>{
 		super.update(elapsed);
     }
 
-    public function loadStage(name:String):Void{
+    public function loadStage(name:String):Void {
+        curStage = name;
+
         if(script != null){script.destroy();}
 
         script = new Script();
@@ -109,6 +113,11 @@ class Stage extends FlxTypedGroup<Dynamic>{
             }
 
             numCont++;
+        }
+
+        if(showCamPoints){
+            if(camP_1 != null){add(new FlxSprite(camP_1.x, camP_1.y).makeGraphic(5,5));}
+            if(camP_2 != null){add(new FlxSprite(camP_2.x, camP_2.y).makeGraphic(5,5));}
         }
     }
 

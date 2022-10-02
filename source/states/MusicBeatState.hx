@@ -3,6 +3,7 @@ package states;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.ui.FlxUIState;
 import haxe.rtti.CType.Abstractdef;
+import substates.MusicBeatSubstate;
 import Conductor.BPMChangeEvent;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
@@ -17,6 +18,7 @@ using StringTools;
 
 class MusicBeatState extends FlxUIState {
 	public static var state:MusicBeatState;
+	public static var popList:Array<String> = [];
 
 	public var conductor:Conductor = new Conductor();
 
@@ -36,9 +38,25 @@ class MusicBeatState extends FlxUIState {
 	private var canControlle:Bool = false;
 
     public var tempScripts:Map<String, Script> = [];
-	public function pushTempScript(key:String):Void {
-		if(tempScripts.exists(key) || ModSupport.staticScripts.exists(key)){return;}
+	public function pushTempScript(key:String, ?pre:Dynamic):Void {
+		if(pre == null){pre = [];}
+
+		if(tempScripts.exists(key) || ModSupport.staticScripts.exists(key)){
+			if(tempScripts.exists(key)){
+				var preCharge:Array<Dynamic> = tempScripts.get(key).getVariable("prefunctions");
+				preCharge.push(pre);
+				tempScripts.get(key).setVariable("prefunctions", preCharge);
+			}
+			if(ModSupport.staticScripts.exists(key)){
+				var preCharge:Array<Dynamic> = ModSupport.staticScripts.get(key).getVariable("prefunctions");
+				preCharge.push(pre);
+				ModSupport.staticScripts.get(key).setVariable("prefunctions", preCharge);
+			}
+			
+			return;
+		}
 		var nScript = new Script(); nScript.Name = key;
+		nScript.setVariable("prefunctions", [pre]);
 		nScript.exScript(Paths.getText(Paths.event(key)));
 		tempScripts.set(key, nScript);
 	}
@@ -58,6 +76,7 @@ class MusicBeatState extends FlxUIState {
 		if(script != null){toReturn.push(script);}
 		for(sc in tempScripts.keys()){toReturn.push(tempScripts.get(sc));}
 		for(sc in ModSupport.staticScripts.keys()){if(!sc.contains(".")){toReturn.push(ModSupport.staticScripts.get(sc));}}
+		for(sc in ModSupport.modDataScripts.keys()){toReturn.push(ModSupport.modDataScripts.get(sc));}
 		return toReturn;
 	}
 
@@ -66,7 +85,6 @@ class MusicBeatState extends FlxUIState {
 	public var camBHUD:FlxCamera = new FlxCamera();
 	public var camHUD:FlxCamera = new FlxCamera();
 	public var camFHUD:FlxCamera = new FlxCamera();
-	public var camSubState:FlxCamera = new FlxCamera();
 	
 	public function new(?onConfirm:Class<FlxState>, ?onBack:Class<FlxState>){
 		this.onBack = onBack;
@@ -83,14 +101,12 @@ class MusicBeatState extends FlxUIState {
 		camBHUD.bgColor.alpha = 0;
 		camHUD.bgColor.alpha = 0;
 		camFHUD.bgColor.alpha = 0;
-		camSubState.bgColor.alpha = 0;
 
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camFGame);
 		FlxG.cameras.add(camBHUD);
 		FlxG.cameras.add(camHUD);
 		FlxG.cameras.add(camFHUD);
-		FlxG.cameras.add(camSubState);
 
 		FlxCamera.defaultCameras = [camGame];
 
@@ -101,7 +117,6 @@ class MusicBeatState extends FlxUIState {
 		FlxTween.tween(camBHUD, {alpha: 1}, 0.5);
 		FlxTween.tween(camHUD, {alpha: 1}, 0.5);
 		FlxTween.tween(camFHUD, {alpha: 1}, 0.5);
-		FlxTween.tween(camSubState, {alpha: 1}, 0.5);
 
 		canControlle = true;
 	}
@@ -119,7 +134,7 @@ class MusicBeatState extends FlxUIState {
 		if(principal_controls.checkAction("Menu_Back", JUST_PRESSED) && onBack != null){MusicBeatState.switchState(Type.createInstance(onBack, []));}
 
 		if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.P){trace("Assets Reset"); Paths.savedMap.clear();}
-		if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.L){trace("Static Scripts Reset"); ModSupport.reloadScripts();}
+		if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.L){trace("Static Scripts Reset"); ModSupport.reload_mods();}
 		if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.M){for(s in scripts){trace(s.Name);}}
 
 		for(s in scripts){s.exFunction('update', [elapsed]);}
@@ -179,11 +194,29 @@ class MusicBeatState extends FlxUIState {
 		super.closeSubState();
 	}
 
+	public static function switchToCustomState(state:String):Void {
+		var nScript = ModSupport.staticScripts.get(state);
+		if(nScript != null && nScript.getVariable('CustomState')){FlxG.switchState(new CustomScriptState(nScript));}
+	}
+
 	public static function switchState(nextState:FlxState):Void {
 		var toSwitch:FlxState = nextState;
-		var nScript = ModSupport.staticScripts.get(Type.getClassName(Type.getClass(nextState)));
+		var nScript = ModSupport.staticScripts.get(Type.getClassName(Type.getClass(nextState))); trace(Type.getClassName(Type.getClass(nextState)));
 		if(nScript != null && nScript.getVariable('CustomState')){toSwitch = new CustomScriptState(nScript);}
 		
 		FlxG.switchState(toSwitch);
 	}
+}
+
+class MessPopUp extends MusicBeatSubstate {
+	public function new(){
+		super();
+    }
+
+	override function update(elapsed:Float){
+		super.update(elapsed);
+	}
+
+	override function destroy(){super.destroy();}
+	function toClose(){close();}
 }

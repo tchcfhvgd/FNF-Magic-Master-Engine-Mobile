@@ -81,7 +81,7 @@ class Alphabet extends FlxSpriteGroup {
                     var letter:AlphaCharacter = new AlphaCharacter(curX + xOffset, curY + yOffset, curImage);
                     letter.createChar(char, isBold);
                     if(!animated){letter.animation.stop();}
-                    letter.scale.set(curScale.x, curScale.y);
+                    letter.scale.set(curScale.x, curScale.y); letter.updateHitbox();
                     curX += letter.width * xMultiplier;
                             
         
@@ -140,7 +140,7 @@ class AlphaCharacter extends FlxSprite {
         var tex = Paths.getSparrowAtlas(image);
         frames = tex;
     
-        antialiasing = PreSettings.getPreSetting("Antialiasing");
+        antialiasing = PreSettings.getPreSetting("Antialiasing", "Graphic Settings");
     }
     
     var reMap:Map<String, String> = [

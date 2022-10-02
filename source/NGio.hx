@@ -19,7 +19,8 @@ using StringTools;
 /**
  * MADE BY GEOKURELI THE LEGENED GOD HERO MVP
  */
-class NGio {
+class NGio
+{
 	public static var isLoggedIn:Bool = false;
 	public static var scoreboardsLoaded:Bool = false;
 
@@ -32,27 +33,33 @@ class NGio {
 	public static var GAME_VER_NUMS:String = '';
 	public static var gotOnlineVer:Bool = false;
 
-	public static function noLogin(api:String){
+	public static function noLogin(api:String)
+	{
 		trace('INIT NOLOGIN');
 		GAME_VER = "v" + Application.current.meta.get('version');
 
-		NG.create(api);
+		if (api.length != 0)
+		{
+			NG.create(api);
 
-		new FlxTimer().start(2, function(tmr:FlxTimer){
-			var call = NG.core.calls.app.getCurrentVersion(GAME_VER).addDataHandler(function(response:Response<GetCurrentVersionResult>){
-				if(response.result != null){
+			new FlxTimer().start(2, function(tmr:FlxTimer)
+			{
+				var call = NG.core.calls.app.getCurrentVersion(GAME_VER).addDataHandler(function(response:Response<GetCurrentVersionResult>)
+				{
 					GAME_VER = response.result.data.currentVersion;
 					GAME_VER_NUMS = GAME_VER.split(" ")[0].trim();
 					trace('CURRENT NG VERSION: ' + GAME_VER);
 					trace('CURRENT NG VERSION: ' + GAME_VER_NUMS);
 					gotOnlineVer = true;
-				}
+				});
+
+				call.send();
 			});
-			call.send();
-		});
+		}
 	}
 
-	public function new(api:String, encKey:String, ?sessionId:String){
+	public function new(api:String, encKey:String, ?sessionId:String)
+	{
 		trace("connecting to newgrounds");
 
 		NG.createAndCheckSession(api, sessionId);
@@ -63,13 +70,16 @@ class NGio {
 
 		trace(NG.core.attemptingLogin);
 
-		if(NG.core.attemptingLogin){
+		if (NG.core.attemptingLogin)
+		{
 			/* a session_id was found in the loadervars, this means the user is playing on newgrounds.com
 			 * and we should login shortly. lets wait for that to happen
 			 */
 			trace("attempting login");
 			NG.core.onLogin.add(onNGLogin);
-		}else{
+		}
+		else
+		{
 			/* They are NOT playing on newgrounds.com, no session id was found. We must start one manually, if we want to.
 			 * Note: This will cause a new browser window to pop up where they can log in to newgrounds
 			 */
@@ -77,7 +87,8 @@ class NGio {
 		}
 	}
 
-	function onNGLogin():Void {
+	function onNGLogin():Void
+	{
 		trace('logged in! user:${NG.core.user.name}');
 		isLoggedIn = true;
 		FlxG.save.data.sessionId = NG.core.sessionId;
@@ -92,7 +103,8 @@ class NGio {
 	}
 
 	// --- MEDALS
-	function onNGMedalFetch():Void {
+	function onNGMedalFetch():Void
+	{
 		/*
 			// Reading medal info
 			for (id in NG.core.medals.keys())
@@ -100,7 +112,6 @@ class NGio {
 				var medal = NG.core.medals.get(id);
 				trace('loaded medal id:$id, name:${medal.name}, description:${medal.description}');
 			}
-
 			// Unlocking medals
 			var unlockingMedal = NG.core.medals.get(54352);// medal ids are listed in your NG project viewer
 			if (!unlockingMedal.unlocked)
@@ -109,7 +120,8 @@ class NGio {
 	}
 
 	// --- SCOREBOARDS
-	function onNGBoardsFetch():Void {
+	function onNGBoardsFetch():Void
+	{
 		/*
 			// Reading medal info
 			for (id in NG.core.scoreBoards.keys())
@@ -132,9 +144,12 @@ class NGio {
 		// more info on scores --- http://www.newgrounds.io/help/components/#scoreboard-getscores
 	}
 
-	inline static public function postScore(score:Int = 0, song:String){
-		if(isLoggedIn){
-			for (id in NG.core.scoreBoards.keys()){
+	inline static public function postScore(score:Int = 0, song:String)
+	{
+		if (isLoggedIn)
+		{
+			for (id in NG.core.scoreBoards.keys())
+			{
 				var board = NG.core.scoreBoards.get(id);
 
 				if (song == board.name)
@@ -147,7 +162,8 @@ class NGio {
 		}
 	}
 
-	function onNGScoresFetch():Void{
+	function onNGScoresFetch():Void
+	{
 		scoreboardsLoaded = true;
 
 		ngScoresLoaded.dispatch();
@@ -155,7 +171,6 @@ class NGio {
 			for (score in NG.core.scoreBoards.get(8737).scores)
 			{
 				trace('score loaded user:${score.user.name}, score:${score.formatted_value}');
-
 			}
 		 */
 
@@ -165,15 +180,19 @@ class NGio {
 		// NGio.scoreboardArray = NG.core.scoreBoards.get(8004).scores;
 	}
 
-	inline static public function logEvent(event:String){
+	inline static public function logEvent(event:String)
+	{
 		NG.core.calls.event.logEvent(event).send();
 		trace('should have logged: ' + event);
 	}
 
-	inline static public function unlockMedal(id:Int){
-		if(isLoggedIn){
+	inline static public function unlockMedal(id:Int)
+	{
+		if (isLoggedIn)
+		{
 			var medal = NG.core.medals.get(id);
-			if(!medal.unlocked){medal.sendUnlock();}
+			if (!medal.unlocked)
+				medal.sendUnlock();
 		}
 	}
 }

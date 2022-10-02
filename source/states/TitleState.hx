@@ -31,9 +31,16 @@ import lime.app.Application;
 import openfl.Assets;
 import flixel.math.FlxMath;
 
+#if (desktop && sys)
+import sys.FileSystem;
+import sys.io.File;
+#end
+
 using StringTools;
 
 class TitleState extends MusicBeatState {
+	public static var loadedMods:Bool = false;
+
 	private var inIntro:Bool = true;
 	private var toStart:Bool = true;
 
@@ -48,8 +55,13 @@ class TitleState extends MusicBeatState {
 		this.toStart = started;
 	}
 
-	override public function create():Void {
-		LangSupport.init();
+	override public function create():Void {		
+		if(!FlxG.save.data.inLang){MusicBeatState.switchState(new LangSupport.PopLangState()); return;}
+
+		#if (desktop && sys)
+		var modsDirectory:String = FileSystem.absolutePath("mods");
+		if(FileSystem.exists(modsDirectory) && FileSystem.readDirectory(modsDirectory).length > 0 && !loadedMods){MusicBeatState.switchState(new states.ModListState.PopModState()); return;}
+		#end
 		
 		otherStuff.add(new FlxSprite());
 
@@ -77,7 +89,7 @@ class TitleState extends MusicBeatState {
 
 		super.update(elapsed);
 
-		logo.scale.set(FlxMath.lerp(logo.scale.x, 1, 0.1), FlxMath.lerp(logo.scale.y, 1, 0.1));
+		if(logo != null){logo.scale.set(FlxMath.lerp(logo.scale.x, 1, 0.1), FlxMath.lerp(logo.scale.y, 1, 0.1));}
 
 		if(canControlle){
 			if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED)){

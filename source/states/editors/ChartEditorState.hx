@@ -146,6 +146,7 @@ class ChartEditorState extends MusicBeatState{
         curSection = lastSection;
         
         stage = new Stage(_song.stage, _song.characters);
+        stage.showCamPoints = true;
         stage.cameras = [camBHUD];
         add(stage);
 
@@ -290,13 +291,13 @@ class ChartEditorState extends MusicBeatState{
         if(strumLine.width != Std.int(curGrid.width)){strumLine.makeGraphic(Std.int(curGrid.width), 4);}
         
         renderedEvents.clear();
-        var eventsInfo:Array<Dynamic> = _song.generalSection[curSection].events;
+        var eventsInfo:Array<Dynamic> = _song.generalSection[curSection].events.copy();
         if(eventsInfo != null){
             for(e in eventsInfo){
                 var eData:EventData = Note.getEventData(e);
                 var isSelected:Bool = Note.compNotes(eData, selEvent, false);
         
-                var note:StrumEvent = new StrumEvent(eData.strumTime);
+                var note:StrumEvent = new StrumEvent(eData.strumTime, conductor);
                 setupNote(note, -1);
                 note.alpha = isSelected || FlxG.sound.music.playing ? 1 : 0.5;
     
@@ -322,6 +323,14 @@ class ChartEditorState extends MusicBeatState{
                 var note:Note = new Note(nData, Song.getStrumKeys(cSection, curSection), null, cSection.noteStyle);
                 setupNote(note, ii);
                 note.alpha = isSelected || FlxG.sound.music.playing ? 1 : 0.5;
+
+                if(note.otherData.length > 0){
+                    var iconEvent:StrumEvent = new StrumEvent(nData.strumTime, conductor);
+                    iconEvent.setPosition(note.x, note.y);
+                    iconEvent.setGraphicSize(Std.int(KEYSIZE / 3));
+                    iconEvent.alpha = note.alpha;
+                    renderedEvents.add(iconEvent);
+                }
 
                 if(nData.canMerge){mergedGroup.push(note);}
                         
@@ -514,7 +523,7 @@ class ChartEditorState extends MusicBeatState{
                 var curStatics = strumStatics.members[i];
                 curStatics.style = _song.sectionStrums[i].noteStyle;
                 curStatics.changeKeyNumber(daKeys, Std.int(KEYSIZE * daKeys), true, true);
-                curStatics.doOnStaticNotes(function(curStrum){curStrum.autoStatic = true;});
+                for(c in curStatics.statics){c.autoStatic = true;}
                 curStatics.x = lastWidth;
             }            
 
@@ -600,8 +609,7 @@ class ChartEditorState extends MusicBeatState{
                     if(n.hitMiss){continue;}
                     if(!chkHideStrums.checked){strumStatics.members[i].playById((n.noteData % Song.getStrumKeys(_song.sectionStrums[i], curSection)), "confirm", true);}
                     if(!chkMuteHitSounds.checked && sHitsArray[i] && n.typeHit != "Hold"){FlxG.sound.play(Paths.sound("CLAP"));}
-                    for(i in Song.getNoteCharactersToSing(n, _song.sectionStrums[i], curSection)){stage.getCharacterById(i).playAnim(n.singAnimation, true);}
-                    
+                    for(i in Song.getNoteCharactersToSing(n, _song.sectionStrums[i], curSection)){if(stage.getCharacterById(i) != null){stage.getCharacterById(i).playAnim(n.singAnimation, true);}}
                 }
             }
 
@@ -616,7 +624,7 @@ class ChartEditorState extends MusicBeatState{
                 
                 cursor_Event.x = eveGrid.x;
     
-                cursor_Event.y = Math.floor(FlxG.mouse.y / (KEYSIZE / stpHeightSize.value)) * (KEYSIZE / stpHeightSize.value);
+                cursor_Event.y = Math.floor(FlxG.mouse.y / (KEYSIZE / 2)) * (KEYSIZE / 2);
                 if(FlxG.keys.pressed.SHIFT){cursor_Event.y = FlxG.mouse.y;}
                 
                 if(FlxG.mouse.justPressed){checkToAddEvent();}        
@@ -629,7 +637,7 @@ class ChartEditorState extends MusicBeatState{
     
                 cursor_Arrow.y = Math.floor(FlxG.mouse.y / (KEYSIZE / stpHeightSize.value)) * (KEYSIZE / stpHeightSize.value);
                 if(FlxG.keys.pressed.SHIFT){cursor_Arrow.y = FlxG.mouse.y;}
-                cursor_Arrow.loadPresset(selNote.presset);
+                cursor_Arrow.loadPresset(selNote.presset, false);
     
                 var data:Int = (Math.floor((FlxG.mouse.x - curGrid.x) / KEYSIZE)) % (Song.getStrumKeys(_song.sectionStrums[curStrum], curSection));
                 if(cursor_Arrow.noteData != data || cursor_Arrow.noteKeys != Song.getStrumKeys(_song.sectionStrums[curStrum], curSection)){cursor_Arrow.setupData(data, Song.getStrumKeys(_song.sectionStrums[curStrum], curSection));}
@@ -739,13 +747,24 @@ class ChartEditorState extends MusicBeatState{
             stpNoteHits.value = selNote.multiHits;
             clNotePressets.setLabel(selNote.presset, true);
             btnCanMerge.label.text = selNote.canMerge ? "Is Merge Button" : "Is Not Merge Button";
-
             var events:Array<String> = []; for(e in selNote.eventData){events.push(e[0]);} clNoteEventList.setData(events);
+            clNoteEventList.setLabel(clNoteEventList.getSelectedLabel(), false, true);
+        }else{
+            stpStrumLine.value = 0;
+            stpNoteLength.value = 0;
+            stpNoteHits.value = 0;
+            clNotePressets.setLabel("Default", true);
+            btnCanMerge.label.text =  "Note UnSelected";            
+            clNoteEventList.setData([]); clNoteEventList.setLabel(clNoteEventList.getSelectedLabel(), false, true);
         }
 
         if(selEvent != null){
             stpEventStrumLine.value = selEvent.strumTime;
             var events:Array<String> = []; for(e in selEvent.eventData){events.push(e[0]);} clEventListEvents.setData(events);
+            clEventListEvents.setLabel(clEventListEvents.getSelectedLabel(), false, true);
+        }else{
+            stpEventStrumLine.value = 0;
+            clEventListEvents.setData([]); clEventListEvents.setLabel(clEventListEvents.getSelectedLabel(), false, true);
         }
     }
 
@@ -974,68 +993,81 @@ class ChartEditorState extends MusicBeatState{
         for(n in _song.sectionStrums[strum].notes[curSection].sectionNotes){if(Note.compNotes(Note.getNoteData(note), Note.getNoteData(n))){return n;}}
         return null;
     }
+    
     private function setNote(n1:Array<Dynamic>, n2:Array<Dynamic>):Void {for(i in 0...n2.length){n1[i] = n2[i];}}
-    private function updateSelectedEvent(func:EventData->Void):Void {
+    private function updateSelectedEvent(func:EventData->Void, nuFunc:Void->Void = null, updateValues:Bool = true):Void {
         var e = getSwagEvent(Note.convEventData(selEvent));
-        if(e == null){func(selEvent); updateNoteValues(); updateSection(); return;}
-        var curEvent:EventData = Note.getEventData(e);
+        if(e == null){
+            if(nuFunc != null){nuFunc();}
+        }else{
+            var curEvent:EventData = Note.getEventData(e);
+            func(curEvent);        
+            setNote(e, Note.convEventData(curEvent));
+            selEvent = curEvent;
+        }
 
-        func(curEvent);
-        
-        setNote(e, Note.convEventData(curEvent));
-        selEvent = curEvent;
-
-        updateNoteValues(); updateSection();
+        if(updateValues){updateNoteValues(); updateSection();}
     }
-    private function updateSelectedNote(func:NoteData->Void):Void {
+    private function updateSelectedNote(func:NoteData->Void, nuFunc:Void->Void = null, updateValues:Bool = true):Void {
         var n = getSwagNote(Note.convNoteData(selNote));
-        if(n == null){func(selNote); updateNoteValues(); updateSection(); return;}
-        var curNote:NoteData = Note.getNoteData(n);
+        if(n == null){
+            if(nuFunc != null){nuFunc();}
+        }else{
+            var curNote:NoteData = Note.getNoteData(n);    
+            func(curNote);            
+            setNote(n, Note.convNoteData(curNote));
+            selNote = curNote;
+        }
 
-        func(curNote);
-        
-        setNote(n, Note.convNoteData(curNote));
-        selNote = curNote;
+        if(updateValues){updateNoteValues(); updateSection();}
+    }
 
+    private function reloadSelectedEvent():Void {
+        selEvent.strumTime = getStrumTime(cursor_Event.y) + sectionStartTime();
+        for(e in _song.generalSection[curSection].events.copy()){if(Note.compNotes(selEvent, Note.getEventData(e), false)){selEvent = Note.getEventData(e); break;}}
         updateNoteValues(); updateSection();
     }
-
-    private function reloadSelectedEvent(forceChange:Bool = true):Void {
-        selEvent.strumTime = getStrumTime(cursor_Event.y) + sectionStartTime();
-        for(e in _song.generalSection[curSection].events){if(Note.compNotes(selEvent, Note.getEventData(e), false)){selEvent = Note.getEventData(e); break;}}
-        if(!forceChange){return;} updateNoteValues(); updateSection();
-    }
-    private function reloadSelectedNote(forceChange:Bool = true):Void {
+    private function reloadSelectedNote():Void {
         selNote.strumTime = getStrumTime(cursor_Arrow.y) + sectionStartTime();
         selNote.keyData = Math.floor((FlxG.mouse.x - curGrid.x) / KEYSIZE) % Song.getStrumKeys(_song.sectionStrums[curStrum], curSection);
-        for(n in _song.sectionStrums[curStrum].notes[curSection].sectionNotes){if(Note.compNotes(selNote, Note.getNoteData(n))){selNote = Note.getNoteData(n); break;}}
-        if(!forceChange){return;} updateNoteValues(); updateSection();
+        for(n in _song.sectionStrums[curStrum].notes[curSection].sectionNotes.copy()){if(Note.compNotes(selNote, Note.getNoteData(n))){selNote = Note.getNoteData(n); break;}}
+        updateNoteValues(); updateSection();
     }
 
     var lastEvent:EventData = Note.getEventData();
     private function checkToAddEvent(isRelease:Bool = false):Void{
-        reloadSelectedEvent(false);
+        var _event:EventData = Note.getEventData();
+        _event.strumTime = getStrumTime(cursor_Event.y) + sectionStartTime();
 
         if(isRelease){
-            if(getSwagEvent(Note.convEventData(selEvent)) == null && !Note.compNotes(lastEvent, selEvent, false)){_song.generalSection[curSection].events.push(Note.convEventData(selEvent));}
+            if(getSwagEvent(Note.convEventData(_event)) == null && !Note.compNotes(lastEvent, _event, false)){
+                _song.generalSection[curSection].events.push(Note.convEventData(_event));
+                selEvent = _event;
+            }
             lastEvent = Note.getEventData();
         }else{
-            for(e in _song.generalSection[curSection].events){if(Note.compNotes(selEvent, Note.getEventData(e))){_song.generalSection[curSection].events.remove(e); lastEvent = Note.getEventData(Note.convEventData(selEvent)); break;}}
+            for(e in _song.generalSection[curSection].events){if(Note.compNotes(_event, Note.getEventData(e), false)){_song.generalSection[curSection].events.remove(e); lastEvent = Note.getEventData(Note.convEventData(_event)); break;}}
         }
 
         updateNoteValues(); updateSection();
     }
     var lastNote:NoteData = Note.getNoteData();
     private function checkToAddNote(isRelease:Bool = false):Void{
-        reloadSelectedNote(false);
+        var _note:NoteData = Note.getNoteData();
+        _note.strumTime = getStrumTime(cursor_Arrow.y) + sectionStartTime();
+        _note.keyData = Math.floor((FlxG.mouse.x - curGrid.x) / KEYSIZE) % Song.getStrumKeys(_song.sectionStrums[curStrum], curSection);
+        _note.presset = clNotePressets.getSelectedLabel();
 
         if(isRelease){
-            if(getSwagNote(Note.convNoteData(selNote)) == null && !Note.compNotes(lastNote, selNote)){_song.sectionStrums[curStrum].notes[curSection].sectionNotes.push(Note.convNoteData(selNote));}
+            if(getSwagNote(Note.convNoteData(_note)) == null && !Note.compNotes(lastNote, _note)){
+                _song.sectionStrums[curStrum].notes[curSection].sectionNotes.push(Note.convNoteData(_note));
+                selNote = _note;
+            }
             lastNote = Note.getNoteData();
         }else{
-            for(n in _song.sectionStrums[curStrum].notes[curSection].sectionNotes){if(Note.compNotes(selNote, Note.getNoteData(n))){_song.sectionStrums[curStrum].notes[curSection].sectionNotes.remove(n); lastNote = Note.getNoteData(Note.convNoteData(selNote)); break;}}
+            for(n in _song.sectionStrums[curStrum].notes[curSection].sectionNotes){if(Note.compNotes(_note, Note.getNoteData(n))){_song.sectionStrums[curStrum].notes[curSection].sectionNotes.remove(n); lastNote = Note.getNoteData(Note.convNoteData(_note)); break;}}
         }
-
+        
         updateNoteValues(); updateSection();
     }
 
@@ -1571,7 +1603,12 @@ class ChartEditorState extends MusicBeatState{
             updateSelectedNote(function(curNote){curNote.canMerge = !curNote.canMerge;});
         }); tabNOTE.add(btnCanMerge);
 
-        clNotePressets = new FlxUICustomList(5, btnCanMerge.y + btnCanMerge.height + 5, Std.int(MENU.width - 10), Note.getNotePressets(), function(){updateSelectedNote(function(curNote){curNote.presset = clNotePressets.getSelectedLabel();});}); tabNOTE.add(clNotePressets);
+        clNotePressets = new FlxUICustomList(5, btnCanMerge.y + btnCanMerge.height + 5, Std.int(MENU.width - 10), Note.getNotePressets(), function(){
+            updateSelectedNote(
+                function(curNote){curNote.presset = clNotePressets.getSelectedLabel();},
+                function(){selNote.presset = clNotePressets.getSelectedLabel();}
+            );
+        }); tabNOTE.add(clNotePressets);
         clNotePressets.setPrefix("Note Presset: ["); clNotePressets.setSuffix("]");
         
         clEventListToNote = new FlxUICustomList(clNotePressets.x, clNotePressets.y + clNotePressets.height + 15, Std.int(MENU.width - 35), Note.getNoteEvents(true)); tabNOTE.add(clEventListToNote);
@@ -1583,13 +1620,18 @@ class ChartEditorState extends MusicBeatState{
         }); tabNOTE.add(btnAddEventToNote);
         
         clNoteEventList = new FlxUICustomList(clEventListToNote.x, clEventListToNote.y + clEventListToNote.height + 5, Std.int(MENU.width) - 35, [], function(){
-            updateSelectedNote(function(curNote){
-                if(curNote.eventData == null || curNote.eventData.length <= 0){clNoteEventList.setSuffix('] (0/0)'); txtNoteEventValues.text = "[]"; return;}
-            
-                clNoteEventList.setSuffix('] (${clNoteEventList.getSelectedIndex() + 1}/${curNote.eventData.length})');
-                try{txtNoteEventValues.text = Json.stringify(curNote.eventData[clNoteEventList.getSelectedIndex()][1]);}catch(e){trace(e); txtNoteEventValues.text = "";}
-                clNoteCondFunc.setLabel(curNote.eventData[clNoteEventList.getSelectedIndex()][2]);
-            });
+            updateSelectedNote(
+                function(curNote){                
+                    clNoteEventList.setSuffix('] (${clNoteEventList.getSelectedIndex() + 1}/${curNote.eventData.length})');
+                    try{txtNoteEventValues.text = Json.stringify(curNote.eventData[clNoteEventList.getSelectedIndex()][1]);}catch(e){trace(e); txtNoteEventValues.text = "[]";}
+                    clNoteCondFunc.setLabel(curNote.eventData[clNoteEventList.getSelectedIndex()][2]);
+                },
+                function(){
+                    clNoteEventList.setData([]);
+                    clNoteEventList.setSuffix('] (0/0)');
+                    txtNoteEventValues.text = "[]";
+                }, false
+            );
         }); tabNOTE.add(clNoteEventList);
         clNoteEventList.setPrefix("Current Event: ["); clNoteEventList.setSuffix("]");
         
@@ -1609,7 +1651,7 @@ class ChartEditorState extends MusicBeatState{
             updateSelectedNote(function(curNote){
                 if(curNote.eventData.length <= 0){return;}
                 curNote.eventData[clNoteEventList.getSelectedIndex()][2] = clNoteCondFunc.getSelectedLabel();
-            });
+            }, false);
         }); tabNOTE.add(clNoteCondFunc);
 
         var nLine1 = new FlxSprite(5, txtNoteEventValues.y + txtNoteEventValues.height + 10).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabNOTE.add(nLine1);
@@ -1630,10 +1672,17 @@ class ChartEditorState extends MusicBeatState{
         }); tabNOTE.add(btnAddEventToEvents);
         
         clEventListEvents = new FlxUICustomList(clEventListToEvents.x, clEventListToEvents.y + clEventListToEvents.height + 5, Std.int(MENU.width) - 35, [], function(){
-            if(selEvent == null || selEvent.eventData == null || selEvent.eventData.length <= 0){txtCurEventValues.text = "[]"; return;}
-            
-            clEventListEvents.setSuffix('] (${clEventListEvents.getSelectedIndex() + 1}/${selEvent.eventData.length})');
-            try{txtCurEventValues.text = Json.stringify(selEvent.eventData[clEventListEvents.getSelectedIndex()][1]);}catch(e){trace(e); txtCurEventValues.text = "";}
+            updateSelectedEvent(
+                function(curEvent){                
+                    clEventListEvents.setSuffix('] (${clEventListEvents.getSelectedIndex() + 1}/${curEvent.eventData.length})');
+                    try{txtCurEventValues.text = Json.stringify(curEvent.eventData[clEventListEvents.getSelectedIndex()][1]);}catch(e){trace(e); txtCurEventValues.text = "";}
+                },
+                function(){
+                    clEventListEvents.setData([]);
+                    clEventListEvents.setSuffix('] (0/0)');
+                    txtCurEventValues.text = "[]";
+                }, false
+            );
         }); tabNOTE.add(clEventListEvents);
         clEventListEvents.setPrefix("Current Event: ["); clEventListEvents.setSuffix("]");
         
@@ -1762,7 +1811,7 @@ class ChartEditorState extends MusicBeatState{
                     updateSelectedNote(function(curNote){
                         if(curNote.eventData[clNoteEventList.getSelectedIndex()] == null){return;}
                         curNote.eventData[clNoteEventList.getSelectedIndex()][1] = rString;
-                    });
+                    }, false);
                 }
                 case "EVENTS_EVENT":{
                     if(getSwagEvent(Note.convEventData(selEvent)) == null){input.color = FlxColor.GRAY; return;}
@@ -1774,7 +1823,7 @@ class ChartEditorState extends MusicBeatState{
                     updateSelectedEvent(function(curEvent){
                         if(curEvent.eventData[clEventListEvents.getSelectedIndex()] == null){return;}
                         curEvent.eventData[clEventListEvents.getSelectedIndex()][1] = rString;
-                    });
+                    }, false);
                 }
             }
         }else if(id == FlxUIDropDownMenu.CLICK_EVENT && (sender is FlxUIDropDownMenu)){

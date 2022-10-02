@@ -18,6 +18,7 @@ class Script extends FlxBasic {
     var program = null;
 
     public var Name:String;
+    public var Mod:String;
 
     public override function new(){
         parser.allowTypes = true;
@@ -41,6 +42,7 @@ class Script extends FlxBasic {
         var nFunc = function(){};
 
         setVariable('create', nFunc);
+        setVariable('preload', nFunc);
 
         setVariable('update', function(elapsed:Float) {});
         setVariable('beatHit', function(curBeat:Int) {});
@@ -54,6 +56,7 @@ class Script extends FlxBasic {
         setVariable('this', this);
 		setVariable('getState', function(){return states.MusicBeatState.state;});
         setVariable('getScript', function(key:String):Script{return getScript(key);});
+        setVariable('getModData', function(){return ModSupport.modDataScripts.get(Mod);});
 
         setVariable("import", function(imp:String, ?val:String){
             var cl = Type.resolveClass(imp);

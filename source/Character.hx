@@ -185,6 +185,11 @@ class Character extends FlxSprite{
 		holdTimer = ((animation.getByName(AnimName).frames.length - Frame) / animation.getByName(AnimName).frameRate);
 	}
 
+	public function setupByName(?_character:String, ?_category:String, ?_type:String):Void {
+		curCharacter = _character; curSkin = _category; curCategory = _type;
+		setupByCharacterFile();
+	}
+
 	public function setupByCharacterFile(?jCharacter:CharacterFile){
 		if(jCharacter == null){jCharacter = Json.parse(Paths.getText(Paths.getCharacterJSON(curCharacter, curSkin, curCategory)));}
 		charFile = jCharacter;
@@ -196,7 +201,7 @@ class Character extends FlxSprite{
 		healthIcon = charFile.healthicon;
 		
 		this.flipX = !charFile.onRight;
-		this.onRight = true;
+		turnLook(onRight);
 
 		this.dancedIdle = charFile.danceIdle;
 
@@ -206,8 +211,8 @@ class Character extends FlxSprite{
 		imageFile = charFile.image;
 		animationsArray = charFile.anims;
 		
-		if(charFile.position != null){positionArray = charFile.position;}
-		if(charFile.camera != null){cameraPosition = charFile.camera;}
+		if(charFile.position != null){positionArray = charFile.position;}else{positionArray = [0,0];}
+		if(charFile.camera != null){cameraPosition = charFile.camera;}else{cameraPosition = [0,0];}
 
 		setCharacterGraphic();
 

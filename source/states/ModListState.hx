@@ -44,6 +44,27 @@ import ModSupport.Mod;
 
 using StringTools;
 
+class PopModState extends MusicBeatState {
+    override public function create():Void{
+        TitleState.loadedMods = true;
+
+        var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBG'));
+        bg.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height)); bg.screenCenter();
+        add(bg);
+        
+        var lblAdvice:FlxText = new FlxText(0, 0, 0, '${LangSupport.getText('ModAdv_1')} \n\n ${LangSupport.getText('ModAdv_2')} \n', 32); add(lblAdvice);
+        lblAdvice.setFormat('Calibri', 32, 0xFFFFFFFF, CENTER); lblAdvice.screenCenter(); lblAdvice.y -= 50;
+
+        var btnNo = new FlxUICustomButton(0, 0, 100, null, "No", null, null, function(){MagicStuff.reload_data(); MusicBeatState.switchState(new states.TitleState());});
+        btnNo.screenCenter(); btnNo.y += 25; btnNo.x -= btnNo.width; add(btnNo);
+
+        var btnYes = new FlxUICustomButton(0, 0, 100, null, "Yes", null, null, function(){MusicBeatState.switchState(new states.ModListState(TitleState));});
+        btnYes.screenCenter(); btnYes.y += 25; btnYes.x += btnYes.width; add(btnYes);
+
+        super.create();
+    }
+}
+
 class ModListState extends MusicBeatState {
     private var ModsList:FlxTypedGroup<ItemMod>;
     private var index:Int = 0;
@@ -52,7 +73,7 @@ class ModListState extends MusicBeatState {
     private var btnEnableAll:FlxUIButton;
     private var btnDisableAll:FlxUIButton;
 
-	override public function create():Void{        
+	override public function create():Void{
 		var gradGround:FlxSprite = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, [FlxColor.fromRGB(0, 255, 187), FlxColor.BLACK, FlxColor.BLACK, FlxColor.BLACK, FlxColor.BLACK, FlxColor.fromRGB(0, 255, 187)]);
         gradGround.scrollFactor.set();
 		add(gradGround);
@@ -81,22 +102,19 @@ class ModListState extends MusicBeatState {
         btnDisableAll = new FlxUICustomButton(0, 0, 150, null, "Disable All", [Paths.image("custom_button_3"), true, 19, 19], FlxColor.fromRGB(255, 43, 43), function(){for(i in ModsList.members){i.setToggleEnableMod(false);}}); add(btnDisableAll);
         btnDisableAll.label.color = FlxColor.WHITE;
         btnDisableAll.setPosition(btnEnableAll.x + btnEnableAll.width + 20, FlxG.height - btnDisableAll.height - 20);
-
+        
         var lblModList = new FlxText(0, 10, FlxG.width, "Mods List", 16, true);
 		lblModList.setFormat(Paths.font("nexarust"), 40, FlxColor.WHITE, CENTER);
         lblModList.bold = true; lblModList.antialiasing = true;
         add(lblModList);
-        
+
 		super.create();
 	}
 
 	override function update(elapsed:Float){
-		super.update(elapsed);
-
-        if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED)){
-            Paths.savedMap.clear();
-            ModSupport.reloadScripts();
-        }
+		if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED)){MagicStuff.reload_data();}
+        
+        super.update(elapsed);
 
         if(FlxG.keys.justPressed.UP){changeIndex(-1);}
         if(FlxG.keys.justPressed.DOWN){changeIndex(1);}
@@ -124,6 +142,7 @@ class ModListState extends MusicBeatState {
             modCard._selected = false;
             modCard.showTabId("4ModUnSelected");
         }
+        
         ModsList.members[index]._selected = true;
         ModsList.members[index].showTabId("1ModName");
     }
@@ -169,7 +188,7 @@ class ItemMod extends FlxUITabMenu {
         mScript.exScript(Paths.getText('${refMod.path}/itemMod.hx'));
 
         var tab_names_and_labels_ = [{name: "1ModName", label: refMod.prefix}];
-        var back_ = new FlxUI9SliceSprite(0, 0, Paths.image("custom_chrome_flat"), new Rectangle(0, 0, 50, 50), [10, 10, 40, 40], FlxUI9SliceSprite.TILE_BOTH); back_.antialiasing = true;
+        var back_ = new FlxUI9SliceSprite(0, 0, Paths.image("custom_default_chrome_flat"), new Rectangle(0, 0, 50, 50), [10, 10, 40, 40], FlxUI9SliceSprite.TILE_BOTH); back_.antialiasing = true;
 
         super(back_, null, tab_names_and_labels_);
         resize(Std.int(FlxG.width - 20), 300);
@@ -181,12 +200,12 @@ class ItemMod extends FlxUITabMenu {
             tab.autoResizeLabel = false;
 
             var graphic_names:Array<FlxGraphic> = [
-                Paths.image("custom_tab_back"),
-                Paths.image("custom_tab_back"),
-                Paths.image("custom_tab_back"),
-                Paths.image("custom_tab"),
-                Paths.image("custom_tab"),
-                Paths.image("custom_tab")
+                Paths.image("custom_default_tab_back"),
+                Paths.image("custom_default_tab_back"),
+                Paths.image("custom_default_tab_back"),
+                Paths.image("custom_default_tab"),
+                Paths.image("custom_default_tab"),
+                Paths.image("custom_default_tab")
             ];
             var slice9tab:Array<Int> = FlxStringUtil.toIntArray(FlxUIAssets.SLICE9_TAB);
             var slice9_names:Array<Array<Int>> = [slice9tab, slice9tab, slice9tab, slice9tab, slice9tab, slice9tab];

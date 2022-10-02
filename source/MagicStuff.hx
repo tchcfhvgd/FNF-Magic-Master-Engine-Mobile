@@ -15,6 +15,22 @@ import openfl.Lib;
 
 class MagicStuff {
 	public static final version:String = "0.9";
+
+    public static function reload_data():Void {
+        Paths.savedMap.clear();
+
+        PreSettings.init();
+        Controls.init();
+        ModSupport.reload_mods();
+
+        for(s in ModSupport.modDataScripts){s.exFunction("load");}
+        
+		PlayerSettings.init();
+        PreSettings.loadSettings();
+		LangSupport.init();
+        
+        for(s in ModSupport.modDataScripts){s.exFunction("onLoaded");}
+    }
     
     inline public static function setWindowTitle(title:String, type:Int = 0){
         switch(type){

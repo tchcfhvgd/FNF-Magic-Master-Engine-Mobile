@@ -15,7 +15,7 @@ class Highscore {
 	public static function saveSongScore(song:String, score:Int = 0, ?diff:String = "Hard", ?cat:String = "Normal"):Void {
 		var daSong:String = Song.fileSong(song, diff, cat);
 
-		if(PreSettings.getPreSetting("BotPlay") || (songScores.exists(daSong) && songScores.get(daSong) > score)){return;}
+		if(PreSettings.getPreSetting("BotPlay", "Cheating Settings") || (songScores.exists(daSong) && songScores.get(daSong) > score)){return;}
 
 		#if !switch
 		NGio.postScore(score, song);
@@ -31,7 +31,7 @@ class Highscore {
 		NGio.postScore(score, "Week " + weekName);
 		#end
 
-		if(PreSettings.getPreSetting("BotPlay") || (songScores.exists(daWeek) && songScores.get(daWeek) > score)){return;}
+		if(PreSettings.getPreSetting("BotPlay", "Cheating Settings") || (songScores.exists(daWeek) && songScores.get(daWeek) > score)){return;}
 
 		setScore(daWeek, score);
 	}

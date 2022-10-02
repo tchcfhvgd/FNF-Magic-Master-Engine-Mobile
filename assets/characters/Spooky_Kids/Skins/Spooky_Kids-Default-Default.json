@@ -1,1 +1,61 @@
-{"aspect":"Default","position":[-120,210],"anims":[{"loop":false,"symbol":"note sing left","anim":"singLEFT","fps":24,"indices":[]},{"loop":false,"symbol":"spooky DOWN note","anim":"singDOWN","fps":24,"indices":[]},{"loop":false,"symbol":"spooky UP NOTE","anim":"singUP","fps":24,"indices":[]},{"loop":false,"symbol":"spooky dance idle","anim":"idle","fps":24,"indices":[]},{"loop":false,"symbol":"spooky kids YEAH!!","anim":"hey","fps":24,"indices":[]},{"loop":false,"symbol":"spooky sing right","anim":"singRIGHT","fps":24,"indices":[]}],"zoom":0.8,"image":"spooky_kids_assets","name":"Spooky_Kids","healthicon":"bf","camera":[155,0],"skin":"Default","onRight":true}
+{
+	"aspect": "Default",
+	"position": [
+		-120,
+		210
+	],
+	"anims": [
+		{
+			"symbol": "note sing left",
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHT",
+			"indices": []
+		},
+		{
+			"symbol": "spooky DOWN note",
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWN",
+			"indices": []
+		},
+		{
+			"symbol": "spooky UP NOTE",
+			"loop": false,
+			"fps": 24,
+			"anim": "singUP",
+			"indices": []
+		},
+		{
+			"symbol": "spooky dance idle",
+			"loop": false,
+			"fps": 24,
+			"anim": "idle",
+			"indices": []
+		},
+		{
+			"symbol": "spooky kids YEAH!!",
+			"loop": false,
+			"fps": 24,
+			"anim": "hey",
+			"indices": []
+		},
+		{
+			"symbol": "spooky sing right",
+			"loop": false,
+			"fps": 24,
+			"anim": "singLEFT",
+			"indices": []
+		}
+	],
+	"name": "Spooky_Kids",
+	"image": "spooky_kids_assets",
+	"zoom": 0.8,
+	"onRight": true,
+	"skin": "Default",
+	"healthicon": "bf",
+	"camera": [
+		155,
+		0
+	]
+}

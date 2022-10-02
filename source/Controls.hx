@@ -30,13 +30,17 @@ enum KeyboardScheme {
  * Uses FlxActions to funnel various inputs to a single action.
  */
 class Controls extends FlxActionSet {
+	public static function init():Void {
+		STATIC_ACTIONS = DEFAULT_STATIC_ACTIONS.copy();
+	}
+
 	public function getNoteDataFromKey(key:FlxKey, keys:Int):Int {
 		var cont:Array<Dynamic> = STATIC_STRUMCONTROLS.get(keys);		
 		for(i in 0...cont.length){if(cont[i][0].contains(key)){return i;}}
 		return -1;
 	}
 
-    public static var STATIC_ACTIONS:Map<String, Array<Array<Int>>> = [
+    public static final DEFAULT_STATIC_ACTIONS:Map<String, Array<Array<Int>>> = [
 		//Menu General Movement Actions
         "Menu_Up" => [// Action Name
 			[FlxKey.UP], // KeyBoard Inputs
@@ -85,11 +89,12 @@ class Controls extends FlxActionSet {
 			[FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT, FlxGamepadInputID.DPAD_RIGHT]
 		],
     ];
+	public static var STATIC_ACTIONS:Map<String, Array<Array<Int>>> = DEFAULT_STATIC_ACTIONS.copy();
 
-	public static var STATIC_STRUMCONTROLS:Map<Int, Array<Array<Array<Dynamic>>>> = [
+	public static final DEFAULT_STATIC_STRUMCONTROLS:Map<Int, Array<Array<Array<Dynamic>>>> = [
         1 => [ //Inputs for 1K
 			[// Input Data 0
-				[FlxKey.BACKSPACE], //KeyBoard
+				[FlxKey.SPACE], //KeyBoard
 				[FlxGamepadInputID.A] //GamePad
 			]
 		],
@@ -109,7 +114,7 @@ class Controls extends FlxActionSet {
 				[FlxGamepadInputID.DPAD_LEFT, FlxGamepadInputID.LEFT_SHOULDER, FlxGamepadInputID.LEFT_TRIGGER_BUTTON, FlxGamepadInputID.LEFT_STICK_DIGITAL_LEFT, FlxGamepadInputID.RIGHT_STICK_DIGITAL_LEFT]
 			],
 			[
-				[FlxKey.BACKSPACE],
+				[FlxKey.SPACE],
 				[FlxGamepadInputID.A]
 			],
 			[
@@ -119,41 +124,41 @@ class Controls extends FlxActionSet {
 		],
 		4 => [ //Inputs for 4K
 			[
-				[FlxKey.A, FlxKey.LEFT],
+				[FlxKey.D, FlxKey.LEFT],
 				[FlxGamepadInputID.DPAD_LEFT, FlxGamepadInputID.LEFT_TRIGGER_BUTTON, FlxGamepadInputID.LEFT_STICK_DIGITAL_LEFT, FlxGamepadInputID.RIGHT_STICK_DIGITAL_LEFT]
 			],
 			[
-				[FlxKey.S, FlxKey.DOWN],
+				[FlxKey.F, FlxKey.DOWN],
 				[FlxGamepadInputID.DPAD_DOWN, FlxGamepadInputID.LEFT_SHOULDER, FlxGamepadInputID.LEFT_STICK_DIGITAL_DOWN, FlxGamepadInputID.RIGHT_STICK_DIGITAL_DOWN]
 			],
 			[
-				[FlxKey.W, FlxKey.UP],
+				[FlxKey.J, FlxKey.UP],
 				[FlxGamepadInputID.DPAD_UP, FlxGamepadInputID.RIGHT_SHOULDER, FlxGamepadInputID.LEFT_STICK_DIGITAL_UP, FlxGamepadInputID.RIGHT_STICK_DIGITAL_UP]
 			],
 			[
-				[FlxKey.D, FlxKey.RIGHT],
+				[FlxKey.K, FlxKey.RIGHT],
 				[FlxGamepadInputID.DPAD_RIGHT, FlxGamepadInputID.RIGHT_TRIGGER_BUTTON, FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT, FlxGamepadInputID.RIGHT_STICK_DIGITAL_RIGHT]
 			]
 		],
 		5 => [ //Inputs for 5K
 			[
-				[FlxKey.A, FlxKey.LEFT],
+				[FlxKey.D, FlxKey.LEFT],
 				[FlxGamepadInputID.DPAD_LEFT, FlxGamepadInputID.LEFT_TRIGGER_BUTTON, FlxGamepadInputID.LEFT_STICK_DIGITAL_LEFT, FlxGamepadInputID.RIGHT_STICK_DIGITAL_LEFT]
 			],
 			[
-				[FlxKey.S, FlxKey.DOWN],
+				[FlxKey.F, FlxKey.DOWN],
 				[FlxGamepadInputID.DPAD_DOWN, FlxGamepadInputID.LEFT_SHOULDER, FlxGamepadInputID.LEFT_STICK_DIGITAL_DOWN, FlxGamepadInputID.RIGHT_STICK_DIGITAL_DOWN]
 			],
 			[
-				[FlxKey.BACKSPACE],
+				[FlxKey.SPACE],
 				[FlxGamepadInputID.A]
 			],
 			[
-				[FlxKey.W, FlxKey.UP],
+				[FlxKey.J, FlxKey.UP],
 				[FlxGamepadInputID.DPAD_UP, FlxGamepadInputID.RIGHT_SHOULDER, FlxGamepadInputID.LEFT_STICK_DIGITAL_UP, FlxGamepadInputID.RIGHT_STICK_DIGITAL_UP]
 			],
 			[
-				[FlxKey.D, FlxKey.RIGHT],
+				[FlxKey.K, FlxKey.RIGHT],
 				[FlxGamepadInputID.DPAD_RIGHT, FlxGamepadInputID.RIGHT_TRIGGER_BUTTON, FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT, FlxGamepadInputID.RIGHT_STICK_DIGITAL_RIGHT]
 			]
 		],
@@ -197,7 +202,7 @@ class Controls extends FlxActionSet {
 				[FlxGamepadInputID.DPAD_RIGHT, FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT]
 			],
 			[
-				[FlxKey.BACKSPACE],
+				[FlxKey.SPACE],
 				[FlxGamepadInputID.LEFT_TRIGGER_BUTTON, FlxGamepadInputID.RIGHT_TRIGGER_BUTTON, FlxGamepadInputID.LEFT_SHOULDER, FlxGamepadInputID.RIGHT_SHOULDER]
 			],
 			[
@@ -265,7 +270,7 @@ class Controls extends FlxActionSet {
 				[FlxGamepadInputID.DPAD_RIGHT, FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT]
 			],
 			[
-				[FlxKey.BACKSPACE],
+				[FlxKey.SPACE],
 				[FlxGamepadInputID.LEFT_TRIGGER_BUTTON, FlxGamepadInputID.RIGHT_TRIGGER_BUTTON, FlxGamepadInputID.LEFT_SHOULDER, FlxGamepadInputID.RIGHT_SHOULDER]
 			],
 			[
@@ -328,6 +333,7 @@ class Controls extends FlxActionSet {
 			],
 		],
     ];
+	public static var STATIC_STRUMCONTROLS:Map<Int, Array<Array<Array<Dynamic>>>> = DEFAULT_STATIC_STRUMCONTROLS.copy();
 
     public var ACTIONS:Map<String, FlxActionDigital> = [];
 

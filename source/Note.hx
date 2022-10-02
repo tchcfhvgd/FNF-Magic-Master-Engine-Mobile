@@ -52,7 +52,9 @@ typedef Note_Animation_Data = {
 class StrumNote extends FlxSprite{
     public static var IMAGE_DEFAULT:String = "NOTE_assets";
     public static var STYLE_DEFAULT:String = "Default";
-    public static var TYPE_DEFAULT:String = PreSettings.getFromArraySetting("NoteType");
+
+    public static var TYPE_DEFAULT(get, never):String;
+	inline static function get_TYPE_DEFAULT():String {return PreSettings.getPreSetting("Note Skin", "Visual Settings");}
 
     public var splashImage:String = NoteSplash.IMAGE_DEFAULT;
     public var image:String = IMAGE_DEFAULT;
@@ -96,7 +98,7 @@ class StrumNote extends FlxSprite{
         if((this is Note)){getJSON = Paths.note_json(noteData, noteKeys, type);}
         
         if(!lockColor){playColor = getJSON.color != null ? getJSON.color : "0xffffff";}        
-        antialiasing = getJSON.antialiasing && PreSettings.getPreSetting("Antialiasing") && !style.contains("pxl-");
+        antialiasing = getJSON.antialiasing && PreSettings.getPreSetting("Antialiasing", "Graphic Settings") && !style.contains("pxl-");
         singAnimation = getJSON.sing_animation;
 
         if(frames == null || getJSON.animations == null || getJSON.animations.length <= 0){return;}
@@ -164,7 +166,7 @@ class Note extends StrumNote {
     }
 
     public static function getNoteStyles(?type:String):Array<String> {
-        if(type == null){type = PreSettings.getFromArraySetting("NoteType");}
+        if(type == null){type = PreSettings.getPreSetting("Note Skin", "Visual Settings");}
 
         var toReturn:Array<String> = [];
         for(i in Paths.readDirectory('assets/notes/$type')){
@@ -224,6 +226,7 @@ class Note extends StrumNote {
         }
 
         if(note == null){return toReturn;}
+        note.resize(8);
 
         if(note[0] != null && Std.isOfType(note[0], Float)){toReturn.strumTime = note[0];}
         if(note[1] != null && Std.isOfType(note[1], Int)){toReturn.keyData = note[1];}    
@@ -237,7 +240,7 @@ class Note extends StrumNote {
         return toReturn;
     }
 
-    public static function getEventData(event:Array<Dynamic> = null):EventData {
+    public static function getEventData(?event:Array<Dynamic>):EventData {
         var toReturn:EventData = {
             strumTime: 0,
             eventData: [],
@@ -247,19 +250,7 @@ class Note extends StrumNote {
         if(event == null){return toReturn;}
 
         if(event[0] != null && Std.isOfType(event[0], Float)){toReturn.strumTime = event[0];}
-        if(event[1] != null && Std.isOfType(event[1], Array)){
-            var eventlist:Array<Dynamic> = event[1];
-
-            for(e in eventlist){
-                var eFunc:String = e[0];
-                var eArgs:Array<Dynamic> = e[1];
-                if(eArgs == null){eArgs = [];}
-
-                e = [eFunc, eArgs];
-            }
-
-            toReturn.eventData = eventlist;
-        }
+        if(event[1] != null && Std.isOfType(event[1], Array)){toReturn.eventData = event[1];}
         if(event[2] != null && Std.isOfType(event[2], String)){toReturn.condition = event[2];}
 
         return toReturn;
@@ -299,18 +290,18 @@ class Note extends StrumNote {
 	}
 
     public function loadPresset(presset:String, onCreate:Bool = true):Void {
+        if(!onCreate && presset == "Default"){otherData = []; loadNote(StrumNote.IMAGE_DEFAULT); return;}
+
         if(presset != "" && Paths.exists(Paths.notePresset(presset))){
             var eventList:DynamicAccess<Dynamic> = cast Json.parse(Paths.getText(Paths.notePresset(presset)));
             otherData = eventList.get("Events");
         }
         
-        for(i in this.otherData){MusicBeatState.state.pushTempScript(i[0]);}
-
-        if(!onCreate){return;}
+        for(i in this.otherData){MusicBeatState.state.pushTempScript(i[0], i[1]);}
 
         for(event in otherData){
             if(event[2] != "OnCreate"){continue;} var curScript:Script = Script.getScript(event[0]);
-            curScript.exFunction("setNote", [this]); curScript.exFunction("execute", event[1]);
+            curScript.setVariable("_note", this); curScript.exFunction("execute", event[1]);
         }
     }
 
@@ -330,10 +321,12 @@ class Note extends StrumNote {
 }
 
 class StrumEvent extends StrumNote {
+    public var conductor:Conductor = null;
     public var strumTime:Float = 0;
 
-    public function new(_strumtime:Float){
+    public function new(_strumtime:Float, _conductor:Conductor = null){
         this.strumTime = _strumtime;
+        this.conductor = _conductor;
         super(-1, 4, "EventIcon");
         playAnim("BeEvent");
 	}
@@ -344,15 +337,21 @@ class StrumEvent extends StrumNote {
 
         frames = Paths.getAtlas(Paths.note(image, style, type));
             
-        antialiasing = PreSettings.getPreSetting("Antialiasing") && !style.contains("pxl-");
+        antialiasing = PreSettings.getPreSetting("Antialiasing", "Graphic Settings") && !style.contains("pxl-");
         if(frames == null){return;}
 
         animation.addByPrefix("SizeBase", "SizeBase");
-        animation.addByIndices("BeEvent", "Event", [0], ".png", 0, false, false, false);
-        animation.addByIndices("AfEvent", "Event", [1], ".png", 0, false, false, false);
+        animation.addByIndices("BeEvent", "Event", [0], "", 0, false, false, false);
+        animation.addByIndices("AfEvent", "Event", [1], "", 0, false, false, false);
         
         playAnim(sAnim);
     }
+
+    override function update(elapsed:Float){
+		super.update(elapsed);
+
+        if(conductor != null && strumTime < conductor.songPosition){playAnim("AfEvent");}else{playAnim("BeEvent");}
+	}
 }
 
 class NoteSplash extends FlxSprite {
@@ -401,8 +400,12 @@ class NoteSplash extends FlxSprite {
     }
 }
 
-class ColorFilterShader extends FlxShader {
-    @:glFragmentSource('
+class ColorFilterShader extends FlxCustomShader {
+
+    public function new(checkColor:String = "None", replaceColor:FlxColor = FlxColor.GREEN){
+        super();
+
+        setFragmentSource('
 		#pragma header
             uniform float cjk_alpha;
 		    uniform int checkColor;
@@ -414,7 +417,7 @@ class ColorFilterShader extends FlxShader {
 		    */
 		    vec3 normalizeColor(vec3 color){return vec3(color[0] / 255.0, color[1] / 255.0, color[2] / 255.0);}
 
-		    void main(){
+		   void main(){
 			    vec4 pixel = texture2D(bitmap, openfl_TextureCoordv);
 
 			    if(!active){gl_FragColor = pixel; return;}
@@ -440,10 +443,7 @@ class ColorFilterShader extends FlxShader {
                     }
                 }
 		    }
-    ')
-
-    public function new(checkColor:String = "None", replaceColor:FlxColor = FlxColor.GREEN){
-        super();
+        ');
 
         setReplaceColor(replaceColor);
         setCheckColor(checkColor);

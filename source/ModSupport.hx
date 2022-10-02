@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxG;
 import states.ModListState;
 import haxe.DynamicAccess;
 import lime.tools.AssetType;
@@ -14,56 +15,84 @@ import sys.io.File;
 using StringTools;
 
 class ModSupport {
+    public static var savedMODS:Array<{name:String, enabled:Bool}> = [];
     public static var MODS:Array<Mod> = [];
 
+    public static var modDataScripts:Map<String, Script> = [];
     public static var staticScripts:Map<String, Script> = [];
     public static var exScripts:Array<String> = [
-        "states.ModListState.hx",
-        "states.PreLoaderState.hx"
+        "states.ModListState",
+        "states.PreLoaderState"
     ];
 
     public static function init():Void {
+        //Loading Saved Mods
+        if(FlxG.save.data.saved_mods != null){savedMODS = FlxG.save.data.saved_mods;}
+
         //Adding Mods from Archives
         #if (desktop && sys)
         if(FileSystem.exists('mods')){
             for(modFolder in FileSystem.readDirectory('mods')){
-                var modPath:String = FileSystem.absolutePath('mods/$modFolder');
-                
-                var newMod = new Mod(modFolder);
-    
+                var newMod = new Mod(FileSystem.absolutePath('mods/$modFolder'));    
                 MODS.push(newMod);
             }
         }
         #end
+
+        var curSavedMods:Array<{name:String, enabled:Bool}> = savedMODS.copy();
+        while(curSavedMods.length > 0){
+            var curMod:{name:String, enabled:Bool} = curSavedMods.pop();
+            for(c_mod in MODS){
+                if(c_mod.name != curMod.name){continue;}
+                var curr_mod:Mod = c_mod;
+                curr_mod.enabled = curMod.enabled;
+                MODS.remove(curr_mod);
+                MODS.insert(0, curr_mod);
+                break;
+            }
+        }
     }
 
-    #if sys
-    public static function reloadScripts():Void{
+    public static function reload_mods():Void{
+        modDataScripts.clear();
         staticScripts.clear();
+
+        savedMODS = []; for(m in MODS){savedMODS.push({name: m.name, enabled: m.enabled});}
+        FlxG.save.data.saved_mods = savedMODS; FlxG.save.flush();
 
         for(mod in MODS){
             if(!mod.enabled){continue;}
-            checkToScript('${mod.path}/scripts', true);
+            checkToScript('${mod.path}/scripts', true, mod.name);
             if(mod.onlyThis){break;}
         }
 
+        trace(MODS);
+        trace(modDataScripts);
         trace(staticScripts);
     }
 
+    #if sys
     static var toRemove:String = "";
-    public static function checkToScript(file:String, first:Bool = false){
+    public static function checkToScript(file:String, first:Bool = false, name:String){
         var aFile = FileSystem.absolutePath(file);
 
         if(!FileSystem.exists(aFile)){return;}
 
         if(first){toRemove = file.replace("/", ".");}
         for(i in FileSystem.readDirectory(aFile)){
-            if(FileSystem.isDirectory('$aFile/$i')){checkToScript('${file}/${i}');}else{
+            if(FileSystem.isDirectory('$aFile/$i')){checkToScript('${file}/${i}', false, name);}else{
                 var id:String = '${file}/${i.replace(".hx", "")}'; var id = id.replace("/", ".").replace('$toRemove.', "");
-                if(!staticScripts.exists(id) && !exScripts.contains(id)){
-                    var nScript = new Script(); nScript.Name = id;
+
+                if(id == 'ModData'){
+                    var nScript = new Script(); nScript.Name = name; nScript.Mod = name;
                     nScript.exScript(Paths.getText('$file/$i'));
-                    
+                    modDataScripts.set(name, nScript);
+                    continue;
+                }
+
+                if(!staticScripts.exists(id) && !exScripts.contains(id)){
+                    var nScript = new Script(); nScript.Name = id; nScript.Mod = name;
+                    nScript.exScript(Paths.getText('$file/$i'));
                     staticScripts.set(id, nScript);
                 }
             }
@@ -94,7 +123,7 @@ class Mod {
     public var path:String;
 
     public function new(folder:String, enabled:Bool = true) {
-        this.path = 'mods/${folder}';
+        this.path = folder;
         this.enabled = enabled;
 
         #if (desktop && sys)

@@ -11,6 +11,9 @@ presset("initChar", 5);
 presset("chrome", 0);
 presset("zoom", 1.05);
 
+var pre_Antialiasing:Bool = PreSettings.getPreSetting("Antialiasing", "Graphic Settings");
+var pre_BackgroundAnimated:Bool = PreSettings.getPreSetting("Background Animated", "Graphic Settings");
+
 var startedMoving:Bool = false;
 
 var trainMoving:Bool = false;
@@ -57,7 +60,7 @@ function create(){
     instance.add(streetBehind);
         
     phillyTrain = new FlxSprite(2000, 360).loadGraphic(Paths.image('train', 'stages/philly'));
-    if(!PreSettings.getPreSetting("BackgroundAnimated")){phillyTrain.x = -40;}
+    if(!pre_BackgroundAnimated){phillyTrain.x = -40;}
     instance.add(phillyTrain);
     
     var street = new FlxSprite(-40, 50).loadGraphic(Paths.image('street', 'stages/philly'));
@@ -70,7 +73,7 @@ function create(){
 }
 
 function update(elapsed){
-    if(PreSettings.getPreSetting("BackgroundAnimated")){
+    if(pre_BackgroundAnimated){
         if(trainMoving){
             trainFrameTiming += elapsed;
 
@@ -118,7 +121,7 @@ function stepHit(curStep){
 }
 
 function beatHit(curBeat){
-    if(PreSettings.getPreSetting("BackgroundAnimated")){
+    if(pre_BackgroundAnimated){
         //trace("Beat: " + curBeat);
 
         if(!trainMoving){trainCooldown += 1;}

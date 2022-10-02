@@ -99,7 +99,10 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
         if(index >= list.length){index = 0;}
         if(index < 0){index = list.length - 1;}
 
+        if(index < 0 || index >= list.length){updateText(); return;}
+
 		if(_OnChange != null && func){_OnChange();}
+
         updateText();
 
         if(!force){
@@ -110,7 +113,10 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
     }
 
     public function setIndex(i:Int, shadow:Bool = false){c_Index(i, true, !shadow);}
-    public function setLabel(s:String, shadow:Bool = false){for(i in 0...list.length){if(list[i] == s){c_Index(i, true, !shadow); break;}}}
+    public function setLabel(s:String, shadow:Bool = false, exists:Bool = false){
+        for(i in 0...list.length){if(list[i] == s){c_Index(i, true, !shadow); return;}}
+        c_Index(0, true, !shadow);
+    }
     
     public function updateText():Void {_lblCuItem.text = prefix + "NONE" + suffix; if(list[index] != null){_lblCuItem.text = prefix + list[index] + suffix;}}
 
@@ -262,4 +268,11 @@ class FlxUICustomNumericStepper extends FlxUINumericStepper {
         }
         super(X, Y, StepSize, DefaultValue, Min, Max, Decimals, Stack, TextField, ButtonPlus, ButtonMinus, IsPercent);
     }
+}
+
+class FlxCustomShader extends Shader {
+    public function new():Void {}
+
+    public function setVertexSource(src:String):Void {#if openfl this.glVertexSource = src; #end}
+    public function setFragmentSource(src:String):Void {#if openfl this.glFragmentSource = src; #end}
 }

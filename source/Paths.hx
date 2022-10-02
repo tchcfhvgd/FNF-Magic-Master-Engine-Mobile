@@ -73,25 +73,27 @@ class Paths {
 		return toReturn;
 	}
 
-	inline public static function readFileToArray(path:String, file:String):Array<Dynamic> {
+	inline public static function readFileToArray(file:String):Array<Dynamic> {
 		var toReturn:Array<Dynamic> = [];
 
 		#if sys
+		var absFile:String = FileSystem.absolutePath(file);
+
 		var hideVan:Bool = false;
 		for(mod in ModSupport.MODS){if(mod.enabled && mod.hideVanilla){hideVan = true;}}
-		if(!hideVan && FileSystem.exists(FileSystem.absolutePath('$path/$file'))){toReturn.push(FileSystem.absolutePath('$path/$file'));}
-		for(mod in ModSupport.MODS){if(mod.enabled && FileSystem.exists(FileSystem.absolutePath('${mod.path}/$path/$file'))){toReturn.push(FileSystem.absolutePath('${mod.path}/$path/$file')); if(mod.onlyThis){break;}}}
+		if(!hideVan && FileSystem.exists(absFile)){toReturn.push(absFile);}
+		for(mod in ModSupport.MODS){if(mod.enabled && FileSystem.exists(absFile)){toReturn.push(absFile); if(mod.onlyThis){break;}}}
 		#end
 
 		return toReturn;
 	}
-	inline public static function readFileToMap(path:String, file:String):Map<String, Dynamic> {
+	inline public static function readFileToMap(file:String):Map<String, Dynamic> {
 		var toReturn:Map<String, Dynamic> = [];
 		#if sys
 		var hideVan:Bool = false; var i:Int = 0;
 		for(mod in ModSupport.MODS){if(mod.enabled && mod.hideVanilla){hideVan = true;}}
-		if(!hideVan && FileSystem.exists(FileSystem.absolutePath('$path/$file'))){toReturn.set('$i|Friday Night Funkin', FileSystem.absolutePath('$path/$file')); i++;}
-		for(mod in ModSupport.MODS){if(mod.enabled && FileSystem.exists(FileSystem.absolutePath('${mod.path}/$path/$file'))){toReturn.set('$i|${mod.name}', FileSystem.absolutePath('${mod.path}/$path/$file')); i++; if(mod.onlyThis){break;}}}
+		if(!hideVan && FileSystem.exists(FileSystem.absolutePath(file))){toReturn.set('$i|Friday Night Funkin', FileSystem.absolutePath(file)); i++;}
+		for(mod in ModSupport.MODS){if(mod.enabled && FileSystem.exists(FileSystem.absolutePath('${mod.path}/$file'))){toReturn.set('$i|${mod.name}', FileSystem.absolutePath('${mod.path}/$file')); i++; if(mod.onlyThis){break;}}}
 		#end
 
 		return toReturn;
@@ -131,14 +133,19 @@ class Paths {
 		return path;
 	}
 
-	inline static function getModPath(file:String, modName:String){
-		for(mod in ModSupport.MODS){
-			if(mod.name == modName){
-				#if sys return FileSystem.absolutePath('${mod.path}/assets/$file'); #end
-			}
+	inline static function getModPath(mod_name:String, file:String, type:AssetType, ?library:String):Dynamic {
+		var retPath:String = "";
+
+		for(mod in ModSupport.MODS){if(mod.name == mod_name){#if sys retPath = FileSystem.absolutePath('${mod.path}/assets${library != null ? '/$library' : ''}/$file'); #end}}
+
+		switch(type){
+			default:{return retPath;}
+			case IMAGE:{if(Paths.exists(retPath)){return Paths.getGraphic(retPath);}}
+			case TEXT:{if(Paths.exists(retPath)){return Paths.getText(retPath);}}
+			case SOUND, MUSIC:{if(Paths.exists(retPath)){return Paths.getSound(retPath);}}
 		}
 
-		return null;
+		return retPath;
 	}
 
 	inline static public function file(file:String, type:AssetType = TEXT, ?library:String){
@@ -281,7 +288,7 @@ class Paths {
 	}
 	
 	inline static public function note(image:String, style:String, ?type:String){
-		if(type == null){type = PreSettings.getFromArraySetting("NoteType");}
+		if(type == null){type = PreSettings.getPreSetting("Note Skin", "Visual Settings");}
 		
 		var path:String = getPath('${type}/${style}/${image}.png', IMAGE, 'notes');
 		if(!Paths.exists(path)){path = getPath('${type}/Default/${image}.png', IMAGE, 'notes');}
@@ -303,7 +310,7 @@ class Paths {
 	}
 	
 	inline static public function strumline_json(keys:Int, ?type:String):StrumLine.StrumLine_Graphic_Data {
-		if(type == null){type = PreSettings.getFromArraySetting("NoteType");}
+		if(type == null){type = PreSettings.getPreSetting("Note Skin", "Visual Settings");}
 
 		var path = getPath('${type}/${keys}k.json', TEXT, 'notes');
 		if(!Paths.exists(path)){path = getPath('Default/${keys}k.json', TEXT, 'notes');}
@@ -313,7 +320,7 @@ class Paths {
 	}
 
 	inline static public function note_json(data:Int, keys:Int, ?type:String):Note.Note_Graphic_Data {
-		if(type == null){type = PreSettings.getFromArraySetting("NoteType");}
+		if(type == null){type = PreSettings.getPreSetting("Note Skin", "Visual Settings");}
 
 		var strumJSON:StrumLine.StrumLine_Graphic_Data = strumline_json(keys, type);
 		var noteJSON:Note.Note_Graphic_Data = strumJSON.gameplay_notes.notes[data % keys];
@@ -324,7 +331,7 @@ class Paths {
 	}
 
 	inline static public function strum_json(data:Int, keys:Int, ?type:String):Note.Note_Graphic_Data {
-		if(type == null){type = PreSettings.getFromArraySetting("NoteType");}
+		if(type == null){type = PreSettings.getPreSetting("Note Skin", "Visual Settings");}
 
 		var strumJSON:StrumLine.StrumLine_Graphic_Data = strumline_json(keys, type);
 		var noteJSON:Note.Note_Graphic_Data = strumJSON.static_notes.notes[data % keys];

@@ -102,7 +102,7 @@ class Song{
 	public static function getSongModList():Array<ModSongs> {
 		var SongList:Array<ModSongs> = [];
 
-		var weeks:Map<String, Dynamic> = Paths.readFileToMap('assets/data/', 'weeks.json');
+		var weeks:Map<String, Dynamic> = Paths.readFileToMap('assets/data/weeks.json');
 		for(i in weeks.keys()){
 			var bWeek:SongsData = cast Json.parse(Paths.getText(weeks.get(i)));
 			var mod = i.split("|")[1];
@@ -143,34 +143,36 @@ class Song{
 
 			#if sys
 			if(bWeek.showArchiveSongs){
-				var songsDirectory:String = weeks.get(i);
+				var songsDirectory:String = weeks[i];
+				trace(songsDirectory);
 				songsDirectory = songsDirectory.replace('data/weeks.json', 'songs');
+				trace(songsDirectory);
 
 				for(song in FileSystem.readDirectory(songsDirectory)){
-					if(FileSystem.isDirectory('${songsDirectory}/${song}') && FileSystem.exists('${songsDirectory}/${song}/Data')){
-						var data:Array<Dynamic> = [];
-						for(chart in FileSystem.readDirectory('${songsDirectory}/${song}/Data')){
-							var cStats:Array<String> = chart.replace(".json", "").split("-");
-							if(cStats[1] == null){cStats[1] = "Normal";}
-							if(cStats[2] == null){cStats[2] = "Normal";}
-							var hasCat:Bool = false;
-							for(d in data){
-								if(d[0] == cStats[1]){continue;}
-								
-								hasCat = true;
-								d[1].push(cStats[2]);
-							}
-							if(!hasCat){data.push([cStats[1], [cStats[2]]]);}
+					if(!FileSystem.isDirectory('${songsDirectory}/${song}') || !FileSystem.exists('${songsDirectory}/${song}/Data') || FileSystem.readDirectory('${songsDirectory}/${song}/Data').length <= 0){continue;}
+
+					var data:Array<Dynamic> = [];
+					for(chart in FileSystem.readDirectory('${songsDirectory}/${song}/Data')){
+						var cStats:Array<String> = chart.replace(".json", "").split("-");
+						if(cStats[1] == null){cStats[1] = "Normal";}
+						if(cStats[2] == null){cStats[2] = "Normal";}
+						var hasCat:Bool = false;
+						for(d in data){
+							if(d[0] == cStats[1]){continue;}
+							
+							hasCat = true;
+							d[1].push(cStats[2]);
 						}
-						
-						var songItem:ItemSong = {
-							song: song,
-							data: data,
-							keyLock: null,
-							hidden: false
-						};
-						addSongToModList(songItem, [mod], SongList);
+						if(!hasCat){data.push([cStats[1], [cStats[2]]]);}
 					}
+					
+					var songItem:ItemSong = {
+						song: song,
+						data: data,
+						keyLock: null,
+						hidden: false
+					};
+					addSongToModList(songItem, [mod], SongList);
 				}
 			}
 			#end
@@ -474,8 +476,7 @@ class Song{
 			if(strum.notes.length > 0){
 				for(sNotes in strum.notes){
 					if(sNotes.charToSing == null){sNotes.charToSing = [];}
-					if(sNotes.sectionNotes == null){sNotes.sectionNotes = [];}
-					if(sNotes.sectionNotes.length > 0){sNotes.sectionNotes.sort((a, b) -> (a[0] - b[0]));}
+					if(sNotes.sectionNotes == null){sNotes.sectionNotes = [];}else{for(n in sNotes.sectionNotes){n = Note.convNoteData(Note.getNoteData(n));}}
 				}
 			}
 		}

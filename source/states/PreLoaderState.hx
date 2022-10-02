@@ -44,10 +44,6 @@ class PreLoaderState extends FlxUIState {
 		
 		FlxG.autoPause = false;
 
-		#if polymod
-		polymod.Polymod.init({modRoot: "mods", dirs: ['introMod']});
-		#end
-
 		NGio.noLogin(APIStuff.API);
 
 		#if ng
@@ -56,10 +52,13 @@ class PreLoaderState extends FlxUIState {
 		#end
 
 		FlxG.save.bind('funkin', 'ninjamuffin99');
-		PreSettings.loadSettings();
+
+		PreSettings.init();
+        PreSettings.loadSettings();
+		
 		PlayerSettings.init();
 		Highscore.load();
-
+		LangSupport.init();
 		ModSupport.init();
 
 		#if desktop
@@ -82,15 +81,6 @@ class PreLoaderState extends FlxUIState {
 		MagicStuff.setGlobalTransition("Default", new TransitionData(FADE, FlxColor.BLACK, 0.7, new FlxPoint(0, 1), {asset: diamond, width: 32, height: 32}, new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4)), MagicStuff.TransitionType.transOut);
 		MagicStuff.changeTransitionType("Default");
 
-		#if (desktop && sys)
-		var modsDirectory:String = FileSystem.absolutePath("mods");
-		if(FileSystem.exists(modsDirectory) && FileSystem.readDirectory(modsDirectory).length > 0){
-        	MusicBeatState.switchState(new states.ModListState(states.TitleState));
-		}else{
-        	MusicBeatState.switchState(new states.TitleState());
-		}
-		#else
-        	MusicBeatState.switchState(new states.TitleState());
-		#end
+		MusicBeatState.switchState(new states.TitleState());
 	}
 }

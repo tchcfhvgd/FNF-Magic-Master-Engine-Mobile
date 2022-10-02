@@ -8,6 +8,9 @@ presset("initChar", 0);
 presset("chrome", 0);
 presset("zoom", 1.05);
 
+var pre_Antialiasing:Bool = PreSettings.getPreSetting("Antialiasing", "Graphic Settings");
+var pre_BackgroundAnimated:Bool = PreSettings.getPreSetting("Background Animated", "Graphic Settings");
+
 var lightningStrikeBeat:Int = 0;
 var lightningOffset:Int = 8;
 
@@ -20,7 +23,7 @@ function create(){
 
     halloweenBG = new FlxSprite(-200, -100);
     
-    if(PreSettings.getPreSetting("BackgroundAnimated")){
+    if(pre_BackgroundAnimated){
         halloweenBG.frames = Paths.getSparrowAtlas('halloween_bg', 'stages/spooky');
         halloweenBG.animation.addByPrefix('idle', 'halloweem bg0');
         halloweenBG.animation.addByPrefix('lightning', 'halloweem bg lightning strike', 24, false);
@@ -29,7 +32,7 @@ function create(){
         halloweenBG.loadGraphic(Paths.image('halloween_bg_low', 'stages/spooky'));
     }
 
-    halloweenBG.antialiasing = PreSettings.getPreSetting("Antialiasing");
+    halloweenBG.antialiasing = pre_Antialiasing;
     instance.add(halloweenBG);
     
     pushGlobal();

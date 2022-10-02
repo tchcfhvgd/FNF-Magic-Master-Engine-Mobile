@@ -22,15 +22,12 @@ class PlayerSettings {
         
         var gamepadsDetected:Int = FlxG.gamepads.numActiveGamepads;
         for(i in 0...gamepadsDetected){
-            if(i == 0){
-                if(FlxG.gamepads.getByID(0) != null){player1.controls.addGamepad(0);}
-            }else{
-                if(FlxG.gamepads.getByID(i) != null){
-                    var newPlayer:PlayerSettings = new PlayerSettings(i, None);
-                    newPlayer.controls.addGamepad(i);
+            if(i == 0 && FlxG.gamepads.getByID(0) != null){player1.controls.addGamepad(0); continue;}
+            if(FlxG.gamepads.getByID(i) != null){
+                var newPlayer:PlayerSettings = new PlayerSettings(i, None);
+                newPlayer.controls.addGamepad(i);
 
-                    PLAYERS.push(newPlayer);
-                }
+                PLAYERS.push(newPlayer);
             }
         }
 	}

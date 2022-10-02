@@ -1,4 +1,9 @@
 {
+	"ModAdv_1": "Looks like you have Mods Installed",
+	"ModAdv_2": "Would you like to configure them before starting the game?",
+
+	"Sett_1": "Settings",
+
     "StoryMode": "StoryMode",
     "FreePlay": "FreePlay",
 	"Skins": "Skins",

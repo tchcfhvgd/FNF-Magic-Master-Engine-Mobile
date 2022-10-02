@@ -1,10 +1,11 @@
 package substates;
 
-import states.MusicBeatState;
 import Conductor.BPMChangeEvent;
-import flixel.FlxG;
+import states.MusicBeatState;
+import flixel.util.FlxColor;
 import flixel.FlxSubState;
 import flixel.FlxCamera;
+import flixel.FlxG;
 
 class MusicBeatSubstate extends FlxSubState{
 	public var conductor:Conductor = MusicBeatState.state.conductor;
@@ -16,6 +17,8 @@ class MusicBeatSubstate extends FlxSubState{
 
 	private var curStep:Int = 0;
 	private var curBeat:Int = 0;
+
+	private var curCamera:FlxCamera = new FlxCamera();
 	
 	public var principal_controls(get, never):Controls;
 	inline function get_principal_controls():Controls{return PlayerSettings.getPlayer(0).controls;}
@@ -24,6 +27,9 @@ class MusicBeatSubstate extends FlxSubState{
 
 	public function new(onClose:Void->Void = null){
 		if(onClose != null){this.onClose = onClose;}
+		curCamera.bgColor = FlxColor.BLACK;
+		curCamera.bgColor.alpha = 50;
+		FlxG.cameras.add(curCamera);
 		super();
 
 		canControlle = true;
@@ -57,5 +63,11 @@ class MusicBeatSubstate extends FlxSubState{
 
 	public function beatHit():Void{
 		//do literally nothing dumbass
+	}
+
+	override function destroy(){
+		FlxG.cameras.remove(curCamera);
+		
+		super.destroy();
 	}
 }
