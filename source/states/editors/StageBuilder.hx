@@ -67,7 +67,7 @@ class StageBuilder extends MusicBeatState
         camText.scrollFactor.set();
         add(camText);
 
-		offText = new FlxText(0, 110, FlxG.width, '', 17);
+		offText = new FlxText(0, 106, FlxG.width, '', 17);
 		offText.setFormat(Paths.font('pixel.otf'), 17, FlxColor.WHITE, LEFT);
         offText.scrollFactor.set();
         add(offText);
@@ -98,12 +98,14 @@ class StageBuilder extends MusicBeatState
 
 		offText.text = '\n' + 'Camera Offset: ' + FlxMath.roundDecimal(camFollow.x, 1) + 
 		' , ' + FlxMath.roundDecimal(camFollow.y, 1);
+
+		///////////////////////////////////////////////////////////////////////////
+		posText.setPosition(stage.getCharacterById(charCam).x + 230, stage.getCharacterById(charCam).y - 100);
     }
 
 	function setChar(charId:Int = 0) {
 		var _char = stage.getCharacterById(charId);
-		camFollow.setPosition(_char.getGraphicMidpoint().x, _char.getGraphicMidpoint().y);
-		posText.setPosition(_char.x + 230, _char.y - 100);
+		camFollow.setPosition(_char.getGraphicMidpoint().x, _char.getGraphicMidpoint().y);		
 		mousePos.set(_char.getGraphicMidpoint().x, _char.getGraphicMidpoint().y);	
 	}
 
@@ -142,6 +144,11 @@ class StageBuilder extends MusicBeatState
 			charCam ++;
 			if (charCam == 3) charCam = 0;
 			setChar(charCam);
+		}
+		else if(FlxG.mouse.pressed){
+			var _char = stage.getCharacterById(charCam);
+			_char.setPosition(FlxG.mouse.x, FlxG.mouse.y);
+			_char.updateHitbox();
 		}
 
 		if (defaultCamZoom <= 0.1) {
