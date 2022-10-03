@@ -89,7 +89,6 @@ class PlayState extends MusicBeatState {
 	//PreSettings Variables
 	var pre_BotPlay:Bool = PreSettings.getPreSetting("BotPlay", "Cheating Settings");
 	var pre_OnlyNotes:Bool = PreSettings.getPreSetting("Only Notes", "Graphic Settings");
-	var pre_Antialiasing:Bool = PreSettings.getPreSetting("Antialiasing", "Graphic Settings");
 	var pre_TypeMiddle:String = PreSettings.getPreSetting("Type Middle Scroll", "Visual Settings");
 	var pre_DefaultNonPos:String = PreSettings.getPreSetting("Default Strum Position", "Visual Settings");
 
@@ -285,7 +284,6 @@ class PlayState extends MusicBeatState {
 		add(healthBar);
 
 		sprite_healthBar = new FlxSprite().loadGraphic(Paths.styleImage("HealthBar", uiStyleCheck, "shared"));
-		sprite_healthBar.antialiasing = pre_Antialiasing;
 		sprite_healthBar.scale.y = 0.7; sprite_healthBar.scale.x = 0.7;
 		sprite_healthBar.x = (FlxG.width / 2) - (sprite_healthBar.width / 2);
 		sprite_healthBar.y = FlxG.height - sprite_healthBar.height;

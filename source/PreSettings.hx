@@ -23,7 +23,7 @@ class PreSettings {
             "Type Middle Scroll" => [0, ["None", "OnlyPlayer", "FadeOthers"]],
             "Type Camera" => [1, ["Static", "MoveToSing"]],
             "Type Light Strums" => [0, ["All", "OnlyMyStrum", "OnlyOtherStrums", "None"]],
-            "Type Splash" => [0, "OnSick", "TransparencyOnRate", "None"]
+            "Type Splash" => [0, ["OnSick", "TransparencyOnRate", "None"]]
         ],
         "Graphic Settings" => [
             "Presets" => [

@@ -135,8 +135,6 @@ class Character extends FlxSprite{
 	public function new(x:Float, y:Float, ?character:String = 'Boyfriend', ?category:String = 'Default', ?type:String = "NORMAL"){
 		super(x, y);
 
-		antialiasing = true;
-
 		curCharacter = character;
 
 		curSkin = Character.getSkin(curCharacter);

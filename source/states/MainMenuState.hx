@@ -107,7 +107,6 @@ class MainMenuState extends MusicBeatState {
 		beatLogo.setGraphicSize(Std.int(FlxG.width / 4));
 		beatLogo.updateHitbox();
 		beatLogo.y = 10; beatLogo.screenCenter(X);
-		beatLogo.antialiasing = PreSettings.getPreSetting("Antialiasing", "Graphic Settings");
 		beatLogo.camera = camHUD;
 		add(beatLogo);
 

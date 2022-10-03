@@ -69,6 +69,7 @@ class Alphabet extends FlxSpriteGroup {
         for(c in splitWords){if(repMap.exists(c)){c.replace(c, repMap.get(c));}}
     }
 
+
     public function setText(){
         doSplitWords();
         curX = 0;
@@ -76,17 +77,20 @@ class Alphabet extends FlxSpriteGroup {
         clear();
     
         for(char in splitWords){
-            if(char == " "){curX += spaceWidth;}else{
-                if(AlphaCharacter.getChars().indexOf(char.toLowerCase()) != -1){        
-                    var letter:AlphaCharacter = new AlphaCharacter(curX + xOffset, curY + yOffset, curImage);
-                    letter.createChar(char, isBold);
-                    if(!animated){letter.animation.stop();}
-                    letter.scale.set(curScale.x, curScale.y); letter.updateHitbox();
-                    curX += letter.width * xMultiplier;
-                            
-        
-                    add(letter);
-                }
+            if(char == "\n" && lastChar != null){
+                curY += lastChar.height * yMultiplier; curX = 0;
+            }else if(char == " "){
+                curX += spaceWidth;
+            }else if(AlphaCharacter.getChars().indexOf(char.toLowerCase()) != -1){
+                var letter:AlphaCharacter = new AlphaCharacter(curX + xOffset, curY + yOffset, curImage);
+                letter.createChar(char, isBold);
+                if(!animated){letter.animation.stop();}
+                letter.scale.set(curScale.x, curScale.y); letter.updateHitbox();
+                curX += letter.width * xMultiplier;
+                        
+                lastChar = letter;
+    
+                add(letter);
             }
         }
     }
@@ -113,6 +117,8 @@ class Alphabet extends FlxSpriteGroup {
                     curX += letter.width * xMultiplier;
                             
                     letter.createChar(splitWords[curChar], isBold);
+                    
+                    lastChar = letter;
         
                     add(letter);
                 }
@@ -129,7 +135,7 @@ class Alphabet extends FlxSpriteGroup {
 }
 
 class AlphaCharacter extends FlxSprite {
-    public static var alphabet:String = "abcdefghijklmnopqrstuvwxyz";
+    public static var alphabet:String = "abcdefghijklmnopqñrstuvwxyz";
 	public static var numbers:String = "1234567890";
 	public static var symbols:String = "|~#$%()*+-:;<=>@[]^_.,'!? ";
     public static function getChars():String {return alphabet + numbers + symbols;}
@@ -139,8 +145,6 @@ class AlphaCharacter extends FlxSprite {
         
         var tex = Paths.getSparrowAtlas(image);
         frames = tex;
-    
-        antialiasing = PreSettings.getPreSetting("Antialiasing", "Graphic Settings");
     }
     
     var reMap:Map<String, String> = [

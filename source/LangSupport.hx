@@ -71,26 +71,36 @@ class LangSupport {
 }
 
 class PopLangState extends states.MusicBeatState {
-    var langGroup:FlxTypedGroup<FlxText>;
+    var langGroup:FlxTypedGroup<Alphabet>;
 
     public static var curLang:Int = 0;
+
+    var leftArrow:Alphabet;
+    var rightArrow:Alphabet;
 
     override public function create():Void{
         FlxG.save.data.inLang = true;
         FlxG.save.flush();
+        
+        var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBG'));
+        bg.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height)); bg.screenCenter();
+        add(bg);
 
-        langGroup = new FlxTypedGroup<FlxText>();
+        langGroup = new FlxTypedGroup<Alphabet>();
         for(l in LangSupport.getLangs()){
-            var nLang:FlxText = new FlxText(0,-100,0, l);
-            nLang.setFormat('Calibri', 64, 0xFFFFFFFF, CENTER);
+            var nLang:Alphabet = new Alphabet(0,-100,new FlxPoint(0.8,0.8),l,true,false,true);
             nLang.screenCenter(X);
             langGroup.add(nLang);
         }
         add(langGroup);
 
-        
-        var lblAdvice:FlxText = new FlxText(0, 20, 0, 'Choose Your Language', 32); add(lblAdvice);
-        lblAdvice.setFormat('Calibri', 32, 0xFFFFFFFF, CENTER); lblAdvice.screenCenter(X);
+        leftArrow = new Alphabet(0,-100,new FlxPoint(1.1,1.1),'>',true,false,true); leftArrow.screenCenter(Y); add(leftArrow);
+        rightArrow = new Alphabet(0,-100,new FlxPoint(1.1,1.1),'<',true,false,true); rightArrow.screenCenter(Y); add(rightArrow);
+
+        var lblAdvice:Alphabet = new Alphabet(0, 20, new FlxPoint(1,1), 'Choose Your Language', true, false, true); add(lblAdvice);
+        lblAdvice.screenCenter(X);
+
+        changeLang();
 
         super.create();
     }
@@ -98,7 +108,7 @@ class PopLangState extends states.MusicBeatState {
     override function update(elapsed:Float){        
         super.update(elapsed);
         
-        MagicStuff.sortMembersByY(cast langGroup, FlxG.height / 2, curLang);
+        MagicStuff.sortMembersByY(cast langGroup, (FlxG.height / 2) - (langGroup.members[curLang].height / 2), curLang, 25);
 
         if(FlxG.mouse.wheel < 0){changeLang(1);}
         if(FlxG.mouse.wheel > 0){changeLang(-1);}
@@ -116,10 +126,13 @@ class PopLangState extends states.MusicBeatState {
 			langGroup.members[i].alpha = 0.5;
 			if(i == curLang){langGroup.members[i].alpha = 1;}
 		}
+
+        leftArrow.x = langGroup.members[curLang].x - leftArrow.width - 10;
+        rightArrow.x = langGroup.members[curLang].x + langGroup.members[curLang].width + 10;
 	}
 
     public function chooseLang():Void {
-        LangSupport.setLang(langGroup.members[curLang].text);
+        LangSupport.setLang(langGroup.members[curLang].curText);
         states.MusicBeatState.switchState(new states.TitleState());
     }
 }

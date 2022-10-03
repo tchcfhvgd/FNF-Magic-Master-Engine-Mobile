@@ -34,8 +34,8 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
 
     private var index:Int = 0;
 
-    public var lenght(get, never):Int;
-    public function get_lenght():Int{return list.length;}
+    public var list_length(get, never):Int;
+    public function get_list_length():Int{return list.length;}
 
     public static inline var CLICK_BACK:String = "click_back_list";
     public static inline var CLICK_FRONT:String = "click_front_list";
@@ -236,7 +236,12 @@ class FlxCustomButton extends FlxButton {
 		if(Width == null){Width = Std.int(this.width);}
 		if(Height == null){Height = Std.int(this.height);}
 		
-        if(GraphicArgs != null){Reflect.callMethod(null, this.loadGraphic, GraphicArgs);}
+        if(GraphicArgs != null){
+            if(GraphicArgs.length <= 2){
+                this.frames = GraphicArgs[0];
+                for(i in (cast(GraphicArgs[1],Array<Dynamic>))){this.animation.addByPrefix(i[0], i[1], 30, false);}
+            }else{Reflect.callMethod(null, this.loadGraphic, GraphicArgs);}
+        }
 		this.setSize(Width, Height);
 		this.setGraphicSize(Width, Height);
 		this.centerOffsets();
@@ -252,7 +257,12 @@ class FlxUICustomButton extends FlxUIButton {
 		if(Width == null){Width = Std.int(this.width);}
 		if(Height == null){Height = Std.int(this.height);}
 
-        if(GraphicArgs != null){Reflect.callMethod(null, this.loadGraphic, GraphicArgs);}
+        if(GraphicArgs != null){
+            if(GraphicArgs.length <= 2){
+                this.frames = GraphicArgs[0];
+                for(i in (cast(GraphicArgs[1],Array<Dynamic>))){this.animation.addByPrefix(i[0], i[1], 30, false);}
+            }else{Reflect.callMethod(null, this.loadGraphic, GraphicArgs);}
+        }
 		this.setSize(Width, Height);
 		this.setGraphicSize(Width, Height);
 		this.centerOffsets();

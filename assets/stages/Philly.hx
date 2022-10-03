@@ -11,7 +11,6 @@ presset("initChar", 5);
 presset("chrome", 0);
 presset("zoom", 1.05);
 
-var pre_Antialiasing:Bool = PreSettings.getPreSetting("Antialiasing", "Graphic Settings");
 var pre_BackgroundAnimated:Bool = PreSettings.getPreSetting("Background Animated", "Graphic Settings");
 
 var startedMoving:Bool = false;

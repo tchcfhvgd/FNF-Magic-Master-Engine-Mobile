@@ -98,7 +98,7 @@ class StrumNote extends FlxSprite{
         if((this is Note)){getJSON = Paths.note_json(noteData, noteKeys, type);}
         
         if(!lockColor){playColor = getJSON.color != null ? getJSON.color : "0xffffff";}        
-        antialiasing = getJSON.antialiasing && PreSettings.getPreSetting("Antialiasing", "Graphic Settings") && !style.contains("pxl-");
+        antialiasing = getJSON.antialiasing && !style.contains("pxl-");
         singAnimation = getJSON.sing_animation;
 
         if(frames == null || getJSON.animations == null || getJSON.animations.length <= 0){return;}
@@ -337,7 +337,7 @@ class StrumEvent extends StrumNote {
 
         frames = Paths.getAtlas(Paths.note(image, style, type));
             
-        antialiasing = PreSettings.getPreSetting("Antialiasing", "Graphic Settings") && !style.contains("pxl-");
+        antialiasing = style.contains("pxl-");
         if(frames == null){return;}
 
         animation.addByPrefix("SizeBase", "SizeBase");

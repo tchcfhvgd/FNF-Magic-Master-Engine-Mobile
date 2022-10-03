@@ -195,10 +195,10 @@ class Paths {
 		return savedMap.get(file);
 	}
 
-	inline static public function image(key:String, ?library:String):Any {
+	inline static public function image(key:String, ?library:String, isPath:Bool = false):Any {
 		var path = getPath('images/$key.png', IMAGE, library);
 		
-		return getGraphic(path);
+		return isPath ? path : getGraphic(path);
 	}
 		
 	inline static public function styleImage(key:String, style:String = "Default", ?library:String):Any {

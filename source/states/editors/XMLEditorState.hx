@@ -461,7 +461,7 @@ class XMLEditorState extends MusicBeatState {
         lblCurFrameHeight = new FlxText(lblCurFrameWidth.x, lblCurFrameWidth.y + lblCurFrameWidth.height + 3, 0, "FrameHeight: [0]"); uiBase.add(lblCurFrameHeight);
         vchCurFrameHeight = new FlxUIValueChanger(tabSPRITE.width - 105, lblCurFrameHeight.y - 1, 100, function(value:Float){}); uiBase.add(vchCurFrameHeight); vchCurFrameHeight.name = "SPRITE_FRAMEHEIGHT";
 
-        var btnSetFrameSize = new FlxUICustomButton(5, lblCurFrameHeight.y + lblCurFrameHeight.height + 5, Std.int(tabSPRITE.width) - 10, null, "Set FrameSize to 0", null, null, function(){
+        var btnSetFrameSize0 = new FlxUICustomButton(5, lblCurFrameHeight.y + lblCurFrameHeight.height + 5, Std.int(tabSPRITE.width) - 10, null, "Set FrameSize to 0", null, null, function(){
             if(eSprite == null || eSprite.animation.curAnim == null){return;}
             if(chkSetToAllSprite.checked){
                 for(e in _XML.elements){
@@ -481,6 +481,29 @@ class XMLEditorState extends MusicBeatState {
             }
             getAccess().att.frameWidth = "0";
             getAccess().att.frameHeight = "0";
+            loadESprite(); playAnim();
+        }); uiBase.add(btnSetFrameSize0);
+
+        var btnSetFrameSize = new FlxUICustomButton(5, btnSetFrameSize0.y + btnSetFrameSize0.height + 5, Std.int(tabSPRITE.width) - 10, null, "Set FrameSize", null, null, function(){
+            if(eSprite == null || eSprite.animation.curAnim == null){return;}
+            if(chkSetToAllSprite.checked){
+                for(e in _XML.elements){
+                    e.att.frameWidth = e.att.width;
+                    e.att.frameHeight = e.att.height;
+                }
+                loadESprite(); playAnim();
+                return;
+            }
+            if(chkSetToAllFrames.checked){
+                for(i in 0...eSprite.animation.curAnim.frames.length){
+                    getAccess(null, i).att.frameWidth = getAccess(null, i).att.width;
+                    getAccess(null, i).att.frameHeight = getAccess(null, i).att.height;
+                }
+                loadESprite(); playAnim();
+                return;
+            }
+            getAccess().att.frameWidth = getAccess().att.width;
+            getAccess().att.frameHeight = getAccess().att.height;
             loadESprite(); playAnim();
         }); uiBase.add(btnSetFrameSize);
 

@@ -9,8 +9,6 @@ presset("initChar", 15);
 presset("chrome", 0);
 presset("zoom", 0.9);
 
-var pre_Antialiasing:Bool = PreSettings.getPreSetting("Antialiasing", "Graphic Settings");
-
 var grpLimoDancers:Array<FlxSprite> = [];
 var danced:Bool = false;
 
@@ -19,12 +17,10 @@ var fastCarCanDrive:Bool = true;
 
 function create(){
     var skyBG = new FlxSprite(-120, -50).loadGraphic(Paths.image('limoSunset', 'stages/limo'));
-    skyBG.antialiasing = pre_Antialiasing;
     skyBG.scrollFactor.set(0.1, 0.1);
     instance.add(skyBG);
     
     var limoMetalPole = new FlxSprite(-500, 220).loadGraphic(Paths.image('metalPole', 'stages/limo'));
-    limoMetalPole.antialiasing = pre_Antialiasing;
     limoMetalPole.scrollFactor.set(0.4, 0.4);
     instance.add(limoMetalPole);
     
@@ -36,14 +32,12 @@ function create(){
     bgLimo.frames = Paths.getSparrowAtlas('bgLimo', 'stages/limo');
     bgLimo.animation.addByPrefix('drive', "background limo pink", 24);
     bgLimo.animation.play('drive');
-    bgLimo.antialiasing = pre_Antialiasing;
     bgLimo.scrollFactor.set(0.4, 0.4);
     instance.add(bgLimo);
     
     for(i in 0...5){
         var dancer:FlxSprite = new FlxSprite((370 * i) + 130, bgLimo.y - 400);
         dancer.frames = Paths.getSparrowAtlas("limoDancer", "stages/limo");
-		dancer.antialiasing = pre_Antialiasing;
         dancer.scrollFactor.set(0.4, 0.4);
 		dancer.animation.addByIndices('danceLeft', 'bg dancer sketch PINK', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		dancer.animation.addByIndices('danceRight', 'bg dancer sketch PINK', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
@@ -60,7 +54,6 @@ function create(){
     limo.frames = Paths.getSparrowAtlas('limoDrive', "stages/limo");
     limo.animation.addByPrefix('drive', "Limo stage", 24);
     limo.animation.play('drive');
-    limo.antialiasing = pre_Antialiasing;
     instance.add(limo);
 
     pushGlobal();

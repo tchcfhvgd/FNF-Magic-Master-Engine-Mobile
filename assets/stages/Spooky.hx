@@ -8,7 +8,6 @@ presset("initChar", 0);
 presset("chrome", 0);
 presset("zoom", 1.05);
 
-var pre_Antialiasing:Bool = PreSettings.getPreSetting("Antialiasing", "Graphic Settings");
 var pre_BackgroundAnimated:Bool = PreSettings.getPreSetting("Background Animated", "Graphic Settings");
 
 var lightningStrikeBeat:Int = 0;
@@ -32,7 +31,6 @@ function create(){
         halloweenBG.loadGraphic(Paths.image('halloween_bg_low', 'stages/spooky'));
     }
 
-    halloweenBG.antialiasing = pre_Antialiasing;
     instance.add(halloweenBG);
     
     pushGlobal();

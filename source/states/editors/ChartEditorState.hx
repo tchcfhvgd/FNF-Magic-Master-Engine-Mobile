@@ -181,7 +181,7 @@ class ChartEditorState extends MusicBeatState{
         strumLineEvent.cameras = [camHUD];
 		add(strumLineEvent);
 
-        btnAddStrum = new FlxCustomButton(0, 0, KEYSIZE, KEYSIZE, "", [Paths.image('UI_Assets/addStrum', 'shared')], null, function(){
+        btnAddStrum = new FlxCustomButton(0, 0, KEYSIZE, KEYSIZE, "", [Paths.image('UI_Assets/addStrum', 'shared'), false, 0, 0], null, function(){
             var nStrum:SwagStrum = {
                 keys: 4,
                 noteStyle: "Default",
@@ -211,7 +211,7 @@ class ChartEditorState extends MusicBeatState{
         btnAddStrum.scrollFactor.set(1, 0);
         add(btnAddStrum);
 
-        btnDelStrum = new FlxCustomButton(0, KEYSIZE * 1.5, KEYSIZE, KEYSIZE, "", [Paths.image('UI_Assets/delStrum', 'shared')], null, function(){
+        btnDelStrum = new FlxCustomButton(0, KEYSIZE * 1.5, KEYSIZE, KEYSIZE, "", [Paths.image('UI_Assets/delStrum', 'shared'), false, 0, 0], null, function(){
             if(_song.sectionStrums.length <= 1){return;}
     
             _song.sectionStrums.remove(_song.sectionStrums[curStrum]);
@@ -1124,11 +1124,11 @@ class ChartEditorState extends MusicBeatState{
         if(strum == null){strum = curStrum;}
 
         var secNotes:Array<Dynamic> = _song.sectionStrums[strum].notes[curSection].sectionNotes;
-        var keyLenght:Int = Song.getStrumKeys(_song.sectionStrums[strum], curSection);
+        var keyLength:Int = Song.getStrumKeys(_song.sectionStrums[strum], curSection);
 
         for(i in 0...secNotes.length){
             var curNote:NoteData = Note.getNoteData(secNotes[i]);
-            curNote.keyData = keyLenght - curNote.keyData - 1;
+            curNote.keyData = keyLength - curNote.keyData - 1;
             secNotes[i] = Note.convNoteData(curNote);
         }
 
@@ -1408,13 +1408,13 @@ class ChartEditorState extends MusicBeatState{
         clStrumCharsToAdd.setSuffix(' [${clStrumCharsToAdd.getSelectedIndex() + 1}/${_song.characters.length}]');
 
         var btnAddCharToSing:FlxButton = new FlxCustomButton(clStrumCharsToAdd.x + clStrumCharsToAdd.width + 5, clStrumCharsToAdd.y, Std.int(MENU.width / 4) - 5, null, "Add Char", null, FlxColor.fromRGB(94, 255, 99), function(){
-            if(clStrumCharsToAdd.lenght <= 0){return;}
+            if(clStrumCharsToAdd.list_length <= 0){return;}
             if(!_song.sectionStrums[curStrum].charToSing.contains(clStrumCharsToAdd.getSelectedIndex())){_song.sectionStrums[curStrum].charToSing.push(clStrumCharsToAdd.getSelectedIndex());} 
             updateValues();
         }); tabSTRUM.add(btnAddCharToSing);
 
         var btnDelCharToSing:FlxButton = new FlxCustomButton(btnAddCharToSing.x + btnAddCharToSing.width + 5, btnAddCharToSing.y, Std.int(MENU.width / 4) - 5, null, "Del Char", null, FlxColor.fromRGB(255, 94, 94), function(){
-            if(clStrumCharsToAdd.lenght <= 0){return;}
+            if(clStrumCharsToAdd.list_length <= 0){return;}
             if(_song.sectionStrums[curStrum].charToSing.contains(clStrumCharsToAdd.getSelectedIndex())){_song.sectionStrums[curStrum].charToSing.remove(clStrumCharsToAdd.getSelectedIndex());}
             updateValues();
         }); tabSTRUM.add(btnDelCharToSing);
@@ -1561,13 +1561,13 @@ class ChartEditorState extends MusicBeatState{
         clSecStrumCharsToAdd.setSuffix(' [${clSecStrumCharsToAdd.getSelectedIndex() + 1}/${_song.characters.length}]');
 
         var btnSecAddCharToSing:FlxButton = new FlxCustomButton(clSecStrumCharsToAdd.x + clSecStrumCharsToAdd.width + 5, clSecStrumCharsToAdd.y, Std.int(MENU.width / 4) - 5, null, "Add Char", null, FlxColor.fromRGB(94, 255, 99), function(){
-            if(clSecStrumCharsToAdd.lenght <= 0){return;}
+            if(clSecStrumCharsToAdd.list_length <= 0){return;}
             if(!_song.sectionStrums[curStrum].notes[curSection].charToSing.contains(clSecStrumCharsToAdd.getSelectedIndex())){_song.sectionStrums[curStrum].notes[curSection].charToSing.push(clSecStrumCharsToAdd.getSelectedIndex());} 
             updateValues();
         }); tabSTRUM.add(btnSecAddCharToSing);
 
         var btnSecDelCharToSing:FlxButton = new FlxCustomButton(btnSecAddCharToSing.x + btnSecAddCharToSing.width + 5, btnSecAddCharToSing.y, Std.int(MENU.width / 4) - 5, null, "Del Char", null, FlxColor.fromRGB(255, 94, 94), function(){
-            if(clSecStrumCharsToAdd.lenght <= 0){return;}
+            if(clSecStrumCharsToAdd.list_length <= 0){return;}
             if(_song.sectionStrums[curStrum].notes[curSection].charToSing.contains(clSecStrumCharsToAdd.getSelectedIndex())){_song.sectionStrums[curStrum].notes[curSection].charToSing.remove(clSecStrumCharsToAdd.getSelectedIndex());}
             updateValues();
         }); tabSTRUM.add(btnSecDelCharToSing);

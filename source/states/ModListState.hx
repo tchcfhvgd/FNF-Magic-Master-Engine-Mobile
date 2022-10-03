@@ -26,6 +26,7 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import haxe.DynamicAccess;
 import flixel.FlxSprite;
+import flixel.FlxState;
 import flixel.FlxG;
 import haxe.Json;
 
@@ -52,8 +53,11 @@ class PopModState extends MusicBeatState {
         bg.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height)); bg.screenCenter();
         add(bg);
         
-        var lblAdvice:FlxText = new FlxText(0, 0, 0, '${LangSupport.getText('ModAdv_1')} \n\n ${LangSupport.getText('ModAdv_2')} \n', 32); add(lblAdvice);
-        lblAdvice.setFormat('Calibri', 32, 0xFFFFFFFF, CENTER); lblAdvice.screenCenter(); lblAdvice.y -= 50;
+        var lblAdvice_1:Alphabet = new Alphabet(0, 0, new FlxPoint(0.3,0.3), '${LangSupport.getText('ModAdv_1')}', true, false); add(lblAdvice_1);
+        lblAdvice_1.screenCenter(); lblAdvice_1.y -= 120;
+        
+        var lblAdvice_2:Alphabet = new Alphabet(0, lblAdvice_1.y + 30, new FlxPoint(0.3,0.3), '${LangSupport.getText('ModAdv_2')}', true, false); add(lblAdvice_2);
+        lblAdvice_2.screenCenter(X);
 
         var btnNo = new FlxUICustomButton(0, 0, 100, null, "No", null, null, function(){MagicStuff.reload_data(); MusicBeatState.switchState(new states.TitleState());});
         btnNo.screenCenter(); btnNo.y += 25; btnNo.x -= btnNo.width; add(btnNo);
@@ -72,11 +76,16 @@ class ModListState extends MusicBeatState {
     private var btnToggleAll:FlxUIButton;
     private var btnEnableAll:FlxUIButton;
     private var btnDisableAll:FlxUIButton;
+    private var btnReady:FlxUIButton;
+
+    private var toNext:Class<FlxState>;
 
 	override public function create():Void{
-		var gradGround:FlxSprite = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, [FlxColor.fromRGB(0, 255, 187), FlxColor.BLACK, FlxColor.BLACK, FlxColor.BLACK, FlxColor.BLACK, FlxColor.fromRGB(0, 255, 187)]);
-        gradGround.scrollFactor.set();
-		add(gradGround);
+        if(onConfirm != null){toNext = onConfirm; onConfirm = null;}
+
+        var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBG'));
+        bg.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height)); bg.screenCenter();
+        add(bg);
 
         ModsList = new FlxTypedGroup<ItemMod>();
         var i:Int = 0;
@@ -91,29 +100,21 @@ class ModListState extends MusicBeatState {
         add(ModsList);
 
         changeIndex();
+        
+        var hud_up:FlxSprite = new FlxSprite().loadGraphic(Paths.image("upBar")); add(hud_up);
+        var hud_down:FlxSprite = new FlxSprite().loadGraphic(Paths.image("downBar")); hud_down.y = FlxG.height - hud_down.height; add(hud_down);
 
-        btnToggleAll = new FlxUICustomButton(0, 0, 150, null, "Toggle All", [Paths.image("custom_button_3"), true, 19, 19], null, function(){for(i in ModsList.members){i.setToggleEnableMod();}});
-        btnToggleAll.setPosition((FlxG.width / 2) - 245, FlxG.height - btnToggleAll.height - 20);
-        add(btnToggleAll);
+        btnToggleAll = new FlxUICustomButton(100, 620, 100, 100, '', [Paths.getAtlas(Paths.image("toggle_button", null, true)), [["normal", "Idle"], ["highlight", "Over"], ["pressed", "Hit"]]], null, function(){for(i in ModsList.members){i.setToggleEnableMod();}}); add(btnToggleAll);
+        btnEnableAll = new FlxUICustomButton(400, 620, 100, 100, '', [Paths.getAtlas(Paths.image("on_button", null, true)), [["normal", "idle"], ["highlight", "over"], ["pressed", "hit"]]], null, function(){for(i in ModsList.members){i.setToggleEnableMod(true);}}); add(btnEnableAll);
+        btnDisableAll = new FlxUICustomButton(700, 620, 100, 100, '', [Paths.getAtlas(Paths.image("off_button", null, true)), [["normal", "idle"], ["highlight", "over"], ["pressed", "hit"]]], null, function(){for(i in ModsList.members){i.setToggleEnableMod(false);}}); add(btnDisableAll);
+        btnReady = new FlxUICustomButton(1050, 560, 170, 170, '', [Paths.getAtlas(Paths.image("accept_button", null, true)), [["normal", "idle"], ["highlight", "over"], ["pressed", "hit"]]], null, function(){MagicStuff.reload_data(); MusicBeatState.switchState(Type.createInstance(toNext, []));}); add(btnReady);
         
-        btnEnableAll = new FlxUICustomButton(0, 0, 150, null, "Enable All", [Paths.image("custom_button_3"), true, 19, 19], FlxColor.fromRGB(46, 255, 70), function(){for(i in ModsList.members){i.setToggleEnableMod(true);}}); add(btnEnableAll);
-        btnEnableAll.setPosition(btnToggleAll.x + btnToggleAll.width + 20, FlxG.height - btnEnableAll.height - 20);
-        
-        btnDisableAll = new FlxUICustomButton(0, 0, 150, null, "Disable All", [Paths.image("custom_button_3"), true, 19, 19], FlxColor.fromRGB(255, 43, 43), function(){for(i in ModsList.members){i.setToggleEnableMod(false);}}); add(btnDisableAll);
-        btnDisableAll.label.color = FlxColor.WHITE;
-        btnDisableAll.setPosition(btnEnableAll.x + btnEnableAll.width + 20, FlxG.height - btnDisableAll.height - 20);
-        
-        var lblModList = new FlxText(0, 10, FlxG.width, "Mods List", 16, true);
-		lblModList.setFormat(Paths.font("nexarust"), 40, FlxColor.WHITE, CENTER);
-        lblModList.bold = true; lblModList.antialiasing = true;
-        add(lblModList);
+        var lblModList = new Alphabet(10, 20, new FlxPoint(1,1), LangSupport.getText("ModList"), true, false, true); add(lblModList);
 
 		super.create();
 	}
 
-	override function update(elapsed:Float){
-		if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED)){MagicStuff.reload_data();}
-        
+	override function update(elapsed:Float){        
         super.update(elapsed);
 
         if(FlxG.keys.justPressed.UP){changeIndex(-1);}
@@ -125,7 +126,6 @@ class ModListState extends MusicBeatState {
 
         var selectedCard = ModsList.members[index];
         MagicStuff.sortMembersByY(cast ModsList, (FlxG.height / 2) - (selectedCard.height / 2), index, 10, 0.5);
-        #if desktop MagicStuff.setWindowTitle('Checking Mods > ${selectedCard.refMod.name} [${selectedCard.refMod.enabled ? "O" : "X"}] <'); DiscordClient.changePresence('> ${selectedCard.refMod.name} [${selectedCard.refMod.enabled ? "✓": "X"}] <', '[Checking Mods]'); #end
 	}
 
     public function changeIndex(change:Int = 0){
@@ -145,6 +145,8 @@ class ModListState extends MusicBeatState {
         
         ModsList.members[index]._selected = true;
         ModsList.members[index].showTabId("1ModName");
+        
+        #if desktop MagicStuff.setWindowTitle('Checking Mods > ${ModsList.members[index].refMod.name} [${ModsList.members[index].refMod.enabled ? "O" : "X"}] <'); DiscordClient.changePresence('> ${ModsList.members[index].refMod.name} [${ModsList.members[index].refMod.enabled ? "✓": "X"}] <', '[Checking Mods]'); #end
     }
     
     public function rePositionItems():Void{
@@ -188,7 +190,7 @@ class ItemMod extends FlxUITabMenu {
         mScript.exScript(Paths.getText('${refMod.path}/itemMod.hx'));
 
         var tab_names_and_labels_ = [{name: "1ModName", label: refMod.prefix}];
-        var back_ = new FlxUI9SliceSprite(0, 0, Paths.image("custom_default_chrome_flat"), new Rectangle(0, 0, 50, 50), [10, 10, 40, 40], FlxUI9SliceSprite.TILE_BOTH); back_.antialiasing = true;
+        var back_ = new FlxUI9SliceSprite(0, 0, Paths.image("custom_default_chrome_flat"), new Rectangle(0, 0, 50, 50), [10, 10, 40, 40], FlxUI9SliceSprite.TILE_BOTH);
 
         super(back_, null, tab_names_and_labels_);
         resize(Std.int(FlxG.width - 20), 300);
@@ -250,8 +252,12 @@ class ItemMod extends FlxUITabMenu {
         mScript.exFunction("update", [elapsed]);
 
         var curSize:FlxPoint = closedSize;
-        if(_selected){for(tab in this._tabs){if(!tab.alive){tab.revive();}} curSize = openSize;}else{if(this.selected_tab_id != "4ModUnSelected"){this.showTabId("4ModUnSelected");}}
-        if(this.width != curSize.x || this.height != curSize.y){resize(FlxMath.lerp(this.width, curSize.x, delay), FlxMath.lerp(this.height, curSize.y, delay));}
+        if(_selected){
+            for(tab in this._tabs){if(!tab.alive){tab.revive();}} curSize = openSize;
+        }else if(this.selected_tab_id != "4ModUnSelected"){
+            this.showTabId("4ModUnSelected");
+        }
+        if((this.width < curSize.x - 5 || this.width > curSize.x + 5) || (this.height < curSize.y - 5 || this.height > curSize.y + 5)){resize(FlxMath.lerp(this.width, curSize.x, delay), FlxMath.lerp(this.height, curSize.y, delay));}
 	}
 
     override public function replaceBack(newBack:FlxSprite):Void {

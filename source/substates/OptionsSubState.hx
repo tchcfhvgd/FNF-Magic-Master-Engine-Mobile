@@ -83,7 +83,7 @@ class OptionsSubState extends MusicBeatSubstate {
 	}
 
 	public function changeOption(change:Int = 0):Void {
-		if(!choosedCat){return;}trace('si');
+		if(!choosedCat){return;}
 
 		var cur_category:String = gpCategory.members[curCategory].curText;
 		var cur_option_item:OptionItem = gpOptions.members[curOption];
@@ -99,18 +99,15 @@ class OptionsSubState extends MusicBeatSubstate {
 			default:{
 				pre_Current = PreSettings.CURRENT_SETTINGS.get(cur_category).get(cur_option);
 				if((pre_Current is Bool)){PreSettings.CURRENT_SETTINGS.get(cur_category).set(cur_option, !(cast(pre_Current,Bool)));}
-				if((pre_Current is Int)){
+				else if((pre_Current is Int) || (pre_Current is Float)){
 					pre_Current += change;
 					PreSettings.CURRENT_SETTINGS.get(cur_category).set(cur_option, pre_Current);
 				}
-				if((pre_Current is Float)){
-					pre_Current += change;
-					PreSettings.CURRENT_SETTINGS.get(cur_category).set(cur_option, pre_Current);
-				}
-				if((pre_Current is Array)){
+				else if((pre_Current is Array)){
 					pre_Current[0] += change;
-					if(pre_Current[0] < 0){pre_Current[0] = pre_Current[1].lenght - 1;}
-					if(pre_Current[0] >= pre_Current[1].lenght){pre_Current[0] = 0;}
+					var _opts:Array<Dynamic> = pre_Current[1].copy();
+					if(pre_Current[0] < 0){pre_Current[0] = _opts.length - 1;}
+					if(pre_Current[0] >= _opts.length){pre_Current[0] = 0;}
 					PreSettings.CURRENT_SETTINGS.get(cur_category).set(cur_option, pre_Current);
 				}
 			}
@@ -201,9 +198,11 @@ class OptionItem extends Alphabet {
 		switch(type){
 			case "Controls":{curText = '${setting}: < ${Controls.STATIC_ACTIONS.get(setting)} >';}
 			case "KeyControls":{curText = '${setting}: < ${Controls.STATIC_STRUMCONTROLS.get(Std.parseInt(setting))} >';}
-			default:{curText = '${setting}: < ${PreSettings.getPreSetting(setting,category)} >';}
+			default:{
+				var _cur_settings:Any = PreSettings.getPreSetting(setting,category);
+				curText = '${setting}: < ${_cur_settings} >';
+			}
 		}
-
 		super.setText();
 	}
 }
