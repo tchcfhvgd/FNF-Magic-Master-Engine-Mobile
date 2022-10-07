@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Equis.png">
+	<!-- Created with Adobe Animate version 22.0.7.214 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Eguis Click0000" x="0" y="0" width="166" height="176" frameX="-5" frameY="-1" frameWidth="177" frameHeight="179"/>
+	<SubTexture name="Eguis Click0001" x="0" y="0" width="166" height="176" frameX="-5" frameY="-1" frameWidth="177" frameHeight="179"/>
+	<SubTexture name="Eguis Click0002" x="166" y="0" width="108" height="106" frameX="-34" frameY="-36" frameWidth="177" frameHeight="179"/>
+	<SubTexture name="Eguis Click0003" x="274" y="0" width="145" height="140" frameX="-16" frameY="-19" frameWidth="177" frameHeight="179"/>
+	<SubTexture name="Eguis Click0004" x="419" y="0" width="170" height="171" frameX="-3" frameY="-4" frameWidth="177" frameHeight="179"/>
+	<SubTexture name="Eguis Click0005" x="589" y="0" width="177" height="179"/>
+	<SubTexture name="Eguis Click0006" x="766" y="0" width="171" height="171" frameX="-3" frameY="-4" frameWidth="177" frameHeight="179"/>
+	<SubTexture name="Eguis Click0007" x="0" y="179" width="163" height="168" frameX="-7" frameY="-5" frameWidth="177" frameHeight="179"/>
+	<SubTexture name="Eguis Click0008" x="0" y="0" width="166" height="176" frameX="-5" frameY="-1" frameWidth="177" frameHeight="179"/>
+	<SubTexture name="Eguis Click0009" x="0" y="0" width="166" height="176" frameX="-5" frameY="-1" frameWidth="177" frameHeight="179"/>
+	<SubTexture name="Eguis Click0010" x="0" y="0" width="166" height="176" frameX="-5" frameY="-1" frameWidth="177" frameHeight="179"/>
+	<SubTexture name="Eguis Click0011" x="0" y="0" width="166" height="176" frameX="-5" frameY="-1" frameWidth="177" frameHeight="179"/>
+	<SubTexture name="Eguis Click0012" x="0" y="0" width="166" height="176" frameX="-5" frameY="-1" frameWidth="177" frameHeight="179"/>
+	<SubTexture name="Eguis Click0013" x="0" y="0" width="166" height="176" frameX="-5" frameY="-1" frameWidth="177" frameHeight="179"/>
+	<SubTexture name="Equis0000" x="163" y="179" width="138" height="154"/>
+	<SubTexture name="Equis0001" x="163" y="179" width="138" height="154"/>
+	<SubTexture name="Equis0002" x="163" y="179" width="138" height="154"/>
+	<SubTexture name="Equis0003" x="163" y="179" width="138" height="154"/>
+	<SubTexture name="Equis0004" x="163" y="179" width="138" height="154"/>
+	<SubTexture name="Equis0005" x="163" y="179" width="138" height="154"/>
+	<SubTexture name="Equis0006" x="163" y="179" width="138" height="154"/>
+	<SubTexture name="Equis0007" x="163" y="179" width="138" height="154"/>
+	<SubTexture name="Equis0008" x="163" y="179" width="138" height="154"/>
+	<SubTexture name="Equis0009" x="163" y="179" width="138" height="154"/>
+	<SubTexture name="Equis0010" x="163" y="179" width="138" height="154"/>
+	<SubTexture name="Equis0011" x="163" y="179" width="138" height="154"/>
+	<SubTexture name="Equis0012" x="163" y="179" width="138" height="154"/>
+	<SubTexture name="Equis0013" x="163" y="179" width="138" height="154"/>
+	<SubTexture name="Equis Mouse0000" x="301" y="179" width="138" height="154" frameX="-14" frameY="-11" frameWidth="166" frameHeight="176"/>
+	<SubTexture name="Equis Mouse0001" x="439" y="179" width="144" height="158" frameX="-11" frameY="-9" frameWidth="166" frameHeight="176"/>
+	<SubTexture name="Equis Mouse0002" x="583" y="179" width="150" height="162" frameX="-8" frameY="-7" frameWidth="166" frameHeight="176"/>
+	<SubTexture name="Equis Mouse0003" x="733" y="179" width="156" height="166" frameX="-5" frameY="-5" frameWidth="166" frameHeight="176"/>
+	<SubTexture name="Equis Mouse0004" x="0" y="347" width="166" height="176"/>
+	<SubTexture name="Equis Mouse0005" x="0" y="347" width="166" height="176"/>
+	<SubTexture name="Equis Mouse0006" x="0" y="347" width="166" height="176"/>
+	<SubTexture name="Equis Mouse0007" x="0" y="347" width="166" height="176"/>
+	<SubTexture name="Equis Mouse0008" x="0" y="347" width="166" height="176"/>
+	<SubTexture name="Equis Mouse0009" x="0" y="347" width="166" height="176"/>
+	<SubTexture name="Equis Mouse0010" x="0" y="347" width="166" height="176"/>
+	<SubTexture name="Equis Mouse0011" x="0" y="347" width="166" height="176"/>
+	<SubTexture name="Equis Mouse0012" x="0" y="347" width="166" height="176"/>
+	<SubTexture name="Equis Mouse0013" x="0" y="347" width="166" height="176"/>
+</TextureAtlas>

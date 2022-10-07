@@ -28,11 +28,9 @@ class MusicBeatSubstate extends FlxSubState{
 	public function new(onClose:Void->Void = null){
 		if(onClose != null){this.onClose = onClose;}
 		curCamera.bgColor = FlxColor.BLACK;
-		curCamera.bgColor.alpha = 50;
+		curCamera.bgColor.alpha = 100;
 		FlxG.cameras.add(curCamera);
 		super();
-
-		canControlle = true;
 	}
 
 	override function update(elapsed:Float){
@@ -65,9 +63,14 @@ class MusicBeatSubstate extends FlxSubState{
 		//do literally nothing dumbass
 	}
 
-	override function destroy(){
+	override function close():Void {
+		onClose();
 		FlxG.cameras.remove(curCamera);
-		
+		curCamera.destroy();
+		super.close();
+	}
+
+	override function destroy(){		
 		super.destroy();
 	}
 }

@@ -37,8 +37,7 @@ using StringTools;
 
 class XMLEditorState extends MusicBeatState {
     private static var _XML:Access;
-    private static var _IMG:BitmapData;
-    private static var IMG_:String = "";
+    private static var _IMG:FlxGraphic;
 
     var tabFILE:FlxUITabMenu;
     var tabGHOST:FlxUITabMenu;
@@ -46,6 +45,7 @@ class XMLEditorState extends MusicBeatState {
     
     var point:FlxSprite;
     var camPoint:FlxSprite;
+    var sizePoint:FlxSprite;
 
     var imgIcon:FlxSprite;
     var bSprite:FlxSprite;
@@ -97,6 +97,10 @@ class XMLEditorState extends MusicBeatState {
         camPoint.cameras = [camFGame];
         add(camPoint);
 
+        sizePoint = new FlxSprite(0, 0).makeGraphic(5, 5, FlxColor.WHITE);
+        sizePoint.cameras = [camFGame];
+        add(sizePoint);
+
         tabFILE = new FlxUITabMenu(null, [{name: "Files", label: 'Files'}], true);
         tabFILE.resize(250, 130);
 		tabFILE.x = FlxG.width - tabFILE.width;
@@ -137,6 +141,7 @@ class XMLEditorState extends MusicBeatState {
         eSprite.setPosition(point.x, point.y);
 
         camPoint.setPosition(eSprite.getGraphicMidpoint().x, eSprite.getGraphicMidpoint().y);
+        sizePoint.setPosition(eSprite.x + eSprite.width, eSprite.y + eSprite.height);
 
         var arrayControlle = true;
         for(item in arrayFocus){if(item.hasFocus){arrayControlle = false;}}
@@ -144,8 +149,6 @@ class XMLEditorState extends MusicBeatState {
         if(canControlle && arrayControlle){    
             if(FlxG.mouse.justPressedRight){pos = [[camFollow.x, camFollow.y],[pMouse.x, pMouse.y]];}
             if(FlxG.mouse.pressedRight){camFollow.setPosition(pos[0][0] + ((pos[1][0] - pMouse.x) * 1.0), pos[0][1] + ((pos[1][1] - pMouse.y) * 1.0));}
-
-            //if(FlxG.keys.justPressed.SPACE){chrStage.playAnim(clAnims.getSelectedLabel(), true);}
 
             if(FlxG.keys.pressed.SHIFT){
                 if(FlxG.mouse.wheel != 0){camFGame.zoom += (FlxG.mouse.wheel * 0.1);} 
@@ -188,8 +191,8 @@ class XMLEditorState extends MusicBeatState {
     private function loadArchives():Void{
         #if sys
             if(txtIMAGE.text.length > 0){
-                _IMG = BitmapData.fromFile(txtIMAGE.text); _IMG.lock();
-                IMG_ = txtIMAGE.text;
+                if(_IMG != null){_IMG.destroy();}
+                _IMG = FlxGraphic.fromBitmapData(BitmapData.fromFile(txtIMAGE.text));
             }
             if(txtXML.text.length > 0){
                 _XML = new Access((Xml.parse(File.getContent(txtXML.text))).firstElement());
@@ -233,10 +236,12 @@ class XMLEditorState extends MusicBeatState {
         var values:Array<Dynamic> = null;
         if(eSprite != null && eSprite.animation.curAnim != null){values = [eSprite.animation.curAnim.name, eSprite.animation.curAnim.curFrame];}
         if(_XML != null && _IMG != null){
-            eSprite.frames = FlxAtlasFrames.fromSparrow(BitmapData.fromFile(IMG_), _XML.x.toString());
+            if(eSprite != null){eSprite.destroy();}
+
+            eSprite.frames = FlxAtlasFrames.fromSparrow(_IMG, _XML.x.toString());
             
             var animArr = getNamesArray(_XML.elements);
-            for(anim in animArr){eSprite.animation.addByPrefix(anim, anim); eSprite.animation.play(anim);}
+            for(anim in animArr){eSprite.animation.addByPrefix(anim, anim); eSprite.animation.play(anim); eSprite.animation.stop();}
 
             if(values != null){eSprite.animation.play(values[0], false, false, values[1]); eSprite.animation.stop();}
         }
@@ -264,19 +269,21 @@ class XMLEditorState extends MusicBeatState {
         var Name = AnimName + nFrames;
 
         var aElements:Access = _XML != null ? _XML : null;
-        if(aElements != null && aElements.elements != null){for(i in aElements.elements){
-            if(i.att.name == Name){
-                if(!i.has.x){i.att.x = "0";}
-                if(!i.has.y){i.att.y = "0";}
-                if(!i.has.width){i.att.width = "0";}
-                if(!i.has.height){i.att.height = "0";}
-                if(!i.has.frameX){i.att.frameX = "0";}
-                if(!i.has.frameY){i.att.frameY = "0";}
-                if(!i.has.frameWidth){i.att.frameWidth = "0";}
-                if(!i.has.frameHeight){i.att.frameHeight = "0";}
-                return i;
+        if(aElements != null && aElements.elements != null){
+            for(i in aElements.elements){
+                if(i.att.name == Name){
+                    if(!i.has.x){i.att.x = "0";}
+                    if(!i.has.y){i.att.y = "0";}
+                    if(!i.has.width){i.att.width = "0";}
+                    if(!i.has.height){i.att.height = "0";}
+                    if(!i.has.frameX){i.att.frameX = "0";}
+                    if(!i.has.frameY){i.att.frameY = "0";}
+                    if(!i.has.frameWidth){i.att.frameWidth = "0";}
+                    if(!i.has.frameHeight){i.att.frameHeight = "0";}
+                    return i;
+                }
             }
-        }}
+        }
         return hasNull ? null : new Access(Xml.parse('<SubTexture name="n0000" x="0" y="0" width="0" height="0" frameX="0" frameY="0" frameWidth="0" frameHeight="0"/>').firstElement());
     }
 
@@ -288,6 +295,8 @@ class XMLEditorState extends MusicBeatState {
 
         eSprite.animation.play(AnimName, true, false, Frame);
         eSprite.animation.stop();
+
+        eSprite.updateHitbox();
 
         var sTexture:Access = getAccess(AnimName, Frame);
         lblCurX.text = 'X: [${sTexture.att.x}]';

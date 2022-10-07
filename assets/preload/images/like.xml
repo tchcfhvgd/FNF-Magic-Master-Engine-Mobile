@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Chulito.png">
+	<!-- Created with Adobe Animate version 22.0.7.214 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Chulito0000" x="0" y="0" width="163" height="158"/>
+	<SubTexture name="Chulito0001" x="0" y="0" width="163" height="158"/>
+	<SubTexture name="Chulito0002" x="0" y="0" width="163" height="158"/>
+	<SubTexture name="Chulito0003" x="0" y="0" width="163" height="158"/>
+	<SubTexture name="Chulito0004" x="0" y="0" width="163" height="158"/>
+	<SubTexture name="Chulito0005" x="0" y="0" width="163" height="158"/>
+	<SubTexture name="Chulito0006" x="0" y="0" width="163" height="158"/>
+	<SubTexture name="Chulito0007" x="0" y="0" width="163" height="158"/>
+	<SubTexture name="Chulito0008" x="0" y="0" width="163" height="158"/>
+	<SubTexture name="Chulito0009" x="0" y="0" width="163" height="158"/>
+	<SubTexture name="Chulito0010" x="0" y="0" width="163" height="158"/>
+	<SubTexture name="Chulito0011" x="0" y="0" width="163" height="158"/>
+	<SubTexture name="Chulito0012" x="0" y="0" width="163" height="158"/>
+	<SubTexture name="Chulito0013" x="0" y="0" width="163" height="158"/>
+	<SubTexture name="Chulito Click0000" x="163" y="0" width="181" height="175" frameX="-3" frameY="0" frameWidth="186" frameHeight="175"/>
+	<SubTexture name="Chulito Click0001" x="163" y="0" width="181" height="175" frameX="-3" frameY="0" frameWidth="186" frameHeight="175"/>
+	<SubTexture name="Chulito Click0002" x="344" y="0" width="105" height="99" frameX="-41" frameY="-38" frameWidth="186" frameHeight="175"/>
+	<SubTexture name="Chulito Click0003" x="449" y="0" width="149" height="139" frameX="-19" frameY="-18" frameWidth="186" frameHeight="175"/>
+	<SubTexture name="Chulito Click0004" x="598" y="0" width="182" height="168" frameX="-2" frameY="-4" frameWidth="186" frameHeight="175"/>
+	<SubTexture name="Chulito Click0005" x="780" y="0" width="186" height="174" frameX="0" frameY="-1" frameWidth="186" frameHeight="175"/>
+	<SubTexture name="Chulito Click0006" x="0" y="175" width="174" height="162" frameX="-6" frameY="-7" frameWidth="186" frameHeight="175"/>
+	<SubTexture name="Chulito Click0007" x="174" y="175" width="162" height="156" frameX="-12" frameY="-10" frameWidth="186" frameHeight="175"/>
+	<SubTexture name="Chulito Click0008" x="163" y="0" width="181" height="175" frameX="-3" frameY="0" frameWidth="186" frameHeight="175"/>
+	<SubTexture name="Chulito Click0009" x="163" y="0" width="181" height="175" frameX="-3" frameY="0" frameWidth="186" frameHeight="175"/>
+	<SubTexture name="Chulito Click0010" x="163" y="0" width="181" height="175" frameX="-3" frameY="0" frameWidth="186" frameHeight="175"/>
+	<SubTexture name="Chulito Click0011" x="163" y="0" width="181" height="175" frameX="-3" frameY="0" frameWidth="186" frameHeight="175"/>
+	<SubTexture name="Chulito Click0012" x="163" y="0" width="181" height="175" frameX="-3" frameY="0" frameWidth="186" frameHeight="175"/>
+	<SubTexture name="Chulito Click0013" x="163" y="0" width="181" height="175" frameX="-3" frameY="0" frameWidth="186" frameHeight="175"/>
+	<SubTexture name="Chulito Mouse0000" x="0" y="0" width="163" height="158" frameX="-9" frameY="-9" frameWidth="163" frameHeight="158"/>
+	<SubTexture name="Chulito Mouse0001" x="336" y="175" width="166" height="162" frameX="-7" frameY="-7" frameWidth="181" frameHeight="175"/>
+	<SubTexture name="Chulito Mouse0002" x="502" y="175" width="173" height="167" frameX="-4" frameY="-4" frameWidth="181" frameHeight="175"/>
+	<SubTexture name="Chulito Mouse0003" x="675" y="175" width="177" height="171" frameX="-2" frameY="-2" frameWidth="181" frameHeight="175"/>
+	<SubTexture name="Chulito Mouse0004" x="0" y="346" width="181" height="175"/>
+	<SubTexture name="Chulito Mouse0005" x="0" y="346" width="181" height="175"/>
+	<SubTexture name="Chulito Mouse0006" x="0" y="346" width="181" height="175"/>
+	<SubTexture name="Chulito Mouse0007" x="0" y="346" width="181" height="175"/>
+	<SubTexture name="Chulito Mouse0008" x="0" y="346" width="181" height="175"/>
+	<SubTexture name="Chulito Mouse0009" x="0" y="346" width="181" height="175"/>
+	<SubTexture name="Chulito Mouse0010" x="0" y="346" width="181" height="175"/>
+	<SubTexture name="Chulito Mouse0011" x="0" y="346" width="181" height="175"/>
+	<SubTexture name="Chulito Mouse0012" x="0" y="346" width="181" height="175"/>
+	<SubTexture name="Chulito Mouse0013" x="0" y="346" width="181" height="175"/>
+</TextureAtlas>

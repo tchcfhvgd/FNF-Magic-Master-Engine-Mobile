@@ -16,15 +16,14 @@ using StringTools;
  * Loosley based on FlxTypeText lolol
  */
 class Alphabet extends FlxSpriteGroup {
-    public var curImage:String = "alphabet";
-    public var curScale:FlxPoint = new FlxPoint(1, 1);
-	public var curText:String = "";
-
-    public var animated:Bool = false;
+    public static var DEFAULT_IMAGE:String = "alphabet";
+	public var cur_data:Array<Dynamic> = [];
 
     public var repMap:Map<String, String> = [
         "-" => " "
     ];
+
+    public var text:String = "";
 
     //Dialogue Stuff
     public var delay:Float = 0.05;
@@ -37,95 +36,64 @@ class Alphabet extends FlxSpriteGroup {
     var yOffset:Float = 0;
 
     var lastChar:AlphaCharacter = null;
-    var curChar:Int = 0;
+    var lastFirstChar:AlphaCharacter = null;
+
 	var curY:Float = 0;
     var curX:Float = 0;
 
-	var splitWords:Array<String> = [];
+    public function new(x:Float, y:Float, data:Dynamic){
+        if((data is Array)){cur_data = data;}else if((data is String)){cur_data = [({text: data})];}else{cur_data = [data];}
 
-	var isBold:Bool = false;
-
-	var pastX:Float = 0;
-	var pastY:Float  = 0;
-
-    public function new(x:Float, y:Float, ?scale:FlxPoint, text:String = "", bold:Bool = false, typed:Bool = false, animated:Bool = true, image:String = null){
-		if(image != null){curImage = image;}
-        if(scale != null){curScale = scale;}
-        this.animated = animated;
-		curText = text;
-		isBold = bold;
-		pastX = x;
-		pastY = y;
 		super(x, y);
 
-
-        if(curText.length <= 0){return;}
-        if(typed){typeText(); return;}
-        setText();
+        if(cur_data.length <= 0){return;}
+        loadText();
 	}
 
-    function doSplitWords():Void {
-        splitWords = curText.split("");
+    function doSplitWords(text:String):Array<String> {
+        var splitWords:Array<String> = text.split("");
         for(c in splitWords){if(repMap.exists(c)){c.replace(c, repMap.get(c));}}
+        return splitWords;
     }
-
-
-    public function setText(){
-        doSplitWords();
+    
+    public function loadText(){
         curX = 0;
         curY = 0;
-        clear();
-    
-        for(char in splitWords){
-            if(char == "\n" && lastChar != null){
-                curY += lastChar.height * yMultiplier; curX = 0;
-            }else if(char == " "){
-                curX += spaceWidth;
-            }else if(AlphaCharacter.getChars().indexOf(char.toLowerCase()) != -1){
-                var letter:AlphaCharacter = new AlphaCharacter(curX + xOffset, curY + yOffset, curImage);
-                letter.createChar(char, isBold);
-                if(!animated){letter.animation.stop();}
-                letter.scale.set(curScale.x, curScale.y); letter.updateHitbox();
-                curX += letter.width * xMultiplier;
-                        
-                lastChar = letter;
-    
-                add(letter);
-            }
-        }
-    }
-
-    public function typeText():Void{
-        doSplitWords();
-        curChar = 0;
-        curX = 0;
-        curY = 0;
+        text = "";
         clear();
 
-        var loopTimer = new haxe.Timer(delay * 1000);
-        loopTimer.run = function(){
-            if(curText.fastCodeAt(curChar) == "\n".code){
-                if(lastChar != null){curY += lastChar.height * yMultiplier;}
-                curX = 0;
-            }
+        for(_dat in cur_data){
+            var cur_split:Array<String> = doSplitWords(_dat.text);
+            var cur_scale:FlxPoint = _dat.scale != null ? FlxPoint.get(_dat.scale,_dat.scale) : FlxPoint.get(1,1);
+            var cur_image:String = _dat.image != null ? _dat.image : DEFAULT_IMAGE;
+            var cur_animated:Bool = _dat.animated;
+            var cur_bold:Bool = _dat.bold;
 
-            if(splitWords[curChar] == " "){curX += spaceWidth;}else{
-                if(AlphaCharacter.getChars().indexOf(splitWords[curChar]) != -1){        
-                    var letter:AlphaCharacter = new AlphaCharacter(curX + xOffset, curY + yOffset, curImage);
-                    if(!animated){letter.animation.stop();}
-                    letter.scale.set(curScale.x, curScale.y);
-                    curX += letter.width * xMultiplier;
-                            
-                    letter.createChar(splitWords[curChar], isBold);
-                    
-                    lastChar = letter;
-        
-                    add(letter);
+            var _i:Int = 0;
+            for(char in cur_split){
+                switch(char){
+                    case '\n':{if(lastFirstChar != null){curY += lastFirstChar.height * yMultiplier; curX = 0;}}
+                    case '\t':{curX += 2 * spaceWidth;}
+                    case ' ':{curX += spaceWidth;}
+                    default:{
+                        if(AlphaCharacter.getChars().indexOf(char.toLowerCase()) != -1){
+                            var letter:AlphaCharacter = new AlphaCharacter(curX + xOffset, curY + yOffset, cur_image);
+                            letter.createChar(char, cur_bold);
+                            if(!cur_animated){letter.animation.stop();}
+                            letter.scale.set(cur_scale.x, cur_scale.y); letter.updateHitbox();
+                            curX += letter.width * xMultiplier;
+                                    
+                            lastChar = letter;
+                            if(_i == 0){lastFirstChar = letter;}
+                
+                            add(letter);
+    
+                            _i++;
+                        }
+                    }
                 }
+                text += char;
             }
-            
-            curChar += 1;
-            if(curChar >= splitWords.length){loopTimer.stop();}
         }
     }
     

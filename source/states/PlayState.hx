@@ -346,12 +346,24 @@ class PlayState extends MusicBeatState {
 		checkEvents();
 
 		if(canControlle){	
-			if(principal_controls.checkAction("Menu_Pause", JUST_PRESSED) && canPause){pauseAndOpen(new PauseSubState(function(){
-				persistentUpdate = false;
-				persistentDraw = true;
-				if(!songGenerated){isPaused = false; pauseSong(false); return;}
-				startCountdown(function(){canControlle = true; isPaused = false; pauseSong(false);});
-			}), true);}
+			if(principal_controls.checkAction("Menu_Pause", JUST_PRESSED) && canPause){
+				pauseAndOpen(
+					PauseSubState,
+					[
+						function(){
+							if(!songGenerated){isPaused = false; pauseSong(false); return;}
+							startCountdown(function(){
+								persistentUpdate = false;
+								persistentDraw = true;
+								canControlle = true;
+								isPaused = false;
+								pauseSong(false);
+							});
+						}
+					],
+					true
+				);
+			}
 			if(FlxG.keys.justPressed.SEVEN){states.editors.ChartEditorState._song = SONG; MusicBeatState.switchState(new states.editors.ChartEditorState(null, PlayState));}
 			
 			if(FlxG.keys.justPressed.R){doGameOver();}
@@ -502,7 +514,7 @@ class PlayState extends MusicBeatState {
 		}
 	}
 
-	public function pauseAndOpen(substate:FlxSubState, hasEasterEgg:Bool = false){
+	public function pauseAndOpen(substate:Class<FlxSubState>, args:Array<Dynamic>, hasEasterEgg:Bool = false){
 		if(isPaused){return;}
 		persistentUpdate = false;
 		persistentDraw = true;
@@ -516,7 +528,7 @@ class PlayState extends MusicBeatState {
 			MusicBeatState.switchState(new GitarooPause());
 		}else{
 			canControlle = false;
-			openSubState(substate);
+			openSubState(Type.createInstance(substate, args));
 		}
 	}
 
@@ -529,14 +541,27 @@ class PlayState extends MusicBeatState {
 		if(SONG.sectionStrums[curStrum].notes[curSection].changeSing){char = SONG.sectionStrums[curStrum].notes[curSection].charToSing;}
 		for(i in char){chars.push(stage.getCharacterById(i)); stage.getCharacterById(i).visible = false;}
 
-		pauseAndOpen(new substates.GameOverSubstate(chars));
+		pauseAndOpen(substates.GameOverSubstate, [chars]);
 	}
 
-	override public function onFocusLost():Void {super.onFocusLost(); pauseAndOpen(new PauseSubState(function(){
-		persistentUpdate = false;
-		persistentDraw = true;
-		startCountdown(function(){canControlle = true; isPaused = false; pauseSong(false);});
-	}), true);}
+	override public function onFocusLost():Void {
+		super.onFocusLost();
+		pauseAndOpen(
+			PauseSubState,
+			[
+				function(){
+					startCountdown(function(){
+						persistentUpdate = false;
+						persistentDraw = true;
+						canControlle = true;
+						isPaused = false;
+						pauseSong(false);
+					});
+				}
+			],
+			true
+		);
+}
 
 	override function stepHit(){
 		super.stepHit();

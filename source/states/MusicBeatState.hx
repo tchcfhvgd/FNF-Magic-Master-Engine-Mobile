@@ -207,16 +207,3 @@ class MusicBeatState extends FlxUIState {
 		FlxG.switchState(toSwitch);
 	}
 }
-
-class MessPopUp extends MusicBeatSubstate {
-	public function new(){
-		super();
-    }
-
-	override function update(elapsed:Float){
-		super.update(elapsed);
-	}
-
-	override function destroy(){super.destroy();}
-	function toClose(){close();}
-}

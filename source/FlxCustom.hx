@@ -54,6 +54,8 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
         this._OnChange = OnChange;
         super(X, Y);
 
+        this.antialiasing = false;
+
         list = [];
         if(DataList != null){list = DataList;}
 
@@ -176,6 +178,8 @@ class FlxUIValueChanger extends FlxUIGroup implements IFlxUIWidget implements IF
 
     public function new(X:Float = 0, Y:Float = 0, Width:Int = 100, ?OnChange:Float->Void, ?text:FlxUIInputText){
         super(X, Y);
+        
+        this.antialiasing = false;
 
         _btnMinus = new FlxUICustomButton(0, 0, 20, null, "-", null, function(){c_Index(-1);});
 
@@ -232,6 +236,8 @@ class FlxUIValueChanger extends FlxUIGroup implements IFlxUIWidget implements IF
 class FlxCustomButton extends FlxButton {
 	public function new(X:Float = 0, Y:Float = 0, Width:Null<Int>, Height:Null<Int>, ?Text:String, ?GraphicArgs:Array<Dynamic>, ?Color:Null<FlxColor>, ?OnClick:() -> Void){
 		super(X, Y, Text, OnClick);
+        
+        this.antialiasing = false;
 
 		if(Width == null){Width = Std.int(this.width);}
 		if(Height == null){Height = Std.int(this.height);}
@@ -253,6 +259,8 @@ class FlxCustomButton extends FlxButton {
 class FlxUICustomButton extends FlxUIButton {
 	public function new(X:Float = 0, Y:Float = 0, Width:Null<Int>, Height:Null<Int>, ?Text:String, ?GraphicArgs:Array<Dynamic>, ?Color:Null<FlxColor>, ?OnClick:() -> Void){
 		super(X, Y, Text, OnClick);
+        
+        this.antialiasing = false;
 
 		if(Width == null){Width = Std.int(this.width);}
 		if(Height == null){Height = Std.int(this.height);}
@@ -278,6 +286,8 @@ class FlxUICustomNumericStepper extends FlxUINumericStepper {
             TextField = new FlxUIInputText(0, 0, Std.int(Width - (TextField.height * 2) - 5));
         }
         super(X, Y, StepSize, DefaultValue, Min, Max, Decimals, Stack, TextField, ButtonPlus, ButtonMinus, IsPercent);
+        
+        this.antialiasing = false;
     }
 }
 

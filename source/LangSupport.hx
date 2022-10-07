@@ -67,7 +67,11 @@ class LangSupport {
         FlxG.save.data.language = Language;
     }
 
-    public static function getText(key:String){return LANG.get(key);}
+    public static function getText(key:String){
+        var toReturn:Dynamic = LANG.get(key);
+        if(toReturn == null){toReturn = key;}
+        return toReturn;
+    }
 }
 
 class PopLangState extends states.MusicBeatState {
@@ -88,16 +92,16 @@ class PopLangState extends states.MusicBeatState {
 
         langGroup = new FlxTypedGroup<Alphabet>();
         for(l in LangSupport.getLangs()){
-            var nLang:Alphabet = new Alphabet(0,-100,new FlxPoint(0.8,0.8),l,true,false,true);
+            var nLang:Alphabet = new Alphabet(0,-100,{scale:0.7, animated:true, bold:true, text:l});
             nLang.screenCenter(X);
             langGroup.add(nLang);
         }
         add(langGroup);
 
-        leftArrow = new Alphabet(0,-100,new FlxPoint(1.1,1.1),'>',true,false,true); leftArrow.screenCenter(Y); add(leftArrow);
-        rightArrow = new Alphabet(0,-100,new FlxPoint(1.1,1.1),'<',true,false,true); rightArrow.screenCenter(Y); add(rightArrow);
+        leftArrow = new Alphabet(0,-100,'>'); leftArrow.screenCenter(Y); add(leftArrow);
+        rightArrow = new Alphabet(0,-100,'<'); rightArrow.screenCenter(Y); add(rightArrow);
 
-        var lblAdvice:Alphabet = new Alphabet(0, 20, new FlxPoint(1,1), 'Choose Your Language', true, false, true); add(lblAdvice);
+        var lblAdvice:Alphabet = new Alphabet(0, 20,{animated:true,bold:true,text:'Choose Your Language'}); add(lblAdvice);
         lblAdvice.screenCenter(X);
 
         changeLang();
@@ -132,7 +136,7 @@ class PopLangState extends states.MusicBeatState {
 	}
 
     public function chooseLang():Void {
-        LangSupport.setLang(langGroup.members[curLang].curText);
+        LangSupport.setLang(langGroup.members[curLang].text);
         states.MusicBeatState.switchState(new states.TitleState());
     }
 }

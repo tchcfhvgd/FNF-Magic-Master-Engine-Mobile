@@ -1,15 +1,55 @@
 {
-	"ModAdv_1": "Looks like you have Mods Installed",
-	"ModAdv_2": "Would you like to configure them before starting the game?",
+	"ModAdv_1":[
+		{
+			"animated":true,
+			"bold":true,
+			"scale":0.5,
+			"text":"\t  Looks like you have Mods Installed"
+		},
+		{
+			"scale":0.35,
+			"animated":true,
+			"bold":true,
+			"text": "\n\nWould you like to configure them before starting the game?"
+		}
+	],
 
 	"Sett_1": "Settings",
 
-	"ModList": "Mod List",
+	"ModList": [
+		{
+			"animated":true,
+			"bold":true,
+			"text":"Mod List"
+		}
+	],
 
     "StoryMode": "StoryMode",
     "FreePlay": "FreePlay",
 	"Skins": "Skins",
 	"Options": "Options",
 	"Extras": "Extras",
-	"Credits": "Credits"
+	"Credits": "Credits",
+
+	"Charting_Adv_1":[
+		{
+			"animated":true,
+			"bold":true,
+			"scale":1.1,
+			"text":"Chart Editor Wiki:"
+		},
+		{
+			"animated":true,
+			"bold":true,
+			"scale":0.5,
+			"text":"\n\nPequeña wiki para que sea mas facil usar el Editor."
+
+		},
+		{
+			"animated":true,
+			"bold":true,
+			"scale":0.7,
+			"text":"\n\nTab.1: Song:"
+		}
+	]
 }

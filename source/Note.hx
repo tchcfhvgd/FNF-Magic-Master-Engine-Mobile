@@ -210,8 +210,25 @@ class Note extends StrumNote {
         return toReturn;
     }
 
-    public static function convNoteData(data:NoteData):Array<Dynamic> {if(data == null){return null;} return [data.strumTime, data.keyData, data.sustainLength, data.multiHits, data.canMerge, data.presset, data.eventData, data.otherStuff];}
-    public static function convEventData(data:EventData):Array<Dynamic> {if(data == null){return null;} return [data.strumTime, data.eventData, data.condition];}
+    public static function set_note(n1:Array<Dynamic>, n2:Array<Dynamic>):Void {
+        if(!(n1 is Array) || !(n2 is Array)){return;}
+        for(i in 0...n2.length){
+            if(n1.length <= i){
+                n1.push(n2[i]);
+            }else{
+                n1[i] = n2[i];
+            }
+        }
+    }
+    
+    public static function convNoteData(data:NoteData):Array<Dynamic> {
+        if(data == null){return null;}
+        return [data.strumTime, data.keyData, data.sustainLength, data.multiHits, data.canMerge, data.presset, data.eventData, data.otherStuff];
+    }
+    public static function convEventData(data:EventData):Array<Dynamic> {
+        if(data == null){return null;}
+        return [data.strumTime, data.eventData, data.condition];
+    }
     
     public static function getNoteData(?note:Array<Dynamic>):NoteData {
         var toReturn:NoteData = {
@@ -226,16 +243,15 @@ class Note extends StrumNote {
         }
 
         if(note == null){return toReturn;}
-        note.resize(8);
 
-        if(note[0] != null && Std.isOfType(note[0], Float)){toReturn.strumTime = note[0];}
-        if(note[1] != null && Std.isOfType(note[1], Int)){toReturn.keyData = note[1];}    
-        if(note[2] != null && Std.isOfType(note[2], Float)){toReturn.sustainLength = note[2];}      
-        if(note[3] != null && Std.isOfType(note[3], Int)){toReturn.multiHits = note[3];}
-        if(note[4]){toReturn.canMerge = true;}
-        if(note[5] != null && Std.isOfType(note[5], String)){toReturn.presset = note[5];}
-        if(note[6] != null && Std.isOfType(note[6], Array)){toReturn.eventData = note[6];}
-        if(note[7] != null && Std.isOfType(note[7], Array)){toReturn.otherStuff = note[7];}
+        if(note.length >= 0 && Std.isOfType(note[0], Float)){toReturn.strumTime = note[0];}
+        if(note.length >= 1 && Std.isOfType(note[1], Int)){toReturn.keyData = note[1];}    
+        if(note.length >= 2 && Std.isOfType(note[2], Float)){toReturn.sustainLength = note[2];}      
+        if(note.length >= 3 && Std.isOfType(note[3], Int)){toReturn.multiHits = note[3];}
+        if(note.length >= 4 && note[4]){toReturn.canMerge = true;}
+        if(note.length >= 5 && Std.isOfType(note[5], String)){toReturn.presset = note[5];}
+        if(note.length >= 6 && Std.isOfType(note[6], Array)){toReturn.eventData = note[6];}
+        if(note.length >= 7 && Std.isOfType(note[7], Array)){toReturn.otherStuff = note[7];}
         
         return toReturn;
     }
@@ -249,9 +265,9 @@ class Note extends StrumNote {
 
         if(event == null){return toReturn;}
 
-        if(event[0] != null && Std.isOfType(event[0], Float)){toReturn.strumTime = event[0];}
-        if(event[1] != null && Std.isOfType(event[1], Array)){toReturn.eventData = event[1];}
-        if(event[2] != null && Std.isOfType(event[2], String)){toReturn.condition = event[2];}
+        if(event.length >= 0 && Std.isOfType(event[0], Float)){toReturn.strumTime = event[0];}
+        if(event.length >= 1 && Std.isOfType(event[1], Array)){toReturn.eventData = event[1];}
+        if(event.length >= 2 && Std.isOfType(event[2], String)){toReturn.condition = event[2];}
 
         return toReturn;
     }
@@ -421,23 +437,21 @@ class ColorFilterShader extends FlxShader {
 
                 vec3 normRepColor = normalizeColor(replaceColor);
 
-                switch(checkColor){
-                    default:{gl_FragColor = vec4(pixel.r, pixel.g, pixel.b, pixel.a * cjk_alpha); return;}
-                    case 0:{
-                        float diff = pixel.r - ((pixel.b + pixel.g) / 2.0);
-                        gl_FragColor = vec4((((pixel.b + pixel.g) / 2.0) + (normRepColor.r * diff)) * cjk_alpha, (pixel.g + (normRepColor.g * diff)) * cjk_alpha, (pixel.b + (normRepColor.b * diff)) * cjk_alpha, pixel.a * cjk_alpha);
-                        return;
-                    }
-                    case 1:{
-                        float diff = pixel.g - ((pixel.r + pixel.b) / 2.0);
-                        gl_FragColor = vec4((pixel.r + (normRepColor.r * diff)) * cjk_alpha, (((pixel.r + pixel.b) / 2.0) + (normRepColor.g * diff)) * cjk_alpha, (pixel.b + (normRepColor.b * diff)) * cjk_alpha, pixel.a * cjk_alpha);
-                        return;
-                    }
-                    case 2:{
-                        float diff = pixel.b - ((pixel.r + pixel.g) / 2.0);
-                        gl_FragColor = vec4((pixel.r + (normRepColor.r * diff)) * cjk_alpha, (pixel.g + (normRepColor.g * diff)) * cjk_alpha, (((pixel.r + pixel.g) / 2.0) + (normRepColor.b * diff)) * cjk_alpha, pixel.a * cjk_alpha);
-                        return;
-                    }
+                if(checkColor == 0){
+                    float diff = pixel.r - ((pixel.b + pixel.g) / 2.0);
+                    gl_FragColor = vec4((((pixel.b + pixel.g) / 2.0) + (normRepColor.r * diff)) * cjk_alpha, (pixel.g + (normRepColor.g * diff)) * cjk_alpha, (pixel.b + (normRepColor.b * diff)) * cjk_alpha, pixel.a * cjk_alpha);
+                    return;
+                }else if(checkColor == 1){
+                    float diff = pixel.g - ((pixel.r + pixel.b) / 2.0);
+                    gl_FragColor = vec4((pixel.r + (normRepColor.r * diff)) * cjk_alpha, (((pixel.r + pixel.b) / 2.0) + (normRepColor.g * diff)) * cjk_alpha, (pixel.b + (normRepColor.b * diff)) * cjk_alpha, pixel.a * cjk_alpha);
+                    return;
+                }else if(checkColor == 2){
+                    float diff = pixel.b - ((pixel.r + pixel.g) / 2.0);
+                    gl_FragColor = vec4((pixel.r + (normRepColor.r * diff)) * cjk_alpha, (pixel.g + (normRepColor.g * diff)) * cjk_alpha, (((pixel.r + pixel.g) / 2.0) + (normRepColor.b * diff)) * cjk_alpha, pixel.a * cjk_alpha);
+                    return;
+                }else{
+                    gl_FragColor = vec4(pixel.r, pixel.g, pixel.b, pixel.a * cjk_alpha);
+                    return;
                 }
 		    }
     ')

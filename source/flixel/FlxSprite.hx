@@ -37,8 +37,9 @@ using flixel.util.FlxColorTransformUtil;
  * or create a base monochromatic rectangle using `makeGraphic()`.
  * The image `BitmapData` is stored in the `pixels` field.
  */
-class FlxSprite extends FlxObject
-{
+class FlxSprite extends FlxObject {
+	public var _new_data:Map<String, Dynamic> = [];
+
 	/**
 	 * Class that handles adding and playing animations on this sprite.
 	 */

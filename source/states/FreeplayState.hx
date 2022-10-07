@@ -72,12 +72,12 @@ class FreeplayState extends MusicBeatState {
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		for(i in 0...songList.length){
-			var songText:Alphabet = new Alphabet(10, 0, Paths.getFileName(songList[i].song), true, false, true);
+			var songText:Alphabet = new Alphabet(10,0,Paths.getFileName(songList[i].song));
 			songText.ID = i;
 			if(Highscore.checkLock(songList[i].keyLock)){
 				var cText:String = "";
-				while(cText.length < songText.curText.length){cText = '${cText}?';}
-				songText.curText = cText; songText.setText();
+				while(cText.length < songText.text.length){cText = '${cText}?';}
+				songText.text = cText; songText.loadText();
 			}
 			grpSongs.add(songText);
 		}
@@ -90,7 +90,7 @@ class FreeplayState extends MusicBeatState {
 
 		grpMods = new FlxTypedGroup<Alphabet>();
 		for(i in 0...modList.length){
-			var modText:Alphabet = new Alphabet(10, 0, Paths.getFileName(modList[i].mod), true, false, true);
+			var modText:Alphabet = new Alphabet(10,0,Paths.getFileName(modList[i].mod));
 			modText.ID = i;
 			grpMods.add(modText);
 		}

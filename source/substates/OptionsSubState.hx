@@ -1,15 +1,17 @@
 package substates;
 
-import flixel.FlxG;
-import flixel.FlxSprite;
+import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.text.FlxText;
-import flixel.util.FlxColor;
-import flixel.math.FlxPoint;
-import flixel.FlxCamera;
+import flixel.input.keyboard.FlxKey;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flash.geom.Rectangle;
+import flixel.util.FlxColor;
+import flixel.math.FlxPoint;
+import flixel.text.FlxText;
+import flixel.FlxSprite;
+import flixel.FlxCamera;
+import flixel.FlxG;
 
 import flixel.addons.ui.*;
 
@@ -21,12 +23,9 @@ class OptionsSubState extends MusicBeatSubstate {
 	private var curOption:Int = 0;
 	private var choosedCat:Bool = false;
 
-	public function new(_backGround:Bool = true){
+	public function new(){
 		FlxG.mouse.visible = true;
 		super();
-		canControlle = false;
-		
-		if(!_backGround){curCamera.bgColor.alpha = 0;}
 		curCamera.alpha = 0;
 
 		gpCategory = new FlxTypedGroup<Alphabet>();
@@ -39,7 +38,7 @@ class OptionsSubState extends MusicBeatSubstate {
 		for(i in PreSettings.CURRENT_SETTINGS.keys()){optsList.push(i);}
 
 		for(i in optsList){
-			var _cat:Alphabet = new Alphabet(10,0,new FlxPoint(0.5,0.5),i,true,false);
+			var _cat:Alphabet = new Alphabet(10,0,i);
 			gpCategory.add(_cat);
 		}
 
@@ -85,7 +84,7 @@ class OptionsSubState extends MusicBeatSubstate {
 	public function changeOption(change:Int = 0):Void {
 		if(!choosedCat){return;}
 
-		var cur_category:String = gpCategory.members[curCategory].curText;
+		var cur_category:String = gpCategory.members[curCategory].text;
 		var cur_option_item:OptionItem = gpOptions.members[curOption];
 		var cur_option:String = cur_option_item.setting;
 		var pre_Current:Dynamic = null;
@@ -113,8 +112,8 @@ class OptionsSubState extends MusicBeatSubstate {
 			}
 		}
 
-		cur_option_item.curText = pre_Current;
-		cur_option_item.setText();
+		cur_option_item.text = pre_Current;
+		cur_option_item.loadText();
 
 		changeValue();
 	}
@@ -143,10 +142,8 @@ class OptionsSubState extends MusicBeatSubstate {
 		choosedCat = val;
 
 		if(choosedCat){
-			curOption = 0;
-			for(obj in gpCategory){obj.curScale.set(0.3, 0.3); obj.setText();}
-			
-			var curCat:String = gpCategory.members[curCategory].curText;
+			curOption = 0;			
+			var curCat:String = gpCategory.members[curCategory].text;
 			switch(curCat){
 				case "Controls":{
 					for(i in Controls.STATIC_ACTIONS.keys()){
@@ -168,11 +165,7 @@ class OptionsSubState extends MusicBeatSubstate {
 				}
 			}
 			changeValue();
-		}else{
-			gpOptions.clear();
-
-			for(obj in gpCategory){obj.curScale.set(0.5, 0.5); obj.setText();}
-		}
+		}else{gpOptions.clear();}
 	}
 
 	public function doClose(){
@@ -190,19 +183,38 @@ class OptionItem extends Alphabet {
 		this.type = _type;
 		this.setting = _setting;
 		this.category = _category;
-		super(FlxG.width+10,FlxG.height/2,new FlxPoint(0.5,0.5),'',true,false);
-		setText();
+		super(FlxG.width+10,FlxG.height/2,'');
+		loadText();
 	}
 
-	override public function setText():Void {
+	override public function loadText():Void {
 		switch(type){
-			case "Controls":{curText = '${setting}: < ${Controls.STATIC_ACTIONS.get(setting)} >';}
-			case "KeyControls":{curText = '${setting}: < ${Controls.STATIC_STRUMCONTROLS.get(Std.parseInt(setting))} >';}
+			case "Controls":{text = '${setting}: < ${getControlsList(Controls.STATIC_ACTIONS.get(setting))} >';}
+			case "KeyControls":{text = '${setting}: < ${Controls.STATIC_STRUMCONTROLS.get(Std.parseInt(setting))} >';}
 			default:{
 				var _cur_settings:Any = PreSettings.getPreSetting(setting,category);
-				curText = '${setting}: < ${_cur_settings} >';
+				text = '${setting}: < ${_cur_settings} >';
 			}
 		}
-		super.setText();
+		super.loadText();
+	}
+
+	public function getControlsList(list:Array<Dynamic>):String {
+		var toReturn:String = '[';
+		for(i in 0...list.length){
+			var _i = list[i];
+
+			if((_i is Int)){
+				switch(i){
+					case 0:{toReturn +=  '${cast(_i,FlxKey).toString()},';}
+					case 1:{toReturn +=  '${cast(_i,FlxGamepadInputID).toString()},';}
+				}
+			}else if((_i is Array)){
+				toReturn += getControlsList(cast(_i));
+			}
+		}
+		toReturn += ']';
+		
+		return toReturn;
 	}
 }
