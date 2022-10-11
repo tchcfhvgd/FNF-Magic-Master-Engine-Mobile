@@ -16,7 +16,6 @@ import openfl.net.FileReference;
 import flixel.system.FlxSound;
 import flixel.tweens.FlxTween;
 import openfl.utils.ByteArray;
-import flixel.group.FlxGroup;
 import flixel.tweens.FlxEase;
 import flixel.input.FlxInput;
 import flixel.math.FlxPoint;
@@ -43,12 +42,12 @@ import haxe.Json;
 import FlxCustom.FlxUICustomNumericStepper;
 import states.PlayState.SongListData;
 import FlxCustom.FlxUICustomButton;
-import Section.SwagGeneralSection;
+import Song.SwagGeneralSection;
 import FlxCustom.FlxUICustomList;
 import FlxCustom.FlxCustomButton;
 import Conductor.BPMChangeEvent;
 import StrumLine.StaticNotes;
-import Section.SwagSection;
+import Song.SwagSection;
 import Song.SwagStrum;
 import Song.SwagSong;
 import Note.NoteData;
@@ -65,6 +64,7 @@ import sys.io.File;
 using StringTools;
 
 class ChartEditorState extends MusicBeatState{
+    public static var _song_path:String;
     public static var _song:SwagSong;
     var _file:FileReference;
     
@@ -132,6 +132,7 @@ class ChartEditorState extends MusicBeatState{
     override function create(){
         if(_song == null){_song = states.PlayState.SONG;}
         if(_song == null){_song = Song.loadFromJson("Test-Normal-Normal");}
+        _song_path = Paths.chart(Song.fileSong(_song.song,_song.category,_song.difficulty));
 
         autSave = FlxG.save.data.autSave;
         saveTimer.run = autoSave;
@@ -306,7 +307,7 @@ class ChartEditorState extends MusicBeatState{
                 var eData:EventData = Note.getEventData(e);
                 var isSelected:Bool = Note.compNotes(eData, selEvent, false);
         
-                var note:StrumEvent = new StrumEvent(eData.strumTime, conductor);
+                var note:StrumEvent = new StrumEvent(eData.strumTime, conductor, eData.isExternal, eData.isBroken);
                 setupNote(note, -1);
                 note.alpha = isSelected || FlxG.sound.music.playing ? 1 : 0.5;
     
@@ -772,6 +773,16 @@ class ChartEditorState extends MusicBeatState{
             stpEventStrumLine.value = selEvent.strumTime;
             var events:Array<String> = []; for(e in selEvent.eventData){events.push(e[0]);} clEventListEvents.setData(events);
             clEventListEvents.setLabel(clEventListEvents.getSelectedLabel(), false, true);
+            btnChangeEventFile.label.text = selEvent.isExternal ? "Global Event" : "Local Event";
+            if(selEvent.isExternal){
+                btnBrokeExternalEvent.active = true;
+                btnBrokeExternalEvent.alpha = 1;
+                btnBrokeExternalEvent.label.text = selEvent.isBroken ? "Event Broken" : "Event Active";
+            }else{
+                btnBrokeExternalEvent.active = false;
+                btnBrokeExternalEvent.alpha = 0.5;
+                btnBrokeExternalEvent.label.text = "Event is Local";
+            }
         }else{
             stpEventStrumLine.value = 0;
             clEventListEvents.setData([]); clEventListEvents.setLabel(clEventListEvents.getSelectedLabel(), false, true);
@@ -1229,6 +1240,8 @@ class ChartEditorState extends MusicBeatState{
     var clSecStrumCharsToAdd:FlxUICustomList;
     var clGenFocusChar:FlxUICustomList;
     var btnCanMerge:FlxUIButton;
+    var btnChangeEventFile:FlxUIButton;
+    var btnBrokeExternalEvent:FlxUIButton;
     function addMENUTABS():Void{
         var tabMENU = new FlxUI(null, MENU);
         tabMENU.name = "4Song";
@@ -1255,26 +1268,40 @@ class ChartEditorState extends MusicBeatState{
         arrayFocus.push(txtDiff);
         txtDiff.name = "SONG_DIFFICULTY";
 
-        var btnSave:FlxButton = new FlxCustomButton(lblDiff.x, lblDiff.y + lblDiff.height + 5, Std.int((MENU.width / 3) - 8), null, "Save Song", null, null, function(){saveSong();}); tabMENU.add(btnSave);
+        var btnSaveSong:FlxButton = new FlxCustomButton(lblDiff.x, lblDiff.y + lblDiff.height + 5, Std.int((MENU.width / 2) - 10), null, "Save Song", null, null, function(){
+            canAutoSave = false;
+            canControlle = false;
+            Song.save_song(Song.fileSong(_song.song,_song.category,_song.difficulty), _song, {path:_song_path, onComplete: function(){
+                canAutoSave = true;
+                canControlle = true;
+            }});
+        }); tabMENU.add(btnSaveSong);
+        var btnSaveSaveAs:FlxButton = new FlxCustomButton(btnSaveSong.x + btnSaveSong.width + 10, btnSaveSong.y, Std.int((MENU.width / 2) - 10), null, "Save Song As", null, null, function(){
+            canAutoSave = false;
+            canControlle = false;
+            Song.save_song(Song.fileSong(_song.song,_song.category,_song.difficulty), _song, {saveAs: true, onComplete: function(){
+                canAutoSave = true;
+                canControlle = true;
+            }});
+        }); tabMENU.add(btnSaveSaveAs);
 
-        var btnLoad:FlxButton = new FlxCustomButton(btnSave.x + btnSave.width + 5, btnSave.y, Std.int((MENU.width / 3) - 5), null, "Load Song", null, null, function(){
-            loadSong(_song.song, _song.category, _song.difficulty);
-        }); tabMENU.add(btnLoad);
-
-        var btnImport:FlxButton = new FlxCustomButton(btnLoad.x + btnLoad.width + 5, btnLoad.y, Std.int((MENU.width / 3) - 8), null, "Import Chart", null, null, function(){
+        var btnLoad:FlxButton = new FlxCustomButton(btnSaveSong.x, btnSaveSong.y + btnSaveSong.height + 5, Std.int((MENU.width / 2) - 10), null, "Load Song", null, null, function(){loadSong(_song.song, _song.category, _song.difficulty);}); tabMENU.add(btnLoad);
+        var btnImport:FlxButton = new FlxCustomButton(btnLoad.x + btnLoad.width + 10, btnLoad.y, Std.int((MENU.width / 2) - 10), null, "Import Chart", null, null, function(){
                 getFile(function(str){
-                    var fChart:SwagSong = Song.parseJSONshit(Paths.getText(str).trim(), '${_song.song}-${_song.category}-${_song.difficulty}');
-                    fChart.song = _song.song;
-                    fChart.difficulty = _song.difficulty;
-                    fChart.category = _song.category;
+                    var song_data:SwagSong = cast Json.parse(Paths.getText(str).trim());
+                    Song.parseJSONshit(song_data);
 
-                    _song = fChart;
+                    song_data.song = _song.song;
+                    song_data.difficulty = _song.difficulty;
+                    song_data.category = _song.category;
+
+                    _song = song_data;
 
                     updateSection();
                 });
         }); tabMENU.add(btnImport);
         
-        var line2 = new FlxSprite(btnSave.x, btnSave.y + btnSave.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line2);
+        var line2 = new FlxSprite(btnLoad.x, btnLoad.y + btnLoad.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line2);
 
         var lblStage = new FlxText(5, line2.y + 7, 0, "Stage: ", 8);  tabMENU.add(lblStage);
         txtStage = new FlxUIInputText(lblStage.x + lblStage.width + 5, lblStage.y, Std.int(MENU.width - lblStage.width - 15), _song.stage, 8); tabMENU.add(txtStage);
@@ -1350,7 +1377,11 @@ class ChartEditorState extends MusicBeatState{
         var line4 = new FlxSprite(5, lblCharY.y + lblCharY.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line4);
 
         var chkAutoSave:FlxUICheckBox = new FlxUICheckBox(5, line4.y + line4.height + 5, null, null, "Enable AutoSave", Std.int((MENU.width - 15)), null, function(){}); tabMENU.add(chkAutoSave); chkAutoSave.checked = autSave;
-        var btnLoadAutoSave:FlxButton = new FlxCustomButton(5, chkAutoSave.y + chkAutoSave.height + 5, Std.int((MENU.width - 15)), null, "Load Auto Save", null, null, function(){_song = Song.parseJSONshit(FlxG.save.data.autosave, Song.fileSong(_song.song, _song.category, _song.difficulty)); LoadingState.loadAndSwitchState(new ChartEditorState(this.onBack, this.onConfirm), _song, false);}); tabMENU.add(btnLoadAutoSave);
+        var btnLoadAutoSave:FlxButton = new FlxCustomButton(5, chkAutoSave.y + chkAutoSave.height + 5, Std.int((MENU.width - 15)), null, "Load Auto Save", null, null, function(){
+            _song = cast Json.parse(FlxG.save.data.autosave);
+            Song.parseJSONshit(_song);
+            LoadingState.loadAndSwitchState(new ChartEditorState(this.onBack, this.onConfirm), _song, false);}
+        ); tabMENU.add(btnLoadAutoSave);
 
         var line5 = new FlxSprite(5, btnLoadAutoSave.y + btnLoadAutoSave.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line5);
 
@@ -1665,8 +1696,8 @@ class ChartEditorState extends MusicBeatState{
         }); tabNOTE.add(clNoteCondFunc);
 
         var btnInfoEvent_Note = new FlxUICustomButton(clNoteCondFunc.x + clNoteCondFunc.width + 5, clNoteCondFunc.y, 20, null, '', [Paths.getAtlas(Paths.image("info", null, true)), [["normal", "Idle"], ["highlight", "Over"], ["pressed", "Hit"]]], null, function(){
-            if(Script.getScript(clNoteEventList.getSelectedLabel()) == null || Script.getScript(clNoteEventList.getSelectedLabel()).getVariable("info") == null){return;}
-            canControlle = false; openSubState(new substates.InformationSubState(Script.getScript(clNoteEventList.getSelectedLabel()).getVariable("info"), function(){canControlle = true;}));            
+            if(Paths.event_info(clNoteEventList.getSelectedLabel()) == null){return;}
+            canControlle = false; openSubState(new substates.InformationSubState(Paths.event_info(clNoteEventList.getSelectedLabel()), function(){canControlle = true;}));            
         }); tabNOTE.add(btnInfoEvent_Note);
 
         var nLine1 = new FlxSprite(5, txtNoteEventValues.y + txtNoteEventValues.height + 10).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabNOTE.add(nLine1);
@@ -1708,10 +1739,17 @@ class ChartEditorState extends MusicBeatState{
         arrayFocus.push(txtCurEventValues);
         
         var btnInfoEvent_Note = new FlxUICustomButton(txtCurEventValues.x + txtCurEventValues.width + 5, txtCurEventValues.y, 20, null, '', [Paths.getAtlas(Paths.image("info", null, true)), [["normal", "Idle"], ["highlight", "Over"], ["pressed", "Hit"]]], null, function(){
-            if(Script.getScript(clNoteEventList.getSelectedLabel()) == null || Script.getScript(clNoteEventList.getSelectedLabel()).getVariable("info") == null){return;}
-            canControlle = false; openSubState(new substates.InformationSubState(Script.getScript(clNoteEventList.getSelectedLabel()).getVariable("info"), function(){canControlle = true;}));
+            if(Paths.event_info(clEventListEvents.getSelectedLabel()) == null){return;}
+            canControlle = false; openSubState(new substates.InformationSubState(Paths.event_info(clEventListEvents.getSelectedLabel()), function(){canControlle = true;}));
         }); tabNOTE.add(btnInfoEvent_Note);
-        btnInfoEvent_Note.antialiasing = true;
+
+        btnChangeEventFile = new FlxUICustomButton(txtCurEventValues.x, txtCurEventValues.y + txtCurEventValues.height + 5, Std.int(MENU.width) - 120, null, 'Local Event', null, null, function(){
+            updateSelectedEvent(function(curEvent){curEvent.isExternal = !curEvent.isExternal;});
+        }); tabNOTE.add(btnChangeEventFile);
+
+        btnBrokeExternalEvent = new FlxUICustomButton(btnChangeEventFile.x + btnChangeEventFile.width + 5, btnChangeEventFile.y, 100, null, 'Broke Ex Event', null, null, function(){
+            updateSelectedEvent(function(curEvent){curEvent.isBroken = !curEvent.isBroken;});
+        }); tabNOTE.add(btnBrokeExternalEvent);
 
 
         MENU.addGroup(tabNOTE);
@@ -1947,51 +1985,11 @@ class ChartEditorState extends MusicBeatState{
         }
     }
 
+    var canAutoSave:Bool = true;
     private function autoSave():Void {
-        if(!autSave){trace("Auto Save Disabled!"); return;}
-        FlxG.save.data.autosave = Json.stringify({song: _song});
+        if(!autSave || !canAutoSave){trace("Auto Save Disabled!"); return;}
+        try{FlxG.save.data.autosave = Json.stringify({song: _song});}catch(e){trace(e); return;}
 		FlxG.save.flush();
         trace("Auto Saved!!!");
     }
-
-    private function saveSong(){
-        var data:String = Json.stringify({song: _song},"\t");
-
-		if((data != null) && (data.length > 0)){
-			_file = new FileReference();
-			_file.addEventListener(Event.COMPLETE, onSaveComplete);
-			_file.addEventListener(Event.CANCEL, onSaveCancel);
-			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(data, _song.song + "-" + _song.category + "-" + _song.difficulty + ".json");
-		}
-	}
-
-	function onSaveComplete(_):Void{
-		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
-		_file.removeEventListener(Event.CANCEL, onSaveCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-		_file = null;
-		FlxG.log.notice("Successfully saved LEVEL DATA.");
-	}
-
-	/**
-	 * Called when the save file dialog is cancelled.
-	 */
-	function onSaveCancel(_):Void{
-		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
-		_file.removeEventListener(Event.CANCEL, onSaveCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-		_file = null;
-	}
-
-	/**
-	 * Called if there is an error while saving the gameplay recording.
-	 */
-	function onSaveError(_):Void{
-		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
-		_file.removeEventListener(Event.CANCEL, onSaveCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-		_file = null;
-		FlxG.log.error("Problem saving Level data");
-	}
 }

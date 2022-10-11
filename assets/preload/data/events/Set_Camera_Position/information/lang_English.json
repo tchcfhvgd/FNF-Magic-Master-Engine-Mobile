@@ -1,0 +1,22 @@
+{
+    "information":[
+        {"animated":true,"bold":true,"scale":0.9,"text":"\t [Camera Position] Event Wiki"},
+        {"animated":true,"bold":true,"scale":0.4,"text":"\n\nDescription:"},
+        {"animated":true,"scale":0.4,"text":"\nWith this event you will make the camera change its position."},
+        {"animated":true,"bold":true,"scale":0.7,"text":"\n\n\nSyntax: "},
+        {"animated":false,"bold":true,"scale":0.7,"text":"["},
+        {"animated":true,"color":16774807,"bold":true,"scale":0.7,"text":"X"},
+        {"animated":false,"bold":true,"scale":0.7,"text":","},
+        {"animated":true,"color":16774807,"bold":true,"scale":0.7,"text":"Y"},
+        {"animated":false,"bold":true,"scale":0.7,"text":","},
+        {"animated":true,"color":16774807,"bold":true,"scale":0.7,"text":"TIME"},
+        {"animated":false,"bold":true,"scale":0.7,"text":"]"},
+
+        {"animated":true,"color":16774807,"bold":true,"scale":0.5,"text":"\n\n\tX: (Float)"},
+        {"animated":true,"scale":0.35,"text":"\n\t\tThe new position in X"},
+        {"animated":true,"color":16774807,"bold":true,"scale":0.5,"text":"\n\n\tY: (Float)"},
+        {"animated":true,"scale":0.35,"text":"\n\t\tThe new position in Y"},
+        {"animated":true,"color":16774807,"bold":true,"scale":0.5,"text":"\n\n\tTIME: (Float)"},
+        {"animated":true,"scale":0.35,"text":"\n\t\tThe length of time the camera will be in that position"}
+    ]
+}

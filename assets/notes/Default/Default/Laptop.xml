@@ -1,0 +1,47 @@
+<TextureAtlas imagePath="Laptop.png">
+	<!-- Created with Adobe Animate version 22.0.7.214 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="0" y="0" frameWidth="220" name="SizeBase0000" frameX="0" frameHeight="140" frameY="0" width="111" height="100"/>
+	<SubTexture x="0" y="0" frameWidth="220" name="BeEvent0000" frameX="0" frameHeight="140" frameY="0" width="230" height="145"/>
+	<SubTexture x="0" y="0" frameWidth="220" name="BeEvent0001" frameX="0" frameHeight="140" frameY="0" width="230" height="145"/>
+	<SubTexture x="0" y="0" frameWidth="220" name="BeEvent0002" frameX="0" frameHeight="140" frameY="0" width="230" height="145"/>
+	<SubTexture x="0" y="0" frameWidth="220" name="BeEvent0003" frameX="0" frameHeight="140" frameY="0" width="230" height="145"/>
+	<SubTexture x="0" y="0" frameWidth="220" name="BeEvent0004" frameX="0" frameHeight="140" frameY="0" width="230" height="145"/>
+	<SubTexture x="0" y="0" frameWidth="220" name="BeEvent0005" frameX="0" frameHeight="140" frameY="0" width="230" height="145"/>
+	<SubTexture x="0" y="0" frameWidth="220" name="BeEvent0006" frameX="0" frameHeight="140" frameY="0" width="230" height="145"/>
+	<SubTexture x="0" y="0" frameWidth="220" name="BeEvent0007" frameX="0" frameHeight="140" frameY="0" width="230" height="145"/>
+	<SubTexture x="0" y="0" frameWidth="220" name="BeEvent0008" frameX="0" frameHeight="140" frameY="0" width="230" height="145"/>
+	<SubTexture x="0" y="0" frameWidth="220" name="BeEvent0009" frameX="0" frameHeight="140" frameY="0" width="230" height="145"/>
+	<SubTexture x="0" y="0" frameWidth="220" name="BeEvent0010" frameX="0" frameHeight="140" frameY="0" width="230" height="145"/>
+	<SubTexture x="0" y="0" frameWidth="220" name="BeEvent0011" frameX="0" frameHeight="140" frameY="0" width="230" height="145"/>
+	<SubTexture x="0" y="0" frameWidth="220" name="BeEvent0012" frameX="0" frameHeight="140" frameY="0" width="230" height="145"/>
+	<SubTexture x="0" y="0" frameWidth="220" name="BeEvent0013" frameX="0" frameHeight="140" frameY="0" width="230" height="145"/>
+	<SubTexture x="230" y="0" frameWidth="220" name="OffEvent0000" frameX="0" frameHeight="140" frameY="12" width="230" height="157"/>
+	<SubTexture x="230" y="0" frameWidth="220" name="OffEvent0001" frameX="0" frameHeight="140" frameY="12" width="230" height="157"/>
+	<SubTexture x="0" y="0" frameWidth="220" name="OffEvent0002" frameX="0" frameHeight="140" frameY="0" width="230" height="145"/>
+	<SubTexture x="460" y="0" frameWidth="220" name="OffEvent0003" frameX="11" frameHeight="140" frameY="3" width="227" height="163"/>
+	<SubTexture x="687" y="0" frameWidth="220" name="OffEvent0004" frameX="14" frameHeight="140" frameY="3" width="232" height="161"/>
+	<SubTexture x="919" y="0" frameWidth="220" name="OffEvent0005" frameX="10" frameHeight="140" frameY="-12" width="230" height="146"/>
+	<SubTexture x="1149" y="0" frameWidth="220" name="OffEvent0006" frameX="10" frameHeight="140" frameY="-9" width="231" height="148"/>
+	<SubTexture x="1380" y="0" frameWidth="220" name="OffEvent0007" frameX="10" frameHeight="140" frameY="24" width="231" height="181"/>
+	<SubTexture x="1611" y="0" frameWidth="220" name="OffEvent0008" frameX="10" frameHeight="140" frameY="55" width="231" height="212"/>
+	<SubTexture x="0" y="212" frameWidth="220" name="OffEvent0009" frameX="10" frameHeight="140" frameY="69" width="231" height="226"/>
+	<SubTexture x="231" y="212" frameWidth="220" name="OffEvent0010" frameX="10" frameHeight="140" frameY="67" width="231" height="224"/>
+	<SubTexture x="462" y="212" frameWidth="220" name="OffEvent0011" frameX="10" frameHeight="140" frameY="78" width="231" height="235"/>
+	<SubTexture x="693" y="212" frameWidth="220" name="OffEvent0012" frameX="10" frameHeight="140" frameY="122" width="231" height="279"/>
+	<SubTexture x="924" y="212" frameWidth="220" name="OffEvent0013" frameX="10" frameHeight="140" frameY="-38" width="231" height="119"/>
+	<SubTexture x="0" y="0" frameWidth="220" name="AfEvent0000" frameX="0" frameHeight="140" frameY="0" width="230" height="145"/>
+	<SubTexture x="1155" y="212" frameWidth="220" name="AfEvent0001" frameX="0" frameHeight="140" frameY="0" width="230" height="145"/>
+	<SubTexture x="1385" y="212" frameWidth="220" name="AfEvent0002" frameX="0" frameHeight="140" frameY="12" width="230" height="157"/>
+	<SubTexture x="1615" y="212" frameWidth="220" name="AfEvent0003" frameX="0" frameHeight="140" frameY="12" width="230" height="157"/>
+	<SubTexture x="0" y="491" frameWidth="220" name="AfEvent0004" frameX="0" frameHeight="140" frameY="12" width="230" height="157"/>
+	<SubTexture x="230" y="491" frameWidth="220" name="AfEvent0005" frameX="0" frameHeight="140" frameY="12" width="230" height="157"/>
+	<SubTexture x="460" y="491" frameWidth="220" name="AfEvent0006" frameX="0" frameHeight="140" frameY="12" width="230" height="157"/>
+	<SubTexture x="690" y="491" frameWidth="220" name="AfEvent0007" frameX="0" frameHeight="140" frameY="12" width="230" height="157"/>
+	<SubTexture x="920" y="491" frameWidth="220" name="AfEvent0008" frameX="0" frameHeight="140" frameY="12" width="230" height="157"/>
+	<SubTexture x="1150" y="491" frameWidth="220" name="AfEvent0009" frameX="0" frameHeight="140" frameY="12" width="230" height="157"/>
+	<SubTexture x="1150" y="491" frameWidth="220" name="AfEvent0010" frameX="0" frameHeight="140" frameY="12" width="230" height="157"/>
+	<SubTexture x="1150" y="491" frameWidth="220" name="AfEvent0011" frameX="0" frameHeight="140" frameY="12" width="230" height="157"/>
+	<SubTexture x="1150" y="491" frameWidth="220" name="AfEvent0012" frameX="0" frameHeight="140" frameY="12" width="230" height="157"/>
+	<SubTexture x="1150" y="491" frameWidth="220" name="AfEvent0013" frameX="0" frameHeight="140" frameY="12" width="230" height="157"/>
+</TextureAtlas>

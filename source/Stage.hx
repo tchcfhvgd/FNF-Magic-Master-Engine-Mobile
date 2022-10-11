@@ -8,7 +8,7 @@ import haxe.format.JsonParser;
 import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
 import flixel.util.FlxSort;
-import Section.SwagSection;
+import Song.SwagSection;
 import openfl.utils.Assets;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -158,5 +158,10 @@ class Stage extends FlxTypedGroup<Dynamic>{
     public function getCharacterByType(type:String):Character {
         for(char in characterData){if(char.curType == type){return char;}}
         return null;
+    }
+
+    override function destroy():Void {
+        if(script != null){script.destroy();}
+        super.destroy();
     }
 }

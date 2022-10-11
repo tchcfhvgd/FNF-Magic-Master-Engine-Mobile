@@ -11,6 +11,7 @@ import openfl.utils.AssetType;
 import haxe.format.JsonParser;
 import openfl.utils.Assets;
 import flash.media.Sound;
+import haxe.io.Bytes;
 import haxe.io.Path;
 import flixel.FlxG;
 import haxe.Json;
@@ -99,6 +100,7 @@ class Paths {
 		return toReturn;
 	}
 
+	public static function setPath(key):String {return #if sys FileSystem.absolutePath(key) #else key #end;}
 	public static function getPath(file:String, type:AssetType, library:Null<String>){
 		if (library != null){return getLibraryPath(file, library);}
 
@@ -166,7 +168,14 @@ class Paths {
 		if(!savedMap.exists(file)){savedMap.set(file, Assets.exists(file) ? Assets.getSound(file) : Sound.fromFile(file));}
 		return savedMap.get(file);
 	}
-	inline public static function getGraphic(file):Any{
+	inline public static function getBytes(file:String):Any{
+		if(savedMap.exists(file)){return savedMap.get(file);}
+		var bytes:Bytes = Assets.exists(file) ? Assets.getBytes(file) : File.getBytes(file);
+		savedMap.set(file, bytes);
+		
+		return savedMap.get(file);
+	}
+	inline public static function getGraphic(file:String):Any{
 		if(savedMap.exists(file)){return savedMap.get(file);}
 
 		var bit:BitmapData = BitmapData.fromFile(file);
@@ -186,7 +195,7 @@ class Paths {
 		
 		#if sys
 		if(Assets.exists(file, TEXT)){savedMap.set(file, Assets.getText(file));}
-		if(FileSystem.exists(FileSystem.absolutePath(file))){savedMap.set(file, File.getContent(FileSystem.absolutePath(file)));}
+		if(FileSystem.exists(file)){savedMap.set(file, File.getContent(file));}
 		#else
 		if(Assets.exists(file, TEXT)){savedMap.set(file, Assets.getText(file));}
 		#end
@@ -258,10 +267,17 @@ class Paths {
 		return getSound(path);
 	}
 
+	inline static public function chart_events(jsonInput:String):String {
+		var path = getPath('${jsonInput.split('-')[0]}/Data/global_events.json', TEXT, 'songs');
+		
+		if(!Paths.exists(path)){path = getPath('Test/Data/global_events.json', TEXT, 'songs');}
+	
+		return path;
+	}
 	inline static public function chart(jsonInput:String):String {
 		var path = getPath('${jsonInput.split('-')[0]}/Data/${jsonInput}.json', TEXT, 'songs');
 
-		if(!Paths.exists(path)){path = getPath('Template.json', TEXT, 'songs');}
+		if(!Paths.exists(path)){path = getPath('Test/Data/Test-Normal-Normal.json', TEXT, 'songs');}
 
 		return path;
 	}
@@ -303,10 +319,18 @@ class Paths {
 	}
 
 	inline static public function event(key:String){
-		var path = getPath('events/${key}.hx', TEXT, 'data');
-		if(!Paths.exists(path)){path = getPath('note_events/${key}.hx', TEXT, 'data');}
-
+		var path = getPath('events/$key/${key}.hx', TEXT, 'data');
+		if(!Paths.exists(path)){path = getPath('note_events/$key/${key}.hx', TEXT, 'data');}
 		return path;
+	}
+	inline static public function event_info(key:String):Array<Dynamic> {
+		var pre_Language:String = PreSettings.getPreSetting("Language","Game Settings");
+
+		var path = getPath('events/$key/information/lang_${pre_Language}.json', TEXT, 'data');
+		if(!Paths.exists(path)){path = getPath('note_events/$key/information/lang_${pre_Language}.json', TEXT, 'data');}
+
+		if(Paths.exists(path)){return Json.parse(Paths.getText(path)).information;}
+		return null;
 	}
 	
 	inline static public function strumline_json(keys:Int, ?type:String):StrumLine.StrumLine_Graphic_Data {

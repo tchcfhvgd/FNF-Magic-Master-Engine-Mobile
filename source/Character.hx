@@ -7,7 +7,7 @@ import flixel.tweens.FlxTween;
 import haxe.macro.Expr.Catch;
 import flash.geom.Rectangle;
 import flixel.util.FlxSort;
-import Section.SwagSection;
+import Song.SwagSection;
 import openfl.utils.Assets;
 import flixel.FlxSprite;
 import flixel.FlxObject;
@@ -18,7 +18,7 @@ import haxe.Json;
 
 import Song.SwagSong;
 import Song.SwagStrum;
-import Section.SwagGeneralSection;
+import Song.SwagGeneralSection;
 
 import states.MusicBeatState;
 

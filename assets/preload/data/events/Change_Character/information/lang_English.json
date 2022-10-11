@@ -1,0 +1,26 @@
+{
+    "information":[
+        {"animated":true,"bold":true,"scale":0.9,"text":"  [Change Character] Event Wiki"},
+        {"animated":true,"bold":true,"scale":0.4,"text":"\n\nDescription:\n"},
+        {"animated":true,"color":16777215,"scale":0.3,"text":"With this Event you will be able to change a character that is on the Stage."},
+        {"animated":true,"bold":true,"scale":0.7,"text":"\n\n\nSyntax: "},
+        {"animated":false,"bold":true,"scale":0.7,"text":"["},
+        {"animated":true,"color":16774807,"bold":true,"scale":0.7,"text":"ID"},
+        {"animated":false,"bold":true,"scale":0.7,"text":","},
+        {"animated":true,"color":16774807,"bold":true,"scale":0.7,"text":"NAME"},
+        {"animated":false,"bold":true,"scale":0.7,"text":","},
+        {"animated":true,"color":16774807,"bold":true,"scale":0.7,"text":"CATEGORY"},
+        {"animated":false,"bold":true,"scale":0.7,"text":","},
+        {"animated":true,"color":16774807,"bold":true,"scale":0.7,"text":"TYPE"},
+        {"animated":false,"bold":true,"scale":0.7,"text":"]"},
+
+        {"animated":true,"color":16774807,"bold":true,"scale":0.5,"text":"\n\n\tID: (Integer)"},
+        {"animated":true,"color":16777215,"scale":0.35,"text":"\n\t\tThe ID of the Character you want to change"},
+        {"animated":true,"color":16774807,"bold":true,"scale":0.5,"text":"\n\n\tNAME: (String)"},
+        {"animated":true,"color":16777215,"scale":0.35,"text":"\n\t\tThe Name of the New Character"},
+        {"animated":true,"color":16774807,"bold":true,"scale":0.5,"text":"\n\n\tCategory: (String)"},
+        {"animated":true,"color":16777215,"scale":0.35,"text":"\n\t\tThe Category of the New Character\n\t\tIf you don't want to change it. Leave this argument in `null`"},
+        {"animated":true,"color":16774807,"bold":true,"scale":0.5,"text":"\n\n\tTYPE: (String)"},
+        {"animated":true,"color":16777215,"scale":0.35,"text":"\n\t\tThe Type of the New Character\n\t\tIf you don't want to change it. Leave this argument in `null`\n"}
+    ]
+}

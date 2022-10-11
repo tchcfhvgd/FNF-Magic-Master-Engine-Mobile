@@ -30,7 +30,7 @@ import sys.io.File;
 import Note.Note_Animation_Data;
 import Note.Note_Graphic_Data;
 import states.MusicBeatState;
-import Section.SwagSection;
+import Song.SwagSection;
 import Note.NoteSplash;
 import Note.StrumNote;
 import Song.SwagStrum;

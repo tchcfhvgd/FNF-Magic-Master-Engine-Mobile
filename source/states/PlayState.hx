@@ -6,7 +6,7 @@ import Note.StrumNote;
 #if desktop
 import Discord.DiscordClient;
 #end
-import Section.SwagSection;
+import Song.SwagSection;
 import Song.SwagSong;
 import WiggleEffect.WiggleEffectType;
 import flixel.FlxBasic;
@@ -50,6 +50,7 @@ import states.editors.StageBuilder;
 
 import StrumLine;
 import Note.Note;
+import Note.EventData;
 
 using StringTools;
 
@@ -214,9 +215,9 @@ class PlayState extends MusicBeatState {
 
 		for(i in songData.generalSection){
 			for(ii in i.events){
-				var daOtherData:Array<Dynamic> = ii[1];
-				if(daOtherData == null || daOtherData.length <= 0){continue;}				
-				for(iii in daOtherData){MusicBeatState.state.pushTempScript(iii[0], iii[1]);}
+				var cur_Event:EventData = Note.getEventData(ii);
+				if(cur_Event == null || cur_Event.isBroken){continue;}
+				for(iii in cur_Event.eventData){MusicBeatState.state.pushTempScript(iii[0], iii[1]);}
 			}
 		}
 
@@ -446,11 +447,10 @@ class PlayState extends MusicBeatState {
 		if(!songGenerated || PlayState.SONG.generalSection[curSection] == null || PlayState.SONG.generalSection[curSection].events.length <= 0){return;}
 		var sEvents:Array<Dynamic> = SONG.generalSection[Math.floor(curStep / 16)].events;
 		for(event in sEvents){
-			if(conductor.songPosition > event[0] && !exEvents.contains(event)){
+			var cur_Event:EventData = Note.getEventData(event);
+			if(conductor.songPosition > cur_Event.strumTime && !cur_Event.isBroken && !exEvents.contains(event)){
 				exEvents.push(event);
-
-				var eFuncts:Array<Dynamic> = event[1];
-				for(e in eFuncts){Script.getScript(e[0]).exFunction("execute", cast e[1]);}
+				for(e in cur_Event.eventData){Script.getScript(e[0]).exFunction("execute", cast e[1]);}
 			}			
 		}
 	}

@@ -26,7 +26,7 @@ import flixel.math.FlxMath;
 
 import flixel.group.FlxGroup;
 
-import Section.SwagSection;
+import Song.SwagSection;
 import Song.SwagStrum;
 
 import Script;
@@ -156,6 +156,8 @@ typedef EventData = {
     var strumTime:Float;
     var eventData:Array<Dynamic>;
     var condition:String;
+    var isExternal:Bool;
+    var isBroken:Bool;
 }
 
 class Note extends StrumNote {
@@ -190,13 +192,13 @@ class Note extends StrumNote {
 
         for(i in Paths.readDirectory('assets/data/events')){
             var curEvent:String = i;
-            if(curEvent.endsWith(".hx")){toReturn.push(curEvent.replace(".hx", ""));}
+            if(!curEvent.contains(".")){toReturn.push(curEvent);}
         }
         
         if(isNote){
             for(i in Paths.readDirectory('assets/data/note_events')){
                 var curEvent:String = i;
-                if(curEvent.endsWith(".hx")){toReturn.push(curEvent.replace(".hx", ""));}
+                if(!curEvent.contains(".")){toReturn.push(curEvent);}
             }
         }
 
@@ -227,7 +229,7 @@ class Note extends StrumNote {
     }
     public static function convEventData(data:EventData):Array<Dynamic> {
         if(data == null){return null;}
-        return [data.strumTime, data.eventData, data.condition];
+        return [data.strumTime, data.eventData, data.condition, data.isExternal, data.isBroken];
     }
     
     public static function getNoteData(?note:Array<Dynamic>):NoteData {
@@ -260,7 +262,9 @@ class Note extends StrumNote {
         var toReturn:EventData = {
             strumTime: 0,
             eventData: [],
-            condition: "OnHit"
+            condition: "OnHit",
+            isExternal: false,
+            isBroken: false
         }
 
         if(event == null){return toReturn;}
@@ -268,6 +272,8 @@ class Note extends StrumNote {
         if(event.length >= 0 && Std.isOfType(event[0], Float)){toReturn.strumTime = event[0];}
         if(event.length >= 1 && Std.isOfType(event[1], Array)){toReturn.eventData = event[1];}
         if(event.length >= 2 && Std.isOfType(event[2], String)){toReturn.condition = event[2];}
+        if(event.length >= 3 && event[3]){toReturn.isExternal = event[3];}
+        if(event.length >= 4 && event[4]){toReturn.isBroken = event[4];}
 
         return toReturn;
     }
@@ -339,11 +345,15 @@ class Note extends StrumNote {
 class StrumEvent extends StrumNote {
     public var conductor:Conductor = null;
     public var strumTime:Float = 0;
+    public var isExternal:Bool = false;
+    public var isBroke:Bool = false;
 
-    public function new(_strumtime:Float, _conductor:Conductor = null){
+    public function new(_strumtime:Float, _conductor:Conductor = null, _isExternal:Bool = false, _isBroke:Bool = false){
         this.strumTime = _strumtime;
         this.conductor = _conductor;
-        super(-1, 4, "EventIcon");
+        this.isExternal = _isExternal;
+        this.isBroke = _isBroke;
+        super(-1, 4, isExternal ? "Laptop" : "EventIcon");
         playAnim("BeEvent");
 	}
 
@@ -353,20 +363,28 @@ class StrumEvent extends StrumNote {
 
         frames = Paths.getAtlas(Paths.note(image, style, type));
             
-        antialiasing = style.contains("pxl-");
+        antialiasing = !style.contains("pxl-");
         if(frames == null){return;}
 
-        animation.addByPrefix("SizeBase", "SizeBase");
-        animation.addByIndices("BeEvent", "Event", [0], "", 0, false, false, false);
-        animation.addByIndices("AfEvent", "Event", [1], "", 0, false, false, false);
+        animation.addByPrefix("SizeBase", "SizeBase", 30, false);
+        animation.addByPrefix("BeEvent", "BeEvent", 30, false);
+        animation.addByPrefix("AfEvent", "AfEvent", 30, false);
+        animation.addByPrefix("OffEvent", "OffEvent", 30, false);
         
         playAnim(sAnim);
     }
 
+    var _lastAnim:String = "";
     override function update(elapsed:Float){
 		super.update(elapsed);
 
-        if(conductor != null && strumTime < conductor.songPosition){playAnim("AfEvent");}else{playAnim("BeEvent");}
+        if(isExternal && isBroke){
+            if(_lastAnim != "OffEvent"){playAnim("OffEvent"); _lastAnim = "OffEvent";}
+        }else if(conductor != null && strumTime < conductor.songPosition){
+            if(_lastAnim != "AfEvent"){playAnim("AfEvent"); _lastAnim = "AfEvent";}
+        }else{
+            if(_lastAnim != "BeEvent"){playAnim("BeEvent"); _lastAnim = "BeEvent";}
+        }
 	}
 }
 
@@ -403,8 +421,7 @@ class NoteSplash extends FlxSprite {
     }
 
     public function playAnim(anim:String, ?force:Bool = false){
-		animation.play(anim, force);
-
+        animation.play(anim, force);
         updateHitbox();
 	}
 

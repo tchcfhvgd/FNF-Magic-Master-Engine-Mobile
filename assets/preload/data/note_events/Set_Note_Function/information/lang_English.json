@@ -1,0 +1,18 @@
+{
+    "information":[
+        {"animated":true,"bold":true,"scale":0.8,"text":"  [Set Note Function] Note Event Wiki"},
+        {"animated":true,"bold":true,"scale":0.4,"text":"\n\nDescription:\n"},
+        {"animated":true,"color":16777215,"scale":0.3,"text":"With this Event you can make the note execute a Function."},
+        {"animated":true,"bold":true,"scale":0.7,"text":"\n\n\nSyntax: "},
+        {"animated":false,"bold":true,"scale":0.7,"text":"["},
+        {"animated":true,"color":16774807,"bold":true,"scale":0.7,"text":"FUNCTION"},
+        {"animated":false,"bold":true,"scale":0.7,"text":","},
+        {"animated":true,"color":16774807,"bold":true,"scale":0.7,"text":"ARGUMENTS"},
+        {"animated":false,"bold":true,"scale":0.7,"text":"]"},
+
+        {"animated":true,"color":16774807,"bold":true,"scale":0.5,"text":"\n\n\tFUNCTION: (String)"},
+        {"animated":true,"color":16777215,"scale":0.35,"text":"\n\t\tThe name of the function to be executed"},
+        {"animated":true,"color":16774807,"bold":true,"scale":0.5,"text":"\n\n\tARGUMENTS: (Array)"},
+        {"animated":true,"color":16777215,"scale":0.35,"text":"\n\t\tThe Argument list of the Function"}
+    ]
+}

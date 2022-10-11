@@ -1,10 +1,13 @@
 package;
 
-import Section.SwagGeneralSection;
+import openfl.events.IOErrorEvent;
+import openfl.net.FileReference;
 import haxe.format.JsonParser;
-import Section.SwagSection;
+import openfl.events.Event;
 import haxe.DynamicAccess;
 import lime.utils.Assets;
+import haxe.Exception;
+import flixel.FlxG;
 import haxe.Json;
 
 import Note;
@@ -16,6 +19,9 @@ import sys.io.File;
 
 using StringTools;
 
+typedef SwagEvent = {
+	var sections:Array<{events:Array<Dynamic>}>;
+}
 typedef SwagSong = {
 	var song:String;
 	var difficulty:String;
@@ -44,6 +50,29 @@ typedef SwagStrum = {
 	var keys:Int;
 	var charToSing:Array<Int>;
 	var notes:Array<SwagSection>;
+}
+
+typedef SwagSection = {
+	var charToSing:Array<Int>;
+	var changeSing:Bool;
+
+	var keys:Int;
+	var changeKeys:Bool;
+
+	var altAnim:Bool;
+	var sectionNotes:Array<Dynamic>;
+}
+
+typedef SwagGeneralSection = {
+	var bpm:Float;
+	var changeBPM:Bool;
+	
+	var lengthInSteps:Int;
+
+	var strumToFocus:Int;
+	var charToFocus:Int;
+
+	var events:Array<Dynamic>;
 }
 
 //
@@ -221,15 +250,19 @@ class Song{
 
 	public static function loadFromJson(songFormat:String):SwagSong {
 		var rawJson:String = Paths.getText(Paths.chart(songFormat)).trim();
+		var rawEvents:String = Paths.getText(Paths.chart_events(songFormat)).trim();
 
 		while(!rawJson.endsWith("}")){rawJson = rawJson.substr(0, rawJson.length - 1);}
+		while(!rawEvents.endsWith("}")){rawEvents = rawEvents.substr(0, rawEvents.length - 1);}
 		
-		return parseJSONshit(rawJson, songFormat);
+		var toReturn:SwagSong = convert_song(songFormat, rawJson);
+		var toEvents:SwagEvent = convert_events(rawEvents);
+
+		parseJSONshit(toReturn, toEvents);
+		return toReturn;
 	}
 
-	public static function parseJSONshit(rawJson:String, sName:String):SwagSong {
-		var swagShit:SwagSong = convertJSON(sName, cast Json.parse(rawJson).song);
-		
+	public static function parseJSONshit(swagShit:SwagSong, ?swagEvents:SwagEvent):Void {		
 		if(swagShit.song == null){swagShit.song = "PlaceHolder";}
 		if(swagShit.difficulty == null){swagShit.difficulty = "Normal";}
 		if(swagShit.category == null){swagShit.category = "Normal";}
@@ -246,24 +279,36 @@ class Song{
 			];
 		}
 		if(swagShit.generalSection == null){swagShit.generalSection = [];}
-		while(swagShit.generalSection.length < swagShit.sectionStrums[0].notes.length){
-			swagShit.generalSection.push(
-				{
-					bpm: swagShit.bpm,
-					changeBPM: false,
-					
-					lengthInSteps: 16,
-				
-					strumToFocus: 0,
-					charToFocus: 0,
-				
-					events: []
-				}
-			);
+		while(swagShit.generalSection.length < swagShit.sectionStrums[0].notes.length){swagShit.generalSection.push({bpm: swagShit.bpm, changeBPM: false, lengthInSteps: 16, strumToFocus: 0, charToFocus: 0, events: []});}
+		if(swagEvents != null){
+			if(swagEvents.sections == null){swagEvents.sections = [];}
+			while(swagEvents.sections.length < swagShit.generalSection.length){swagEvents.sections.push({events: []});}
 		}
 		
-		for(gen in swagShit.generalSection){
-			if(gen.events == null){gen.events = [];}else{for(ev in gen.events){ev = Note.convEventData(Note.getEventData(ev));}}
+		for(i in 0...swagShit.generalSection.length){
+			if(swagShit.generalSection[i].events == null){
+				swagShit.generalSection[i].events = [];
+			}else{
+				for(ev in swagShit.generalSection[i].events){
+					Note.set_note(ev, Note.convEventData(Note.getEventData(ev)));
+				}
+			}
+
+			if(swagEvents != null){
+				while(swagEvents.sections[i].events.length > 0){
+					var cur_glob:EventData = swagEvents.sections[i].events.shift();
+				
+					var has_note:Bool = false;
+					for(ev in swagShit.generalSection[i].events){
+						var cur_ev:EventData = Note.getEventData(ev);
+						if(Note.compNotes(cur_glob, cur_ev, false)){
+							has_note = true;
+						}
+					}
+
+					if(!has_note){swagShit.generalSection[i].events.push(Note.convEventData(cur_glob));}
+				}
+			}
 		}
 
 		if(swagShit.sectionStrums == null){
@@ -298,12 +343,24 @@ class Song{
 		}
 		
 		swagShit.validScore = true;
-		
-		return swagShit;
 	}
 
-	public static function convertJSON(sName:String, songJSON:Dynamic):SwagSong {
-		var aSong:DynamicAccess<Dynamic> = songJSON;
+	public static function convert_events(rawEvents:String):SwagEvent {
+		var _global_events:Dynamic = cast Json.parse(rawEvents);
+		if(_global_events.global == null){_global_events.global = {};}
+		
+		var aEvents:DynamicAccess<Dynamic> = cast Json.parse(rawEvents).global;
+
+		//Adding General Values
+		if(!aEvents.exists("sections")){aEvents.set("sections", []);}
+
+		return cast aEvents;
+	}
+	public static function convert_song(sName:String, rawSong:String):SwagSong {
+		var _global_song:Dynamic = cast Json.parse(rawSong);
+		if(_global_song.song == null){_global_song.song = {};}
+
+		var aSong:DynamicAccess<Dynamic> = _global_song.song;
 
 		//Adding General Values
 		if(!aSong.exists("validScore")){aSong.set("validScore", false);}
@@ -429,5 +486,91 @@ class Song{
 		}
 
 		return cast aSong;
-	}	
+	}
+
+	public static var song_file:FileMaster = null;
+	public static function save_song(fileName:String, songData:SwagSong, options:{?onComplete:Void->Void, ?throwFunc:Exception->Void, ?returnOnThrow:Bool, ?path:String, ?saveAs:Bool}):Void {
+		if(song_file != null || songData == null){return;}
+
+		var _song:SwagSong = cast songData;
+
+		parseJSONshit(_song);
+		var _global_events:SwagEvent = {sections: []};
+		
+		for(i in 0..._song.generalSection.length){
+			_global_events.sections.push({events:[]});
+			var ev_to_del:Array<Dynamic> = [];
+
+			for(ev in _song.generalSection[i].events){
+				var _ev_data:EventData = Note.getEventData(ev);
+				if(_ev_data.isExternal){
+					_global_events.sections[i].events.push(ev);
+					if(!_ev_data.isBroken){ev_to_del.push(ev);}
+				}
+			}
+
+			while(ev_to_del.length > 0){
+				var _del_ev:Array<Dynamic> = ev_to_del.shift();
+				for(ev in _song.generalSection[i].events){if(ev == _del_ev){_song.generalSection[i].events.remove(ev); break;}}
+			}
+
+			for(ev in _global_events.sections[i].events){
+				var _ev:EventData = Note.getEventData(ev);
+				_ev.isExternal = true;
+				_ev.isBroken = false;
+				Note.set_note(ev, Note.convEventData(_ev));
+			}
+		}
+
+		var song_data:String = "";
+		var events_data:String = "";
+
+		try{song_data = Json.stringify({song: _song},"\t");}catch(e){trace(e); if(options.throwFunc != null){options.throwFunc(e);} if(options.returnOnThrow){return;}}
+		try{events_data = Json.stringify({global: _global_events},"\t");}catch(e){trace(e); if(options.throwFunc != null){options.throwFunc(e);} if(options.returnOnThrow){return;}}
+
+		if(options.saveAs){
+			var files_to_save:Array<{name:String, data:Dynamic}> = [{name: '$fileName.json', data: song_data}];
+			if(events_data.length > 0){files_to_save.push({name: 'global_events.json', data: events_data});}
+			song_file = new FileMaster(files_to_save, {onComplete: function(){if(options.onComplete != null){options.onComplete();} song_file = null;}});
+
+			song_file.saveFile();
+		}else{
+			#if sys
+				if((song_data != null) && (song_data.length > 0)){File.saveContent(options.path, song_data);}
+				if((events_data != null) && (events_data.length > 0)){File.saveContent(options.path.replace('$fileName','global_events'), events_data);}
+				if(options.onComplete != null){options.onComplete();}
+				song_file = null;
+			#end
+		}
+	}
+}
+
+class FileMaster extends FileReference {
+	public var stuff_to_save:Array<{name:String, data:Dynamic}> = [];
+	public var options_file:Dynamic = {};
+
+	public function new(_stuff_to_save:Array<{name:String, data:Dynamic}>, ?options:{?onComplete:Void->Void}):Void {
+		this.stuff_to_save = _stuff_to_save;
+		this.options_file = options;
+		super();
+		
+		this.addEventListener(Event.SELECT, saveFile);
+		this.addEventListener(Event.COMPLETE, removeListeners);
+		this.addEventListener(Event.CANCEL, saveFile);
+		this.addEventListener(IOErrorEvent.IO_ERROR, saveFile);
+	}
+
+	public function saveFile(?_):Void {
+		if(stuff_to_save.length <= 0){removeListeners(); return;}
+		var current_file:{name:String, data:Dynamic} = stuff_to_save.shift();
+		this.save(current_file.data, current_file.name);
+	}
+
+	private function removeListeners(?_){
+		this.removeEventListener(Event.SELECT, saveFile);
+		this.removeEventListener(Event.COMPLETE, removeListeners);
+		this.removeEventListener(Event.CANCEL, saveFile);
+		this.removeEventListener(IOErrorEvent.IO_ERROR, saveFile);
+		if(options_file.onComplete != null){options_file.onComplete();}
+	}
 }

@@ -9,6 +9,8 @@ import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
 import flixel.util.FlxTimer;
 import flixel.math.FlxPoint;
+import flixel.util.FlxColor;
+import haxe.io.Bytes;
 
 using StringTools;
 
@@ -16,7 +18,7 @@ using StringTools;
  * Loosley based on FlxTypeText lolol
  */
 class Alphabet extends FlxSpriteGroup {
-    public static var DEFAULT_IMAGE:String = "alphabet";
+    public static var DEFAULT_FONT:String = "alphabet";
 	public var cur_data:Array<Dynamic> = [];
 
     public var repMap:Map<String, String> = [
@@ -63,36 +65,52 @@ class Alphabet extends FlxSpriteGroup {
         clear();
 
         for(_dat in cur_data){
-            var cur_split:Array<String> = doSplitWords(_dat.text);
+            var cur_split:Array<String> = null;
+            var cur_image:String = null;
+
             var cur_scale:FlxPoint = _dat.scale != null ? FlxPoint.get(_dat.scale,_dat.scale) : FlxPoint.get(1,1);
-            var cur_image:String = _dat.image != null ? _dat.image : DEFAULT_IMAGE;
+            var cur_font:String = _dat.font != null ? _dat.font : DEFAULT_FONT;
             var cur_animated:Bool = _dat.animated;
             var cur_bold:Bool = _dat.bold;
+            var cur_color:FlxColor = _dat.color != null ? _dat.color : 0x00ffffff;
+            if(_dat.position != null){curX = _dat.position[0]; curY = _dat.position[1];}
+            if(_dat.rel_position != null){curX += _dat.rel_position[0]; curY += _dat.rel_position[1];}
 
-            var _i:Int = 0;
-            for(char in cur_split){
-                switch(char){
-                    case '\n':{if(lastFirstChar != null){curY += lastFirstChar.height * yMultiplier; curX = 0;}}
-                    case '\t':{curX += 2 * spaceWidth;}
-                    case ' ':{curX += spaceWidth;}
-                    default:{
-                        if(AlphaCharacter.getChars().indexOf(char.toLowerCase()) != -1){
-                            var letter:AlphaCharacter = new AlphaCharacter(curX + xOffset, curY + yOffset, cur_image);
-                            letter.createChar(char, cur_bold);
-                            if(!cur_animated){letter.animation.stop();}
-                            letter.scale.set(cur_scale.x, cur_scale.y); letter.updateHitbox();
-                            curX += letter.width * xMultiplier;
-                                    
-                            lastChar = letter;
-                            if(_i == 0){lastFirstChar = letter;}
-                
-                            add(letter);
-    
-                            _i++;
+            if(_dat.text != null){cur_split = doSplitWords(_dat.text);}
+            else if(_dat.image != null){cur_image = _dat.image;}
+
+            if(cur_split != null){
+                var _i:Int = 0;
+                for(char in cur_split){
+                    switch(char){
+                        case '\n':{if(lastFirstChar != null){curY += lastFirstChar.height * yMultiplier; curX = 0;}}
+                        case '\t':{curX += 2 * spaceWidth;}
+                        case ' ':{curX += spaceWidth;}
+                        default:{
+                            if(AlphaCharacter.getChars().indexOf(char.toLowerCase()) != -1){
+                                var letter:AlphaCharacter = new AlphaCharacter(curX + xOffset, curY + yOffset, cur_font);
+                                letter.createChar(char, cur_bold, cur_color);
+                                if(!cur_animated){letter.animation.stop();}
+                                letter.scale.set(cur_scale.x, cur_scale.y); letter.updateHitbox();
+                                curX += letter.width * xMultiplier;
+                                        
+                                lastChar = letter;
+                                if(_i == 0){lastFirstChar = letter;}
+                    
+                                add(letter);
+        
+                                _i++;
+                            }
                         }
                     }
+                    text += char;
                 }
-                text += char;
+            }else if(cur_image != null){
+                trace('Imagen Pa:${Paths.setPath(cur_image)}');
+                var _image:FlxSprite = new FlxSprite(curX, curY).loadGraphic(Paths.getGraphic(Paths.setPath(cur_image)));
+                _image.scale.set(cur_scale.x, cur_scale.y); _image.updateHitbox();
+                _image.color = cur_color;
+                add(_image);
             }
         }
     }
@@ -120,9 +138,10 @@ class AlphaCharacter extends FlxSprite {
         "'" => "apostraphie",
         "?" => "question mark",
         "!" => "exclamation point",
-        " " => "space"
+        " " => "space",
+        "," => "comma"
     ];
-    public function createChar(letter:String, isBold:Bool = false){
+    public function createChar(letter:String, isBold:Bool = false, getColor:FlxColor = 0x00ffffff){
         var gSymbol:String = letter; if(reMap.exists(letter)){gSymbol = reMap.get(letter);}
 
         animation.addByPrefix('${letter.toUpperCase()}_bold', '${gSymbol.toUpperCase()} bold', 24, true);
@@ -133,6 +152,7 @@ class AlphaCharacter extends FlxSprite {
         animation.play(letter);
         if(numbers.indexOf(letter) != -1 || symbols.indexOf(letter) != -1){animation.play('_${letter}');}
         if(isBold){animation.play('${letter.toUpperCase()}_bold');}
+        this.color = getColor;
         
         updateHitbox();
     }

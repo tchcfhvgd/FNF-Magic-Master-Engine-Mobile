@@ -52,7 +52,6 @@ class PreLoaderState extends FlxUIState {
 		#end
 
 		FlxG.save.bind('funkin', 'ninjamuffin99');
-		FlxG.save.erase();
 
 		PreSettings.init();
         PreSettings.loadSettings();

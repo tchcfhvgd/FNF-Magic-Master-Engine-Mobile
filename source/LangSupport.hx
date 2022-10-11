@@ -88,6 +88,7 @@ class PopLangState extends states.MusicBeatState {
         
         var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBG'));
         bg.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height)); bg.screenCenter();
+        bg.color = 0xfff765;
         add(bg);
 
         langGroup = new FlxTypedGroup<Alphabet>();

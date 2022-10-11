@@ -25,6 +25,7 @@ class InformationSubState extends MusicBeatSubstate {
 
 	public function new(information:Array<Dynamic>, onClose:Void->Void){
 		super(onClose);
+		curCamera.bgColor.alpha = 200;
 		curCamera.alpha = 0;
 
         lblInfo = new Alphabet(0,0,information);

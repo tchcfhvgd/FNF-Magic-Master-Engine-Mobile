@@ -1,0 +1,23 @@
+{
+    "information":[
+        {"animated":true,"bold":true,"scale":0.9,"text":"\t\t\t\t[Camera Zoom] Event Wiki"},
+        {"animated":true,"bold":true,"scale":0.4,"text":"\n\nDescription:"},
+        {"animated":true,"scale":0.4,"text":"\nWith this event you will change the Zoom of the camera."},
+        {"animated":true,"bold":true,"scale":0.7,"text":"\n\n\nSyntax: "},
+        {"animated":false,"bold":true,"scale":0.7,"text":"["},
+        {"animated":true,"color":16774807,"bold":true,"scale":0.7,"text":"ZOOM"},
+        {"animated":false,"bold":true,"scale":0.7,"text":","},
+        {"animated":true,"color":16774807,"bold":true,"scale":0.7,"text":"DELAY"},
+        {"animated":false,"bold":true,"scale":0.7,"text":","},
+        {"animated":true,"color":16774807,"bold":true,"scale":0.7,"text":"PERCENT"},
+        {"animated":false,"bold":true,"scale":0.7,"text":"]"},
+
+        {"animated":true,"color":16774807,"bold":true,"scale":0.5,"text":"\n\n\tZOOM: (Float)"},
+        {"animated":true,"scale":0.35,"text":"\n\t\tThe new Zoom"},
+        {"animated":true,"color":16774807,"bold":true,"scale":0.5,"text":"\n\n\tDELAY: (Float)"},
+        {"animated":true,"scale":0.35,"text":"\n\t\tThe time it will take for the camera to take that Zoom (in seconds)"},
+        {"animated":true,"color":16774807,"bold":true,"scale":0.5,"text":"\n\n\tPERCENT: (Bool)"},
+        {"animated":true,"scale":0.35,"text":"\n\t\tTRUE: The camera will zoom according to ZOOM percentage with respect to the Original Zoom.\n\t Example:\n\t\tIf CameraZoom:0.8 and ZOOM:1.5, the new Zoom is (0.8*1.5) = 1.2"},
+        {"animated":true,"scale":0.35,"text":"\n\n\t\tFALSE: The camera will take a Zoom according to ZOOM\n\t Example:\n\t\tIf CameraZoom:0.8 and ZOOM:1.5, the new Zoom is = 1.5"}
+    ]
+}
