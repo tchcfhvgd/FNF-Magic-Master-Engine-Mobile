@@ -58,7 +58,7 @@ class Script extends FlxBasic {
         setVariable('getScript', function(key:String):Script{return getScript(key);});
         setVariable('getModData', function(){return ModSupport.modDataScripts.get(Mod);});
 
-        setVariable("import", 
+        setVariable("import",
             function(imp:String, ?val:String){
                 var cl = Type.resolveClass(imp);
                 var en = Type.resolveEnum(imp);

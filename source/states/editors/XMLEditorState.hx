@@ -8,19 +8,30 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.graphics.tile.FlxGraphicsShader;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.addons.display.FlxGridOverlay;
+import flixel.addons.ui.FlxUINumericStepper;
+import flixel.addons.ui.FlxUIDropDownMenu;
+import flixel.addons.ui.FlxUIInputText;
+import flixel.addons.ui.FlxUICheckBox;
+import flixel.addons.ui.FlxUITabMenu;
 import openfl.events.IOErrorEvent;
 import flixel.graphics.FlxGraphic;
+import openfl.display.BitmapData;
 import openfl.net.FileReference;
+import flixel.addons.ui.FlxUI;
 import flash.geom.Rectangle;
 import flixel.util.FlxColor;
 import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import openfl.events.Event;
+import flixel.ui.FlxButton;
 import flixel.math.FlxRect;
 import lime.ui.FileDialog;
 import flixel.FlxSprite;
+import flixel.FlxObject;
+import flixel.FlxState;
 import haxe.xml.Access;
 import openfl.Assets;
+import flixel.FlxG;
 import haxe.Json;
 
 import Script;
@@ -744,13 +755,13 @@ class XMLEditorState extends MusicBeatState {
         }
     }
 
-    public static function getCustomisableSparrowAtlas(Source:FlxGraphicAsset, Description:String):FlxAtlasFrames {
+    public static function getCustomisableSparrowAtlas(sprite:FlxSprite, Source:FlxGraphicAsset, Description:String):FlxAtlasFrames {
         var graphic:FlxGraphic = FlxG.bitmap.add(Source);
 		if(graphic == null){return null;}
 
 		if(graphic == null || Description == null){return null;}
 
-		frames = new FlxAtlasFrames(graphic);
+		var frames:FlxAtlasFrames = new FlxAtlasFrames(graphic);
 
 		if(Assets.exists(Description)){Description = Assets.getText(Description);}
 

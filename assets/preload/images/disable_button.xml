@@ -1,0 +1,19 @@
+<TextureAtlas imagePath="Hit.png">
+	<!-- Created with Adobe Animate version 22.0.7.214 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="0" y="0" frameWidth="101" name="Hit0000" frameX="0" frameHeight="28" frameY="1" width="101" height="28"/>
+	<SubTexture x="0" y="0" frameWidth="101" name="Hit0001" frameX="0" frameHeight="28" frameY="1" width="101" height="28"/>
+	<SubTexture x="101" y="0" frameWidth="101" name="Hit0002" frameX="-21" frameHeight="28" frameY="25" width="59" height="45"/>
+	<SubTexture x="101" y="0" frameWidth="101" name="Hit0003" frameX="-21" frameHeight="28" frameY="25" width="59" height="45"/>
+	<SubTexture x="0" y="45" frameWidth="101" name="Hit0004" frameX="0" frameHeight="28" frameY="22" width="101" height="27"/>
+	<SubTexture x="0" y="45" frameWidth="101" name="Hit0005" frameX="0" frameHeight="28" frameY="22" width="101" height="27"/>
+	<SubTexture x="101" y="45" frameWidth="101" name="Hit0006" frameX="0" frameHeight="28" frameY="22" width="101" height="27"/>
+	<SubTexture x="101" y="45" frameWidth="101" name="Hit0007" frameX="0" frameHeight="28" frameY="22" width="101" height="27"/>
+	<SubTexture x="101" y="45" frameWidth="101" name="Hit0008" frameX="0" frameHeight="28" frameY="22" width="101" height="27"/>
+	<SubTexture x="101" y="45" frameWidth="101" name="Hit0009" frameX="0" frameHeight="28" frameY="22" width="101" height="27"/>
+	<SubTexture x="101" y="45" frameWidth="101" name="Hit0010" frameX="0" frameHeight="28" frameY="22" width="101" height="27"/>
+	<SubTexture x="101" y="45" frameWidth="101" name="Hit0011" frameX="0" frameHeight="28" frameY="22" width="101" height="27"/>
+	<SubTexture x="101" y="45" frameWidth="101" name="Hit0012" frameX="0" frameHeight="28" frameY="22" width="101" height="27"/>
+	<SubTexture x="101" y="45" frameWidth="101" name="Hit0013" frameX="0" frameHeight="28" frameY="22" width="101" height="27"/>
+	<SubTexture x="0" y="72" frameWidth="101" name="Idle0000" frameX="0" frameHeight="28" frameY="0" width="101" height="28"/>
+</TextureAtlas>

@@ -20,9 +20,9 @@ import FlxCustom.FlxUICustomNumericStepper;
 import states.PlayState.SongListData;
 import FlxCustom.FlxUICustomButton;
 import FlxCustom.FlxUICustomList;
+import Song.SongStuffManager;
 import Song.SongsData;
 import Song.ItemSong;
-import Song.ModSongs;
 import Song.SwagSong;
 import MagicStuff;
 
@@ -36,10 +36,8 @@ using StringTools;
 
 class FreeplayState extends MusicBeatState {
 	var songList:Array<ItemSong> = [];
-	var modList:Array<ModSongs> = [];
 
 	var grpSongs:FlxTypedGroup<Alphabet>;
-	var grpMods:FlxTypedGroup<Alphabet>;
 
 	var stage:Stage;
     var camFollow:FlxObject;
@@ -56,10 +54,7 @@ class FreeplayState extends MusicBeatState {
 		MagicStuff.setWindowTitle('Freeplay', 1);
 		#end
 
-		modList = Song.getSongModList(); trace(modList);
-		for(mod in modList){
-			for(song in mod.songs){songList.push(song);}
-		}
+		songList = SongStuffManager.getSongList(); trace(songList);
 
 		stage = new Stage("Stage",[
 			["Girlfriend", [400, 130], 1, false, "Default", "GF", 0],
@@ -73,30 +68,20 @@ class FreeplayState extends MusicBeatState {
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		for(i in 0...songList.length){
 			var songText:Alphabet = new Alphabet(10,0,Paths.getFileName(songList[i].song));
-			songText.ID = i;
+
 			if(Highscore.checkLock(songList[i].keyLock)){
 				var cText:String = "";
 				while(cText.length < songText.text.length){cText = '${cText}?';}
 				songText.text = cText; songText.loadText();
 			}
+
+			songText.scrollFactor.set();
+			songText.ID = i;
+			
 			grpSongs.add(songText);
 		}
-		for(b in grpSongs){b.scrollFactor.set();}
 		add(grpSongs);
 		
-		var gradBox:FlxSprite = FlxGradient.createGradientFlxSprite(FlxG.width, 120, [FlxColor.BLACK, FlxColor.BLACK, FlxColor.TRANSPARENT]);
-		gradBox.scrollFactor.set();
-		add(gradBox);
-
-		grpMods = new FlxTypedGroup<Alphabet>();
-		for(i in 0...modList.length){
-			var modText:Alphabet = new Alphabet(10,0,Paths.getFileName(modList[i].mod));
-			modText.ID = i;
-			grpMods.add(modText);
-		}
-		for(b in grpMods){b.scrollFactor.set();}
-		add(grpMods);
-
 		var btnPlay:FlxUIButton = new FlxUICustomButton(0, 0, 300, 100, "PLAY", null, null, function(){chooseSong();});
 		btnPlay.setPosition(FlxG.width - btnPlay.width , FlxG.height - btnPlay.height);
 		btnPlay.scrollFactor.set();
@@ -131,8 +116,7 @@ class FreeplayState extends MusicBeatState {
 		}
 
 		MagicStuff.sortMembersByY(cast grpSongs, (FlxG.height / 2) - (grpSongs.members[curSong].height / 2), curSong);
-		MagicStuff.sortMembersByX(cast grpMods, (FlxG.width / 2) - (grpMods.members[curMod].width / 2), curMod, FlxG.width * 2);
-
+		
 		super.update(elapsed);		
 	}
 	
@@ -145,12 +129,6 @@ class FreeplayState extends MusicBeatState {
 		for(i in 0...grpSongs.members.length){
 			grpSongs.members[i].alpha = 0.5;
 			if(i == curSong){grpSongs.members[i].alpha = 1;}
-		}
-
-		for(i in 0...modList.length){
-			var cBreak:Bool = false;
-			for(song in modList[i].songs){if(songList[curSong].song == song.song){curMod = i; cBreak = true; break;}}
-			if(cBreak){break;}
 		}
 	}
 

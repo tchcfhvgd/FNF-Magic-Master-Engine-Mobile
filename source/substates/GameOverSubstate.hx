@@ -13,9 +13,12 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 
 class GameOverSubstate extends MusicBeatSubstate {
     public var chars:FlxTypedGroup<Character>;
+
+    public var camFollow:FlxObject;
     
-	public function new(characters:Array<Character>){
+	public function new(characters:Array<Character>, _X:Float = 0, _Y:Float = 0){
 		super();
+        curCamera.bgColor.alpha = 0;
 
         var blackGround = new FlxSprite().makeGraphic(FlxG.width * 10, FlxG.height * 10, FlxColor.BLACK);
 		blackGround.scrollFactor.set();
@@ -38,16 +41,18 @@ class GameOverSubstate extends MusicBeatSubstate {
 		}
 
 		FlxG.sound.play(Paths.sound('fnf_loss_sfx'));
-		FlxTween.tween(blackGround, {alpha: 1}, 2, {ease: FlxEase.linear, onComplete: function(twn:FlxTween){FlxG.sound.playMusic(Paths.music('gameOver'));}});
+		FlxTween.tween(blackGround, {alpha: 1}, 2, {ease: FlxEase.linear, onComplete: function(twn:FlxTween){
+            FlxG.sound.playMusic(Paths.music('gameOver'));
+            canControlle = true;
+        }});
 
 		conductor.changeBPM(100);
 
-		// FlxG.camera.followLerp = 1;
-		// FlxG.camera.focusOn(FlxPoint.get(FlxG.width / 2, FlxG.height / 2));
-		//FlxG.camera.scroll.set();
-		//FlxG.camera.target = null;
+		camFollow = new FlxObject(chars.members[0].x,chars.members[0].y,1,1);
+        add(camFollow);
 
-        //FlxG.camera.follow(camFollow, LOCKON, 0.01);
+        curCamera.setPosition(_X,_Y);
+        curCamera.follow(camFollow, LOCKON, 0.01);
 	}
 
 	override function update(elapsed:Float){

@@ -52,8 +52,8 @@ class Alphabet extends FlxSpriteGroup {
         loadText();
 	}
 
-    function doSplitWords(text:String):Array<String> {
-        var splitWords:Array<String> = text.split("");
+    function doSplitWords(_text:String):Array<String> {
+        var splitWords:Array<String> = _text.split("");
         for(c in splitWords){if(repMap.exists(c)){c.replace(c, repMap.get(c));}}
         return splitWords;
     }

@@ -6,23 +6,26 @@ import("Note");
 import("Paths");
 import("Std");
 
-presset("execute", function(_zoom:Float, _delay:Float, toPercent:Bool){});
+presset("execute", function(_zoom:Float, _delay:Float, type:String){});
+presset("defaultValues", [0,4,"Add"]);
 
-var curZoom:Float = 0;
-function create():Void {
-    curZoom = getState().stage.zoom;
+var initZoom:Float = 0;
+var cur_zoom:Float = 0;
+function preload():Void {
+    initZoom = getState().stage.zoom;
+    cur_zoom = getState().stage.zoom;
 }
 
-function execute(_zoom:Float, _delay:Float, toPercent:Bool):Void {
-    if(_zoom == curZoom){return;}
+var curTween:FlxTween = null;
+function execute(_zoom:Float, _delay:Float, _type:String):Void {
+    if(curTween != null){curTween.active = false;}
 
-    if(_delay <= 0){
-        if(toPercent){FlxG.camera.zoom = _zoom * curZoom / 1;}else{FlxG.camera.zoom = _zoom;}
-    }else{
-        if(toPercent){
-            FlxTween.tween(FlxG.camera, {zoom: _zoom}, _delay, {ease: FlxEase.cubeInOut});
-        }else{
-            FlxTween.tween(FlxG.camera, {zoom: _zoom * curZoom / 1}, _delay, {ease: FlxEase.cubeInOut});
-        }
+    switch(_type){
+        case "Set":{if(_zoom != 0){cur_zoom = _zoom;}else{cur_zoom = initZoom;}}
+        case "Add":{if(_zoom != 0){cur_zoom += _zoom;}else{cur_zoom = initZoom;}}
+        case "Percent":{cur_zoom = initZoom * _zoom;}
     }
+
+    var step:Float = getState().conductor.stepCrochet / 1000;
+    if(_delay <= 0){FlxG.camera.zoom = cur_zoom;}else{curTween = FlxTween.tween(FlxG.camera, {zoom: cur_zoom}, step * _delay, {ease: FlxEase.cubeInOut});}
 }

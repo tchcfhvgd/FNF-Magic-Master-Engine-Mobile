@@ -273,10 +273,16 @@ class FlxUICustomButton extends FlxUIButton {
         }
 		this.setSize(Width, Height);
 		this.setGraphicSize(Width, Height);
-		this.centerOffsets();
+		this.updateHitbox(); this.centerOffsets();
 		this.label.fieldWidth = this.width;
 		if(Color != null){this.color = Color;}
 	}
+
+    public function setCustomFrames(GraphicArgs:Array<Dynamic>):Void {
+        this.frames = GraphicArgs[0];
+        for(i in (cast(GraphicArgs[1],Array<Dynamic>))){this.animation.addByPrefix(i[0], i[1], 30, false);}
+		this.updateHitbox();
+    }
 }
 
 class FlxUICustomNumericStepper extends FlxUINumericStepper {

@@ -77,15 +77,24 @@ class PlayState extends MusicBeatState {
 	var song_Time:Float = 0;
 
 	//Gameplay Stats
+	private var lerp_health:Float = 0;
 	public var game_Health:Float = 1;
 	public var game_MaxHealth:Float = 2;
 
-	public var stats_Score:Int = 0;
-	public var stats_Combo:Int = 0;
+	public var stats_Map:Map<String, Dynamic> = [
+		"1.Record" => 0,
+		"2.Score" => 0,
+		"3.Combo" => 0,
+		"4.MaxCombo" => 0,
+		"5.Hits" => 0,
+		"6.Misses" => 0,
+		"7.Rating" => "MAGIC"
+	];
 	
 	//UI ASSETS
 	public var healthBar:FlxBar = new FlxBar();
 	public var sprite_healthBar:FlxSprite;
+	public var lblStats:FlxText;
 
 	//PreSettings Variables
 	var pre_BotPlay:Bool = PreSettings.getPreSetting("BotPlay", "Cheating Settings");
@@ -148,7 +157,6 @@ class PlayState extends MusicBeatState {
 		//Audio Stuff
 		voices = new FlxSoundGroup();
 		inst = new FlxSound();
-		inst.persist = false;
 		FlxG.sound.list.add(inst);
 
 		//Adding Items to Recycle
@@ -242,19 +250,34 @@ class PlayState extends MusicBeatState {
 			var strumLine = new StrumLine(0, 0, songData.sectionStrums[i].keys, Std.int(FlxG.width / 3), principal_controls, null, songData.sectionStrums[i].noteStyle);
 			
 			strumLine.onHIT = function(note:Note){
-				//trace("HITS++ | TOTAL HITS: " +  strumLine.HITS);
-
 				if(note.typeHit == "Hold"){note.missHealth *- 0.25; note.hitHealth *- 0.25;}
-				if(i == curStrum){game_Health += note.hitHealth;}
+				
+				if(i == curStrum){
+					game_Health += note.hitHealth;
+
+					if(note.typeHit != "Hold"){
+						stats_Map["5.Hits"]++;
+						stats_Map["3.Combo"]++;
+						stats_Map["2.Score"] += 10;
+						
+						if(stats_Map["3.Combo"] > stats_Map["4.MaxCombo"]){stats_Map["4.MaxCombo"] = stats_Map["3.Combo"];}
+						if(stats_Map["2.Score"] > stats_Map["1.Record"]){stats_Map["1.Record"] = stats_Map["2.Score"];}	
+					}	
+				}
 
 				for(ii in Song.getNoteCharactersToSing(note, strumLine.swagStrum, strumLine.curSection)){stage.getCharacterById(ii).playAnim(note.singAnimation, true);}
 			};
 
 			strumLine.onMISS = function(note:Note){
-				//trace("MISS++ | TOTAL MISSES: " +  strumLine.MISSES);
-				
 				if(note.typeHit == "Hold"){note.missHealth *- 0.25; note.hitHealth *- 0.25;}
-				if(i == curStrum){game_Health -= note.missHealth;}
+
+				if(i == curStrum){
+					game_Health -= note.missHealth;
+				
+					stats_Map["6.Misses"]++;
+					stats_Map["3.Combo"] = 0;
+					stats_Map["2.Score"] -= 10;
+				}
 
 				for(ii in Song.getNoteCharactersToSing(note, strumLine.swagStrum, strumLine.curSection)){stage.getCharacterById(ii).playAnim('${note.singAnimation}miss', true);}
 			};
@@ -280,16 +303,25 @@ class PlayState extends MusicBeatState {
 
 		if(cont.contains(true)){return; trace("RETURN");}
 
-		healthBar = new FlxBar(Std.int(FlxG.width / 4) + 12, FlxG.height - 130, RIGHT_TO_LEFT, Std.int(FlxG.width / 2) - 24, 45, this, 'game_Health', 0, game_MaxHealth);
-		healthBar.cameras = [camHUD];
-		add(healthBar);
-
 		sprite_healthBar = new FlxSprite().loadGraphic(Paths.styleImage("HealthBar", uiStyleCheck, "shared"));
-		sprite_healthBar.scale.y = 0.7; sprite_healthBar.scale.x = 0.7;
-		sprite_healthBar.x = (FlxG.width / 2) - (sprite_healthBar.width / 2);
-		sprite_healthBar.y = FlxG.height - sprite_healthBar.height;
+		sprite_healthBar.scale.set(0.7,0.7); sprite_healthBar.updateHitbox();
+		sprite_healthBar.screenCenter(X);
+		sprite_healthBar.y = FlxG.height - sprite_healthBar.height - 40;
 		sprite_healthBar.cameras = [camHUD];
+
+		healthBar = new FlxBar(sprite_healthBar.x+3, sprite_healthBar.y+8, RIGHT_TO_LEFT, Std.int(FlxG.width / 2) - 20, 16, this, 'lerp_health', 0, game_MaxHealth);
+		healthBar.numDivisions = 500;
+		healthBar.cameras = [camHUD];
+
+		lblStats = new FlxText(0,0,0,"|| ...Starting Song... ||");
+		lblStats.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		lblStats.screenCenter(X);
+		lblStats.y = FlxG.height - lblStats.height - 5;
+		lblStats.cameras = [camHUD];
+
+		add(healthBar);
 		add(sprite_healthBar);
+		add(lblStats);
 	}
 	
 	var previousFrameTime:Int = 0;
@@ -297,14 +329,13 @@ class PlayState extends MusicBeatState {
 		previousFrameTime = FlxG.game.ticks;
 		
 		conductor.songPosition = 0;
-		conductor.songPosition -= conductor.crochet * 5;
+
+		inst.onComplete = endSong;
 
 		inst.play(true);
 		for(sound in voices.sounds){sound.play(true);}
 		songPlaying = true;
 		
-		inst.onComplete = endSong;
-
 		strumsGroup.members[curStrum].changeTypeStrum("Playing");
 		
 		#if desktop
@@ -341,6 +372,10 @@ class PlayState extends MusicBeatState {
 			MusicBeatState.switchState(new StageBuilder());
 		}
 		super.update(elapsed);
+
+		lblStats.text = "|"; for(key in stats_Map.keys()){lblStats.text += ' ${key.split(".")[1]}: ${stats_Map[key]} |';} lblStats.screenCenter(X);
+
+		lerp_health = FlxMath.lerp(lerp_health, game_Health, 0.1);
 
 		curSection = Std.int(curStep / 16);
 
@@ -450,7 +485,16 @@ class PlayState extends MusicBeatState {
 			var cur_Event:EventData = Note.getEventData(event);
 			if(conductor.songPosition > cur_Event.strumTime && !cur_Event.isBroken && !exEvents.contains(event)){
 				exEvents.push(event);
-				for(e in cur_Event.eventData){Script.getScript(e[0]).exFunction("execute", cast e[1]);}
+				for(e in cur_Event.eventData){
+					var _args = cast(e[1],Array<Dynamic>).copy();
+					var _srp = Script.getScript(e[0]);
+					if(_srp == null){continue;}
+					if(_srp.getVariable("defaultValues") != null){
+						var _defArgs = cast(_srp.getVariable("defaultValues"),Array<Dynamic>).copy();
+						while(_args.length < _defArgs.length){_args.push(_defArgs[_args.length]);}
+					}
+					_srp.exFunction("execute", cast _args);
+				}
 			}			
 		}
 	}
@@ -458,26 +502,23 @@ class PlayState extends MusicBeatState {
 	function endSong():Void{
 		trace("End Song");
 		canPause = false;
-		inst.volume = 0;
-		for(sound in voices.sounds){sound.volume = 0;}
-		inst.pause();
-		for(sound in voices.sounds){sound.pause();}
+		songPlaying = false;
+
+		inst.stop();
+		for(sound in voices.sounds){sound.stop();}
 
 		if (SONG.validScore){
 			#if !switch
-			Highscore.saveSongScore(SONG.song, stats_Score, SONG.difficulty, SONG.category);
+			Highscore.saveSongScore(SONG.song, stats_Map["2.Score"], SONG.difficulty, SONG.category);
 			#end
 		}
 
-		SongListData.nextSong(stats_Score);
+		SongListData.nextSong(stats_Map["2.Score"]);
 		if(SongListData.songPlaylist.length <= 0){
 			transIn = FlxTransitionableState.defaultTransIn;
 			transOut = FlxTransitionableState.defaultTransOut;
 
 			isPaused = true;
-
-			inst.stop();
-			for(sound in voices.sounds){sound.stop();}
 
 			SongListData.resetVariables();
 			MusicBeatState.switchState(new states.MainMenuState());
@@ -495,7 +536,6 @@ class PlayState extends MusicBeatState {
 			prevCamFollow = camFollow;
 
 			SongListData.playWeek();
-			inst.stop();
 		}
 	}
 
@@ -514,10 +554,12 @@ class PlayState extends MusicBeatState {
 		}
 	}
 
-	public function pauseAndOpen(substate:Class<FlxSubState>, args:Array<Dynamic>, hasEasterEgg:Bool = false){
+	public function pauseAndOpen(substate:Class<FlxSubState>, args:Array<Dynamic>, hasEasterEgg:Bool = false, reDraw = true){
 		if(isPaused){return;}
-		persistentUpdate = false;
-		persistentDraw = true;
+		if(reDraw){
+			persistentUpdate = false;
+			persistentDraw = true;
+		}
 		isPaused = true;
 
 		pauseSong();
@@ -541,7 +583,7 @@ class PlayState extends MusicBeatState {
 		if(SONG.sectionStrums[curStrum].notes[curSection].changeSing){char = SONG.sectionStrums[curStrum].notes[curSection].charToSing;}
 		for(i in char){chars.push(stage.getCharacterById(i)); stage.getCharacterById(i).visible = false;}
 
-		pauseAndOpen(substates.GameOverSubstate, [chars]);
+		pauseAndOpen(substates.GameOverSubstate, [chars], false, false);
 	}
 
 	override public function onFocusLost():Void {
@@ -565,7 +607,7 @@ class PlayState extends MusicBeatState {
 
 	override function stepHit(){
 		super.stepHit();
-		if(inst.time > conductor.songPosition + 20 || inst.time < conductor.songPosition - 20){resyncVocals();}
+		if(songPlaying && inst.time > conductor.songPosition + 20 || inst.time < conductor.songPosition - 20){resyncVocals();}
 	}
 
 	override function beatHit(){

@@ -4,8 +4,8 @@
             "name": "Tutorial",
             "display": "Tutorial",
             "title": "",
-            "data": [
-                ["Normal", ["Easy", "Normal","Hard"]]
+            "categories": [
+                {"category": "Normal", "difficults": ["Easy", "Normal", "Hard"]}
             ],
             "songs":["Tutorial"],
             "keyLock": null,
@@ -16,10 +16,10 @@
             "name": "Week1",
             "display": "Week 1",
             "title": "Daddy Dearest",
-            "data": [
-                ["Normal", ["Easy", "Normal","Hard"]]
+            "categories": [
+                {"category": "Normal", "difficults": ["Easy", "Normal", "Hard"]}
             ],
-            "songs":["Bopeebo", "Fresh", "Dadbattle"],
+            "songs":["Bopeebo", "Fresh", "Dad_battle"],
             "keyLock": null,
             "hiddenOnWeeks": false,
             "hiddenOnFreeplay": false
@@ -28,8 +28,8 @@
             "name": "Week2",
             "display": "Week 2",
             "title": "Spooky Month",
-            "data": [
-                ["Normal", ["Easy", "Normal","Hard"]]
+            "categories": [
+                {"category": "Normal", "difficults": ["Easy", "Normal", "Hard"]}
             ],
             "songs":["Spookeez", "South", "Monster"],
             "keyLock": null,
@@ -40,8 +40,8 @@
             "name": "Week3",
             "display": "Week 3",
             "title": "PICO",
-            "data": [
-                ["Normal", ["Easy", "Normal","Hard"]]
+            "categories": [
+                {"category": "Normal", "difficults": ["Easy", "Normal", "Hard"]}
             ],
             "songs":["Pico", "Philly", "Blammed"],
             "keyLock": null,
@@ -52,8 +52,8 @@
             "name": "Week4",
             "display": "Week 4",
             "title": "MOMMY MUST MURDER",
-            "data": [
-                ["Normal", ["Easy", "Normal","Hard"]]
+            "categories": [
+                {"category": "Normal", "difficults": ["Easy", "Normal", "Hard"]}
             ],
             "songs":["Satin_Panties", "High", "Milf"],
             "keyLock": null,
@@ -64,8 +64,8 @@
             "name": "Week5",
             "display": "Week 5",
             "title": "RED SNOW",
-            "data": [
-                ["Normal", ["Easy", "Normal","Hard"]]
+            "categories": [
+                {"category": "Normal", "difficults": ["Easy", "Normal", "Hard"]}
             ],
             "songs":["Cocoa", "Eggnog", "Winter_Horrorland"],
             "keyLock": null,
@@ -76,8 +76,8 @@
             "name": "Week6",
             "display": "Week 6",
             "title": "hating simulator ft. moawling",
-            "data": [
-                ["Normal", ["Easy", "Normal","Hard"]]
+            "categories": [
+                {"category": "Normal", "difficults": ["Easy", "Normal", "Hard"]}
             ],
             "songs":["Senpai", "Roses", "Thorns"],
             "keyLock": null,
@@ -88,8 +88,8 @@
             "name": "Week7",
             "display": "Week 7",
             "title": "Tankman",
-            "data": [
-                ["Normal", ["Easy", "Normal","Hard"]]
+            "categories": [
+                {"category": "Normal", "difficults": ["Easy", "Normal", "Hard"]}
             ],
             "songs":["Ugh", "Guns", "Stress"],
             "keyLock": null,

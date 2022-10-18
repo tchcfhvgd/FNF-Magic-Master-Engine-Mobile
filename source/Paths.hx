@@ -78,12 +78,10 @@ class Paths {
 		var toReturn:Array<Dynamic> = [];
 
 		#if sys
-		var absFile:String = FileSystem.absolutePath(file);
-
 		var hideVan:Bool = false;
 		for(mod in ModSupport.MODS){if(mod.enabled && mod.hideVanilla){hideVan = true;}}
-		if(!hideVan && FileSystem.exists(absFile)){toReturn.push(absFile);}
-		for(mod in ModSupport.MODS){if(mod.enabled && FileSystem.exists(absFile)){toReturn.push(absFile); if(mod.onlyThis){break;}}}
+		if(!hideVan && FileSystem.exists(FileSystem.absolutePath(file))){toReturn.push(FileSystem.absolutePath(file));}
+		for(mod in ModSupport.MODS){if(mod.enabled && FileSystem.exists(FileSystem.absolutePath('${mod.path}/$file'))){toReturn.push(FileSystem.absolutePath('${mod.path}/$file')); if(mod.onlyThis){break;}}}
 		#end
 
 		return toReturn;

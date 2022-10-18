@@ -86,7 +86,7 @@ typedef ItemWeek = {
 	var name:String;
 	var display:String;
 	var title:String;
-	var data:Array<Dynamic>;
+	var categories:Array<{category:String,difficults:Array<String>}>;
 	var songs:Array<String>;
 	var keyLock:String;
 	var hiddenOnWeeks:Bool;
@@ -94,13 +94,106 @@ typedef ItemWeek = {
 }
 typedef ItemSong = {
 	var song:String;
-	var data:Array<Dynamic>;
+	var categories:Array<SongCategoryData>;
 	var keyLock:String;
 	var hidden:Bool;
 }
-typedef ModSongs = {
-	var mod:String;
-	var songs:Array<ItemSong>;
+typedef SongCategoryData = {category:String,difficults:Array<String>};
+
+class SongStuffManager {
+	public static function addCategoryToItemSong(category:SongCategoryData, itemSong:ItemSong):Void {
+		for(cat in itemSong.categories){
+			if(cat.category == category.category){
+				for(diff in category.difficults){
+					if(cat.difficults.contains(diff)){continue;}
+					cat.difficults.push(diff);
+				}
+			}
+			return;
+		}
+		itemSong.categories.push(category);
+	}
+	public static function addSongToSongList(itemSong:ItemSong, SongList:Array<ItemSong>):Void {
+		for(item in SongList){if(item.song == itemSong.song){for(cat in itemSong.categories){addCategoryToItemSong(cat, item);} return;}}
+		SongList.push(itemSong);
+	}
+
+	public static function getSongList():Array<ItemSong> {
+		var SongList:Array<ItemSong> = [];
+
+		var modlist:Array<Dynamic> = Paths.readFileToArray('assets/data/weeks.json'); trace(modlist);
+		for(_mod in modlist){
+			var modData:SongsData = cast Json.parse(Paths.getText(_mod));
+
+			for(week in modData.weekData){
+				if(week.hiddenOnFreeplay){continue;}
+
+				var cats:Array<SongCategoryData> = week.categories;
+				var lock:String = week.keyLock;
+
+				for(song in week.songs){
+					var songItem:ItemSong = {
+						song: song,
+						categories: cats,
+						keyLock: lock,
+						hidden: false
+					};
+					addSongToSongList(songItem, SongList);
+				}
+			}
+
+			for(song in modData.freeplayData){
+				if(song.hidden){continue;}
+
+				var cats:Array<SongCategoryData> = song.categories;
+				var lock:String = song.keyLock;
+					
+				var songItem:ItemSong = {
+					song: song.song,
+					categories: cats,
+					keyLock: lock,
+					hidden: false
+				};
+				addSongToSongList(songItem, SongList);
+			}
+
+			#if sys
+			if(modData.showArchiveSongs){
+				var songsDirectory:String = _mod;
+				songsDirectory = songsDirectory.replace('data/weeks.json', 'songs');
+
+				for(song in FileSystem.readDirectory(songsDirectory)){
+					if(!FileSystem.isDirectory('${songsDirectory}/${song}') || !FileSystem.exists('${songsDirectory}/${song}/Data') || FileSystem.readDirectory('${songsDirectory}/${song}/Data').length <= 0){continue;}
+
+					var data:Array<SongCategoryData> = [];
+					for(chart in FileSystem.readDirectory('${songsDirectory}/${song}/Data')){
+						var cStats:Array<String> = chart.replace(".json", "").split("-");
+						if(cStats[1] == null){cStats[1] = "Normal";}
+						if(cStats[2] == null){cStats[2] = "Normal";}
+						var hasCat:Bool = false;
+						for(d in data){
+							if(d.category == cStats[1]){continue;}
+							
+							hasCat = true;
+							d.difficults.push(cStats[2]);
+						}
+						if(!hasCat){data.push({category:cStats[1], difficults:[cStats[2]]});}
+					}
+					
+					var songItem:ItemSong = {
+						song: song,
+						categories: data,
+						keyLock: null,
+						hidden: false
+					};
+					addSongToSongList(songItem, SongList);
+				}
+			}
+			#end
+		}
+
+		return SongList;
+	}
 }
 
 class Song{
@@ -113,99 +206,6 @@ class Song{
 		if(note.singCharacters != null){return note.singCharacters;}
 		if(strum.notes[section].changeSing){return strum.notes[section].charToSing;}
 		return strum.charToSing;
-	}
-
-
-	public static function addSongToList(songItem:ItemSong, list:Array<ItemSong>):Void {
-		for(lItem in list){if(songItem.song == lItem.song){return;}}
-		list.push(songItem);
-	}
-	public static function addSongToModList(songItem:ItemSong, data:Array<Dynamic>, list:Array<ModSongs>):Void {
-		for(lItem in list){
-			if(lItem.mod != data[0]){continue;}
-			for(song in lItem.songs){if(songItem.song == song.song){return;}}
-			lItem.songs.push(songItem); return;
-		}
-	}
-
-	public static function getSongModList():Array<ModSongs> {
-		var SongList:Array<ModSongs> = [];
-
-		var weeks:Map<String, Dynamic> = Paths.readFileToMap('assets/data/weeks.json');
-		for(i in weeks.keys()){
-			var bWeek:SongsData = cast Json.parse(Paths.getText(weeks.get(i)));
-			var mod = i.split("|")[1];
-
-			SongList.push({mod: mod, songs: []});
-
-			for(week in bWeek.weekData){
-				if(week.hiddenOnFreeplay){continue;}
-
-				var cats:Array<Dynamic> = week.data;
-				var lock:String = week.keyLock;
-
-				for(song in week.songs){
-					var songItem:ItemSong = {
-						song: song,
-						data: cats,
-						keyLock: lock,
-						hidden: false
-					};
-					addSongToModList(songItem, [mod], SongList);
-				}
-			}
-
-			for(song in bWeek.freeplayData){
-				if(song.hidden){continue;}
-
-				var cats:Array<Dynamic> = song.data;
-				var lock:String = song.keyLock;
-					
-				var songItem:ItemSong = {
-					song: song.song,
-					data: cats,
-					keyLock: lock,
-					hidden: false
-				};
-				addSongToModList(songItem, [mod], SongList);
-			}
-
-			#if sys
-			if(bWeek.showArchiveSongs){
-				var songsDirectory:String = weeks[i];
-				songsDirectory = songsDirectory.replace('data/weeks.json', 'songs');
-
-				for(song in FileSystem.readDirectory(songsDirectory)){
-					if(!FileSystem.isDirectory('${songsDirectory}/${song}') || !FileSystem.exists('${songsDirectory}/${song}/Data') || FileSystem.readDirectory('${songsDirectory}/${song}/Data').length <= 0){continue;}
-
-					var data:Array<Dynamic> = [];
-					for(chart in FileSystem.readDirectory('${songsDirectory}/${song}/Data')){
-						var cStats:Array<String> = chart.replace(".json", "").split("-");
-						if(cStats[1] == null){cStats[1] = "Normal";}
-						if(cStats[2] == null){cStats[2] = "Normal";}
-						var hasCat:Bool = false;
-						for(d in data){
-							if(d[0] == cStats[1]){continue;}
-							
-							hasCat = true;
-							d[1].push(cStats[2]);
-						}
-						if(!hasCat){data.push([cStats[1], [cStats[2]]]);}
-					}
-					
-					var songItem:ItemSong = {
-						song: song,
-						data: data,
-						keyLock: null,
-						hidden: false
-					};
-					addSongToModList(songItem, [mod], SongList);
-				}
-			}
-			#end
-		}
-
-		return SongList;
 	}
 
 	public static function fileSong(song:String, cat:String, diff:String):String {
@@ -393,10 +393,10 @@ class Song{
 		if(!aSong.exists("characters")){
 			var chrs:Array<Dynamic> = [];
 
-			if(aSong.exists("player3")){chrs.push([aSong.get("player3"),[400,130],1,true,"Default","GF",0]); aSong.remove("player3");}
-			else if(aSong.exists("gfVersion")){chrs.push([aSong.get("gfVersion"),[400,130],1,true,"Default","GF",0]); aSong.remove("gfVersion");}
-			else if(aSong.exists("gf")){chrs.push([aSong.get("gf"),[400,130],1,true,"Default","GF",0]); aSong.remove("gf");}
-			else{chrs.push(["Girlfriend",[400,130],1,true,"Default","GF",0]);}
+			if(aSong.exists("player3")){chrs.push([aSong.get("player3"),[400,130],1,false,"Default","GF",0]); aSong.remove("player3");}
+			else if(aSong.exists("gfVersion")){chrs.push([aSong.get("gfVersion"),[400,130],1,false,"Default","GF",0]); aSong.remove("gfVersion");}
+			else if(aSong.exists("gf")){chrs.push([aSong.get("gf"),[400,130],1,false,"Default","GF",0]); aSong.remove("gf");}
+			else{chrs.push(["Girlfriend",[400,130],1,false,"Default","GF",0]);}
 
 			if(aSong.exists("player2")){chrs.push([aSong.get("player2"),[100,100],1,true,"Default","NORMAL",0]); aSong.remove("player2");}
 			else{chrs.push(["Daddy_Dearest",[100,100],1,true,"Default","NORMAL",0]);}
@@ -407,12 +407,12 @@ class Song{
 			aSong.set("characters", chrs);
 		}
 
-		if(!aSong.exists("generalSection")){aSong.set("generalSection", []);}
-		if(!aSong.exists("sectionStrums") && aSong.exists("notes")){
+		if(!aSong.exists("sectionStrums") || !aSong.exists("generalSection") && aSong.exists("notes")){
 			var notes:Array<Dynamic> = aSong.get("notes");
 
 			var sNotes1:Array<SwagSection> = [];
 			var sNotes2:Array<SwagSection> = [];
+			var sGenSecs:Array<SwagGeneralSection> = [];
 
 			for(sec in notes){
 				var cSec:DynamicAccess<Dynamic> = sec;
@@ -455,6 +455,18 @@ class Song{
 					altAnim: iAltAnim,
 					sectionNotes: in2
 				});
+				
+				sGenSecs.push({
+					bpm: aSong.get("bpm"),
+					changeBPM: cSec.get("changeBPM"),
+				
+					lengthInSteps: cSec.get("lengthInSteps"),
+			
+					strumToFocus: cSec.get("mustHitSection") ? 1 : 0,
+					charToFocus: 0,
+			
+					events: []
+				});
 			}
 
 			var str1:SwagStrum = {
@@ -471,7 +483,8 @@ class Song{
 				notes: sNotes2
 			};
 			
-			aSong.set("sectionStrums", [str1, str2]);
+			if(!aSong.exists("generalSection")){aSong.set("generalSection", sGenSecs);}
+			if(!aSong.exists("sectionStrums")){aSong.set("sectionStrums", [str1, str2]);}
 			aSong.remove("notes");
 		}
 		if(!aSong.exists("sectionStrums")){
@@ -484,11 +497,26 @@ class Song{
 
 			aSong.set("sectionStrums", [nStrm]);
 		}
+		if(!aSong.exists("generalSection")){
+			var nGenSec:SwagGeneralSection = {
+				bpm: aSong.get("bpm"),
+				changeBPM: false,
+				
+				lengthInSteps: 16,
+			
+				strumToFocus: 0,
+				charToFocus: 0,
+			
+				events: []
+			};
+
+			aSong.set("generalSection", [nGenSec]);
+		}
 
 		return cast aSong;
 	}
 
-	public static var song_file:FileMaster = null;
+	public static var song_file:SaverMaster = null;
 	public static function save_song(fileName:String, songData:SwagSong, options:{?onComplete:Void->Void, ?throwFunc:Exception->Void, ?returnOnThrow:Bool, ?path:String, ?saveAs:Bool}):Void {
 		if(song_file != null || songData == null){return;}
 
@@ -531,46 +559,51 @@ class Song{
 		if(options.saveAs){
 			var files_to_save:Array<{name:String, data:Dynamic}> = [{name: '$fileName.json', data: song_data}];
 			if(events_data.length > 0){files_to_save.push({name: 'global_events.json', data: events_data});}
-			song_file = new FileMaster(files_to_save, {onComplete: function(){if(options.onComplete != null){options.onComplete();} song_file = null;}});
-
+			song_file = new SaverMaster(files_to_save, {destroyOnComplete: true, onComplete: function(){if(options.onComplete != null){options.onComplete();} song_file = null;}});
 			song_file.saveFile();
 		}else{
 			#if sys
 				if((song_data != null) && (song_data.length > 0)){File.saveContent(options.path, song_data);}
 				if((events_data != null) && (events_data.length > 0)){File.saveContent(options.path.replace('$fileName','global_events'), events_data);}
 				if(options.onComplete != null){options.onComplete();}
-				song_file = null;
 			#end
 		}
 	}
 }
 
-class FileMaster extends FileReference {
+class SaverMaster extends FileReference {
 	public var stuff_to_save:Array<{name:String, data:Dynamic}> = [];
-	public var options_file:Dynamic = {};
+	public var current_calls:Array<{event:Dynamic,func:Dynamic}> = [];
+	public var options:Dynamic = {};
 
-	public function new(_stuff_to_save:Array<{name:String, data:Dynamic}>, ?options:{?onComplete:Void->Void}):Void {
-		this.stuff_to_save = _stuff_to_save;
-		this.options_file = options;
+	public function new(?_stuff_to_save:Array<{name:String, data:Dynamic}>, ?options:Dynamic):Void {
+		if(_stuff_to_save != null){this.stuff_to_save = _stuff_to_save;}
+		if(options != null){this.options = cast options;}
 		super();
-		
-		this.addEventListener(Event.SELECT, saveFile);
-		this.addEventListener(Event.COMPLETE, removeListeners);
-		this.addEventListener(Event.CANCEL, saveFile);
-		this.addEventListener(IOErrorEvent.IO_ERROR, saveFile);
 	}
 
 	public function saveFile(?_):Void {
-		if(stuff_to_save.length <= 0){removeListeners(); return;}
+		if(_ == null){
+			this.addEventListener(Event.SELECT, saveFile);
+			this.addEventListener(Event.COMPLETE, completedFiles);
+			this.addEventListener(Event.CANCEL, saveFile);
+			this.addEventListener(IOErrorEvent.IO_ERROR, saveFile);
+		}
+
+		if(stuff_to_save.length <= 0){completedFiles(); return;}
 		var current_file:{name:String, data:Dynamic} = stuff_to_save.shift();
 		this.save(current_file.data, current_file.name);
 	}
 
-	private function removeListeners(?_){
+	public function completedFiles(?_){
+		if(options.onComplete != null){options.onComplete();}
+		if(options.destroyOnComplete){removeListeners();}
+	}
+
+	private function removeListeners(){
 		this.removeEventListener(Event.SELECT, saveFile);
-		this.removeEventListener(Event.COMPLETE, removeListeners);
+		this.removeEventListener(Event.COMPLETE, completedFiles);
 		this.removeEventListener(Event.CANCEL, saveFile);
 		this.removeEventListener(IOErrorEvent.IO_ERROR, saveFile);
-		if(options_file.onComplete != null){options_file.onComplete();}
 	}
 }

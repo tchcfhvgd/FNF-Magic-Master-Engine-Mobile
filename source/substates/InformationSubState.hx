@@ -43,7 +43,7 @@ class InformationSubState extends MusicBeatSubstate {
 		super.update(elapsed);
 
         if(canControlle){
-            _cam_follow.y += FlxG.mouse.wheel * 10;
+            _cam_follow.y -= FlxG.mouse.wheel * 15;
 			
 			if(principal_controls.checkAction("Menu_Back", JUST_PRESSED)){doClose();}
         }
