@@ -128,7 +128,7 @@ class CharacterEditorState extends MusicBeatState{
         addMENUTABS();
         add(MENU);
 
-        healthIcon = new HealthIcon(_character.healthicon, true);
+        healthIcon = new HealthIcon(0.5, _character.healthicon, true);
         healthIcon.setPosition(MENU.x - healthIcon.width, 0);
         healthIcon.camera = camHUD;
         add(healthIcon);
@@ -480,7 +480,7 @@ class CharacterEditorState extends MusicBeatState{
                 case "CHARACTER_ICON":{
                     _character.healthicon = input.text;
                     healthIcon.setIcon(_character.healthicon);
-                    healthIcon.x = FlxG.width - healthIcon.width;
+                    healthIcon.x = MENU.x - healthIcon.width;
                 }
                 case "CHARACTER_DEATHCHAR":{_character.deathCharacter = input.text;}
                 case "CHARACTER_IMAGE":{_character.image = input.text; reloadCharacter();}

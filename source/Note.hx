@@ -134,10 +134,11 @@ class StrumNote extends FlxSprite{
         updateHitbox();
     }
     
-    public function summonSplash(splash:NoteSplash){
+    public function summonSplash(splash:NoteSplash):NoteSplash{
         splash.playColor = this.playColor;
         splash.setup(this.x, this.y, splashImage, style, type);
         splash.setGraphicSize(Std.int(this.width), Std.int(this.height));
+        splash.scrollFactor.set();
         return splash;
     }
 }

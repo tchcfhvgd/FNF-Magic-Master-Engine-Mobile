@@ -93,6 +93,8 @@ class PlayState extends MusicBeatState {
 	
 	//UI ASSETS
 	public var healthBar:FlxBar = new FlxBar();
+	public var leftIcon:HealthIcon;
+	public var rightIcon:HealthIcon;
 	public var sprite_healthBar:FlxSprite;
 	public var lblStats:FlxText;
 
@@ -250,7 +252,7 @@ class PlayState extends MusicBeatState {
 			var strumLine = new StrumLine(0, 0, songData.sectionStrums[i].keys, Std.int(FlxG.width / 3), principal_controls, null, songData.sectionStrums[i].noteStyle);
 			
 			strumLine.onHIT = function(note:Note){
-				if(note.typeHit == "Hold"){note.missHealth *- 0.25; note.hitHealth *- 0.25;}
+				if(note.typeHit == "Hold"){note.missHealth *= 0.25; note.hitHealth *= 0.25;}
 				
 				if(i == curStrum){
 					game_Health += note.hitHealth;
@@ -269,7 +271,7 @@ class PlayState extends MusicBeatState {
 			};
 
 			strumLine.onMISS = function(note:Note){
-				if(note.typeHit == "Hold"){note.missHealth *- 0.25; note.hitHealth *- 0.25;}
+				if(note.typeHit == "Hold"){note.missHealth *= 0.25; note.hitHealth *= 0.25;}
 
 				if(i == curStrum){
 					game_Health -= note.missHealth;
@@ -285,10 +287,11 @@ class PlayState extends MusicBeatState {
 			strumLine.scrollSpeed = songData.speed;
 			strumLine.strumConductor = conductor;
 			strumLine.bpm = songData.bpm;
+			
+			strumLine.x = (FlxG.width / 2) - (strumLine.genWidth / 2);
+			strumLine.y = -strumLine.genHeight*2;
 
 			strumLine.loadStrumNotes(songData.sectionStrums[i]);
-
-			strumLine.x = (FlxG.width / 2) - (strumLine.genWidth / 2);
 			strumLine.ID = i;
 
 			strumsGroup.add(strumLine);
@@ -303,25 +306,46 @@ class PlayState extends MusicBeatState {
 
 		if(cont.contains(true)){return; trace("RETURN");}
 
-		sprite_healthBar = new FlxSprite().loadGraphic(Paths.styleImage("HealthBar", uiStyleCheck, "shared"));
-		sprite_healthBar.scale.set(0.7,0.7); sprite_healthBar.updateHitbox();
-		sprite_healthBar.screenCenter(X);
-		sprite_healthBar.y = FlxG.height - sprite_healthBar.height - 40;
-		sprite_healthBar.cameras = [camHUD];
+		if(healthBar != null){
+			healthBar = new FlxBar(0,0, RIGHT_TO_LEFT, Std.int(FlxG.width / 2) - 20, 16, this, 'lerp_health', 0, game_MaxHealth);
+			healthBar.screenCenter(X);
+			healthBar.y = FlxG.height - healthBar.height - 40;
+			healthBar.numDivisions = 500;
+			healthBar.cameras = [camHUD];
+			add(healthBar);
+		}
 
-		healthBar = new FlxBar(sprite_healthBar.x+3, sprite_healthBar.y+8, RIGHT_TO_LEFT, Std.int(FlxG.width / 2) - 20, 16, this, 'lerp_health', 0, game_MaxHealth);
-		healthBar.numDivisions = 500;
-		healthBar.cameras = [camHUD];
+		if(sprite_healthBar != null){
+			sprite_healthBar = new FlxSprite().loadGraphic(Paths.styleImage("HealthBar", uiStyleCheck, "shared"));
+			sprite_healthBar.scale.set(0.7,0.7); sprite_healthBar.updateHitbox();
+			sprite_healthBar.screenCenter(X);
+			sprite_healthBar.y = FlxG.height - sprite_healthBar.height - 40;
+			sprite_healthBar.cameras = [camHUD];
+			add(sprite_healthBar);
+		}
 
-		lblStats = new FlxText(0,0,0,"|| ...Starting Song... ||");
-		lblStats.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		lblStats.screenCenter(X);
-		lblStats.y = FlxG.height - lblStats.height - 5;
-		lblStats.cameras = [camHUD];
+		if(leftIcon != null){
+			leftIcon = new HealthIcon(0.5, 'tankman');
+			leftIcon.setPosition(healthBar.x-(leftIcon.width/2),healthBar.y-(leftIcon.height/2));
+			leftIcon.camera = camHUD;
+			add(leftIcon);
+		}
+		
+		if(rightIcon != null){
+			rightIcon = new HealthIcon(0.5, 'bf', true);
+			rightIcon.setPosition(healthBar.x+healthBar.width-(rightIcon.width/2),healthBar.y-(rightIcon.height/2));
+			rightIcon.camera = camHUD;
+			add(rightIcon);
+		}
 
-		add(healthBar);
-		add(sprite_healthBar);
-		add(lblStats);
+		if(lblStats != null){
+			lblStats = new FlxText(0,0,0,"|| ...Starting Song... ||");
+			lblStats.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			lblStats.screenCenter(X);
+			lblStats.y = FlxG.height - lblStats.height - 5;
+			lblStats.cameras = [camHUD];
+			add(lblStats);
+		}
 	}
 	
 	var previousFrameTime:Int = 0;
@@ -371,9 +395,8 @@ class PlayState extends MusicBeatState {
 			StageBuilder.char = SONG.characters;
 			MusicBeatState.switchState(new StageBuilder());
 		}
-		super.update(elapsed);
 
-		lblStats.text = "|"; for(key in stats_Map.keys()){lblStats.text += ' ${key.split(".")[1]}: ${stats_Map[key]} |';} lblStats.screenCenter(X);
+		super.update(elapsed);
 
 		lerp_health = FlxMath.lerp(lerp_health, game_Health, 0.1);
 
@@ -408,6 +431,8 @@ class PlayState extends MusicBeatState {
 		if(game_Health > game_MaxHealth){game_Health = game_MaxHealth;}
 
 		if(songPlaying){
+			lblStats.text = "|"; for(key in stats_Map.keys()){lblStats.text += ' ${key.split(".")[1]}: ${stats_Map[key]} |';} lblStats.screenCenter(X);
+
 			if(game_Health <= 0){doGameOver();}
 			// conductor.songPosition = inst.time;
 			conductor.songPosition += FlxG.elapsed * 1000;
@@ -642,7 +667,7 @@ class SongListData{
 
 	public static function playWeek(){
 		isStoryMode = true;
-		states.LoadingState.loadAndSwitchState(new PlayState(), songPlaylist[0], false);
+		FlxG.switchState(new states.LoadingState(new PlayState(), false));
 	}
 
 	public static function playSong(SONG:SwagSong) {
@@ -650,7 +675,7 @@ class SongListData{
 
 		resetVariables();
 		songPlaylist.push(SONG);
-		states.LoadingState.loadAndSwitchState(new PlayState(), SONG, false);
+		FlxG.switchState(new states.LoadingState(new PlayState(), false));
 	}
 	
 	public static function nextSong(score){

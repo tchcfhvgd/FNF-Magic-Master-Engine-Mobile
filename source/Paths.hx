@@ -32,10 +32,7 @@ class Paths {
 	}
 
 	static var curLibrary:String = "shared";
-
-	static public function setCurrentLibrary(name:String){
-		curLibrary = name.toLowerCase();
-	}
+	static public function setCurrentLibrary(name:String){curLibrary = name.toLowerCase();}
 
 	inline public static function exists(path:String){
 		if(OpenFlAssets.exists(path)){return true;}

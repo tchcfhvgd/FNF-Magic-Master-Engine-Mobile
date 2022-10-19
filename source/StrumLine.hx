@@ -43,10 +43,14 @@ using StringTools;
 
 class StaticNotes extends FlxUIGroup {
     public var genWidth:Int = 160;
+    public var genHeight(get, never):Int;
+	inline function get_genHeight():Int{return Std.int(genWidth / keyNum);}
+
     public var keyNum:Int = 4;
     
     public var statics:Array<StrumNote> = [];
-    public var splash:NoteSplash;
+    
+    public var splashGrp:FlxTypedGroup<NoteSplash>;
 
     public var image:String = StrumNote.IMAGE_DEFAULT;
     public var style:String = StrumNote.STYLE_DEFAULT;
@@ -59,11 +63,11 @@ class StaticNotes extends FlxUIGroup {
         if(_keys != null){this.keyNum = _keys;}
         if(_size != null){this.genWidth = _size;}
         super(X, Y);
-                
-        changeKeyNumber(keyNum, genWidth, true, false);
         
-        splash = new NoteSplash();
-        add(splash);
+        splashGrp = new FlxTypedGroup<NoteSplash>();
+        splashGrp.add(new NoteSplash());
+                
+        changeKeyNumber(keyNum, genWidth, true, true);
     }
     
     public function playById(id:Int, anim:String, force:Bool = false, doSplash:Bool = false){
@@ -71,7 +75,7 @@ class StaticNotes extends FlxUIGroup {
         if(curStrum == null){return;}
 
         curStrum.playAnim(anim, force);
-        if(doSplash){curStrum.summonSplash(splash);}
+        if(doSplash){add(curStrum.summonSplash(splashGrp.recycle(NoteSplash)));}
     }
 
     public function setGraphicToNotes(?_image:String, ?_style:String, ?_type:String){
@@ -137,7 +141,6 @@ typedef Strums_Data = {
 class StrumLine extends StaticNotes {
     // STRUMLINE VARIABLES
     public var typeStrum:String = "BotPlay"; //BotPlay, Playing, Charting
-        
     public var notes:Array<Note> = [];
 
     // NOTE EVENTS
@@ -477,8 +480,7 @@ class StrumLine extends StaticNotes {
         daNote.noteStatus = "Pressed";
 
         if((pre_TypeStrums == "All" || pre_TypeStrums == "OnlyOtherStrums") && daNote.typeHit != "Ghost"){
-            playById(daNote.noteData, "confirm");
-            if(daNote.typeHit != "Hold"){statics[daNote.noteData].summonSplash(splash);}
+            playById(daNote.noteData, "confirm", true, daNote.typeHit != "Hold");
         }
 
         for(event in daNote.otherData){

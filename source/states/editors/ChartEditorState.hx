@@ -876,7 +876,7 @@ class ChartEditorState extends MusicBeatState{
         daSong = Song.fileSong(daSong, cat, diff);
         _song = Song.loadFromJson(daSong);
 
-        LoadingState.loadAndSwitchState(new ChartEditorState(this.onBack, this.onConfirm), _song, false);
+		FlxG.switchState(new states.LoadingState(new ChartEditorState(this.onBack, this.onConfirm), false));
     }
 
     function loadAudio(daSong:String, cat:String):Void {
@@ -1388,8 +1388,8 @@ class ChartEditorState extends MusicBeatState{
         var btnLoadAutoSave:FlxButton = new FlxCustomButton(5, chkAutoSave.y + chkAutoSave.height + 5, Std.int((MENU.width - 15)), null, "Load Auto Save", null, null, function(){
             _song = cast Json.parse(FlxG.save.data.autosave);
             Song.parseJSONshit(_song);
-            LoadingState.loadAndSwitchState(new ChartEditorState(this.onBack, this.onConfirm), _song, false);}
-        ); tabMENU.add(btnLoadAutoSave);
+            FlxG.switchState(new states.LoadingState(new ChartEditorState(this.onBack, this.onConfirm), false));
+        }); tabMENU.add(btnLoadAutoSave);
 
         var line5 = new FlxSprite(5, btnLoadAutoSave.y + btnLoadAutoSave.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line5);
 
