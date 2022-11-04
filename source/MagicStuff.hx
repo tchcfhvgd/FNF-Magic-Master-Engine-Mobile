@@ -17,7 +17,8 @@ class MagicStuff {
 	public static final version:String = "0.9";
 
     public static function reload_data():Void {
-        Paths.savedMap.clear();
+        Paths.savedTempMap.clear();
+        Paths.savedGlobMap.clear();
 
         PreSettings.init();
         Controls.init();
@@ -122,8 +123,10 @@ class MagicStuff {
         }
     }
 
-    public static function lerpX(obj:FlxObject, dest:Float, ?radio:Float = 0.1):Void {obj.x = FlxMath.lerp(obj.x, dest, radio);}
-    public static function lerpY(obj:FlxObject, dest:Float, ?radio:Float = 0.1):Void {obj.y = FlxMath.lerp(obj.y, dest, radio);}
+    public static function lerpX(obj:Dynamic, dest:Float, ?radio:Float = 0.1):Void {obj.x = FlxMath.lerp(obj.x, dest, radio);}
+    public static function lerpY(obj:Dynamic, dest:Float, ?radio:Float = 0.1):Void {obj.y = FlxMath.lerp(obj.y, dest, radio);}
+
+    public static function browserLoad(site:String){#if linux Sys.command('/usr/bin/xdg-open', [site, "&"]); #else FlxG.openURL(site); #end}
 }
 
 enum TransitionType {

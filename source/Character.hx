@@ -86,9 +86,9 @@ class Character extends FlxSprite{
         if(char.animation.curAnim != null){
             switch(char.animation.curAnim.name){
                 case 'singUP':{camMoveY -= 100;}
-                case 'singRIGHT':{camMoveX += 100;}
+                case 'singRIGHT':{camMoveX += !char.onRight ? 100 : -100;}
                 case 'singDOWN':{camMoveY += 100;}
-                case 'singLEFT':{camMoveX -= 100;}
+                case 'singLEFT':{camMoveX -= !char.onRight ? 100 : -100;}
             }
         }
 
@@ -172,10 +172,11 @@ class Character extends FlxSprite{
 	}
 
 	public function playAnim(AnimName:String, Force:Bool = false, Special:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void{
-		if(this.onRight){
+		if(this.flipX){
 			if(AnimName.contains("LEFT")){AnimName = AnimName.replace("LEFT", "RIGHT");}
 			else{AnimName = AnimName.replace("RIGHT", "LEFT");}
 		}
+		
 		if(specialAnim || animation.getByName(AnimName) == null || (animation.curAnim != null && animation.curAnim.name == AnimName && animation.curAnim.name.contains("sing") && animation.curAnim.curFrame < singTimer)){return;}
 		
 		specialAnim = Special;
@@ -184,12 +185,14 @@ class Character extends FlxSprite{
 	}
 
 	public function setupByName(?_character:String, ?_category:String, ?_type:String):Void {
-		curCharacter = _character; curSkin = _category; curCategory = _type;
+		if(_character != null){curCharacter = _character;}
+		if(_category != null){curSkin = _category;}
+		if(_type != null){curCategory = _type;}
 		setupByCharacterFile();
 	}
 
 	public function setupByCharacterFile(?jCharacter:CharacterFile){
-		if(jCharacter == null){jCharacter = Json.parse(Paths.getText(Paths.getCharacterJSON(curCharacter, curSkin, curCategory)));}
+		if(jCharacter == null){jCharacter = cast Paths.getCharacterJSON(curCharacter, curSkin, curCategory);}
 		charFile = jCharacter;
 
 		curCharacter = charFile.name;
@@ -198,7 +201,6 @@ class Character extends FlxSprite{
 
 		healthIcon = charFile.healthicon;
 		
-		this.flipX = !charFile.onRight;
 		turnLook(onRight);
 
 		this.dancedIdle = charFile.danceIdle;
@@ -220,9 +222,12 @@ class Character extends FlxSprite{
 	public function quickAnimAdd(name:String, anim:String){animation.addByPrefix(name, anim, 24, false);}
 
 	public function turnLook(toRight:Bool = true){
-		if((toRight && !this.onRight) || (!toRight && this.onRight)){
-			this.flipX = !this.flipX;
-			this.onRight = !this.onRight;
+		this.onRight = toRight;
+
+		if(onRight){
+			this.flipX = !charFile.onRight;
+		}else{
+			this.flipX = charFile.onRight;
 		}
 	}
 

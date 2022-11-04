@@ -1,1 +1,96 @@
-{"aspect":"Default","position":[-40,200],"anims":[{"indices":[],"symbol":"PRETTY GOOD tankman 1","fps":24,"anim":"good","loop":false},{"indices":[],"symbol":"TANKMAN UGH 1","fps":24,"anim":"hey","loop":false},{"indices":[],"symbol":"Tankman DOWN note 1","fps":24,"anim":"singDOWN","loop":false},{"indices":[],"symbol":"Tankman Idle Dance 1","fps":24,"anim":"idle","loop":false},{"indices":[],"symbol":"Tankman Note Left 1","fps":24,"anim":"singRIGHT","loop":false},{"indices":[],"symbol":"Tankman Right Note 1","fps":24,"anim":"singLEFT","loop":false},{"indices":[],"symbol":"Tankman UP note 1","fps":24,"anim":"singUP","loop":false},{"indices":[],"symbol":"Tankman DOWN note MISS","fps":24,"anim":"singDOWNmiss","loop":false},{"indices":[],"symbol":"Tankman Note Left MISS","fps":24,"anim":"singRIGHTmiss","loop":false},{"indices":[],"symbol":"Tankman Right Note MISS","fps":24,"anim":"singLEFTmiss","loop":false},{"indices":[],"symbol":"Tankman UP note MISS","fps":24,"anim":"singUPmiss","loop":false}],"name":"Tankman","image":"tankmanCaptain","zoom":0.8,"onRight":false,"skin":"Default","healthicon":"bf","camera":[-49,-190]}
+{
+	"aspect": "Default",
+	"position": [
+		-40,
+		200
+	],
+	"anims": [
+		{
+			"loop": false,
+			"symbol": "PRETTY GOOD tankman 1",
+			"anim": "good",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "TANKMAN UGH 1",
+			"anim": "hey",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "Tankman DOWN note 1",
+			"anim": "singDOWN",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "Tankman Idle Dance 1",
+			"anim": "idle",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "Tankman Note Left 1",
+			"anim": "singLEFT",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "Tankman Right Note 1",
+			"anim": "singRIGHT",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "Tankman UP note 1",
+			"anim": "singUP",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "Tankman DOWN note MISS",
+			"anim": "singDOWNmiss",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "Tankman Note Left MISS",
+			"anim": "singLEFTmiss",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "Tankman Right Note MISS",
+			"anim": "singRIGHTmiss",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "Tankman UP note MISS",
+			"anim": "singUPmiss",
+			"fps": 24,
+			"indices": []
+		}
+	],
+	"zoom": 0.8,
+	"image": "tankmanCaptain",
+	"name": "Tankman",
+	"camera": [
+		-49,
+		-190
+	],
+	"healthicon": "tankman",
+	"onRight": false,
+	"skin": "Default"
+}

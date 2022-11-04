@@ -6,8 +6,9 @@ import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
 
 class PreSettings {
+    public static var CURRENT_SETTINGS:Map<String, Map<String, Dynamic>> = [];
     public static var PRESETTINGS:Map<String, Map<String, Dynamic>> = [];
-    public static var DEFAULTSETTINGS:Map<String, Map<String, Dynamic>> = [
+    public static final DEFAULTSETTINGS:Map<String, Map<String, Dynamic>> = [
         "Game Settings" => [
             "Language" => [0, ["English", "Spanish", "Portuguese"]],
             "Ghost Tapping" => true,
@@ -18,7 +19,7 @@ class PreSettings {
         "Visual Settings" => [
             "Type HUD" => [0, ["MagicHUD", "Original", "Minimized", "OnlyNotes"]],
             "Note Skin" => [0, ["Arrows", "Circles", "Rhombuses", "Bars"]],
-            "Typec Scroll" => [0, ["UpScroll", "DownScroll"]],
+            "Type Scroll" => [0, ["UpScroll", "DownScroll"]],
             "Default Strum Position" => [0, ["Middle", "Right", "Left"]],
             "Type Middle Scroll" => [0, ["None", "OnlyPlayer", "FadeOthers"]],
             "Type Camera" => [1, ["Static", "MoveToSing"]],
@@ -26,14 +27,6 @@ class PreSettings {
             "Type Splash" => [0, ["OnSick", "TransparencyOnRate", "None"]]
         ],
         "Graphic Settings" => [
-            "Presets" => [
-                "Low" => [
-                    "FrameRate" => 30
-                ],
-                "Medium" => [
-                    "FrameRate" => 30
-                ]
-            ],
             "FrameRate" => 60,
             "Antialiasing" => true,
             "Background Animated" => true,
@@ -55,8 +48,6 @@ class PreSettings {
             "Type Notes" => [0, ["All", "OnlyNormal", "OnlySpecials", "DisableBads", "DisableGoods"]]
         ]
     ];
-
-    public static var CURRENT_SETTINGS:Map<String, Map<String, Dynamic>> = [];
     public static function init():Void {
         PRESETTINGS = DEFAULTSETTINGS.copy();
     }
@@ -66,7 +57,7 @@ class PreSettings {
         if(CURRENT_SETTINGS == null){
             FlxG.save.data.PRESETTINGS = PRESETTINGS;
             trace("Null Options. Loading by Default");
-            loadSettings();
+            loadSettings();            
             return;
         }
         
@@ -89,10 +80,13 @@ class PreSettings {
                 }
             }
         }
+        
+        trace("PreSettings Loaded");
     }
 
     public static function saveSettings(){
         FlxG.save.data.PRESETTINGS = CURRENT_SETTINGS;
+        FlxG.save.flush();
 		trace("PreSettings Saved Successfully!");
     }
 
@@ -107,9 +101,22 @@ class PreSettings {
         if((toReturn is Array)){return toReturn[1][toReturn[0]];}
         return toReturn;
     }
+    public static function getArrayPreSetting(setting:String, category:String){
+        return CURRENT_SETTINGS.get(category).get(setting)[1];
+    }
 
-    public static function setPreSetting(setting:String, category:String, toSet){
-        CURRENT_SETTINGS.get(category).set(setting, toSet);
+    public static function changePreSetting(setting:String, category:String, value:Int = 0){
+        var check = CURRENT_SETTINGS.get(category).get(setting);
+        if((check is Array<Dynamic>)){
+            check[0] += value;
+
+            if(check[0] < 0){check[0] = check[1].length - 1;}
+            if(check[0] >= check[1].length){check[0] = 0;}
+        }
+        else if((check is Bool)){check = !check;}
+        else{check += value;}
+
+        CURRENT_SETTINGS.get(category).set(setting, check);
     }
 
     static function removePreSetting(setting:String, category:String){

@@ -133,14 +133,6 @@ class StrumNote extends FlxSprite{
         playAnim(sAnim);
         updateHitbox();
     }
-    
-    public function summonSplash(splash:NoteSplash):NoteSplash{
-        splash.playColor = this.playColor;
-        splash.setup(this.x, this.y, splashImage, style, type);
-        splash.setGraphicSize(Std.int(this.width), Std.int(this.height));
-        splash.scrollFactor.set();
-        return splash;
-    }
 }
 
 typedef NoteData = {
@@ -315,13 +307,11 @@ class Note extends StrumNote {
     public function loadPresset(presset:String, onCreate:Bool = true):Void {
         if(!onCreate && presset == "Default"){otherData = []; loadNote(StrumNote.IMAGE_DEFAULT); return;}
 
-        if(presset != "" && Paths.exists(Paths.notePresset(presset))){
-            var eventList:DynamicAccess<Dynamic> = cast Json.parse(Paths.getText(Paths.notePresset(presset)));
+        if(presset != "" && Paths.exists(Paths.json(presset, 'notes', true))){
+            var eventList:DynamicAccess<Dynamic> = cast Paths.json(presset, 'notes');
             otherData = eventList.get("Events");
         }
         
-        for(i in this.otherData){MusicBeatState.state.pushTempScript(i[0], i[1]);}
-
         for(event in otherData){
             if(event[2] != "OnCreate"){continue;} var curScript:Script = Script.getScript(event[0]);
             curScript.setVariable("_note", this); curScript.exFunction("execute", event[1]);
@@ -435,7 +425,6 @@ class NoteSplash extends FlxSprite {
 }
 
 class ColorFilterShader extends FlxShader {
-    #if openfl
     @:glFragmentSource('
 		#pragma header
             uniform float cjk_alpha;
@@ -473,7 +462,6 @@ class ColorFilterShader extends FlxShader {
                 }
 		    }
     ')
-    #end 
 
     public function new(checkColor:String = "None", replaceColor:FlxColor = FlxColor.GREEN){
         super();

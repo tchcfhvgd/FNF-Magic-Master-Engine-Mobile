@@ -14,6 +14,8 @@ import flixel.FlxCamera;
 import flixel.FlxState;
 import flixel.FlxG;
 
+import FlxCustom.FlxCustomShader;
+
 using StringTools;
 
 class MusicBeatState extends FlxUIState {
@@ -35,7 +37,7 @@ class MusicBeatState extends FlxUIState {
 	inline function get_principal_controls():Controls{return PlayerSettings.getPlayer(0).controls;}
 
 	private function getOtherControls(ID:Int):Controls{return PlayerSettings.getPlayer(ID).controls;}
-	private var canControlle:Bool = false;
+	public var canControlle:Bool = false;
 
     public var tempScripts:Map<String, Script> = [];
 	public function pushTempScript(key:String, ?pre:Dynamic):Void {
@@ -133,11 +135,16 @@ class MusicBeatState extends FlxUIState {
 		if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED) && onConfirm != null){MusicBeatState.switchState(Type.createInstance(onConfirm, []));}
 		if(principal_controls.checkAction("Menu_Back", JUST_PRESSED) && onBack != null){MusicBeatState.switchState(Type.createInstance(onBack, []));}
 
-		if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.P){trace("Assets Reset"); Paths.savedMap.clear();}
+		if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.P){trace("Assets Reset"); Paths.savedTempMap.clear();}
 		if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.L){trace("Static Scripts Reset"); ModSupport.reload_mods();}
-		if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.M){for(s in scripts){trace(s.Name);}}
+		if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.M){trace("[Scripts]"); for(s in scripts){trace(s.Name);} trace("[End]");}
 
 		for(s in scripts){s.exFunction('update', [elapsed]);}
+		for(shader in FlxCustomShader.shaders){
+			if(shader == null){FlxCustomShader.shaders.remove(shader); continue;}
+			shader.update(elapsed);
+		}
+
 		super.update(elapsed);
 	}
 

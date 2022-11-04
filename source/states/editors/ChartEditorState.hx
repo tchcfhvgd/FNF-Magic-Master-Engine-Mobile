@@ -224,7 +224,6 @@ class ChartEditorState extends MusicBeatState{
             changeStrum(-1);
             
             for(section in _song.generalSection){if(section.strumToFocus >= _song.sectionStrums.length){section.strumToFocus = _song.sectionStrums.length - 1;}}
-            if(_song.strumToPlay >= _song.sectionStrums.length){_song.strumToPlay = _song.sectionStrums.length - 1;}
             updateSection();
         });
         btnDelStrum.cameras = [camHUD];
@@ -516,8 +515,9 @@ class ChartEditorState extends MusicBeatState{
 
         // EVENT GRID STRUFF
         var evGrid = gridGroup.members[0];
-        evGrid  = FlxGridOverlay.create(KEYSIZE, Std.int(KEYSIZE / 2), KEYSIZE, KEYSIZE * daLehgthSteps, true, 0xff4d4d4d, 0xff333333);
-        if(inst.playing){evGrid.alpha = 0.5;} evGrid.x -= KEYSIZE * 1.5;
+        evGrid = FlxGridOverlay.create(KEYSIZE, Std.int(KEYSIZE / 2), KEYSIZE, KEYSIZE * daLehgthSteps, true, 0xff4d4d4d, 0xff333333);
+        evGrid.x -= KEYSIZE * 1.5;
+        if(inst.playing){evGrid.alpha = 0.5;} 
         gridGroup.members[0] = evGrid;
 
         eveGrid = gridGroup.members[0];
@@ -876,7 +876,7 @@ class ChartEditorState extends MusicBeatState{
         daSong = Song.fileSong(daSong, cat, diff);
         _song = Song.loadFromJson(daSong);
 
-		FlxG.switchState(new states.LoadingState(new ChartEditorState(this.onBack, this.onConfirm), false));
+		FlxG.switchState(new states.LoadingState(new ChartEditorState(this.onBack, this.onConfirm), [{type:"SONG",instance:_song}], false));
     }
 
     function loadAudio(daSong:String, cat:String):Void {
@@ -1316,12 +1316,7 @@ class ChartEditorState extends MusicBeatState{
         arrayFocus.push(txtStage);
         txtStage.name = "SONG_STAGE";
 
-        var lblStrum = new FlxText(lblStage.x, lblStage.y + lblStage.height + 5, Std.int(MENU.width * 0.4), "Strum to Play: ", 8); tabMENU.add(lblStrum);
-        stpStrum = new FlxUINumericStepper(lblStrum.x + lblStrum.width, lblStrum.y, 1, _song.strumToPlay, 0, _song.sectionStrums.length - 1); tabMENU.add(stpStrum);
-            @:privateAccess arrayFocus.push(cast stpStrum.text_field);
-        stpStrum.name = "SONG_Strm";
-
-        var lblSpeed = new FlxText(lblStrum.x, lblStrum.y + lblStrum.height + 5, Std.int(MENU.width * 0.4), "Scroll Speed: ", 8); tabMENU.add(lblSpeed);
+        var lblSpeed = new FlxText(lblStage.x, lblStage.y + lblStage.height + 5, Std.int(MENU.width * 0.4), "Scroll Speed: ", 8); tabMENU.add(lblSpeed);
         stpSpeed = new FlxUINumericStepper(lblSpeed.x + lblSpeed.width, lblSpeed.y, 0.1, _song.speed, 0.1, 10, 1); tabMENU.add(stpSpeed);
             @:privateAccess arrayFocus.push(cast stpSpeed.text_field);
         stpSpeed.name = "SONG_Speed";
@@ -1388,7 +1383,7 @@ class ChartEditorState extends MusicBeatState{
         var btnLoadAutoSave:FlxButton = new FlxCustomButton(5, chkAutoSave.y + chkAutoSave.height + 5, Std.int((MENU.width - 15)), null, "Load Auto Save", null, null, function(){
             _song = cast Json.parse(FlxG.save.data.autosave);
             Song.parseJSONshit(_song);
-            FlxG.switchState(new states.LoadingState(new ChartEditorState(this.onBack, this.onConfirm), false));
+            FlxG.switchState(new states.LoadingState(new ChartEditorState(this.onBack, this.onConfirm), [{type:"SONG",instance:_song}], false));
         }); tabMENU.add(btnLoadAutoSave);
 
         var line5 = new FlxSprite(5, btnLoadAutoSave.y + btnLoadAutoSave.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line5);
@@ -1928,12 +1923,6 @@ class ChartEditorState extends MusicBeatState{
                         if(nums.value <= 0){curNote.multiHits = 0;}
                         curNote.sustainLength = nums.value;
                     });
-                }
-                case "SONG_Strm":{
-                    if(nums.value < 0){nums.value = 0;}
-                    if(nums.value >= _song.sectionStrums.length){nums.value = _song.sectionStrums.length - 1;}
-                    
-                    _song.strumToPlay = Std.int(nums.value);
                 }
                 case "SONG_Speed":{_song.speed = nums.value;}
                 case "SONG_BPM":{

@@ -1,5 +1,6 @@
 package;
 
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.FlxG;
@@ -107,7 +108,7 @@ class Alphabet extends FlxSpriteGroup {
                 }
             }else if(cur_image != null){
                 trace('Imagen Pa:${Paths.setPath(cur_image)}');
-                var _image:FlxSprite = new FlxSprite(curX, curY).loadGraphic(Paths.getGraphic(Paths.setPath(cur_image)));
+                var _image:FlxSprite = new FlxSprite(curX, curY).loadGraphic(Paths.image(cur_image));
                 _image.scale.set(cur_scale.x, cur_scale.y); _image.updateHitbox();
                 _image.color = cur_color;
                 add(_image);
@@ -129,7 +130,7 @@ class AlphaCharacter extends FlxSprite {
     public function new(x:Float, y:Float, image:String){
         super(x, y);
         
-        var tex = Paths.getSparrowAtlas(image);
+        var tex = Paths.getSparrowAtlas(Paths.image(image, null, true));
         frames = tex;
     }
     
@@ -155,5 +156,35 @@ class AlphaCharacter extends FlxSprite {
         this.color = getColor;
         
         updateHitbox();
+    }
+}
+
+class PopUpScore extends FlxSpriteGroup {
+    var recyclePop:FlxTypedGroup<FlxSprite> = new FlxTypedGroup<FlxSprite>();
+
+    public function new(?score:Int):Void {
+        super();
+
+        if(recyclePop.length <= 0){recyclePop.add(new FlxSprite());}
+    
+        if(score != null){popup(score);}
+    }
+
+    public function popup(score:Int, ?style:String){
+        clear();
+
+        var lastWidth:Float = 0;
+        for(i in 0...'$score'.length){
+            var _n:FlxSprite = recyclePop.recycle(FlxSprite);
+            _n.loadGraphic(Paths.styleImage('num${'$score'.split("")[i]}', style));
+            _n.setPosition(lastWidth,0);
+            _n.scale.set(0.5,0.5);
+            _n.updateHitbox();
+            add(_n);
+
+            lastWidth += _n.width + 5;
+
+            FlxTween.tween(_n, {y: _n.y - 35, alpha: 0}, 0.5 + (i * 0.2), {ease:FlxEase.quadOut});
+        }
     }
 }

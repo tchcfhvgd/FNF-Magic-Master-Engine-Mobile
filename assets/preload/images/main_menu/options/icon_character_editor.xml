@@ -1,0 +1,33 @@
+<TextureAtlas imagePath="Idle.png">
+	<!-- Created with Adobe Animate version 22.0.7.214 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="0" frameWidth="74" y="0" frameX="0" name="Idle0000" frameHeight="59" frameY="0" width="74" height="59"/>
+	<SubTexture x="74" frameWidth="74" y="0" frameX="-3" name="Hit0000" frameHeight="59" frameY="-4" width="68" height="50"/>
+	<SubTexture x="74" frameWidth="74" y="0" frameX="-3" name="Hit0001" frameHeight="59" frameY="-4" width="68" height="50"/>
+	<SubTexture x="142" frameWidth="74" y="0" frameX="2" name="Hit0002" frameHeight="59" frameY="1" width="79" height="62"/>
+	<SubTexture x="142" frameWidth="74" y="0" frameX="2" name="Hit0003" frameHeight="59" frameY="1" width="79" height="62"/>
+	<SubTexture x="0" frameWidth="74" y="62" frameX="0" name="Hit0004" frameHeight="59" frameY="0" width="75" height="60"/>
+	<SubTexture x="0" frameWidth="74" y="62" frameX="0" name="Hit0005" frameHeight="59" frameY="0" width="75" height="60"/>
+	<SubTexture x="0" frameWidth="74" y="0" frameX="0" name="Hit0006" frameHeight="59" frameY="0" width="74" height="59"/>
+	<SubTexture x="0" frameWidth="74" y="0" frameX="0" name="Hit0007" frameHeight="59" frameY="0" width="74" height="59"/>
+	<SubTexture x="0" frameWidth="74" y="0" frameX="0" name="Hit0008" frameHeight="59" frameY="0" width="74" height="59"/>
+	<SubTexture x="0" frameWidth="74" y="0" frameX="0" name="Hit0009" frameHeight="59" frameY="0" width="74" height="59"/>
+	<SubTexture x="0" frameWidth="74" y="0" frameX="0" name="Hit0010" frameHeight="59" frameY="0" width="74" height="59"/>
+	<SubTexture x="0" frameWidth="74" y="0" frameX="0" name="Hit0011" frameHeight="59" frameY="0" width="74" height="59"/>
+	<SubTexture x="0" frameWidth="74" y="0" frameX="0" name="Hit0012" frameHeight="59" frameY="0" width="74" height="59"/>
+	<SubTexture x="0" frameWidth="74" y="0" frameX="0" name="Hit0013" frameHeight="59" frameY="0" width="74" height="59"/>
+	<SubTexture x="0" frameWidth="74" y="0" frameX="0" name="Over0000" frameHeight="59" frameY="0" width="74" height="59"/>
+	<SubTexture x="0" frameWidth="74" y="0" frameX="0" name="Over0001" frameHeight="59" frameY="0" width="74" height="59"/>
+	<SubTexture x="75" frameWidth="74" y="62" frameX="3" name="Over0002" frameHeight="59" frameY="2" width="81" height="64"/>
+	<SubTexture x="75" frameWidth="74" y="62" frameX="3" name="Over0003" frameHeight="59" frameY="2" width="81" height="64"/>
+	<SubTexture x="156" frameWidth="74" y="62" frameX="2" name="Over0004" frameHeight="59" frameY="2" width="79" height="63"/>
+	<SubTexture x="156" frameWidth="74" y="62" frameX="2" name="Over0005" frameHeight="59" frameY="2" width="79" height="63"/>
+	<SubTexture x="156" frameWidth="74" y="62" frameX="2" name="Over0006" frameHeight="59" frameY="2" width="79" height="63"/>
+	<SubTexture x="156" frameWidth="74" y="62" frameX="2" name="Over0007" frameHeight="59" frameY="2" width="79" height="63"/>
+	<SubTexture x="156" frameWidth="74" y="62" frameX="2" name="Over0008" frameHeight="59" frameY="2" width="79" height="63"/>
+	<SubTexture x="156" frameWidth="74" y="62" frameX="2" name="Over0009" frameHeight="59" frameY="2" width="79" height="63"/>
+	<SubTexture x="156" frameWidth="74" y="62" frameX="2" name="Over0010" frameHeight="59" frameY="2" width="79" height="63"/>
+	<SubTexture x="156" frameWidth="74" y="62" frameX="2" name="Over0011" frameHeight="59" frameY="2" width="79" height="63"/>
+	<SubTexture x="156" frameWidth="74" y="62" frameX="2" name="Over0012" frameHeight="59" frameY="2" width="79" height="63"/>
+	<SubTexture x="156" frameWidth="74" y="62" frameX="2" name="Over0013" frameHeight="59" frameY="2" width="79" height="63"/>
+</TextureAtlas>

@@ -78,6 +78,11 @@ class Script extends FlxBasic {
     }
     
     public function execute():Void{if(program != null){interp.execute(program);}}
+    public function getFunction(name:String){
+        if(program == null){trace('{${Name}}: Null Script'); return null;}
+        if(!interp.variables.exists(name)){trace('{${Name}}: Null Function [${name}]'); return null;}
+        return interp.variables.get(name);
+    }
     public function exFunction(name:String, ?args:Array<Any>):Dynamic {
         if(program == null){trace('{${Name}}: Null Script'); return null;}
         if(!interp.variables.exists(name)){trace('{${Name}}: Null Function [${name}]'); return null;}

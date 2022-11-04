@@ -1,0 +1,24 @@
+$flixel.FlxSprite,FlxSprite$
+$Paths,Paths$
+
+%graphic_library:string%
+%graphic_file:string%
+%object:string%
+%scroll_x:float%
+%scroll_y:float%
+%pos_x:float%
+%pos_y:float%
+%scale_x:float%
+%scale_y:float%
+%angle:float%
+%alpha:float%
+%visible:bool%
+
+var #object# = new FlxSprite(#pos_x#, #pos_y#);
+#object#.loadGraphic(Paths.image('#graphic_file#', '#graphic_library#'));
+#object#.scale.set(#scale_x#, #scale_y#);
+#object#.scrollFactor.set(#scroll_x#, #scroll_y#);
+#object#.angle = #angle#;
+#object#.alpha = #alpha#;
+#object#.visible = #visible#;
+instance.add(#object#);

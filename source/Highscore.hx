@@ -13,9 +13,9 @@ class Highscore {
 
 
 	public static function saveSongScore(song:String, score:Int = 0, ?diff:String = "Hard", ?cat:String = "Normal"):Void {
-		var daSong:String = Song.fileSong(song, diff, cat);
+		var daSong:String = Song.fileSong(song, cat, diff);
 
-		if(PreSettings.getPreSetting("BotPlay", "Cheating Settings") || (songScores.exists(daSong) && songScores.get(daSong) > score)){return;}
+		if(PreSettings.getPreSetting("BotPlay", "Cheating Settings") || (songScores.exists(daSong) && songScores.get(daSong) >= score)){return;}
 
 		#if !switch
 		NGio.postScore(score, song);
@@ -25,7 +25,7 @@ class Highscore {
 	}
 
 	public static function saveWeekScore(weekName:String, score:Int = 0, ?diff:String = "Hard", ?cat:String = "Normal"):Void {
-		var daWeek:String = Song.fileSong('Week_$weekName', diff, cat);
+		var daWeek:String = Song.fileSong('Week_$weekName', cat, diff);
 
 		#if !switch
 		NGio.postScore(score, "Week " + weekName);
@@ -47,14 +47,14 @@ class Highscore {
 	}
 
 	public static function getScore(song:String, diff:String, cat:String):Int {
-		var daSong:String = Song.fileSong(song, diff, cat);
+		var daSong:String = Song.fileSong(song, cat, diff);
 
 		if(!songScores.exists(daSong)){return 0;}
 		return songScores.get(daSong);
 	}
 
 	public static function getWeekScore(weekName:String, diff:String, cat:String):Int {
-		var daWeek:String = Song.fileSong('Week_$weekName', diff, cat);
+		var daWeek:String = Song.fileSong('Week_$weekName', cat, diff);
 
 		if(!songScores.exists(daWeek)){return 0;}
 		return songScores.get(daWeek);

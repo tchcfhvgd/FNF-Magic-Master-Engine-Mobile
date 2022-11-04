@@ -128,7 +128,7 @@ class CharacterEditorState extends MusicBeatState{
         addMENUTABS();
         add(MENU);
 
-        healthIcon = new HealthIcon(0.5, _character.healthicon, true);
+        healthIcon = new HealthIcon(_character.healthicon, true);
         healthIcon.setPosition(MENU.x - healthIcon.width, 0);
         healthIcon.camera = camHUD;
         add(healthIcon);
@@ -253,7 +253,8 @@ class CharacterEditorState extends MusicBeatState{
         txtCategory.name = "CHARACTER_CATEGORY";
 
         var btnLoadCharacter:FlxButton = new FlxCustomButton(lblCat.x, lblCat.y + lblCat.height + 5, Std.int(MENU.width / 2) - 10, null, "Load Character", null, null, function(){
-            var newCharacter:Character = new Character(0, 0, Paths.getFileName(txtCharacter.text, true), Paths.getFileName(txtCategory.text, true)); newCharacter.curSkin = Paths.getFileName(txtSkin.text, true);
+            var newCharacter:Character = new Character(0, 0, Paths.getFileName(txtCharacter.text, true), Paths.getFileName(txtCategory.text, true));
+            newCharacter.curSkin = Paths.getFileName(txtSkin.text, true);
             newCharacter.setupByCharacterFile();
 
             CharacterEditorState.editCharacter(onConfirm, onBack, newCharacter.charFile);
@@ -357,6 +358,7 @@ class CharacterEditorState extends MusicBeatState{
                 
                 var anims:Array<String> = []; for(anim in _character.anims){anims.push(anim.anim);}
                 clAnims.setData(anims);
+                clAnims.updateIndex();
             }          
 
             reloadCharacter();
@@ -394,6 +396,7 @@ class CharacterEditorState extends MusicBeatState{
             }
             var anims:Array<String> = []; for(anim in _character.anims){anims.push(anim.anim);}
             clAnims.setData(anims);
+            clAnims.updateIndex();
 
             reloadCharacter();
         }); tabMENU.add(btnAnimDel);

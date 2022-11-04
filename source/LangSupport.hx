@@ -56,18 +56,19 @@ class LangSupport {
     public static function setLang(_lang:String):Void {
         Language = _lang;
 
-        var nLang:DynamicAccess<Dynamic> = cast Json.parse(Paths.getText(Paths.getPath('lang_${Language}.json', TEXT, 'lang')));        
-
-        for(langFile in Paths.readFileToArray('assets/lang/lang_${Language}.json')){
+        var nLang:DynamicAccess<Dynamic> = {};
+        for(langFile in Paths.readFileToArray('assets/lang/lang_${Language}.json', true)){
             var path:DynamicAccess<Dynamic> = cast Json.parse(Paths.getText(langFile));
-            for(key in path.keys()){if(!nLang.exists(key)){nLang.set(key, path.get(key));}}
+            for(key in path.keys()){
+                if(!nLang.exists(key)){nLang.set(key, path.get(key));}
+            }
         }
 
         LANG = nLang;
         FlxG.save.data.language = Language;
     }
 
-    public static function getText(key:String){
+    public static function getText(key:String):Dynamic {
         var toReturn:Dynamic = LANG.get(key);
         if(toReturn == null){toReturn = key;}
         return toReturn;

@@ -30,11 +30,14 @@ class ModSupport {
         if(FlxG.save.data.saved_mods != null){savedMODS = FlxG.save.data.saved_mods;}
 
         //Adding Mods from Archives
+        var _i:Int = 0;
         #if (desktop && sys)
         if(FileSystem.exists('mods')){
             for(modFolder in FileSystem.readDirectory('mods')){
-                var newMod = new Mod(FileSystem.absolutePath('mods/$modFolder'));    
+                var newMod = new Mod(FileSystem.absolutePath('mods/$modFolder'));  
+                newMod.id = _i;  
                 MODS.push(newMod);
+                _i++;
             }
         }
         #end
@@ -112,9 +115,12 @@ class ModSupport {
 }
 
 class Mod {
+    public var savefix:String = "FNFSAVE";
     public var name:String = "Friday Night Funkin' Mod";
     public var prefix:String = "FNF' Mod";
     public var description:String = "A Friday Night Funkin' Mod.";
+
+    public var id:Int = 0;
 
     public var enabled:Bool = true;
     public var onlyThis:Bool = false;
@@ -126,16 +132,16 @@ class Mod {
         this.path = folder;
         this.enabled = enabled;
 
-        #if (desktop && sys)
-            var identifierJSON:DynamicAccess<Dynamic> = cast Json.parse(File.getContent('$path/mod.json').trim());
-            if(identifierJSON != null){
-                name = identifierJSON.get('name');
-                prefix = identifierJSON.get('prefix');
-                description = identifierJSON.get('description');
+        var identifierJSON:DynamicAccess<Dynamic> = cast Json.parse(Paths.getText('$path/mod.json').trim());
+        if(identifierJSON != null){
+            savefix = identifierJSON.get('save_prefix');
 
-                onlyThis = identifierJSON.get('onlyThis');
-                hideVanilla = identifierJSON.get('hideVanilla');
-            }
-        #end
+            name = identifierJSON.get('name');
+            prefix = identifierJSON.get('prefix');
+            description = identifierJSON.get('description');
+
+            onlyThis = identifierJSON.get('onlyThis');
+            hideVanilla = identifierJSON.get('hideVanilla');
+        }
     }
 }

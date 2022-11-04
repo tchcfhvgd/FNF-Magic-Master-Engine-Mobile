@@ -65,7 +65,7 @@ class StoryMenuSubstate extends MusicBeatSubstate
 	{
 		super();
 
-		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
+		var ui_tex = Paths.getSparrowAtlas(Paths.image('campaign_menu_UI_assets', null, true));
 
 		bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		bg.alpha = 0;
@@ -95,7 +95,7 @@ class StoryMenuSubstate extends MusicBeatSubstate
 		add(backBook);
 
 		week = new FlxSprite(-1000,30);
-		week.frames = Paths.getSparrowAtlas('storymenu/week'+curWeek);
+		week.frames = Paths.getSparrowAtlas(Paths.image('storymenu/week'+curWeek, null, true));
 		week.antialiasing = true;
 		week.animation.addByPrefix('apear', 'Week '+curWeek+' Apear', 24, false);
 		week.animation.addByPrefix('idle', 'Week '+curWeek+' Idle', 24, true);
@@ -104,7 +104,7 @@ class StoryMenuSubstate extends MusicBeatSubstate
 		add(week);
 
 		frontBook = new FlxSprite(-1201,-430);
-		frontBook.frames = Paths.getSparrowAtlas('storymenu/Front_Book');
+		frontBook.frames = Paths.getSparrowAtlas(Paths.image('storymenu/Front_Book', null, true));
 		frontBook.antialiasing = true;
 		frontBook.animation.addByPrefix('open', 'Book Front', 24, false);
 		frontBook.setGraphicSize(Std.int(frontBook.width * 0.75));

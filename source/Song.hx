@@ -34,7 +34,7 @@ typedef SwagSong = {
 
 	var validScore:Bool;
 
-	var strumToPlay:Int;
+	var playable:Array<Int>;
 
 	var uiStyle:String;
 
@@ -86,7 +86,7 @@ typedef ItemWeek = {
 	var name:String;
 	var display:String;
 	var title:String;
-	var categories:Array<{category:String,difficults:Array<String>}>;
+	var categories:Array<SongCategoryData>;
 	var songs:Array<String>;
 	var keyLock:String;
 	var hiddenOnWeeks:Bool;
@@ -101,6 +101,18 @@ typedef ItemSong = {
 typedef SongCategoryData = {category:String,difficults:Array<String>};
 
 class SongStuffManager {
+	public static function hasCatAndDiff(song:Dynamic, category:String, dificulty:String):Bool {
+		var cats:Array<SongCategoryData> = song.categories;
+		for(c in cats){
+			if(c.category != category){continue;}
+			for(d in c.difficults){
+				if(d != dificulty){continue;}
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public static function addCategoryToItemSong(category:SongCategoryData, itemSong:ItemSong):Void {
 		for(cat in itemSong.categories){
 			if(cat.category == category.category){
@@ -121,7 +133,7 @@ class SongStuffManager {
 	public static function getSongList():Array<ItemSong> {
 		var SongList:Array<ItemSong> = [];
 
-		var modlist:Array<Dynamic> = Paths.readFileToArray('assets/data/weeks.json'); trace(modlist);
+		var modlist:Array<Dynamic> = Paths.readFileToArray('assets/data/weeks.json');
 		for(_mod in modlist){
 			var modData:SongsData = cast Json.parse(Paths.getText(_mod));
 
@@ -194,6 +206,22 @@ class SongStuffManager {
 
 		return SongList;
 	}
+
+	public static function getWeekList(showLocked:Bool = false):Array<ItemWeek> {
+		var WeekList:Array<ItemWeek> = [];
+
+		var modlist:Array<Dynamic> = Paths.readFileToArray('assets/data/weeks.json');
+
+		for(_mod in modlist){
+			var modData:SongsData = cast Json.parse(Paths.getText(_mod));
+			for(week in modData.weekData){
+				if(showLocked && Highscore.checkLock(week.keyLock, true)){continue;}
+				WeekList.push(week);
+			}
+		}
+
+		return WeekList;
+	}
 }
 
 class Song{
@@ -202,8 +230,8 @@ class Song{
         return strum.keys;
 	}
 
-	public static function getNoteCharactersToSing(note:Note, strum:SwagStrum, section:Int):Array<Int> {
-		if(note.singCharacters != null){return note.singCharacters;}
+	public static function getNoteCharactersToSing(?note:Note, strum:SwagStrum, section:Int):Array<Int> {
+		if(note != null && note.singCharacters != null){return note.singCharacters;}
 		if(strum.notes[section].changeSing){return strum.notes[section].charToSing;}
 		return strum.charToSing;
 	}
@@ -226,7 +254,7 @@ class Song{
 	
 	public var hasVoices:Bool = true;
 
-	public var strumToPlay:Int = 0;
+	public var playable:Array<Int> = [0];
 	
 	var uiStyle:String = "Default";
 
@@ -249,6 +277,8 @@ class Song{
 	}
 
 	public static function loadFromJson(songFormat:String):SwagSong {
+		if(songFormat == null){songFormat = "Test-Normal-Normal";}
+
 		var rawJson:String = Paths.getText(Paths.chart(songFormat)).trim();
 		var rawEvents:String = Paths.getText(Paths.chart_events(songFormat)).trim();
 
@@ -270,6 +300,7 @@ class Song{
 		if(swagShit.speed <= 0){swagShit.speed = 3.0;}
 		if(swagShit.uiStyle == null){swagShit.uiStyle = "Default";}
 		if(swagShit.stage == null){swagShit.stage = "Stage";}
+		if(swagShit.playable == null){swagShit.playable = [0];}
 
 		if(swagShit.characters == null){
 			swagShit.characters = [
@@ -312,13 +343,12 @@ class Song{
 		}
 
 		if(swagShit.sectionStrums == null){
-			swagShit.sectionStrums = [];
-			swagShit.sectionStrums.push({
+			swagShit.sectionStrums = [{
 				noteStyle: swagShit.uiStyle,
 				keys: 4,
 				charToSing: [],
 				notes: []
-			});
+			}];
 		}else{
 			for(strum in swagShit.sectionStrums){
 				if(strum.charToSing == null){strum.charToSing = [];}
@@ -341,6 +371,10 @@ class Song{
 				}
 			}
 		}
+
+		for(gen in swagShit.generalSection){
+			if(gen.lengthInSteps <= 0){gen.lengthInSteps = 16;}
+		}
 		
 		swagShit.validScore = true;
 	}
@@ -349,7 +383,7 @@ class Song{
 		var _global_events:Dynamic = cast Json.parse(rawEvents);
 		if(_global_events.global == null){_global_events.global = {};}
 		
-		var aEvents:DynamicAccess<Dynamic> = cast Json.parse(rawEvents).global;
+		var aEvents:DynamicAccess<Dynamic> = cast _global_events.global;
 
 		//Adding General Values
 		if(!aEvents.exists("sections")){aEvents.set("sections", []);}
@@ -407,7 +441,7 @@ class Song{
 			aSong.set("characters", chrs);
 		}
 
-		if(!aSong.exists("sectionStrums") || !aSong.exists("generalSection") && aSong.exists("notes")){
+		if((!aSong.exists("sectionStrums") || !aSong.exists("generalSection")) && aSong.exists("notes")){
 			var notes:Array<Dynamic> = aSong.get("notes");
 
 			var sNotes1:Array<SwagSection> = [];
@@ -420,9 +454,12 @@ class Song{
 				var iNotes:Array<Dynamic> = cSec.get("sectionNotes");
 				var in1:Array<Dynamic> = [];
 				var in2:Array<Dynamic> = [];
+				var gen:Array<Dynamic> = [];
 				if(iNotes != null){
 					for(n in iNotes){
-						if(cSec.get("mustHitSection") == true){
+						if(n[0] < 0){
+							gen.push(Note.convEventData(cast Note.getNoteData(n)));
+						}else if(cSec.get("mustHitSection") == true){
 							if(n[1] < 4){in2.push(n);}
 							if(n[1] > 3){n[1] = n[1] % 4; in1.push(n);}
 						}else{
@@ -460,12 +497,12 @@ class Song{
 					bpm: aSong.get("bpm"),
 					changeBPM: cSec.get("changeBPM"),
 				
-					lengthInSteps: cSec.get("lengthInSteps"),
+					lengthInSteps: (cSec.get("lengthInSteps") != null && cSec.get("lengthInSteps") > 0) ? cSec.get("lengthInSteps") : 16,
 			
 					strumToFocus: cSec.get("mustHitSection") ? 1 : 0,
 					charToFocus: 0,
 			
-					events: []
+					events: gen
 				});
 			}
 

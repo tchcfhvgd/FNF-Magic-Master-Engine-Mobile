@@ -26,6 +26,7 @@ import openfl.events.Event;
 import flixel.ui.FlxButton;
 import flixel.math.FlxRect;
 import lime.ui.FileDialog;
+import haxe.DynamicAccess;
 import flixel.FlxSprite;
 import flixel.FlxObject;
 import flixel.FlxState;
@@ -190,7 +191,7 @@ class XMLEditorState extends MusicBeatState {
                 if(FlxG.keys.justPressed.L){vchCurX.change();}
             }
 
-            if(FlxG.mouse.justPressedMiddle){camFollow.screenCenter();}
+            if(FlxG.mouse.justPressedMiddle){camFollow.setPosition(eSprite.getGraphicMidpoint().x, eSprite.getGraphicMidpoint().y);}
         }
         
 		super.update(elapsed);
@@ -203,34 +204,30 @@ class XMLEditorState extends MusicBeatState {
 	}
     
     private function loadArchives():Void{
-        #if sys
-            if(txtIMAGE.text.length > 0){_IMG = FlxGraphic.fromBitmapData(BitmapData.fromFile(txtIMAGE.text));}
-            if(txtXML.text.length > 0){
-                _XML = new Access((Xml.parse(File.getContent(txtXML.text))).firstElement());
-                for(elm in _XML.elements){
-                    if(!elm.has.x){elm.att.x = "0";}
-                    if(!elm.has.y){elm.att.y = "0";}
-                    if(!elm.has.width){elm.att.width = "0";}
-                    if(!elm.has.height){elm.att.height = "0";}
-                    if(!elm.has.frameX){elm.att.frameX = "0";}
-                    if(!elm.has.frameY){elm.att.frameY = "0";}
-                    if(!elm.has.frameWidth){elm.att.frameWidth = "0";}
-                    if(!elm.has.frameHeight){elm.att.frameHeight = "0";}
-                }
+        if(txtIMAGE.text.length > 0){_IMG = FlxGraphic.fromBitmapData(BitmapData.fromFile(txtIMAGE.text));}
+        if(txtXML.text.length > 0){
+            _XML = new Access((Xml.parse(Paths.getText(txtXML.text))).firstElement());
+            for(elm in _XML.elements){
+                if(!elm.has.x){elm.att.x = "0";}
+                if(!elm.has.y){elm.att.y = "0";}
+                if(!elm.has.width){elm.att.width = "0";}
+                if(!elm.has.height){elm.att.height = "0";}
+                if(!elm.has.frameX){elm.att.frameX = "0";}
+                if(!elm.has.frameY){elm.att.frameY = "0";}
+                if(!elm.has.frameWidth){elm.att.frameWidth = "0";}
+                if(!elm.has.frameHeight){elm.att.frameHeight = "0";}
             }
-        #end
+        }
     }
 
     private function loadGhostSprites():Void {
-        #if sys
-            bSprite.frames = FlxAtlasFrames.fromSparrow(BitmapData.fromFile(txtIMAGE.text), File.getContent(txtXML.text));
+        bSprite.frames = fromUncachedSparrow(BitmapData.fromFile(txtIMAGE.text), Paths.getText(txtXML.text));
 
-            var animArr = getNamesArray(new Access((Xml.parse(File.getContent(txtXML.text))).firstElement()).elements);
-            for(anim in animArr){bSprite.animation.addByPrefix(anim, anim);}
-            clGCurAnim.setData(animArr);
+        var animArr = getNamesArray(new Access((Xml.parse(Paths.getText(txtXML.text))).firstElement()).elements);
+        for(anim in animArr){bSprite.animation.addByPrefix(anim, anim);}
+        clGCurAnim.setData(animArr);
 
-            stpGCurFrame.value = 0;
-        #end
+        stpGCurFrame.value = 0;
     }
     private function loadNormalSprites():Void {
         loadESprite();
@@ -242,15 +239,13 @@ class XMLEditorState extends MusicBeatState {
         clCurAnim.setData(getNamesArray(_XML.elements));
 
         stpCurFrame.value = 0;
+        playAnim();
     }
     private function loadESprite():Void {
         var values:Array<Dynamic> = null;
         if(eSprite != null && eSprite.animation.curAnim != null){values = [eSprite.animation.curAnim.name, eSprite.animation.curAnim.curFrame];}
         if(_XML != null && _IMG != null){
-            if(eSprite != null){eSprite.destroy();}
-            eSprite = new FlxSprite();
-
-            eSprite.frames = FlxAtlasFrames.fromSparrow(_IMG, _XML.x.toString());
+            eSprite.frames = fromUncachedSparrow(_IMG, _XML.x.toString());
             
             var animArr = getNamesArray(_XML.elements);
             for(anim in animArr){eSprite.animation.addByPrefix(anim, anim); eSprite.animation.play(anim); eSprite.animation.stop();}
@@ -297,6 +292,33 @@ class XMLEditorState extends MusicBeatState {
             }
         }
         return hasNull ? null : new Access(Xml.parse('<SubTexture name="n0000" x="0" y="0" width="0" height="0" frameX="0" frameY="0" frameWidth="0" frameHeight="0"/>').firstElement());
+    }
+
+    private function editAttribute(attribute:String, value:Int, force:Bool = false):Void {
+        if(eSprite == null || eSprite.animation.curAnim == null){return;}
+        
+        if(chkSetToAllSprite.checked){
+            for(e in _XML.elements){
+                var dnm:DynamicAccess<Dynamic> = cast e; var _elm:Map<String, String> = dnm.get("attributeMap");
+                if(force){_elm.set(attribute, Std.string(value));}else{_elm.set(attribute, Std.string(Std.parseInt(_elm.get(attribute)) - value));}
+            }
+            loadESprite(); playAnim();
+            return;
+        }
+
+        if(chkSetToAllFrames.checked){
+            for(i in 0...eSprite.animation.curAnim.frames.length){
+                var dnm:DynamicAccess<Dynamic> = cast getAccess(null, i); var _elm:Map<String, String> = dnm.get("attributeMap");
+                if(force){_elm.set(attribute, Std.string(value));}else{_elm.set(attribute, Std.string(Std.parseInt(_elm.get(attribute)) - value));}
+            }
+            loadESprite(); playAnim();
+            return;
+        }
+        
+        var dnm:DynamicAccess<Dynamic> = cast getAccess(); var _elm:Map<String, String> = dnm.get("attributeMap");
+        if(force){_elm.set(attribute, Std.string(value));}else{_elm.set(attribute, Std.string(Std.parseInt(_elm.get(attribute)) - value));}
+
+        loadESprite(); playAnim();
     }
 
     public function playAnim(?AnimName:String, ?Frame:Int):Void{
@@ -483,49 +505,13 @@ class XMLEditorState extends MusicBeatState {
         vchCurFrameHeight = new FlxUIValueChanger(tabSPRITE.width - 105, lblCurFrameHeight.y - 1, 100, function(value:Float){}); uiBase.add(vchCurFrameHeight); vchCurFrameHeight.name = "SPRITE_FRAMEHEIGHT";
 
         var btnSetFrameSize0 = new FlxUICustomButton(5, lblCurFrameHeight.y + lblCurFrameHeight.height + 5, Std.int(tabSPRITE.width) - 10, null, "Set FrameSize to 0", null, null, function(){
-            if(eSprite == null || eSprite.animation.curAnim == null){return;}
-            if(chkSetToAllSprite.checked){
-                for(e in _XML.elements){
-                    e.att.frameWidth = "0";
-                    e.att.frameHeight = "0";
-                }
-                loadESprite(); playAnim();
-                return;
-            }
-            if(chkSetToAllFrames.checked){
-                for(i in 0...eSprite.animation.curAnim.frames.length){
-                    getAccess(null, i).att.frameWidth = "0";
-                    getAccess(null, i).att.frameHeight = "0";
-                }
-                loadESprite(); playAnim();
-                return;
-            }
-            getAccess().att.frameWidth = "0";
-            getAccess().att.frameHeight = "0";
-            loadESprite(); playAnim();
+            editAttribute("frameWidth", 0, true);
+            editAttribute("frameHeight", 0, true);
         }); uiBase.add(btnSetFrameSize0);
 
         var btnSetFrameSize = new FlxUICustomButton(5, btnSetFrameSize0.y + btnSetFrameSize0.height + 5, Std.int(tabSPRITE.width) - 10, null, "Set FrameSize", null, null, function(){
-            if(eSprite == null || eSprite.animation.curAnim == null){return;}
-            if(chkSetToAllSprite.checked){
-                for(e in _XML.elements){
-                    e.att.frameWidth = e.att.width;
-                    e.att.frameHeight = e.att.height;
-                }
-                loadESprite(); playAnim();
-                return;
-            }
-            if(chkSetToAllFrames.checked){
-                for(i in 0...eSprite.animation.curAnim.frames.length){
-                    getAccess(null, i).att.frameWidth = getAccess(null, i).att.width;
-                    getAccess(null, i).att.frameHeight = getAccess(null, i).att.height;
-                }
-                loadESprite(); playAnim();
-                return;
-            }
-            getAccess().att.frameWidth = getAccess().att.width;
-            getAccess().att.frameHeight = getAccess().att.height;
-            loadESprite(); playAnim();
+            editAttribute("frameWidth", Std.parseInt(getAccess().att.width), true);
+            editAttribute("frameHeight", Std.parseInt(getAccess().att.height), true);
         }); uiBase.add(btnSetFrameSize);
 
         var lblFrameName = new FlxText(5, btnSetFrameSize.y + btnSetFrameSize.height + 10, Std.int(tabSPRITE.width) - 10, "[Frame Name]"); uiBase.add(lblFrameName);
@@ -619,126 +605,14 @@ class XMLEditorState extends MusicBeatState {
             switch(id){
                 case FlxUIValueChanger.CHANGE_EVENT:{
                     switch(wname){
-                        case "SPRITE_X":{
-                            if(eSprite == null || eSprite.animation.curAnim == null){return;}
-                            if(chkSetToAllSprite.checked){
-                                for(e in _XML.elements){e.att.x = Std.string(Std.parseInt(e.att.x) - chValue);}
-                                loadESprite(); playAnim();
-                                return;
-                            }
-                            if(chkSetToAllFrames.checked){
-                                for(i in 0...eSprite.animation.curAnim.frames.length){getAccess(null, i).att.x = Std.string(Std.parseInt(getAccess(null, i).att.x) - chValue);}
-                                loadESprite(); playAnim();
-                                return;
-                            }
-                            getAccess().att.x = Std.string(Std.parseInt(getAccess().att.x) - chValue);
-                            loadESprite(); playAnim();
-                        }
-                        case "SPRITE_Y":{
-                            if(eSprite == null || eSprite.animation.curAnim == null){return;}
-                            if(chkSetToAllSprite.checked){
-                                for(e in _XML.elements){e.att.y = Std.string(Std.parseInt(e.att.y) - chValue);}
-                                loadESprite(); playAnim();
-                                return;
-                            }
-                            if(chkSetToAllFrames.checked){
-                                for(i in 0...eSprite.animation.curAnim.frames.length){getAccess(null, i).att.y = Std.string(Std.parseInt(getAccess(null, i).att.y) - chValue);}
-                                loadESprite(); playAnim();
-                                return;
-                            }
-                            getAccess().att.y = Std.string(Std.parseInt(getAccess().att.y) - chValue);
-                            loadESprite(); playAnim();
-                        }
-                        case "SPRITE_WIDTH":{
-                            if(eSprite == null || eSprite.animation.curAnim == null){return;}
-                            if(chkSetToAllSprite.checked){
-                                for(e in _XML.elements){e.att.width = Std.string(Std.parseInt(e.att.width) - chValue);}
-                                loadESprite(); playAnim();
-                                return;
-                            }
-                            if(chkSetToAllFrames.checked){
-                                for(i in 0...eSprite.animation.curAnim.frames.length){getAccess(null, i).att.width = Std.string(Std.parseInt(getAccess(null, i).att.width) - chValue);}
-                                loadESprite(); playAnim();
-                                return;
-                            }
-                            getAccess().att.width = Std.string(Std.parseInt(getAccess().att.width) - chValue);
-                            loadESprite(); playAnim();
-                        }
-                        case "SPRITE_HEIGHT":{
-                            if(eSprite == null || eSprite.animation.curAnim == null){return;}
-                            if(chkSetToAllSprite.checked){
-                                for(e in _XML.elements){e.att.height = Std.string(Std.parseInt(e.att.height) - chValue);}
-                                loadESprite(); playAnim();
-                                return;
-                            }
-                            if(chkSetToAllFrames.checked){
-                                for(i in 0...eSprite.animation.curAnim.frames.length){getAccess(null, i).att.height = Std.string(Std.parseInt(getAccess(null, i).att.height) - chValue);}
-                                loadESprite(); playAnim();
-                                return;
-                            }
-                            getAccess().att.height = Std.string(Std.parseInt(getAccess().att.height) - chValue);
-                            loadESprite(); playAnim();
-                        }
-                        case "SPRITE_FRAMEX":{
-                            if(eSprite == null || eSprite.animation.curAnim == null){return;}
-                            if(chkSetToAllSprite.checked){
-                                for(e in _XML.elements){e.att.frameX = Std.string(Std.parseInt(e.att.frameX) - chValue);}
-                                loadESprite(); playAnim();
-                                return;
-                            }
-                            if(chkSetToAllFrames.checked){
-                                for(i in 0...eSprite.animation.curAnim.frames.length){getAccess(null, i).att.frameX = Std.string(Std.parseInt(getAccess(null, i).att.frameX) - chValue);}
-                                loadESprite(); playAnim();
-                                return;
-                            }
-                            getAccess().att.frameX = Std.string(Std.parseInt(getAccess().att.frameX) - chValue);
-                            loadESprite(); playAnim();
-                        }
-                        case "SPRITE_FRAMEY":{
-                            if(eSprite == null || eSprite.animation.curAnim == null){return;}
-                            if(chkSetToAllSprite.checked){
-                                for(e in _XML.elements){e.att.frameY = Std.string(Std.parseInt(e.att.frameY) - chValue);}
-                                loadESprite(); playAnim();
-                                return;
-                            }
-                            if(chkSetToAllFrames.checked){
-                                for(i in 0...eSprite.animation.curAnim.frames.length){getAccess(null, i).att.frameY = Std.string(Std.parseInt(getAccess(null, i).att.frameY) - chValue);}
-                                loadESprite(); playAnim();
-                                return;
-                            }
-                            getAccess().att.frameY = Std.string(Std.parseInt(getAccess().att.frameY) - chValue);
-                            loadESprite(); playAnim();
-                        }
-                        case "SPRITE_FRAMEWIDTH":{
-                            if(eSprite == null || eSprite.animation.curAnim == null){return;}
-                            if(chkSetToAllSprite.checked){
-                                for(e in _XML.elements){e.att.frameWidth = Std.string(Std.parseInt(e.att.frameWidth) - chValue);}
-                                loadESprite(); playAnim();
-                                return;
-                            }
-                            if(chkSetToAllFrames.checked){
-                                for(i in 0...eSprite.animation.curAnim.frames.length){getAccess(null, i).att.frameWidth = Std.string(Std.parseInt(getAccess(null, i).att.frameWidth) - chValue);}
-                                loadESprite(); playAnim();
-                                return;
-                            }
-                            getAccess().att.frameWidth = Std.string(Std.parseInt(getAccess().att.frameWidth) - chValue);
-                            loadESprite(); playAnim();
-                        }
-                        case "SPRITE_FRAMEHEIGHT":{
-                            if(eSprite == null || eSprite.animation.curAnim == null){return;}
-                            if(chkSetToAllSprite.checked){
-                                for(e in _XML.elements){e.att.frameHeight = Std.string(Std.parseInt(e.att.frameHeight) - chValue);}
-                                loadESprite(); playAnim();
-                                return;
-                            }
-                            if(chkSetToAllFrames.checked){
-                                for(i in 0...eSprite.animation.curAnim.frames.length){getAccess(null, i).att.frameHeight = Std.string(Std.parseInt(getAccess(null, i).att.frameHeight) - chValue);}
-                                loadESprite(); playAnim();
-                                return;
-                            }
-                            getAccess().att.frameHeight = Std.string(Std.parseInt(getAccess().att.frameHeight) - chValue);
-                            loadESprite(); playAnim();
-                        }
+                        case "SPRITE_X":{editAttribute("x", chValue);}
+                        case "SPRITE_Y":{editAttribute("y", chValue);}
+                        case "SPRITE_WIDTH":{editAttribute("width", chValue);}
+                        case "SPRITE_HEIGHT":{editAttribute("height", chValue);}
+                        case "SPRITE_FRAMEX":{editAttribute("frameX", chValue);}
+                        case "SPRITE_FRAMEY":{editAttribute("frameY", chValue);}
+                        case "SPRITE_FRAMEWIDTH":{editAttribute("frameWidth", chValue);}
+                        case "SPRITE_FRAMEHEIGHT":{editAttribute("frameHeight", chValue);}
                     }
                 }
             }
@@ -749,55 +623,43 @@ class XMLEditorState extends MusicBeatState {
             switch(id){
                 case FlxUICustomList.CHANGE_EVENT:{
                     switch(wname){
+                        default:{}
                     }
                 }
             }
         }
     }
 
-    public static function getCustomisableSparrowAtlas(sprite:FlxSprite, Source:FlxGraphicAsset, Description:String):FlxAtlasFrames {
+    public static function fromUncachedSparrow(Source:FlxGraphicAsset, Description:String):FlxAtlasFrames {
         var graphic:FlxGraphic = FlxG.bitmap.add(Source);
-		if(graphic == null){return null;}
+    
+        if(graphic == null || Description == null){return null;}
+    
+        var frames:FlxAtlasFrames = new FlxAtlasFrames(graphic);
+        
+        var data:Access = new Access(Xml.parse(Description).firstElement());
+    
+        for(texture in data.nodes.SubTexture){
+            var name = texture.att.name;
+            var trimmed = texture.has.frameX;
+            var rotated = (texture.has.rotated && texture.att.rotated == "true");
+            var flipX = (texture.has.flipX && texture.att.flipX == "true");
+            var flipY = (texture.has.flipY && texture.att.flipY == "true");
+    
+            var rect = FlxRect.get(Std.parseFloat(texture.att.x), Std.parseFloat(texture.att.y), Std.parseFloat(texture.att.width), Std.parseFloat(texture.att.height));
 
-		if(graphic == null || Description == null){return null;}
-
-		var frames:FlxAtlasFrames = new FlxAtlasFrames(graphic);
-
-		if(Assets.exists(Description)){Description = Assets.getText(Description);}
-
-		var data:Access = new Access(Xml.parse(Description).firstElement());
-
-		for(texture in data.nodes.SubTexture){
-			var name = texture.att.name;
-			var trimmed = texture.has.frameX;
-			var rotated = (texture.has.rotated && texture.att.rotated == "true");
-			var flipX = (texture.has.flipX && texture.att.flipX == "true");
-			var flipY = (texture.has.flipY && texture.att.flipY == "true");
-
-			var rect = FlxRect.get(Std.parseFloat(texture.att.x), Std.parseFloat(texture.att.y), Std.parseFloat(texture.att.width),
-				Std.parseFloat(texture.att.height));
-
-			var size = if (trimmed)
-			{
-				new Rectangle(Std.parseInt(texture.att.frameX), Std.parseInt(texture.att.frameY), Std.parseInt(texture.att.frameWidth),
-					Std.parseInt(texture.att.frameHeight));
-			}
-			else
-			{
-				new Rectangle(0, 0, rect.width, rect.height);
-			}
-
-			var angle = rotated ? FlxFrameAngle.ANGLE_NEG_90 : FlxFrameAngle.ANGLE_0;
-
-			var offset = FlxPoint.get(-size.left, -size.top);
-			var sourceSize = FlxPoint.get(size.width, size.height);
-
-			if (rotated && !trimmed)
-				sourceSize.set(size.height, size.width);
-
-			frames.addAtlasFrame(rect, sourceSize, offset, name, angle, flipX, flipY);
-		}
-
-		return frames;
+            var size = if(trimmed){new Rectangle(Std.parseInt(texture.att.frameX), Std.parseInt(texture.att.frameY), Std.parseInt(texture.att.frameWidth), Std.parseInt(texture.att.frameHeight));}else{new Rectangle(0, 0, rect.width, rect.height);}
+    
+            var angle = rotated ? FlxFrameAngle.ANGLE_NEG_90 : FlxFrameAngle.ANGLE_0;
+    
+            var offset = FlxPoint.get(-size.left, -size.top);
+            var sourceSize = FlxPoint.get(size.width, size.height);
+    
+            if(rotated && !trimmed){sourceSize.set(size.height, size.width);}
+    
+            frames.addAtlasFrame(rect, sourceSize, offset, name, angle, flipX, flipY);
+        }
+    
+        return frames;
     }
 }

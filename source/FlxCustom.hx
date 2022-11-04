@@ -1,25 +1,32 @@
 
 package;
 
-import flixel.graphics.FlxGraphic;
 import flixel.util.*;
 import flixel.addons.ui.*;
 import flixel.addons.ui.interfaces.*;
 import flixel.ui.*;
 
+import openfl.Lib;
 import flixel.FlxG;
+import flixel.FlxBasic;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.math.FlxMath;
 import flixel.math.FlxRect;
 import flixel.text.FlxText;
-import openfl.display.Shader;
 import flixel.math.FlxPoint;
+import openfl.display.Shader;
 import flixel.system.FlxSound;
 import flixel.util.FlxArrayUtil;
 import flixel.util.FlxStringUtil;
 import flixel.util.FlxDestroyUtil;
+import flixel.graphics.FlxGraphic;
 import flixel.group.FlxSpriteGroup;
+import openfl.display.GraphicsShader;
 import flixel.addons.ui.FlxUI.NamedFloat;
+import flixel.system.FlxAssets.FlxShader;
+
+using StringTools;
 
 class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlxUIClickable implements IHasParams {
     private var _OnChange:Void->Void = null;
@@ -115,13 +122,17 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
         _doCallback(CHANGE_EVENT);
     }
 
-    public function setIndex(i:Int, shadow:Bool = false){c_Index(i, true, !shadow);}
+    public function updateIndex():Void {c_Index();}
+    public function setIndex(i:Int = 0, shadow:Bool = false){c_Index(i, true, !shadow);}
     public function setLabel(s:String, shadow:Bool = false, exists:Bool = false){
         for(i in 0...list.length){if(list[i] == s){c_Index(i, true, !shadow); return;}}
         c_Index(0, true, !shadow);
     }
     
-    public function updateText():Void {_lblCuItem.text = prefix + "NONE" + suffix; if(list[index] != null){_lblCuItem.text = prefix + list[index] + suffix;}}
+    public function updateText():Void {
+        _lblCuItem.text = prefix + "NONE" + suffix;
+        if(list[index] != null){_lblCuItem.text = prefix + list[index] + suffix;}
+    }
 
     public function setData(DataList:Array<String>):Void{list = DataList; if(index >= list.length){setIndex(list.length - 1, true);} updateText();}
 	public function addToData(data:String):Void{list.push(data);}
@@ -297,9 +308,52 @@ class FlxUICustomNumericStepper extends FlxUINumericStepper {
     }
 }
 
-class FlxCustomShader extends Shader {
-    public function new():Void {super();}
+#if FLX_DRAW_QUADS
+class FlxCustomShader extends FlxShader {
+    public static var shaders:Array<FlxCustomShader> = [];
 
-    public function setVertexSource(src:String):Void {#if openfl this.glVertexSource = src; #end}
-    public function setFragmentSource(src:String):Void {#if openfl this.glFragmentSource = src; #end}
+    @:glFragmentHeader('
+        uniform float iTime;
+        uniform vec4 iMouse;
+        uniform float iFrame;
+        uniform float iTimeDelta;
+
+        #define iResolution openfl_TextureSize
+        #define iChannel0 bitmap
+    ')
+	@:glFragmentSource("
+        #pragma header
+    ")
+
+    public function new(options:{?fragmentsrc:String, ?vertexsrc:String}){
+        if(options.fragmentsrc != null){this.glFragmentSource += '${options.fragmentsrc}';}
+        if(options.vertexsrc != null){this.glVertexSource += '${options.vertexsrc}';}
+        this.glFragmentSource += '
+            void main(){
+                gl_FragColor = flixel_texture2D(bitmap, openfl_TextureCoordv);
+                vec2 coord = openfl_TextureCoordv;
+                vec2 fragCoord = (coord * openfl_TextureSize);
+                mainImage(gl_FragColor, fragCoord);
+            }
+        ';
+        super();
+        
+		iTime.value = [0.0];
+		iTimeDelta.value = [0.0];
+		iFrame.value = [FlxG.game.focusLostFramerate];
+		iMouse.value = [0.0, 0.0, 0.0, 0.0];
+
+        FlxCustomShader.shaders.push(this);
+    }
+
+    public function update(elapsed:Float):Void {
+        iTime.value[0] += elapsed;
+        iTimeDelta.value[0] = elapsed;
+
+        iMouse.value[0] = FlxG.mouse.screenX;
+        iMouse.value[1] = FlxG.mouse.screenY;
+        iMouse.value[2] = FlxG.mouse.pressed ? FlxG.mouse.screenX : 0.0;
+        iMouse.value[2] = FlxG.mouse.pressed ? FlxG.mouse.screenY : 0.0;
+    }
 }
+#end

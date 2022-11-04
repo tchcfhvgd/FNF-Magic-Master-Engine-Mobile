@@ -51,5 +51,13 @@
 			"scale":0.7,
 			"text":"\n\nTab.1: Song:"
 		}
-	]
+	],
+
+	"Gmp_Score":"Score",
+	"Gmp_Record":"Record",
+	"Gmp_Combo":"Combo",
+	"Gmp_MaxCombo":"Max Combo",
+	"Gmp_Misses":"Misses",
+	"Gmp_Hits":"Hits",
+	"Gmp_Rating":"Rating"
 }

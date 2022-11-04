@@ -23,6 +23,8 @@ import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxDirectionFlags;
 
+import FlxCustom.FlxCustomShader;
+
 using flixel.util.FlxColorTransformUtil;
 
 // TODO: add updateSizeFromFrame bool which will tell sprite whether to update it's size to frame's size (when frame setter is called) or not (useful for sprites with adjusted hitbox)
@@ -638,8 +640,7 @@ class FlxSprite extends FlxObject {
 		}
 	}
 
-	override public function update(elapsed:Float):Void
-	{
+	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
 		updateAnimation(elapsed);
 	}

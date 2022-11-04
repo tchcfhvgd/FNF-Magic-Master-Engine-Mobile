@@ -26,6 +26,12 @@ import ModSupport;
 using StringTools;
 
 class Stage extends FlxTypedGroup<Dynamic>{
+    public static function getStageScript(name:String):Script {
+        var toReturn:Script = new Script();
+        toReturn.exScript(Paths.getText(Paths.stage(name)));
+        return toReturn;
+    }
+    
     public static function getStages():Array<String>{
         var stageArray:Array<String> = [];
 
@@ -82,6 +88,18 @@ class Stage extends FlxTypedGroup<Dynamic>{
         script.setVariable("stage", this);
 
         script.exScript(Paths.getText(Paths.stage(name)));
+        reload();
+    }
+
+    public function loadStageByScriptSource(scr:String):Void {
+        if(script != null){script.destroy();}
+
+        script = new Script();
+
+        script.setVariable("instance", stageData);
+        script.setVariable("stage", this);
+
+        script.exScript(scr);
         reload();
     }
 

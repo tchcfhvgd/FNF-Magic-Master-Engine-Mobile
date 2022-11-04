@@ -29,7 +29,7 @@ function create(){
     instance.add(limoLight);
     
     var bgLimo = new FlxSprite(-150, 480);
-    bgLimo.frames = Paths.getSparrowAtlas('bgLimo', 'stages/limo');
+    bgLimo.frames = Paths.getSparrowAtlas(Paths.image('limo/bgLimo', 'stages', true));
     bgLimo.animation.addByPrefix('drive', "background limo pink", 24);
     bgLimo.animation.play('drive');
     bgLimo.scrollFactor.set(0.4, 0.4);
@@ -37,7 +37,7 @@ function create(){
     
     for(i in 0...5){
         var dancer:FlxSprite = new FlxSprite((370 * i) + 130, bgLimo.y - 400);
-        dancer.frames = Paths.getSparrowAtlas("limoDancer", "stages/limo");
+        dancer.frames = Paths.getSparrowAtlas(Paths.image("limo/limoDancer", "stages", true));
         dancer.scrollFactor.set(0.4, 0.4);
 		dancer.animation.addByIndices('danceLeft', 'bg dancer sketch PINK', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		dancer.animation.addByIndices('danceRight', 'bg dancer sketch PINK', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
@@ -51,7 +51,7 @@ function create(){
     instance.add(fastCar);
     
     var limo = new FlxSprite(-120, 550);
-    limo.frames = Paths.getSparrowAtlas('limoDrive', "stages/limo");
+    limo.frames = Paths.getSparrowAtlas(Paths.image('limo/limoDrive', "stages", true));
     limo.animation.addByPrefix('drive', "Limo stage", 24);
     limo.animation.play('drive');
     instance.add(limo);

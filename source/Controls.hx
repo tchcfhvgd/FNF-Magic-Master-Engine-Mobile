@@ -10,6 +10,7 @@ import flixel.input.actions.FlxActionSet;
 import flixel.input.gamepad.FlxGamepadButton;
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.keyboard.FlxKey;
+import flixel.util.FlxSave;
 
 using StringTools;
 
@@ -30,8 +31,14 @@ enum KeyboardScheme {
  * Uses FlxActions to funnel various inputs to a single action.
  */
 class Controls extends FlxActionSet {
+	public static var controls_save:FlxSave;
+
 	public static function init():Void {
+		controls_save = new FlxSave();
+		controls_save.bind('controls', 'ninjamuffin99');
+
 		STATIC_ACTIONS = DEFAULT_STATIC_ACTIONS.copy();
+		STATIC_STRUMCONTROLS = DEFAULT_STATIC_STRUMCONTROLS.copy();
 	}
 
 	public function getNoteDataFromKey(key:FlxKey, keys:Int):Int {
@@ -40,6 +47,8 @@ class Controls extends FlxActionSet {
 		return -1;
 	}
 
+	public static var CURRENT_ACTIONS:Map<String, Array<Array<Int>>> = [];
+	public static var STATIC_ACTIONS:Map<String, Array<Array<Int>>> = [];
     public static final DEFAULT_STATIC_ACTIONS:Map<String, Array<Array<Int>>> = [
 		//Menu General Movement Actions
         "Menu_Up" => [// Action Name
@@ -89,9 +98,10 @@ class Controls extends FlxActionSet {
 			[FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT, FlxGamepadInputID.DPAD_RIGHT]
 		],
     ];
-	public static var STATIC_ACTIONS:Map<String, Array<Array<Int>>> = DEFAULT_STATIC_ACTIONS.copy();
 
-	public static final DEFAULT_STATIC_STRUMCONTROLS:Map<Int, Array<Array<Array<Dynamic>>>> = [
+	public static var CURRENT_STRUMCONTROLS:Map<Int, Array<Array<Array<Int>>>> = [];
+	public static var STATIC_STRUMCONTROLS:Map<Int, Array<Array<Array<Int>>>> = [];
+	public static final DEFAULT_STATIC_STRUMCONTROLS:Map<Int, Array<Array<Array<Int>>>> = [
         1 => [ //Inputs for 1K
 			[// Input Data 0
 				[FlxKey.SPACE], //KeyBoard
@@ -124,19 +134,19 @@ class Controls extends FlxActionSet {
 		],
 		4 => [ //Inputs for 4K
 			[
-				[FlxKey.D, FlxKey.LEFT],
+				[FlxKey.A, FlxKey.LEFT],
 				[FlxGamepadInputID.DPAD_LEFT, FlxGamepadInputID.LEFT_TRIGGER_BUTTON, FlxGamepadInputID.LEFT_STICK_DIGITAL_LEFT, FlxGamepadInputID.RIGHT_STICK_DIGITAL_LEFT]
 			],
 			[
-				[FlxKey.F, FlxKey.DOWN],
+				[FlxKey.S, FlxKey.DOWN],
 				[FlxGamepadInputID.DPAD_DOWN, FlxGamepadInputID.LEFT_SHOULDER, FlxGamepadInputID.LEFT_STICK_DIGITAL_DOWN, FlxGamepadInputID.RIGHT_STICK_DIGITAL_DOWN]
 			],
 			[
-				[FlxKey.J, FlxKey.UP],
+				[FlxKey.W, FlxKey.UP],
 				[FlxGamepadInputID.DPAD_UP, FlxGamepadInputID.RIGHT_SHOULDER, FlxGamepadInputID.LEFT_STICK_DIGITAL_UP, FlxGamepadInputID.RIGHT_STICK_DIGITAL_UP]
 			],
 			[
-				[FlxKey.K, FlxKey.RIGHT],
+				[FlxKey.D, FlxKey.RIGHT],
 				[FlxGamepadInputID.DPAD_RIGHT, FlxGamepadInputID.RIGHT_TRIGGER_BUTTON, FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT, FlxGamepadInputID.RIGHT_STICK_DIGITAL_RIGHT]
 			]
 		],
@@ -333,7 +343,6 @@ class Controls extends FlxActionSet {
 			],
 		],
     ];
-	public static var STATIC_STRUMCONTROLS:Map<Int, Array<Array<Array<Dynamic>>>> = DEFAULT_STATIC_STRUMCONTROLS.copy();
 
     public var ACTIONS:Map<String, FlxActionDigital> = [];
 
@@ -403,8 +412,10 @@ class Controls extends FlxActionSet {
 		return toReturn;
     }
 
-    public function checkAction(name:String, state:FlxInputState){
-		return getBind(name, state).check();
+    public function checkAction(name:String, state:FlxInputState):Bool {
+		var bind = getBind(name, state);
+		if(bind == null){return false;}
+		return bind.check();
     }
 
 	public function replaceBinding(device:Device, bind:String, ?toAdd:Int, ?toRemove:Int){
@@ -509,49 +520,62 @@ class Controls extends FlxActionSet {
 	}
 
 	public function loadBinds(){
-        var SAVED_ACTIONS:Map<String, Array<Array<Int>>> = FlxG.save.data.keyBinds;
-		var SAVED_STRUMACTIONS:Map<Int, Array<Array<Array<Int>>>> = FlxG.save.data.strumBinds;
-		
-		if(SAVED_ACTIONS != null && SAVED_STRUMACTIONS != null){
-			removeActions();
-
-			var KEY_ACTIONS:Map<String, Array<FlxKey>> = [];
-			var GAMEPAD_ACTIONS:Map<String, Array<FlxGamepadInputID>> = [];
-
-			for(key in SAVED_ACTIONS.keys()){
-				KEY_ACTIONS[key] = SAVED_ACTIONS[key][0];
-				GAMEPAD_ACTIONS[key] = SAVED_ACTIONS[key][1];
-			}
-
-			for(key in SAVED_STRUMACTIONS.keys()){
-				for(i in 0...SAVED_STRUMACTIONS[key].length){
-					KEY_ACTIONS['${key}keys_${i}'] = SAVED_STRUMACTIONS[key][i][0];
-					GAMEPAD_ACTIONS['${key}keys_${i}'] = SAVED_STRUMACTIONS[key][i][1];
-				}
-			}
-
-			for(key in SAVED_ACTIONS.keys()){
-				bindKeys(key, KEY_ACTIONS[key]);
-				for(gamepad in gamepadsAdded){bindButtons(gamepad, key, GAMEPAD_ACTIONS[key]);}
-			}
-
-			for(key in SAVED_STRUMACTIONS.keys()){
-				for(i in 0...SAVED_STRUMACTIONS[key].length){
-					bindKeys('${key}keys_${i}', KEY_ACTIONS['${key}keys_${i}']);
-					for(gamepad in gamepadsAdded){bindButtons(gamepad, '${key}keys_${i}', GAMEPAD_ACTIONS['${key}keys_${i}']);}
-				}
-			}
-		}else{
-			FlxG.save.data.keyBinds = STATIC_ACTIONS;
-			FlxG.save.data.strumBinds = STATIC_STRUMCONTROLS;
+        CURRENT_ACTIONS = controls_save.data.keyBinds;
+		CURRENT_STRUMCONTROLS = controls_save.data.strumBinds;
+				
+		if(CURRENT_ACTIONS == null || CURRENT_STRUMCONTROLS == null){
+			trace("Null");
+			saveControls();
 			loadBinds();
+			return;
 		}
+
+		for(key in STATIC_ACTIONS.keys()){if(!CURRENT_ACTIONS.exists(key)){CURRENT_ACTIONS.set(key, STATIC_ACTIONS.get(key));}}
+		for(key in CURRENT_ACTIONS.keys()){if(!STATIC_ACTIONS.exists(key)){CURRENT_ACTIONS.remove(key);}}
+		
+		for(key in STATIC_STRUMCONTROLS.keys()){if(!CURRENT_STRUMCONTROLS.exists(key)){CURRENT_STRUMCONTROLS.set(key, STATIC_STRUMCONTROLS.get(key));}}
+		for(key in CURRENT_STRUMCONTROLS.keys()){if(!STATIC_STRUMCONTROLS.exists(key)){CURRENT_STRUMCONTROLS.remove(key);}}
+
+		removeActions();
+
+		var KEY_ACTIONS:Map<String, Array<FlxKey>> = [];
+		var GAMEPAD_ACTIONS:Map<String, Array<FlxGamepadInputID>> = [];
+
+		for(key in CURRENT_ACTIONS.keys()){
+			KEY_ACTIONS[key] = CURRENT_ACTIONS[key][0];
+			GAMEPAD_ACTIONS[key] = CURRENT_ACTIONS[key][1];
+		}
+
+		for(key in CURRENT_STRUMCONTROLS.keys()){
+			for(i in 0...CURRENT_STRUMCONTROLS[key].length){
+				KEY_ACTIONS['${key}keys_${i}'] = CURRENT_STRUMCONTROLS[key][i][0];
+				GAMEPAD_ACTIONS['${key}keys_${i}'] = CURRENT_STRUMCONTROLS[key][i][1];
+			}
+		}
+
+		for(key in CURRENT_ACTIONS.keys()){
+			bindKeys(key, KEY_ACTIONS[key]);
+			for(gamepad in gamepadsAdded){bindButtons(gamepad, key, GAMEPAD_ACTIONS[key]);}
+		}
+
+		for(key in CURRENT_STRUMCONTROLS.keys()){
+			for(i in 0...CURRENT_STRUMCONTROLS[key].length){
+				bindKeys('${key}keys_${i}', KEY_ACTIONS['${key}keys_${i}']);
+				for(gamepad in gamepadsAdded){bindButtons(gamepad, '${key}keys_${i}', GAMEPAD_ACTIONS['${key}keys_${i}']);}
+			}
+		}
+	}
+
+	public static function saveControls(){
+		controls_save.data.keyBinds = CURRENT_ACTIONS;
+		controls_save.data.strumBinds = CURRENT_STRUMCONTROLS;
+		controls_save.flush();
+		trace("Controls Saved");
 	}
 
 	function removeActions(){
 		for(name in ACTIONS.keys()){ACTIONS[name].removeAll();}
-	}
-	
+	}	
 
 	public function addGamepad(id:Int):Void{
 		gamepadsAdded.push(id);

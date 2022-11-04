@@ -23,12 +23,12 @@ function create(){
     halloweenBG = new FlxSprite(-200, -100);
     
     if(pre_BackgroundAnimated){
-        halloweenBG.frames = Paths.getSparrowAtlas('halloween_bg', 'stages/spooky');
+        halloweenBG.frames = Paths.getSparrowAtlas(Paths.image('spooky/halloween_bg', 'stages', true));
         halloweenBG.animation.addByPrefix('idle', 'halloweem bg0');
         halloweenBG.animation.addByPrefix('lightning', 'halloweem bg lightning strike', 24, false);
         halloweenBG.animation.play('idle');
     }else{
-        halloweenBG.loadGraphic(Paths.image('halloween_bg_low', 'stages/spooky'));
+        halloweenBG.loadGraphic(Paths.image('spooky/halloween_bg_low', 'stages'));
     }
 
     instance.add(halloweenBG);

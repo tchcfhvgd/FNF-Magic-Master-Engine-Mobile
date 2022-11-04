@@ -15,6 +15,7 @@ import flixel.util.FlxGradient;
 import flixel.system.FlxAssets;
 import flixel.system.FlxSound;
 import flixel.tweens.FlxTween;
+import openfl.utils.AssetType;
 import flixel.group.FlxGroup;
 import flixel.tweens.FlxEase;
 import flixel.math.FlxPoint;
@@ -30,16 +31,16 @@ import flixel.FlxState;
 import flixel.FlxG;
 import haxe.Json;
 
-
 import flixel.addons.ui.*;
+import states.LoadingState;
 
 #if desktop
 import Discord.DiscordClient;
-import sys.thread.Thread;
 import sys.FileSystem;
 import sys.io.File;
 #end
 
+import FlxCustom.FlxCustomShader;
 import FlxCustom.FlxUICustomButton;
 import ModSupport.Mod;
 
@@ -57,7 +58,7 @@ class PopModState extends MusicBeatState {
         var lblAdvice_1:Alphabet = new Alphabet(0,0,LangSupport.getText('ModAdv_1')); add(lblAdvice_1);
         lblAdvice_1.screenCenter(); lblAdvice_1.y -= 120;
         
-        var btnNo = new FlxUICustomButton(0, 0, 80, 80, "", [Paths.getAtlas(Paths.image("tach", null, true)), [["normal", "Idle"], ["highlight", "Over"], ["pressed", "Hit"]]], null, function(){MagicStuff.reload_data(); MusicBeatState.switchState(new states.TitleState());});
+        var btnNo = new FlxUICustomButton(0, 0, 80, 80, "", [Paths.getAtlas(Paths.image("tach", null, true)), [["normal", "Idle"], ["highlight", "Over"], ["pressed", "Hit"]]], null, function(){MagicStuff.reload_data(); MusicBeatState.switchState(new LoadingState(new TitleState(), []));});
         btnNo.antialiasing = true;
         btnNo.screenCenter(); btnNo.y += 25; btnNo.x -= btnNo.width; add(btnNo);
 
@@ -81,6 +82,9 @@ class ModListState extends MusicBeatState {
     private var toNext:Class<FlxState>;
 
 	override public function create():Void{
+        if(FlxG.sound.music != null){FlxG.sound.music.stop();}
+        FlxG.mouse.visible = true;
+
         if(onConfirm != null){toNext = onConfirm; onConfirm = null;}
 
         var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBG'));
@@ -117,7 +121,7 @@ class ModListState extends MusicBeatState {
         btnDisableAll.antialiasing = true;
         add(btnDisableAll);
         
-        btnReady = new FlxUICustomButton(1050, 560, 170, 170, '', [Paths.getAtlas(Paths.image("accept_button", null, true)), [["normal", "idle"], ["highlight", "over"], ["pressed", "hit"]]], null, function(){MagicStuff.reload_data(); MusicBeatState.switchState(Type.createInstance(toNext, []));});
+        btnReady = new FlxUICustomButton(1050, 560, 170, 170, '', [Paths.getAtlas(Paths.image("accept_button", null, true)), [["normal", "idle"], ["highlight", "over"], ["pressed", "hit"]]], null, ready);
         btnReady.antialiasing = true;
         add(btnReady);
         
@@ -176,6 +180,22 @@ class ModListState extends MusicBeatState {
 
         ModsList.members.sort((a, b) -> Std.int(a.ID - b.ID));
     }
+
+    public function ready():Void {
+        MagicStuff.reload_data();
+
+        LoadingState.isGlobal = true;
+        var toLoad:Array<Dynamic> = [
+            {type:IMAGE,instance:Paths.image("alphabet",null,true)},
+            {type:IMAGE,instance:Paths.image("icons/icon-face",null,true)},
+            {type:MUSIC,instance:Paths.music("freakyMenu",null,true)},
+            {type:SOUND,instance:Paths.sound("cancelMenu",null,true)},
+            {type:SOUND,instance:Paths.sound("confirmMenu",null,true)},
+            {type:SOUND,instance:Paths.sound("scrollMenu",null,true)},
+        ];
+
+        MusicBeatState.switchState(new LoadingState(cast Type.createInstance(toNext, []), toLoad));
+    }
 }
 
 class ItemMod extends FlxUITabMenu {
@@ -199,52 +219,38 @@ class ItemMod extends FlxUITabMenu {
 
         mScript = new Script();
         mScript.setVariable("getInstance", function(){return this;});
+        mScript.setVariable("mod_name", refMod.name);
         mScript.exScript(Paths.getText('${refMod.path}/itemMod.hx'));
 
-        var tab_names_and_labels_ = [{name: "1ModName", label: refMod.prefix}];
-        var back_ = new FlxUI9SliceSprite(0, 0, Paths.image("custom_default_chrome_flat"), new Rectangle(0, 0, 100, 100), [20, 20, 78, 78], FlxUI9SliceSprite.TILE_BOTH);
+        var back_ = new FlxUI9SliceSprite(0, 0, Paths.image("custom_default_chrome_flat", null, false, refMod.name), new Rectangle(0, 0, 100, 100), [20, 20, 78, 78], FlxUI9SliceSprite.TILE_BOTH);
         back_.antialiasing = true;
 
-        super(back_, null, tab_names_and_labels_);
+        super(back_, null, []);
         resize(Std.int(FlxG.width - 20), 300);
 
         openSize = new FlxPoint(FlxG.width - 20, 300);
         closedSize = new FlxPoint(FlxG.width - 20, 75);
-        
-        for(tab in this._tabs){
-            tab.autoResizeLabel = false;
-
-            var graphic_names:Array<FlxGraphic> = [
-                Paths.image("custom_default_tab_back"),
-                Paths.image("custom_default_tab_back"),
-                Paths.image("custom_default_tab_back"),
-                Paths.image("custom_default_tab"),
-                Paths.image("custom_default_tab"),
-                Paths.image("custom_default_tab")
-            ];
-            var slice9tab:Array<Int> = FlxStringUtil.toIntArray(FlxUIAssets.SLICE9_TAB);
-            var slice9_names:Array<Array<Int>> = [slice9tab, slice9tab, slice9tab, slice9tab, slice9tab, slice9tab];
-            tab.loadGraphicSlice9(graphic_names, 0, 0, slice9_names, FlxUI9SliceSprite.TILE_BOTH, -1, true);
-        }
-
+              
         mScript.exFunction("create");
 
-        _btnToggle = new FlxUICustomButton(0,0,80,20,"", [Paths.getAtlas(Paths.image(!refMod.enabled ? "disable_button" : "enabled_button", null, true)), [["normal", "Idle"], ["highlight", "Idle"], ["pressed", "Hit"]]], null, function(){setToggleEnableMod(); onButton();});
-        _btnToggle.x = this.width - _btnToggle.width - 5;
+        _btnToggle = new FlxUICustomButton(0,0,80,20,"", [Paths.getAtlas(Paths.image(!refMod.enabled ? "disable_button" : "enabled_button", null, true, refMod.name)), [["normal", "Idle"], ["highlight", "Idle"], ["pressed", "Hit"]]], null, function(){setToggleEnableMod(); onButton();});
+        _btnToggle.setPosition(this.width - _btnToggle.width - 5, -(_btnToggle.height));
         _btnToggle.antialiasing = true;
         add(_btnToggle);
         
-        _btnMoveUp = new FlxUICustomButton(0,5,30,15,"", [Paths.getAtlas(Paths.image("up_button", null, true)), [["normal", "Idle"], ["highlight", "Idle"], ["pressed", "Hit"]]], null, function(){ModSupport.moveMod(this.ID, true); onButton();});
-        _btnMoveUp.x = _btnToggle.x - _btnMoveUp.width;
+        _btnMoveUp = new FlxUICustomButton(0,5,30,15,"", [Paths.getAtlas(Paths.image("up_button", null, true, refMod.name)), [["normal", "Idle"], ["highlight", "Idle"], ["pressed", "Hit"]]], null, function(){ModSupport.moveMod(this.ID, true); onButton();});
+        _btnMoveUp.setPosition(_btnToggle.x - _btnMoveUp.width, -(_btnMoveUp.height));
         _btnMoveUp.antialiasing = true;
         add(_btnMoveUp);
         
-        _btnMoveDown = new FlxUICustomButton(0,5,30,15,"", [Paths.getAtlas(Paths.image("down_button", null, true)), [["normal", "Idle"], ["highlight", "Idle"], ["pressed", "Hit"]]], null, function(){ModSupport.moveMod(this.ID, false); onButton();});
+        _btnMoveDown = new FlxUICustomButton(0,5,30,15,"", [Paths.getAtlas(Paths.image("down_button", null, true, refMod.name)), [["normal", "Idle"], ["highlight", "Idle"], ["pressed", "Hit"]]], null, function(){ModSupport.moveMod(this.ID, false); onButton();});
         _btnMoveDown.x = _btnMoveUp.x - _btnMoveDown.width;
         _btnMoveDown.antialiasing = true;
         add(_btnMoveDown);
 
         setToggleEnableMod(refMod.enabled);
+
+        calcBounds();
     }
 
     public function setToggleEnableMod(?set:Bool){
@@ -252,13 +258,11 @@ class ItemMod extends FlxUITabMenu {
 
         refMod.enabled = set;
 
-        _btnToggle.setCustomFrames([Paths.getAtlas(Paths.image(!refMod.enabled ? "disable_button" : "enabled_button", null, true)), [["normal", "Idle"], ["pressed", "Hit"]]]);
+        _btnToggle.setCustomFrames([Paths.getAtlas(Paths.image(!refMod.enabled ? "disable_button" : "enabled_button", null, true, refMod.name)), [["normal", "Idle"], ["pressed", "Hit"]]]);
     }
 
     override function update(elapsed:Float){
 		super.update(elapsed);
-
-        mScript.exFunction("update", [elapsed]);
 
         var curSize:FlxPoint = closedSize;
         if(_selected){
@@ -267,7 +271,9 @@ class ItemMod extends FlxUITabMenu {
             this.showTabId("4ModUnSelected");
         }
         if((this.width < curSize.x - 5 || this.width > curSize.x + 5) || (this.height < curSize.y - 5 || this.height > curSize.y + 5)){resize(FlxMath.lerp(this.width, curSize.x, delay), FlxMath.lerp(this.height, curSize.y, delay));}
-	}
+	
+        mScript.exFunction("update", [elapsed]);
+    }
 
     override public function replaceBack(newBack:FlxSprite):Void {
         var i:Int = members.indexOf(_back);

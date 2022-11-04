@@ -12,10 +12,7 @@ class HealthIcon extends FlxSprite {
 	public var isPlayer:Bool = false;
 	public var curIcon:String = "";
 
-	public var valueInstance:Float;
-
-	public function new(_inst_value:Float, char:String = 'bf', _isPlayer:Bool = false){
-		this.valueInstance = _inst_value;
+	public function new(char:String = 'bf', _isPlayer:Bool = false){
 		this.isPlayer = _isPlayer;
 		super();
 
@@ -26,8 +23,6 @@ class HealthIcon extends FlxSprite {
 
 	override function update(elapsed:Float){
 		super.update(elapsed);
-
-		playAnim(((valueInstance > 0.2 && isPlayer) || (valueInstance < 0.8 && !isPlayer)) ? 'default' : 'losing');
 	}
 
 	public function setIcon(char:String){
@@ -53,6 +48,7 @@ class HealthIcon extends FlxSprite {
 					this.animation.add('default', [0], 0, false, isPlayer);
 					this.animation.add('losing', [1], 0, false, isPlayer);
 				}
+				updateHitbox();
 
 				playAnim("default");
 			}

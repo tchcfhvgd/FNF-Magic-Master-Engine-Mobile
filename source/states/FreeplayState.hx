@@ -54,7 +54,7 @@ class FreeplayState extends MusicBeatState {
 		MagicStuff.setWindowTitle('Freeplay', 1);
 		#end
 
-		songList = SongStuffManager.getSongList(); trace(songList);
+		songList = SongStuffManager.getSongList();
 
 		stage = new Stage("Stage",[
 			["Girlfriend", [400, 130], 1, false, "Default", "GF", 0],
