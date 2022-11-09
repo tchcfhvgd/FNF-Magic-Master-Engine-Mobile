@@ -248,7 +248,7 @@ class FlxCustomButton extends FlxButton {
 	public function new(X:Float = 0, Y:Float = 0, Width:Null<Int>, Height:Null<Int>, ?Text:String, ?GraphicArgs:Array<Dynamic>, ?Color:Null<FlxColor>, ?OnClick:() -> Void){
 		super(X, Y, Text, OnClick);
         
-        this.antialiasing = false;
+        this.label.antialiasing = false;
 
 		if(Width == null){Width = Std.int(this.width);}
 		if(Height == null){Height = Std.int(this.height);}
@@ -268,20 +268,34 @@ class FlxCustomButton extends FlxButton {
 }
 
 class FlxUICustomButton extends FlxUIButton {
-	public function new(X:Float = 0, Y:Float = 0, Width:Null<Int>, Height:Null<Int>, ?Text:String, ?GraphicArgs:Array<Dynamic>, ?Color:Null<FlxColor>, ?OnClick:() -> Void){
+	public function new(X:Float = 0, Y:Float = 0, Width:Null<Int>, Height:Null<Int>, ?Text:String, ?GraphicPath:String, ?Color:Null<FlxColor>, ?OnClick:() -> Void){
 		super(X, Y, Text, OnClick);
         
-        this.antialiasing = false;
+        this.label.antialiasing = false;
 
 		if(Width == null){Width = Std.int(this.width);}
 		if(Height == null){Height = Std.int(this.height);}
 
-        if(GraphicArgs != null){
-            if(GraphicArgs.length <= 2){
-                this.frames = GraphicArgs[0];
-                for(i in (cast(GraphicArgs[1],Array<Dynamic>))){this.animation.addByPrefix(i[0], i[1], 30, false);}
-            }else{Reflect.callMethod(null, this.loadGraphic, GraphicArgs);}
+        if(GraphicPath != null){
+            if(Paths.getAtlas(GraphicPath) != null){
+                this.frames = Paths.getAtlas(GraphicPath);
+
+                this.animation.addByPrefix('normal', 'Idle', 24, true);
+                this.animation.addByPrefix('highlight', 'Over', 24, true);
+                this.animation.addByPrefix('pressed', 'Hit', 24, true);
+            }else{
+                var _bitMap:FlxGraphic = Paths.getGraphic(GraphicPath);
+
+                if(_bitMap != null){
+                    this.loadGraphic(_bitMap, true, Math.floor(_bitMap.width / 3), Math.floor(_bitMap.height));
+
+                    this.animation.add('normal', [0], 0, false);
+                    this.animation.add('highlight', [1], 0, false);
+                    this.animation.add('pressed', [2], 0, false);
+                }
+            }
         }
+
 		this.setSize(Width, Height);
 		this.setGraphicSize(Width, Height);
 		this.updateHitbox(); this.centerOffsets();

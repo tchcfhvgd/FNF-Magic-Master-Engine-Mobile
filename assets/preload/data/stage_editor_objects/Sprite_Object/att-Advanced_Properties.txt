@@ -1,0 +1,18 @@
+%Scroll:[1,1]:array%
+%Scale:[1,1]:array%
+%Angle:0:int%
+%Alpha:1:float%
+%Visible:true:bool%
+%Flip_X:false:bool%
+%Flip_Y:false:bool%
+
+var #Sprite_Name#_scroll:Array<Int> = #Scroll#;
+var #Sprite_Name#_scale:Array<Int> = #Scale#;
+
+#Sprite_Name#.scale.set(#Sprite_Name#_scale[0], #Sprite_Name#_scale[1]);
+#Sprite_Name#.scrollFactor.set(#Sprite_Name#_scroll[0], #Sprite_Name#_scroll[1]);
+#Sprite_Name#.visible = #Visible#;
+#Sprite_Name#.angle = #Angle#;
+#Sprite_Name#.alpha = #Alpha#;
+#Sprite_Name#.flipX = #Flip_X#;
+#Sprite_Name#.flipY = #Flip_Y#;

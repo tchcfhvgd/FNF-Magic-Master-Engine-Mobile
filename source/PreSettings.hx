@@ -54,12 +54,8 @@ class PreSettings {
 
     public static function loadSettings(){
         CURRENT_SETTINGS = FlxG.save.data.PRESETTINGS;
-        if(CURRENT_SETTINGS == null){
-            FlxG.save.data.PRESETTINGS = PRESETTINGS;
-            trace("Null Options. Loading by Default");
-            loadSettings();            
-            return;
-        }
+        
+        if(CURRENT_SETTINGS == null){CURRENT_SETTINGS = PRESETTINGS;}
         
         for(key in PRESETTINGS.keys()){
             if(!CURRENT_SETTINGS.exists(key)){CURRENT_SETTINGS.set(key, PRESETTINGS.get(key));}else{
@@ -92,6 +88,7 @@ class PreSettings {
 
     public static function resetSettings(){
         FlxG.save.data.PRESETTINGS = PRESETTINGS;
+        FlxG.save.flush();
         loadSettings();
         trace("Options Reset Successfully!");
     }

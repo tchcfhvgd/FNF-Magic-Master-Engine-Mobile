@@ -1,0 +1,6 @@
+$Paths,Paths$
+
+%Graphic_Library:stages/stage:string%
+%Graphic_File:stage_light:string%
+
+#Sprite_Name#.loadGraphic(Paths.image('#Graphic_File#', '#Graphic_Library#'));

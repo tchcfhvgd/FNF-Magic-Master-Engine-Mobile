@@ -59,10 +59,11 @@ class PreLoaderState extends FlxUIState {
         PreSettings.loadSettings();
 		
 		PlayerSettings.init();
-		Highscore.load();
+
+		Highscore.load();	
 		LangSupport.init();
 		ModSupport.init();
-
+		
 		#if desktop
 		DiscordClient.initialize();
 		Application.current.onExit.add(function(exitCode){DiscordClient.shutdown();});

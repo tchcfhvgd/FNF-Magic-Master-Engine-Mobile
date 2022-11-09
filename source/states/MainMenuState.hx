@@ -45,7 +45,7 @@ class MainMenuState extends MusicBeatState {
 		{option:"Freeplay", icon:"freeplay", display:"menu_freeplay", func:function(){MusicBeatState.switchState(new FreeplayState(null, MainMenuState));}},
 		{option:"Skins", icon:"skins", display:"menu_skins", func:function(){}},
 		{option:"Options", icon:"options", display:"menu_options", func:function(){MusicBeatState.state.canControlle = false; MusicBeatState.state.openSubState(new substates.OptionsSubState(function(){MusicBeatState.state.canControlle = true;}));}},
-		{option:"Mods", icon:"mods", display:"menu_mods", func:function(){MusicBeatState.switchState(new ModListState(MainMenuState, null));}},
+		{option:"Mods", icon:"mods", display:"menu_mods", func:function(){if(ModSupport.MODS.length > 0){MusicBeatState.switchState(new ModListState(MainMenuState, null));}}},
 		{option:"Credits", icon:"credits", display:"menu_credits", func:function(){}}
 	];
 	public static var secondary_options:Array<Dynamic> = [

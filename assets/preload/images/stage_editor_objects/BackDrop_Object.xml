@@ -1,0 +1,35 @@
+<TextureAtlas imagePath="BackDrop_Object.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="2" frameWidth="104" y="2" frameX="6" name="Hit0000" frameHeight="102" frameY="6" width="118" height="116"/>
+	<SubTexture x="122" frameWidth="104" y="2" frameX="0" name="Idle0000" frameHeight="102" frameY="0" width="104" height="102"/>
+	<SubTexture x="228" frameWidth="104" y="2" frameX="-2" name="Over0000" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="330" frameWidth="104" y="2" frameX="-2" name="Over0001" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="432" frameWidth="104" y="2" frameX="-2" name="Over0002" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="534" frameWidth="104" y="2" frameX="-2" name="Over0003" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="636" frameWidth="104" y="2" frameX="-2" name="Over0004" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="738" frameWidth="104" y="2" frameX="-2" name="Over0005" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="840" frameWidth="104" y="2" frameX="-2" name="Over0006" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="2" frameWidth="104" y="120" frameX="-2" name="Over0007" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="104" frameWidth="104" y="120" frameX="-2" name="Over0008" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="206" frameWidth="104" y="120" frameX="-2" name="Over0009" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="308" frameWidth="104" y="120" frameX="-2" name="Over0010" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="410" frameWidth="104" y="120" frameX="-2" name="Over0011" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="512" frameWidth="104" y="120" frameX="-2" name="Over0012" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="614" frameWidth="104" y="120" frameX="-2" name="Over0013" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="716" frameWidth="104" y="120" frameX="-2" name="Over0014" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="228" frameWidth="104" y="2" frameX="-2" name="Over0015" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="818" frameWidth="104" y="120" frameX="-2" name="Over0016" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="920" frameWidth="104" y="120" frameX="-2" name="Over0017" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="2" frameWidth="104" y="221" frameX="-2" name="Over0018" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="104" frameWidth="104" y="221" frameX="-2" name="Over0019" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="206" frameWidth="104" y="221" frameX="-2" name="Over0020" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="308" frameWidth="104" y="221" frameX="-2" name="Over0021" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="410" frameWidth="104" y="221" frameX="-2" name="Over0022" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="512" frameWidth="104" y="221" frameX="-2" name="Over0023" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="614" frameWidth="104" y="221" frameX="-2" name="Over0024" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="716" frameWidth="104" y="221" frameX="-2" name="Over0025" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="818" frameWidth="104" y="221" frameX="-2" name="Over0026" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="920" frameWidth="104" y="221" frameX="-2" name="Over0027" frameHeight="102" frameY="-2" width="100" height="99"/>
+	<SubTexture x="2" frameWidth="104" y="322" frameX="-2" name="Over0028" frameHeight="102" frameY="-2" width="100" height="99"/>
+</TextureAtlas>

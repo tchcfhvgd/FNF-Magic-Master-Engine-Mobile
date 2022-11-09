@@ -253,7 +253,7 @@ class ChartEditorState extends MusicBeatState{
         conductor.changeBPM(_song.bpm);
 		conductor.mapBPMChanges(_song);
 
-        var btn_infogen:FlxUIButton = new FlxUICustomButton(10,0,Std.int(KEYSIZE/1.5),Std.int(KEYSIZE/1.5),'',[Paths.getAtlas(Paths.image("info", null, true)), [["normal", "Idle"], ["highlight", "Over"], ["pressed", "Hit"]]],null,function(){
+        var btn_infogen:FlxUIButton = new FlxUICustomButton(10,0,Std.int(KEYSIZE/1.5),Std.int(KEYSIZE/1.5),'',Paths.image("info", null, true),null,function(){
             canControlle = false; openSubState(new substates.InformationSubState(LangSupport.getText("Charting_Adv_1"), function(){canControlle = true;}));
         }); btn_infogen.cameras = [camHUD];
         btn_infogen.antialiasing = true;
@@ -1698,7 +1698,7 @@ class ChartEditorState extends MusicBeatState{
             }, false);
         }); tabNOTE.add(clNoteCondFunc);
 
-        var btnInfoEvent_Note = new FlxUICustomButton(clNoteCondFunc.x + clNoteCondFunc.width + 5, clNoteCondFunc.y, 20, null, '', [Paths.getAtlas(Paths.image("info", null, true)), [["normal", "Idle"], ["highlight", "Over"], ["pressed", "Hit"]]], null, function(){
+        var btnInfoEvent_Note = new FlxUICustomButton(clNoteCondFunc.x + clNoteCondFunc.width + 5, clNoteCondFunc.y, 20, null, '', Paths.image("info", null, true), null, function(){
             if(Paths.event_info(clNoteEventList.getSelectedLabel()) == null){return;}
             canControlle = false; openSubState(new substates.InformationSubState(Paths.event_info(clNoteEventList.getSelectedLabel()), function(){canControlle = true;}));            
         }); tabNOTE.add(btnInfoEvent_Note);
@@ -1741,7 +1741,7 @@ class ChartEditorState extends MusicBeatState{
         txtCurEventValues.name = "EVENTS_EVENT";
         arrayFocus.push(txtCurEventValues);
         
-        var btnInfoEvent_Note = new FlxUICustomButton(txtCurEventValues.x + txtCurEventValues.width + 5, txtCurEventValues.y, 20, null, '', [Paths.getAtlas(Paths.image("info", null, true)), [["normal", "Idle"], ["highlight", "Over"], ["pressed", "Hit"]]], null, function(){
+        var btnInfoEvent_Note = new FlxUICustomButton(txtCurEventValues.x + txtCurEventValues.width + 5, txtCurEventValues.y, 20, null, '', Paths.image("info", null, true), null, function(){
             if(Paths.event_info(clEventListEvents.getSelectedLabel()) == null){return;}
             canControlle = false; openSubState(new substates.InformationSubState(Paths.event_info(clEventListEvents.getSelectedLabel()), function(){canControlle = true;}));
         }); tabNOTE.add(btnInfoEvent_Note);

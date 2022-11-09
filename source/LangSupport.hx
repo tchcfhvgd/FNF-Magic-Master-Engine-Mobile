@@ -47,7 +47,7 @@ class LangSupport {
     private static var LANG:DynamicAccess<Dynamic>;
 
     public static function init():Void {
-        var savedLang:String = PreSettings.getPreSetting("Language", "Graphic Settings");
+        var savedLang:String = PreSettings.getPreSetting("Language", "Game Settings");
         if(savedLang == null){savedLang = Language;}
 
         setLang(savedLang);

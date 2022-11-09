@@ -1,0 +1,16 @@
+$Paths,Paths$
+
+%Graphic_Library:stages/stage:string%
+%Graphic_File:stage_light:string%
+%Anims_Prefix:[]:array%
+%Play_Anim:idle:string%
+
+#Sprite_Name#.frames = Paths.getAtlas(Paths.image('#Graphic_File#', '#Graphic_Library#', true));
+
+var cur_prefixs:Array<Dynamic> = #Anims_Prefix#;
+for(i in 0...cur_prefixs.length){
+var cur_anim:Array<Dynamic> = cur_prefixs[i];
+while(cur_anim.length < 6){cur_anim.push(null);}
+#Sprite_Name#.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
+}
+#Sprite_Name#.animation.play(#Play_Anim#);

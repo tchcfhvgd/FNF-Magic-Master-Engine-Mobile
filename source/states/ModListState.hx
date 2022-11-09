@@ -58,11 +58,11 @@ class PopModState extends MusicBeatState {
         var lblAdvice_1:Alphabet = new Alphabet(0,0,LangSupport.getText('ModAdv_1')); add(lblAdvice_1);
         lblAdvice_1.screenCenter(); lblAdvice_1.y -= 120;
         
-        var btnNo = new FlxUICustomButton(0, 0, 80, 80, "", [Paths.getAtlas(Paths.image("tach", null, true)), [["normal", "Idle"], ["highlight", "Over"], ["pressed", "Hit"]]], null, function(){MagicStuff.reload_data(); MusicBeatState.switchState(new LoadingState(new TitleState(), []));});
+        var btnNo = new FlxUICustomButton(0, 0, 80, 80, "", Paths.image("tach", null, true), null, function(){MagicStuff.reload_data(); MusicBeatState.switchState(new LoadingState(new TitleState(), []));});
         btnNo.antialiasing = true;
         btnNo.screenCenter(); btnNo.y += 25; btnNo.x -= btnNo.width; add(btnNo);
 
-        var btnYes = new FlxUICustomButton(0, 0, 100, 100, "", [Paths.getAtlas(Paths.image("like", null, true)), [["normal", "Idle"], ["highlight", "Over"], ["pressed", "Hit"]]], null, function(){MusicBeatState.switchState(new states.ModListState(TitleState));});
+        var btnYes = new FlxUICustomButton(0, 0, 100, 100, "", Paths.image("like", null, true), null, function(){MusicBeatState.switchState(new states.ModListState(TitleState));});
         btnYes.antialiasing = true;
         btnYes.screenCenter(); btnYes.y += 25; btnYes.x += btnYes.width; add(btnYes);
 
@@ -109,19 +109,19 @@ class ModListState extends MusicBeatState {
         var hud_up:FlxSprite = new FlxSprite(0,-5).loadGraphic(Paths.image("upBar")); add(hud_up);
         var hud_down:FlxSprite = new FlxSprite().loadGraphic(Paths.image("downBar")); hud_down.y = FlxG.height - hud_down.height; add(hud_down);
 
-        btnToggleAll = new FlxUICustomButton(100, 620, 100, 100, '', [Paths.getAtlas(Paths.image("toggle_button", null, true)), [["normal", "Idle"], ["highlight", "Over"], ["pressed", "Hit"]]], null, function(){for(i in ModsList.members){i.setToggleEnableMod();}}); 
+        btnToggleAll = new FlxUICustomButton(100, 620, 100, 100, '', Paths.image("toggle_button", null, true), null, function(){for(i in ModsList.members){i.setToggleEnableMod();}}); 
         btnToggleAll.antialiasing = true;
         add(btnToggleAll);
 
-        btnEnableAll = new FlxUICustomButton(400, 620, 100, 100, '', [Paths.getAtlas(Paths.image("on_button", null, true)), [["normal", "idle"], ["highlight", "over"], ["pressed", "hit"]]], null, function(){for(i in ModsList.members){i.setToggleEnableMod(true);}}); 
+        btnEnableAll = new FlxUICustomButton(400, 620, 100, 100, '', Paths.image("on_button", null, true), null, function(){for(i in ModsList.members){i.setToggleEnableMod(true);}}); 
         btnEnableAll.antialiasing = true;
         add(btnEnableAll);
 
-        btnDisableAll = new FlxUICustomButton(700, 620, 100, 100, '', [Paths.getAtlas(Paths.image("off_button", null, true)), [["normal", "idle"], ["highlight", "over"], ["pressed", "hit"]]], null, function(){for(i in ModsList.members){i.setToggleEnableMod(false);}});
+        btnDisableAll = new FlxUICustomButton(700, 620, 100, 100, '', Paths.image("off_button", null, true), null, function(){for(i in ModsList.members){i.setToggleEnableMod(false);}});
         btnDisableAll.antialiasing = true;
         add(btnDisableAll);
         
-        btnReady = new FlxUICustomButton(1050, 560, 170, 170, '', [Paths.getAtlas(Paths.image("accept_button", null, true)), [["normal", "idle"], ["highlight", "over"], ["pressed", "hit"]]], null, ready);
+        btnReady = new FlxUICustomButton(1050, 560, 170, 170, '', Paths.image("accept_button", null, true), null, ready);
         btnReady.antialiasing = true;
         add(btnReady);
         
@@ -233,17 +233,17 @@ class ItemMod extends FlxUITabMenu {
               
         mScript.exFunction("create");
 
-        _btnToggle = new FlxUICustomButton(0,0,80,20,"", [Paths.getAtlas(Paths.image(!refMod.enabled ? "disable_button" : "enabled_button", null, true, refMod.name)), [["normal", "Idle"], ["highlight", "Idle"], ["pressed", "Hit"]]], null, function(){setToggleEnableMod(); onButton();});
+        _btnToggle = new FlxUICustomButton(0,0,80,20,"", Paths.image(!refMod.enabled ? "disable_button" : "enabled_button", null, true, refMod.name), null, function(){setToggleEnableMod(); onButton();});
         _btnToggle.setPosition(this.width - _btnToggle.width - 5, -(_btnToggle.height));
         _btnToggle.antialiasing = true;
         add(_btnToggle);
         
-        _btnMoveUp = new FlxUICustomButton(0,5,30,15,"", [Paths.getAtlas(Paths.image("up_button", null, true, refMod.name)), [["normal", "Idle"], ["highlight", "Idle"], ["pressed", "Hit"]]], null, function(){ModSupport.moveMod(this.ID, true); onButton();});
+        _btnMoveUp = new FlxUICustomButton(0,5,30,15,"", Paths.image("up_button", null, true, refMod.name), null, function(){ModSupport.moveMod(this.ID, true); onButton();});
         _btnMoveUp.setPosition(_btnToggle.x - _btnMoveUp.width, -(_btnMoveUp.height));
         _btnMoveUp.antialiasing = true;
         add(_btnMoveUp);
         
-        _btnMoveDown = new FlxUICustomButton(0,5,30,15,"", [Paths.getAtlas(Paths.image("down_button", null, true, refMod.name)), [["normal", "Idle"], ["highlight", "Idle"], ["pressed", "Hit"]]], null, function(){ModSupport.moveMod(this.ID, false); onButton();});
+        _btnMoveDown = new FlxUICustomButton(0,5,30,15,"", Paths.image("down_button", null, true, refMod.name), null, function(){ModSupport.moveMod(this.ID, false); onButton();});
         _btnMoveDown.x = _btnMoveUp.x - _btnMoveDown.width;
         _btnMoveDown.antialiasing = true;
         add(_btnMoveDown);

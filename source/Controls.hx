@@ -524,8 +524,8 @@ class Controls extends FlxActionSet {
 		CURRENT_STRUMCONTROLS = controls_save.data.strumBinds;
 				
 		if(CURRENT_ACTIONS == null || CURRENT_STRUMCONTROLS == null){
-			trace("Null");
-			saveControls();
+			controls_save.data.keyBinds = STATIC_ACTIONS;
+			controls_save.data.strumBinds = STATIC_STRUMCONTROLS;
 			loadBinds();
 			return;
 		}
