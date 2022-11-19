@@ -95,6 +95,18 @@
             "keyLock": null,
             "hiddenOnWeeks": false,
             "hiddenOnFreeplay": false
+        },
+        {
+            "name": "LostTapes",
+            "display": "Lost Tapes",
+            "title": "And this Week?",
+            "categories": [
+                {"category": "Normal", "difficults": ["Easy", "Normal", "Hard"]}
+            ],
+            "songs":["StereoFunk"],
+            "keyLock": null,
+            "hiddenOnWeeks": false,
+            "hiddenOnFreeplay": false
         }
     ],
 

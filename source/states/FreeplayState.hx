@@ -112,7 +112,7 @@ class FreeplayState extends MusicBeatState {
 		}
 		
 		if(stage.camP_1 != null && stage.camP_2 != null){
-			camFollow.setPosition((stage.camP_1.x + (FlxG.mouse.x * (stage.camP_2.x - stage.camP_1.x) / FlxG.width)), (stage.camP_1.y + (FlxG.mouse.y * (stage.camP_2.y - stage.camP_1.y) / FlxG.height)));
+			camFollow.setPosition((stage.camP_1[0] + (FlxG.mouse.x * (stage.camP_2[0] - stage.camP_1[0]) / FlxG.width)), (stage.camP_1[1] + (FlxG.mouse.y * (stage.camP_2[1] - stage.camP_1[1]) / FlxG.height)));
 		}
 
 		MagicStuff.sortMembersByY(cast grpSongs, (FlxG.height / 2) - (grpSongs.members[curSong].height / 2), curSong);

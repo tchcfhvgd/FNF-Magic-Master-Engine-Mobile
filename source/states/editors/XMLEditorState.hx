@@ -89,12 +89,14 @@ class XMLEditorState extends MusicBeatState {
 
         //SPRITES
         bSprite = new FlxSprite();
-        bSprite.alpha = 0.3;
         bSprite.color = FlxColor.GRAY;
         bSprite.cameras = [camFGame];
+        bSprite.antialiasing = false;
+        bSprite.alpha = 0.3;
         
         eSprite = new FlxSprite();
         eSprite.cameras = [camFGame];
+        eSprite.antialiasing = false;
 
         imgIcon = new FlxSprite(5, 5);
         imgIcon.cameras = [camHUD];

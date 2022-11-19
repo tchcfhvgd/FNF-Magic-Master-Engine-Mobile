@@ -12,6 +12,7 @@ import haxe.format.JsonParser;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.util.FlxColor;
+import flixel.math.FlxPoint;
 import openfl.utils.Assets;
 import haxe.DynamicAccess;
 import flixel.FlxSprite;
@@ -72,6 +73,8 @@ class StrumNote extends FlxSprite{
     public var onDebug:Bool = false;
     public var autoStatic:Bool = false;
 
+    public var note_size:FlxPoint = new FlxPoint(60, 60);
+
 	public function new(_data:Int = 0, _keys:Int = 4, ?_image:String, ?_style:String, ?_type:String){
         if(_image != null){image = _image;}
         if(_style != null){style = _style;}
@@ -103,7 +106,6 @@ class StrumNote extends FlxSprite{
 
         if(frames == null || getJSON.animations == null || getJSON.animations.length <= 0){return;}
 
-        animation.addByPrefix("SizeBase", "SizeBase");
         for(anim in getJSON.animations){
             if(anim.indices != null && anim.indices.length > 0){animation.addByIndices(anim.anim, anim.symbol, anim.indices, "", anim.fps, anim.loop);}
             else{animation.addByPrefix(anim.anim, anim.symbol, anim.fps, anim.loop);}
@@ -124,14 +126,13 @@ class StrumNote extends FlxSprite{
 
     public function playAnim(anim:String, force:Bool = false){
 		animation.play(anim, force);
+        setGraphicSize(Std.int(note_size.x), Std.int(note_size.y));
 	}
 
-    override function setGraphicSize(Width:Int = 0, Height:Int = 0):Void {
-        var sAnim:String = this.animation != null && this.animation.curAnim != null ? this.animation.curAnim.name : "static";
-        playAnim("SizeBase");
-        super.setGraphicSize(Width, Height);
-        playAnim(sAnim);
-        updateHitbox();
+    override public function setGraphicSize(Width:Int = 0, Height:Int = 0):Void {
+        super.setGraphicSize(Width,Height);
+        this.updateHitbox();
+        this.setSize(Width,Height);
     }
 }
 
@@ -183,23 +184,14 @@ class Note extends StrumNote {
     public static function getNoteEvents(isNote:Bool = false, ?stage:String):Array<String> {
         var toReturn:Array<String> = [];
 
-        for(i in Paths.readDirectory('assets/data/events')){
-            var curEvent:String = i;
-            if(!curEvent.contains(".")){toReturn.push(curEvent);}
-        }
+        for(i in Paths.readDirectory('assets/data/events')){var curEvent:String = i; if(curEvent.endsWith(".hx")){toReturn.push(curEvent.replace(".hx",""));}}
         
         if(isNote){
-            for(i in Paths.readDirectory('assets/data/note_events')){
-                var curEvent:String = i;
-                if(!curEvent.contains(".")){toReturn.push(curEvent);}
-            }
+            for(i in Paths.readDirectory('assets/data/note_events')){var curEvent:String = i; if(curEvent.endsWith(".hx")){toReturn.push(curEvent.replace(".hx",""));}}
         }
 
         if(stage != null){
-            for(i in Paths.readDirectory('assets/stages/${stage}/events')){
-                var curEvent:String = i;
-                if(curEvent.endsWith(".hx")){toReturn.push(curEvent.replace(".hx", ""));}
-            }
+            for(i in Paths.readDirectory('assets/stages/${stage}/events')){var curEvent:String = i; if(curEvent.endsWith(".hx")){toReturn.push(curEvent.replace(".hx", ""));}}
         }        
 
         return toReturn;
@@ -331,6 +323,11 @@ class Note extends StrumNote {
             case "Merge":{playAnim("merge");}
         }
 	}
+
+    override public function setGraphicSize(Width:Int = 0, Height:Int = 0):Void {
+        if(typeNote == "Sustain"){Height = Std.int(Height / 4);}
+        super.setGraphicSize(Width,Height);
+    }
 }
 
 class StrumEvent extends StrumNote {
@@ -357,7 +354,6 @@ class StrumEvent extends StrumNote {
         antialiasing = !style.contains("pxl-");
         if(frames == null){return;}
 
-        animation.addByPrefix("SizeBase", "SizeBase", 30, false);
         animation.addByPrefix("BeEvent", "BeEvent", 30, false);
         animation.addByPrefix("AfEvent", "AfEvent", 30, false);
         animation.addByPrefix("OffEvent", "OffEvent", 30, false);
@@ -405,7 +401,6 @@ class NoteSplash extends FlxSprite {
         this.setPosition(X, Y);
 
         frames = Paths.getAtlas(Paths.note(image, style, type));
-        animation.addByPrefix("SizeBase", "SizeBase");
         animation.addByPrefix("Splash", "Splash", 30, false);
 
         playAnim("Splash");
@@ -413,15 +408,7 @@ class NoteSplash extends FlxSprite {
 
     public function playAnim(anim:String, ?force:Bool = false){
         animation.play(anim, force);
-        updateHitbox();
 	}
-
-    override function setGraphicSize(Width:Int = 0, Height:Int = 0):Void {
-        var sAnim:String = this.animation != null && this.animation.curAnim != null ? this.animation.curAnim.name : "static";
-        playAnim("SizeBase");
-        super.setGraphicSize(Width, Height);
-        playAnim(sAnim);
-    }
 }
 
 class ColorFilterShader extends FlxShader {

@@ -79,6 +79,8 @@ class StageEditorState extends MusicBeatState {
     var MENU:FlxUITabMenu;
     var LAYERS:FlxUITabMenu;
 
+    var camera_sprite:FlxSprite;
+
     var arrayFocus:Array<FlxUIInputText> = [];
 
     var camFollow:FlxObject;
@@ -104,8 +106,11 @@ class StageEditorState extends MusicBeatState {
             ["Boyfriend", [770, 100], 1, false, "Default", "NORMAL", 0]
         ]);
         stage.loadStageByScriptSource(SCRIPT_SOURCE.buildSource());
+        stage.showCamPoints = true;
         stage.cameras = [camFGame];
         add(stage);
+        
+        for(char in stage.characterData){char.alpha = 0.5;}
 
         OBJECTS = new FlxUITabMenu(null, [{name: "1Objects", label: ''}], true);
         OBJECTS.resize(35, Std.int(FlxG.height));
@@ -131,12 +136,20 @@ class StageEditorState extends MusicBeatState {
         addMENUTABS();
         add(MENU);
 
+        camera_sprite = new FlxSprite().loadGraphic(Paths.image("camera_border"));
+        camera_sprite.scrollFactor.set(0,0);
+        camera_sprite.cameras = [camFGame];
+        camera_sprite.antialiasing = false;
+        camera_sprite.alpha = 0.5;
+        add(camera_sprite);
+
         reload = new FlxText(0,0,0,"You can Reload! [SPACE]", 16);
         reload.cameras = [camFHUD];
+        reload.alpha = 0;
         add(reload);
         
         super.create();
-
+        
 		camFollow = new FlxObject(0, 0, 1, 1);
         camFollow.screenCenter();
         camFGame.follow(camFollow, LOCKON);
@@ -154,15 +167,29 @@ class StageEditorState extends MusicBeatState {
             if(FlxG.mouse.justPressedRight){pos = [[camFollow.x, camFollow.y],[pMouse.x, pMouse.y]];}
             if(FlxG.mouse.pressedRight){camFollow.setPosition(pos[0][0] + ((pos[1][0] - pMouse.x) * 1.0), pos[0][1] + ((pos[1][1] - pMouse.y) * 1.0));}
 
-            if(FlxG.keys.pressed.SHIFT){
-                if(FlxG.mouse.wheel != 0){camFGame.zoom += (FlxG.mouse.wheel * 0.1);}
+            if(FlxG.mouse.overlaps(OBJECTS)){
+                if((FlxG.mouse.wheel > 0 && template_list.y < FlxG.height - 40) || (FlxG.mouse.wheel < 0 && template_list.y + template_list.height > 45)){
+                    template_list.y += FlxG.mouse.wheel * 5;
+                }
+            }else if(FlxG.mouse.overlaps(LAYERS)){
+                if((FlxG.mouse.wheel > 0 && stage_objects_list.y < FlxG.height - 40) || (FlxG.mouse.wheel < 0 && stage_objects_list.y + stage_objects_list.height > 45)){
+                    stage_objects_list.y += FlxG.mouse.wheel * 5;
+                }
+            }else if(FlxG.mouse.overlaps(MENU)){
+                if((FlxG.mouse.wheel > 0 && object_settings_gp.y < FlxG.height - 40) || (FlxG.mouse.wheel < 0 && object_settings_gp.y + object_settings_gp.height > 45)){
+                    object_settings_gp.y += FlxG.mouse.wheel * 5;
+                }
             }else{
-                if(FlxG.mouse.wheel != 0){camFGame.zoom += (FlxG.mouse.wheel * 0.01);}
+                if(FlxG.keys.pressed.SHIFT){
+                    if(FlxG.mouse.justPressedMiddle){camFGame.zoom = stage.zoom;}
+                    if(FlxG.mouse.wheel != 0){camFGame.zoom += (FlxG.mouse.wheel * 0.1);}
+                }else{
+                    if(FlxG.mouse.justPressedMiddle){camFollow.screenCenter();}
+                    if(FlxG.mouse.wheel != 0){camFGame.zoom += (FlxG.mouse.wheel * 0.01);}
+                }
             }
 
             if(canReload && FlxG.keys.justPressed.SPACE){reloadStage();}
-
-            if(FlxG.mouse.justPressedMiddle){camFollow.screenCenter();}
         }
 
         if(canReload){
@@ -178,6 +205,9 @@ class StageEditorState extends MusicBeatState {
         stage.loadStageByScriptSource(SCRIPT_SOURCE.buildSource());
         canReload = false;
         reload.alpha = 0;
+
+        camera_sprite.scale.x = camera_sprite.scale.y = camHUD.zoom / stage.zoom;
+        camera_sprite.screenCenter();
     }
 
     public function reload_templates():Void {
@@ -263,7 +293,7 @@ class StageEditorState extends MusicBeatState {
                     last_height += txtCurrent_Variable.height + 5;
                 }
                 case 'Array':{
-                    var data:String = ""; try{data = Json.stringify(Json.parse('{ Events: ${vari.value}}').Events);}catch(e){trace(e); data = "[]";}
+                    var data:String = ""; try{data = Json.stringify(Json.parse('{ "Events": ${vari.value}}').Events);}catch(e){trace(e); data = "[]";}
                     var txtCurrent_Variable = new FlxUIInputText(0, last_height, Std.int(MENU.width - 10), data, 8);
                     txtCurrent_Variable.name = 'global_variable:${i}:array';
                     arrayFocus.push(txtCurrent_Variable);
@@ -392,14 +422,19 @@ class StageEditorState extends MusicBeatState {
             stage_file.saveFile();
         }); tabMENU.add(btnExportStage);
 
-        var btnLoad:FlxButton = new FlxCustomButton(btnExportStage.x, btnExportStage.y + btnExportStage.height + 5, Std.int((MENU.width / 2) - 10), null, "Load Stage (.json)", null, null, function(){
+        var btnLoad:FlxButton = new FlxCustomButton(btnExportStage.x, btnExportStage.y + btnExportStage.height + 5, Std.int((MENU.width / 2) - 10), null, "Load Stage", null, null, function(){
             SCRIPT_SOURCE = new StageScripManager(Paths.getText(Paths.stage(txtStage.text)));
             reload_stage_objects();
             loadVariableSettings();
             reloadStage();
         }); tabMENU.add(btnLoad);
-        var btnImport:FlxButton = new FlxCustomButton(btnLoad.x + btnLoad.width + 10, btnLoad.y, Std.int((MENU.width / 2) - 10), null, "Import Stage (.json)", null, null, function(){
-                
+        var btnImport:FlxButton = new FlxCustomButton(btnLoad.x + btnLoad.width + 10, btnLoad.y, Std.int((MENU.width / 2) - 10), null, "Import Stage", null, null, function(){
+                getFile(function(str){
+                    SCRIPT_SOURCE = new StageScripManager(Paths.getText(str));
+                    reload_stage_objects();
+                    loadVariableSettings();
+                    reloadStage();
+                });
         }); tabMENU.add(btnImport);
 
         var line0 = new FlxSprite(5, btnLoad.y + btnLoad.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line0);
@@ -499,7 +534,12 @@ class StageEditorState extends MusicBeatState {
 
                 switch(type_variable){
                     default:{SCRIPT_SOURCE.variables[object_variable].value = input.text;}
-                    case "array":{SCRIPT_SOURCE.variables[object_variable].value = input.text;}
+                    case "array":{
+                        var data:Array<Dynamic> = [];
+                        try{data = (cast Json.parse('{ "Events": ${input.text} }')).Events; input.color = FlxColor.BLACK;}catch(e){trace(e); input.color = FlxColor.RED;}
+                        
+                        SCRIPT_SOURCE.variables[object_variable].value = data;
+                    }
                     case "id":{SCRIPT_SOURCE.variables[object_variable].id = input.text;}
                 }
 
@@ -516,7 +556,7 @@ class StageEditorState extends MusicBeatState {
             }else if(wname.contains("global_variable")){
                 var object_variable:Int = Std.parseInt(wname.split(":")[1]);
 
-                SCRIPT_SOURCE.variables[object_variable].value = Std.string(nums.value);
+                SCRIPT_SOURCE.variables[object_variable].value = nums.value;
 
                 canReload = true;
             }
@@ -531,17 +571,26 @@ class StageEditorState extends MusicBeatState {
             }else if(wname.contains("global_variable")){
                 var object_variable:Int = Std.parseInt(wname.split(":")[1]);
                                 
-                SCRIPT_SOURCE.variables[object_variable].value = Std.string(check.checked);
+                SCRIPT_SOURCE.variables[object_variable].value = check.checked;
 
                 canReload = true;
             }
         }
     }
+    
+    var onReload:Bool = false;
+    private function getFile(_onSelect:String->Void):Void {
+        if(onReload){return;} onReload = true;
+
+        var fDialog = new FileDialog();
+        fDialog.onSelect.add(function(str){onReload = false; _onSelect(str);});
+        fDialog.browse();
+	}
 }
 
 class StageScripManager {
     public var packages:Map<String, Dynamic> = [];
-    public var variables:Array<{id:String, value:String, type:String, isPresset:Bool}> = [];
+    public var variables:Array<{id:String, value:Dynamic, type:String, isPresset:Bool}> = [];
     public var objects:Array<StageObjectScript> = [];
 
     public function new(?src:String):Void {
@@ -582,8 +631,6 @@ class StageScripManager {
                 var parsed_line:String = '{ ${line.split("/*")[1].split("*/")[0]} }';
                 var cur_value:Dynamic = cast Json.parse(parsed_line);
 
-                trace(cur_value);
-
                 if(current_attribute != null){
                     if(cur_value.Packages != null){
                         var cur_packs:DynamicAccess<Dynamic> = cur_value.Packages;
@@ -616,10 +663,6 @@ class StageScripManager {
                 }
             }
         }
-
-        trace(packages);
-        trace(variables);
-        trace(objects);
     }
     
     public function buildSource():String {
@@ -633,7 +676,16 @@ class StageScripManager {
 
         for(key in packages.keys()){toReturn += 'import("${packages[key]}", "${key}");\n';}
         toReturn += '\n';
-        for(v in variables){toReturn += '${v.isPresset ? ('presset("${v.id}", ${v.value});') : ('var ${v.id}${v.type != null ? ':${v.type}' : ''} = ${v.value};')}\n';}
+        for(v in variables){
+            if(v.type == "Array"){
+                var data:String = "[]";
+                try{data = Json.stringify(v.value);}catch(e){trace(e); data = "[]";}
+
+                toReturn += '${v.isPresset ? ('presset("${v.id}", ${data});') : ('var ${v.id}${v.type != null ? ':${v.type}' : ''} = ${data};')}\n';
+            }else{
+                toReturn += '${v.isPresset ? ('presset("${v.id}", ${v.value});') : ('var ${v.id}${v.type != null ? ':${v.type}' : ''} = ${v.value};')}\n';
+            }
+        }
         toReturn += '\n';
         toReturn += 'function create(){\n';
         for(obj in objects){toReturn += '${obj.buildSource()}';}
@@ -783,7 +835,11 @@ class StageObjectScript {
                     if(current_tag == ''){current_tag = '#'; continue;}
                     if(current_tag != '#'){trace('Building Error [Unexpected $c on #]'); return '';}
                     if(!variables.exists(current_variable)){trace('Building Error [UnLoaded Variable ${current_variable}]'); return '';}
-                    toReturn += variables.get(current_variable);
+                    if(value_types.get(current_variable) == "array"){
+                        toReturn += Json.stringify(variables.get(current_variable));
+                    }else{
+                        toReturn += variables.get(current_variable);
+                    }
                     current_variable = '';
                     current_tag = '';
                 }

@@ -50,8 +50,8 @@ class Stage extends FlxTypedGroup<Dynamic>{
 
     public var script:Script = null;
     public var zoom:Float = 0.7;
-    public var camP_1:FlxPoint;
-    public var camP_2:FlxPoint;
+    public var camP_1:Array<Int>;
+    public var camP_2:Array<Int>;
 
     private var initChar:Int = 0;
 
@@ -125,7 +125,7 @@ class Stage extends FlxTypedGroup<Dynamic>{
                 if(cLyr >= stageData.members.length){cLyr = stageData.members.length - 1;}
 
                 if(cLyr == numCont){
-                    char.scrollFactor.set(sPart.scrollFactor.x, sPart.scrollFactor.y);
+                    if(sPart.scrollFactor != null){char.scrollFactor.set(sPart.scrollFactor.x, sPart.scrollFactor.y);}
                     add(char);
                 }
             }
@@ -134,8 +134,8 @@ class Stage extends FlxTypedGroup<Dynamic>{
         }
 
         if(showCamPoints){
-            if(camP_1 != null){add(new FlxSprite(camP_1.x, camP_1.y).makeGraphic(5,5));}
-            if(camP_2 != null){add(new FlxSprite(camP_2.x, camP_2.y).makeGraphic(5,5));}
+            if(camP_1 != null){add(new FlxSprite(camP_1[0], camP_1[1]).makeGraphic(5,5));}
+            if(camP_2 != null){add(new FlxSprite(camP_2[0], camP_2[1]).makeGraphic(5,5));}
         }
     }
 
@@ -145,8 +145,6 @@ class Stage extends FlxTypedGroup<Dynamic>{
         var i:Int = 0;
         for(c in chars){
             var nChar = new Character(c[1][0], c[1][1], c[0], c[4], c[5]);
-            nChar.x += nChar.positionArray[0];
-            nChar.y += nChar.positionArray[1];
 
             nChar.scale.set(c[2], c[2]);
             nChar.turnLook(c[3]);

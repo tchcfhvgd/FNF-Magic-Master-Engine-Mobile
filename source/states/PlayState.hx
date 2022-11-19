@@ -220,9 +220,14 @@ class PlayState extends MusicBeatState {
 
 			strumLine.onHIT = function(note:Note){
 				var focus:Bool = false;
+				
+				var song_animation:String = note.singAnimation;
+				if(strumLine.swagStrum.notes[strumLine.curSection] != null && strumLine.swagStrum.notes[strumLine.curSection].altAnim){song_animation += '-alt';}
+
 				for(ii in Song.getNoteCharactersToSing(note, strumLine.swagStrum, strumLine.curSection)){
 					var new_character:Character = stage.getCharacterById(ii);
-					new_character.playAnim(note.singAnimation, true);
+					
+					new_character.playAnim(song_animation, true);
 
 					if(!focus){
 						StrumLine.GLOBAL_VARIABLES[strumLine.typeStrum == "Playing" ? "Player" : "Enemy"] = new_character;
@@ -234,9 +239,13 @@ class PlayState extends MusicBeatState {
 
 			strumLine.onMISS = function(note:Note){
 				var focus:Bool = false;
+				
+				var song_animation:String = '${note.singAnimation}miss';
+				if(strumLine.swagStrum.notes[strumLine.curSection] != null && strumLine.swagStrum.notes[strumLine.curSection].altAnim){song_animation += '-alt';}
+
 				for(ii in Song.getNoteCharactersToSing(note, strumLine.swagStrum, strumLine.curSection)){
 					var new_character:Character = stage.getCharacterById(ii);
-					new_character.playAnim('${note.singAnimation}miss', true);
+					new_character.playAnim(song_animation, true);
 
 					if(!focus){
 						StrumLine.GLOBAL_VARIABLES[strumLine.typeStrum == "Playing" ? "Player" : "Enemy"] = new_character;
@@ -323,7 +332,6 @@ class PlayState extends MusicBeatState {
 	}
 
 	var curStrumLinePos:String = "";
-	var exEvents:Array<Dynamic> = [];
 	override public function update(elapsed:Float){
 		super.update(elapsed);
 
@@ -418,33 +426,30 @@ class PlayState extends MusicBeatState {
 		}
 
 		if(stage.camP_1 != null){
-			if(camFollow.x < stage.camP_1.x){camFollow.x = stage.camP_1.x;}
-			if(camFollow.y < stage.camP_1.y){camFollow.y = stage.camP_1.y;}
+			if(camFollow.x < stage.camP_1[0]){camFollow.x = stage.camP_1[0];}
+			if(camFollow.y < stage.camP_1[1]){camFollow.y = stage.camP_1[1];}
 		}
 		if(stage.camP_2 != null){
-			if(camFollow.x > stage.camP_2.x){camFollow.x = stage.camP_2.x;}
-			if(camFollow.y > stage.camP_2.y){camFollow.y = stage.camP_2.y;}
+			if(camFollow.x > stage.camP_2[0]){camFollow.x = stage.camP_2[0];}
+			if(camFollow.y > stage.camP_2[1]){camFollow.y = stage.camP_2[1];}
 		}
 	}
 
+	private var exEvents:Array<Dynamic> = [];
 	function checkEvents(){
 		if(!songGenerated || PlayState.SONG.generalSection[curSection] == null || PlayState.SONG.generalSection[curSection].events.length <= 0){return;}
 		var sEvents:Array<Dynamic> = SONG.generalSection[Math.floor(curStep / 16)].events;
-		for(event in sEvents){
+		for(event in sEvents.copy()){
 			var cur_Event:EventData = Note.getEventData(event);
 			if(conductor.songPosition > cur_Event.strumTime && !cur_Event.isBroken && !exEvents.contains(event)){
 				exEvents.push(event);
-				for(e in cur_Event.eventData){
+				for(e in cur_Event.eventData.copy()){
 					var _args = cast(e[1],Array<Dynamic>).copy();
 					var _srp = Script.getScript(e[0]);
 					if(_srp == null){continue;}
-					if(_srp.getVariable("defaultValues") != null){
-						var _defArgs = cast(_srp.getVariable("defaultValues"),Array<Dynamic>).copy();
-						while(_args.length < _defArgs.length){_args.push(_defArgs[_args.length]);}
-					}
 					_srp.exFunction("execute", cast _args);
 				}
-			}			
+			}
 		}
 	}
 

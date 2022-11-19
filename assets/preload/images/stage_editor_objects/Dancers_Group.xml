@@ -1,0 +1,14 @@
+<TextureAtlas imagePath="Dancer_Group.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="2" frameWidth="160" y="2" frameX="-5" name="Hit0000" frameHeight="214" frameY="-7" width="151" height="202"/>
+	<SubTexture x="155" frameWidth="160" y="2" frameX="0" name="Idle0000" frameHeight="214" frameY="0" width="160" height="214"/>
+	<SubTexture x="317" frameWidth="160" y="2" frameX="38" name="Over0000" frameHeight="214" frameY="0" width="238" height="219"/>
+	<SubTexture x="317" frameWidth="160" y="2" frameX="38" name="Over0001" frameHeight="214" frameY="0" width="238" height="219"/>
+	<SubTexture x="557" frameWidth="160" y="2" frameX="38" name="Over0002" frameHeight="214" frameY="0" width="238" height="219"/>
+	<SubTexture x="557" frameWidth="160" y="2" frameX="38" name="Over0003" frameHeight="214" frameY="0" width="238" height="219"/>
+	<SubTexture x="2" frameWidth="160" y="223" frameX="38" name="Over0004" frameHeight="214" frameY="0" width="238" height="219"/>
+	<SubTexture x="2" frameWidth="160" y="223" frameX="38" name="Over0005" frameHeight="214" frameY="0" width="238" height="219"/>
+	<SubTexture x="242" frameWidth="160" y="223" frameX="38" name="Over0006" frameHeight="214" frameY="0" width="238" height="219"/>
+	<SubTexture x="242" frameWidth="160" y="223" frameX="38" name="Over0007" frameHeight="214" frameY="0" width="238" height="219"/>
+</TextureAtlas>

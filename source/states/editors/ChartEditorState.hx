@@ -63,7 +63,7 @@ import sys.io.File;
 
 using StringTools;
 
-class ChartEditorState extends MusicBeatState{
+class ChartEditorState extends MusicBeatState {
     public static var _song_path:String;
     public static var _song:SwagSong;
     
@@ -167,13 +167,13 @@ class ChartEditorState extends MusicBeatState{
         renderedEvents = new FlxTypedGroup<StrumEvent>(); renderedEvents.cameras = [camHUD]; add(renderedEvents);
 
         cursor_Arrow = new Note(Note.getNoteData(), Song.getStrumKeys(_song.sectionStrums[curStrum], curSection));
-        cursor_Arrow.setGraphicSize(KEYSIZE, KEYSIZE);
+        cursor_Arrow.note_size.set(KEYSIZE,KEYSIZE);
         cursor_Arrow.cameras = [camHUD];
         cursor_Arrow.onDebug = true;
         add(cursor_Arrow);
 
         cursor_Event  = new StrumEvent(0);
-        cursor_Event.setGraphicSize(KEYSIZE, KEYSIZE);
+        cursor_Event.note_size.set(KEYSIZE,KEYSIZE);
         cursor_Event.cameras = [camHUD];
         cursor_Event.onDebug = true;
         add(cursor_Event);
@@ -345,7 +345,7 @@ class ChartEditorState extends MusicBeatState{
                 if(note.otherData.length > 0){
                     var iconEvent:StrumEvent = new StrumEvent(nData.strumTime, conductor);
                     iconEvent.setPosition(note.x, note.y);
-                    iconEvent.setGraphicSize(Std.int(KEYSIZE / 3));
+                    iconEvent.note_size.set(Std.int(KEYSIZE / 3), Std.int(KEYSIZE / 3));
                     iconEvent.alpha = note.alpha;
                     renderedEvents.add(iconEvent);
                 }
@@ -383,47 +383,27 @@ class ChartEditorState extends MusicBeatState{
                     var cSusNote:Int = Math.floor(nData.sustainLength / (conductor.stepCrochet * 0.25) + 2);
                     var prevSustain:Note = note;
         
-                    if(chkEasySustains.checked){
+                    for(sNote in 0...Math.floor(nData.sustainLength / (conductor.stepCrochet * 0.25)) + 2){
+                        var sStrumTime = nData.strumTime + (conductor.stepCrochet / 2) + ((conductor.stepCrochet * 0.25) * sNote);
                         var nSData:NoteData = Note.getNoteData(Note.convNoteData(nData));
-                        nSData.strumTime = nData.strumTime + (conductor.stepCrochet * 0.75);
+                        nSData.strumTime = sStrumTime;
+                                
+                        var nSustain:Note = new Note(nSData, Song.getStrumKeys(cSection, curSection), null, cSection.noteStyle);
+        
+                        nSustain.typeNote = "Sustain";
+                        nSustain.typeHit = "Hold";
+                        prevSustain.nextNote = nSustain;
+                        
+                        setupNote(nSustain, ii);
+                        nSustain.alpha = isSelected || inst.playing ? 0.5 : 0.3;
 
-                        for(i in 0...2){
-                            if(i > 0){nSData.strumTime = (nData.strumTime + Math.floor(nData.sustainLength / (conductor.stepCrochet * 0.25))) * (conductor.stepCrochet * 0.25) + (conductor.stepCrochet * 0.75);}
-                            var nSustain:Note = new Note(nSData, Song.getStrumKeys(cSection, curSection), null, cSection.noteStyle);
-                            setupNote(nSustain, ii); if(i < 1){nSustain.setGraphicSize(Std.int(KEYSIZE), Std.int(KEYSIZE * Math.floor(nData.sustainLength / (conductor.stepCrochet * 0.25)) + 1));}
-                            nSustain.alpha = isSelected || inst.playing ? 0.5 : 0.3;
-                            
-                            nSustain.typeNote = "Sustain";
-                            nSustain.typeHit = "Hold";
-                            prevSustain.nextNote = nSustain;
-                            
-                            renderedSustains.add(nSustain);
-                            notesCanHit[ii].push(nSustain);
-                            
-                            prevSustain = nSustain;
-                        }                        
-                    }else{
-                        for(sNote in 0...Math.floor(nData.sustainLength / (conductor.stepCrochet * 0.25)) + 2){
-                            var sStrumTime = nData.strumTime + (conductor.stepCrochet / 2) + ((conductor.stepCrochet * 0.25) * sNote);
-                            var nSData:NoteData = Note.getNoteData(Note.convNoteData(nData));
-                            nSData.strumTime = sStrumTime;
-                                    
-                            var nSustain:Note = new Note(nSData, Song.getStrumKeys(cSection, curSection), null, cSection.noteStyle);
-                            setupNote(nSustain, ii);
-                            nSustain.alpha = isSelected || inst.playing ? 0.5 : 0.3;
-            
-                            nSustain.typeNote = "Sustain";
-                            nSustain.typeHit = "Hold";
-                            prevSustain.nextNote = nSustain;
-    
-                            if(cSusNote == 1 && nSData.canMerge){mergedGroup.push(nSustain);}
-                                    
-                            renderedSustains.add(nSustain);
-                            notesCanHit[ii].push(nSustain);
-            
-                            prevSustain = nSustain;
-                            cSusNote--;
-                        }
+                        if(cSusNote == 1 && nSData.canMerge){mergedGroup.push(nSustain);}
+                                
+                        renderedSustains.add(nSustain);
+                        notesCanHit[ii].push(nSustain);
+        
+                        prevSustain = nSustain;
+                        cSusNote--;
                     }
                 }
             }
@@ -628,7 +608,15 @@ class ChartEditorState extends MusicBeatState{
                     if(n.hitMiss){continue;}
                     if(!chkHideStrums.checked){strumStatics.members[i].playById((n.noteData % Song.getStrumKeys(_song.sectionStrums[i], curSection)), "confirm", true);}
                     if(!chkMuteHitSounds.checked && sHitsArray[i] && n.typeHit != "Hold"){FlxG.sound.play(Paths.sound("CLAP"));}
-                    for(i in Song.getNoteCharactersToSing(n, _song.sectionStrums[i], curSection)){if(stage.getCharacterById(i) != null){stage.getCharacterById(i).playAnim(n.singAnimation, true);}}
+
+                    var song_animation:String = n.singAnimation;
+                    if(_song.sectionStrums[i].notes[curSection].altAnim){song_animation += '-alt';}
+
+                    for(i in Song.getNoteCharactersToSing(n, _song.sectionStrums[i], curSection)){
+                        if(stage.getCharacterById(i) != null){
+                            stage.getCharacterById(i).playAnim(song_animation, true);
+                        }
+                    }
                 }
             }
 
@@ -855,9 +843,11 @@ class ChartEditorState extends MusicBeatState{
     override function beatHit(){super.beatHit();}
 
     function setupNote(note:Dynamic, ?grid:Int):Void {
-        note.setGraphicSize(KEYSIZE, KEYSIZE); note.onDebug = true;
+        note.note_size.set(KEYSIZE,KEYSIZE);
+        note.onDebug = true;
         note.y = Math.floor(getYfromStrum((note.strumTime - sectionStartTime()) % (conductor.stepCrochet * _song.generalSection[curSection].lengthInSteps)));
-        note.x = gridGroup.members[grid + 1].x; if(!(note is StrumEvent)){note.x += Math.floor(note.noteData * KEYSIZE);}
+        note.x = gridGroup.members[grid + 1].x;
+        if(!(note is StrumEvent)){note.x += Math.floor(note.noteData * KEYSIZE);}
     }
 
     function changeStrum(value:Int = 0, force:Bool = false):Void{
@@ -1190,8 +1180,6 @@ class ChartEditorState extends MusicBeatState{
     var txtStage:FlxUIInputText;
     var txtAspect:FlxUIInputText;
     var txtCharacter:FlxUIInputText;
-    var txtCurEventValues:FlxUIInputText;
-    var txtEvent2:FlxUIInputText;
     var txtNoteStyle:FlxUIInputText;
     var stpBPM:FlxUINumericStepper;
     var stpSpeed:FlxUINumericStepper;
@@ -1228,14 +1216,12 @@ class ChartEditorState extends MusicBeatState{
     var chkMuteHitSounds:FlxUICheckBox;
     var chkCamFocusStrum:FlxUICheckBox;
     var chkDisableStrumButtons:FlxUICheckBox;
-    var chkEasySustains:FlxUICheckBox;
     var ddlEvent1:FlxUIDropDownMenu;
     var lblCharsToSing:FlxText;
     var lblSecCharsToSing:FlxText;
     var lblNoteStyle:FlxText;
     var clEventListToNote:FlxUICustomList;
     var clNoteEventList:FlxUICustomList;
-    var txtNoteEventValues:FlxUIInputText;
     var clNotePressets:FlxUICustomList;
     var clNoteCondFunc:FlxUICustomList;
     var clEventListToEvents:FlxUICustomList;
@@ -1248,6 +1234,10 @@ class ChartEditorState extends MusicBeatState{
     var btnCanMerge:FlxUIButton;
     var btnChangeEventFile:FlxUIButton;
     var btnBrokeExternalEvent:FlxUIButton;
+    var note_event_sett_group:FlxUIGroup;
+    var camera_note_event:FlxCamera;
+    var event_sett_group:FlxUIGroup;
+    var camera_event:FlxCamera;
     function addMENUTABS():Void{
         var tabMENU = new FlxUI(null, MENU);
         tabMENU.name = "4Song";
@@ -1304,6 +1294,8 @@ class ChartEditorState extends MusicBeatState{
                     Song.parseJSONshit(song_data);
 
                     _song = song_data;
+                    
+                    _song_path = Paths.chart(Song.fileSong(_song.song,_song.category,_song.difficulty));
 
                     updateSection();
                 });
@@ -1659,7 +1651,14 @@ class ChartEditorState extends MusicBeatState{
         clEventListToNote.setPrefix("Event List: ["); clEventListToNote.setSuffix("]");
 
         var btnAddEventToNote = new FlxUICustomButton(clEventListToNote.x + clEventListToNote.width + 5, clEventListToNote.y, 20, null, "+", null, FlxColor.fromRGB(117, 255, 120), function(){
-            updateSelectedNote(function(curNote){curNote.eventData.push([clEventListToNote.getSelectedLabel(), [], "OnHit"]);});
+            updateSelectedNote(
+                function(curNote){
+                    this.pushTempScript(clEventListToNote.getSelectedLabel());
+                    var default_list:Array<Dynamic> = [];
+                    for(setting in cast(tempScripts.get(clEventListToNote.getSelectedLabel()).getVariable("defaultValues"),Array<Dynamic>)){default_list.push(setting.value);}
+                    curNote.eventData.push([clEventListToNote.getSelectedLabel(), default_list, "OnHit"]);
+                }
+            );
             clNoteEventList.setIndex(selNote.eventData.length - 1);
         }); tabNOTE.add(btnAddEventToNote);
         
@@ -1667,13 +1666,15 @@ class ChartEditorState extends MusicBeatState{
             updateSelectedNote(
                 function(curNote){                
                     clNoteEventList.setSuffix('] (${clNoteEventList.getSelectedIndex() + 1}/${curNote.eventData.length})');
-                    try{txtNoteEventValues.text = Json.stringify(curNote.eventData[clNoteEventList.getSelectedIndex()][1]);}catch(e){trace(e); txtNoteEventValues.text = "[]";}
                     clNoteCondFunc.setLabel(curNote.eventData[clNoteEventList.getSelectedIndex()][2]);
+                    loadNoteEventSettings(clNoteEventList.getSelectedLabel());
+                    //try{txtNoteEventValues.text = Json.stringify(curNote.eventData[clNoteEventList.getSelectedIndex()][1]);}catch(e){trace(e); txtNoteEventValues.text = "[]";}
                 },
                 function(){
                     clNoteEventList.setData([]);
                     clNoteEventList.setSuffix('] (0/0)');
-                    txtNoteEventValues.text = "[]";
+                    loadNoteEventSettings();
+                    //txtNoteEventValues.text = "[]";
                 }, false
             );
         }); tabNOTE.add(clNoteEventList);
@@ -1687,23 +1688,21 @@ class ChartEditorState extends MusicBeatState{
             clNoteEventList.setIndex(selNote.eventData.length - 1);
         }); tabNOTE.add(btnDelEventToNote);
 
-        txtNoteEventValues = new FlxUIInputText(5, clNoteEventList.y + clNoteEventList.height + 5, Std.int(MENU.width) - 140, "[]", 10); tabNOTE.add(txtNoteEventValues);
-        txtNoteEventValues.name = "NOTE_EVENT";
-        arrayFocus.push(txtNoteEventValues);
-
-        clNoteCondFunc = new FlxUICustomList(txtNoteEventValues.x + txtNoteEventValues.width + 5, txtNoteEventValues.y - 2, 100, ["OnHit", "OnMiss", "OnCreate"], function(){
+        clNoteCondFunc = new FlxUICustomList(5, clNoteEventList.y + clNoteEventList.height + 5, Std.int(MENU.width - 10), ["OnHit", "OnMiss", "OnCreate"], function(){
             updateSelectedNote(function(curNote){
                 if(curNote.eventData.length <= 0){return;}
                 curNote.eventData[clNoteEventList.getSelectedIndex()][2] = clNoteCondFunc.getSelectedLabel();
             }, false);
         }); tabNOTE.add(clNoteCondFunc);
+        clNoteCondFunc.setPrefix("Condition ("); clNoteCondFunc.setSuffix(")");
 
-        var btnInfoEvent_Note = new FlxUICustomButton(clNoteCondFunc.x + clNoteCondFunc.width + 5, clNoteCondFunc.y, 20, null, '', Paths.image("info", null, true), null, function(){
-            if(Paths.event_info(clNoteEventList.getSelectedLabel()) == null){return;}
-            canControlle = false; openSubState(new substates.InformationSubState(Paths.event_info(clNoteEventList.getSelectedLabel()), function(){canControlle = true;}));            
-        }); tabNOTE.add(btnInfoEvent_Note);
+        camera_note_event = new FlxCamera(5, Std.int(clNoteCondFunc.y + clNoteCondFunc.height + 5), Std.int(MENU.width - 10), 150); add(camera_note_event);
 
-        var nLine1 = new FlxSprite(5, txtNoteEventValues.y + txtNoteEventValues.height + 10).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabNOTE.add(nLine1);
+        note_event_sett_group = new FlxUIGroup(5, clNoteCondFunc.y + clNoteCondFunc.height + 5); tabNOTE.add(note_event_sett_group);
+        note_event_sett_group.width = Std.int(MENU.width - 10);
+        note_event_sett_group.cameras = [camera_note_event];
+
+        var nLine1 = new FlxSprite(5, note_event_sett_group.y + 160).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabNOTE.add(nLine1);
         
         var lblEvents = new FlxText(5, nLine1.y + 7, MENU.width - 10, "Section Events"); tabNOTE.add(lblEvents);
         lblEvents.alignment = CENTER;
@@ -1717,36 +1716,43 @@ class ChartEditorState extends MusicBeatState{
         clEventListToEvents.setPrefix("Event List: ["); clEventListToEvents.setSuffix("]");
 
         var btnAddEventToEvents = new FlxUICustomButton(clEventListToEvents.x + clEventListToEvents.width + 5, clEventListToEvents.y, 20, null, "+", null, FlxColor.fromRGB(117, 255, 120), function(){
-            updateSelectedEvent(function(curEvent){curEvent.eventData.push([clEventListToEvents.getSelectedLabel(), []]);});
+            updateSelectedEvent(
+                function(curEvent){
+                    this.pushTempScript(clEventListToEvents.getSelectedLabel());
+                    var default_list:Array<Dynamic> = [];
+                    for(setting in cast(tempScripts.get(clEventListToEvents.getSelectedLabel()).getVariable("defaultValues"),Array<Dynamic>)){default_list.push(setting.value);}
+                    curEvent.eventData.push([clEventListToEvents.getSelectedLabel(), default_list]);
+                }
+            );
         }); tabNOTE.add(btnAddEventToEvents);
         
         clEventListEvents = new FlxUICustomList(clEventListToEvents.x, clEventListToEvents.y + clEventListToEvents.height + 5, Std.int(MENU.width) - 35, [], function(){
             updateSelectedEvent(
                 function(curEvent){                
                     clEventListEvents.setSuffix('] (${clEventListEvents.getSelectedIndex() + 1}/${curEvent.eventData.length})');
-                    try{txtCurEventValues.text = Json.stringify(curEvent.eventData[clEventListEvents.getSelectedIndex()][1]);}catch(e){trace(e); txtCurEventValues.text = "";}
+                    //try{txtCurEventValues.text = Json.stringify(curEvent.eventData[clEventListEvents.getSelectedIndex()][1]);}catch(e){trace(e); txtCurEventValues.text = "";}
+                    loadEventSettings(clEventListEvents.getSelectedLabel());
                 },
                 function(){
                     clEventListEvents.setData([]);
                     clEventListEvents.setSuffix('] (0/0)');
-                    txtCurEventValues.text = "[]";
+                    //txtCurEventValues.text = "[]";
+                    loadEventSettings();
                 }, false
             );
         }); tabNOTE.add(clEventListEvents);
         clEventListEvents.setPrefix("Current Event: ["); clEventListEvents.setSuffix("]");
         
-        var btnDelEventToNote = new FlxUICustomButton(clEventListEvents.x + clEventListEvents.width + 5, clEventListEvents.y, 20, null, "-", null, FlxColor.fromRGB(255, 56, 56), function(){updateSelectedEvent(function(curEvent){curEvent.eventData.remove(curEvent.eventData[clEventListEvents.getSelectedIndex()]);});}); tabNOTE.add(btnDelEventToNote);
+        var btnDelEventToNote = new FlxUICustomButton(clEventListEvents.x + clEventListEvents.width + 5, clEventListEvents.y, 20, null, "-", null, FlxColor.fromRGB(255, 56, 56), function(){
+            updateSelectedEvent(
+                function(curEvent){
+                    if(curEvent.eventData.length <= 0){return;}
+                    curEvent.eventData.remove(curEvent.eventData[clEventListEvents.getSelectedIndex()]);
+                }
+            );
+        }); tabNOTE.add(btnDelEventToNote);
 
-        txtCurEventValues = new FlxUIInputText(5, clEventListEvents.y + clEventListEvents.height + 5, Std.int(MENU.width) - 35, "[]", 10); tabNOTE.add(txtCurEventValues);
-        txtCurEventValues.name = "EVENTS_EVENT";
-        arrayFocus.push(txtCurEventValues);
-        
-        var btnInfoEvent_Note = new FlxUICustomButton(txtCurEventValues.x + txtCurEventValues.width + 5, txtCurEventValues.y, 20, null, '', Paths.image("info", null, true), null, function(){
-            if(Paths.event_info(clEventListEvents.getSelectedLabel()) == null){return;}
-            canControlle = false; openSubState(new substates.InformationSubState(Paths.event_info(clEventListEvents.getSelectedLabel()), function(){canControlle = true;}));
-        }); tabNOTE.add(btnInfoEvent_Note);
-
-        btnChangeEventFile = new FlxUICustomButton(txtCurEventValues.x, txtCurEventValues.y + txtCurEventValues.height + 5, Std.int(MENU.width) - 120, null, 'Local Event', null, null, function(){
+        btnChangeEventFile = new FlxUICustomButton(5, clEventListEvents.y + clEventListEvents.height + 5, Std.int(MENU.width) - 120, null, 'Local Event', null, null, function(){
             updateSelectedEvent(function(curEvent){curEvent.isExternal = !curEvent.isExternal;});
         }); tabNOTE.add(btnChangeEventFile);
 
@@ -1754,6 +1760,8 @@ class ChartEditorState extends MusicBeatState{
             updateSelectedEvent(function(curEvent){curEvent.isBroken = !curEvent.isBroken;});
         }); tabNOTE.add(btnBrokeExternalEvent);
 
+        event_sett_group = new FlxUIGroup(5, btnChangeEventFile.y + btnChangeEventFile.height + 5); tabNOTE.add(event_sett_group);
+        event_sett_group.width = Std.int(MENU.width - 10);
 
         MENU.addGroup(tabNOTE);
         //
@@ -1796,9 +1804,6 @@ class ChartEditorState extends MusicBeatState{
         var lblHeightSize = new FlxText(5, chkDisableStrumButtons.y + chkDisableStrumButtons.height + 15, 0, "Height Size: "); tabSETTINGS.add(lblHeightSize);
         stpHeightSize = new FlxUINumericStepper(lblHeightSize.x + lblHeightSize.width + 5, lblHeightSize.y, 1, 1, 1, 5); tabSETTINGS.add(stpHeightSize);
 
-        chkEasySustains = new FlxUICheckBox(5, stpHeightSize.y + stpHeightSize.height + 5, null, null, "Easy Sustains", 100, null, function(){updateSection();}); tabSETTINGS.add(chkEasySustains);
-
-
         MENU.addGroup(tabSETTINGS);
         //
 
@@ -1809,8 +1814,31 @@ class ChartEditorState extends MusicBeatState{
     override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>){
         if(id == FlxUICheckBox.CLICK_EVENT){
             var check:FlxUICheckBox = cast sender;
-			var label = check.getLabel().text;
-			switch(label){
+			var wname = check.getLabel().text;
+
+            if(wname.startsWith("note_event_arg")){
+                var id:Int = Std.parseInt(wname.split(":")[1]);
+
+                updateSelectedNote(
+                    function(curNote){
+                        curNote.eventData[clNoteEventList.getSelectedIndex()][1][id] = check.checked;
+                    }, null, false
+                );
+
+                return;
+            }else if(wname.startsWith("event_arg")){
+                var id:Int = Std.parseInt(wname.split(":")[1]);
+
+                updateSelectedEvent(
+                    function(curEvent){
+                        curEvent.eventData[clEventListEvents.getSelectedIndex()][1][id] = check.checked;
+                    }, null, false
+                );
+
+                return;
+            }
+
+			switch(wname){
                 case "Hide Strums":{reloadChartGrid(true);}
                 case "Hide Chart":{
                     camHUD.visible = !check.checked;
@@ -1856,6 +1884,49 @@ class ChartEditorState extends MusicBeatState{
 		}else if(id == FlxUIInputText.CHANGE_EVENT && (sender is FlxUIInputText)){
             var input:FlxUIInputText = cast sender;
             var wname = input.name;
+
+            if(wname.startsWith("note_event_arg")){
+                var id:Int = Std.parseInt(wname.split(":")[1]);
+                var type:String = wname.split(":")[2];
+
+                updateSelectedNote(
+                    function(curNote){
+                        switch(type){
+                            case "string":{curNote.eventData[clNoteEventList.getSelectedIndex()][1][id] = input.text;}
+                            case "array":{
+                                var pString:String = '{ "Events": ${input.text} }';
+                                var rString:Array<Dynamic> = [];
+                                try{rString = (cast Json.parse(pString)).Events; input.color = FlxColor.BLACK;}catch(e){trace(e); input.color = FlxColor.RED;}
+
+                                curNote.eventData[clNoteEventList.getSelectedIndex()][1][id] = rString;
+                            }
+                        }
+                    }, null, false
+                );
+
+                return;
+            }else if(wname.startsWith("event_arg")){
+                var id:Int = Std.parseInt(wname.split(":")[1]);
+                var type:String = wname.split(":")[2];
+
+                updateSelectedEvent(
+                    function(curEvent){
+                        switch(type){
+                            case "string":{curEvent.eventData[clEventListEvents.getSelectedIndex()][1][id] = input.text;}
+                            case "array":{
+                                var pString:String = '{ "Events": ${input.text} }';
+                                var rString:Array<Dynamic> = [];
+                                try{rString = (cast Json.parse(pString)).Events; input.color = FlxColor.BLACK;}catch(e){trace(e); input.color = FlxColor.RED;}
+
+                                curEvent.eventData[clEventListEvents.getSelectedIndex()][1][id] = rString;
+                            }
+                        }
+                    }, null, false
+                );
+
+                return;
+            }
+
             switch(wname){
                 case "SONG_NAME":{_song.song = Paths.getFileName(input.text, true);}
                 case "SONG_CATEGORY":{_song.category = input.text;}
@@ -1903,6 +1974,29 @@ class ChartEditorState extends MusicBeatState{
         }else if(id == FlxUINumericStepper.CHANGE_EVENT && (sender is FlxUINumericStepper)){
             var nums:FlxUINumericStepper = cast sender;
 			var wname = nums.name;
+
+            if(wname.startsWith("note_event_arg")){
+                var id:Int = Std.parseInt(wname.split(":")[1]);
+
+                updateSelectedNote(
+                    function(curNote){
+                        curNote.eventData[clNoteEventList.getSelectedIndex()][1][id] = nums.value;
+                    }, null, false
+                );
+
+                return;
+            }else if(wname.startsWith("event_arg")){
+                var id:Int = Std.parseInt(wname.split(":")[1]);
+
+                updateSelectedEvent(
+                    function(curEvent){
+                        curEvent.eventData[clEventListEvents.getSelectedIndex()][1][id] = nums.value;
+                    }, null, false
+                );
+
+                return;
+            }
+
             switch(wname){
                 case "CHARACTER_X":{
                     if(_song.characters[selCharacter] != null){_song.characters[selCharacter][1][0] = nums.value;}
@@ -1979,6 +2073,35 @@ class ChartEditorState extends MusicBeatState{
                     if(nums.value >= _song.characters.length){nums.value = _song.characters.length - 1;}
                 }
             }
+        }else if(id == FlxUICustomList.CHANGE_EVENT && (sender is FlxUICustomList)){
+            var nums:FlxUICustomList = cast sender;
+            var wname = nums.name;
+
+            if(wname.startsWith("note_event_arg")){
+                var id:Int = Std.parseInt(wname.split(":")[1]);
+
+                updateSelectedNote(
+                    function(curNote){
+                        curNote.eventData[clNoteEventList.getSelectedIndex()][1][id] = nums.getSelectedLabel();
+                    }, null, false
+                );
+
+                return;
+            }else if(wname.startsWith("event_arg")){
+                var id:Int = Std.parseInt(wname.split(":")[1]);
+
+                updateSelectedEvent(
+                    function(curEvent){
+                        curEvent.eventData[clEventListEvents.getSelectedIndex()][1][id] = nums.getSelectedLabel();
+                    }, null, false
+                );
+
+                return;
+            }
+
+            switch(wname){
+                default:{}
+            }
         }
     }
 
@@ -1988,5 +2111,141 @@ class ChartEditorState extends MusicBeatState{
         try{FlxG.save.data.autosave = Json.stringify({song: _song});}catch(e){trace(e); return;}
 		FlxG.save.flush();
         trace("Auto Saved!!!");
+    }
+
+    private function loadNoteEventSettings(?event:String):Void {
+        note_event_sett_group.clear();   
+
+        if(event == null){return;}
+        
+        this.pushTempScript(event);
+        var setting_list:Array<Dynamic> = tempScripts.get(event).getVariable("defaultValues");
+
+        var last_height:Float = 0;
+
+        for(i in 0...setting_list.length){
+            var setting:Dynamic = setting_list[i];
+            var event_value:Dynamic = selNote.eventData[clNoteEventList.getSelectedIndex()][1][i];
+
+            switch(setting.type){
+                default:{
+                    var chkCurrent_Variable = new FlxUICheckBox(0, last_height, null, null, setting.name);
+                    chkCurrent_Variable.checked = event_value == "true";
+                    chkCurrent_Variable.name = 'note_event_arg:${i}';
+                    note_event_sett_group.add(chkCurrent_Variable);
+                    last_height += chkCurrent_Variable.height + 5;
+                }
+                case 'Float':{
+                    var lblArgName = new FlxText(0, last_height, 0, '${setting.name}: '); note_event_sett_group.add(lblArgName);
+                    var stpCurrent_Variable = new FlxUICustomNumericStepper(lblArgName.width, last_height, Std.int(MENU.width - lblArgName.width - 10), 0.1, Std.parseFloat(event_value), -999, 999, 3);
+                    stpCurrent_Variable.name = 'note_event_arg:${i}';
+                    @:privateAccess arrayFocus.push(cast stpCurrent_Variable.text_field);
+                    note_event_sett_group.add(stpCurrent_Variable);
+                    last_height += lblArgName.height + 5;
+                }
+                case 'Int':{
+                    var lblArgName = new FlxText(0, last_height, 0, '${setting.name}: '); note_event_sett_group.add(lblArgName);
+                    var stpCurrent_Variable = new FlxUICustomNumericStepper(lblArgName.width, last_height, Std.int(MENU.width - lblArgName.width - 10), 1, Std.parseFloat(event_value), -999, 999);
+                    stpCurrent_Variable.name = 'note_event_arg:${i}';
+                    @:privateAccess arrayFocus.push(cast stpCurrent_Variable.text_field);
+                    note_event_sett_group.add(stpCurrent_Variable);
+                    last_height += lblArgName.height + 5;
+                }
+                case 'String':{
+                    var lblArgName = new FlxText(0, last_height, 0, '${setting.name}: '); note_event_sett_group.add(lblArgName);
+                    var data:String = ''; try{data = Json.stringify(event_value);}catch(e){trace(e); data = '""';}
+                    var txtCurrent_Variable = new FlxUIInputText(lblArgName.width, last_height, Std.int(MENU.width - lblArgName.width - 10), Std.string(event_value), 8);
+                    txtCurrent_Variable.name = 'note_event_arg:${i}:string';
+                    arrayFocus.push(txtCurrent_Variable);
+                    note_event_sett_group.add(txtCurrent_Variable); 
+                    last_height += lblArgName.height + 5;
+                }
+                case 'Array':{
+                    var lblArgName = new FlxText(0, last_height, 0, '${setting.name}: '); note_event_sett_group.add(lblArgName);
+                    var data:String = ''; try{data = Json.stringify(Json.parse('{ "Events": ${event_value}}').Events);}catch(e){trace(e); data = '""';}
+                    var txtCurrent_Variable = new FlxUIInputText(lblArgName.width, last_height, Std.int(MENU.width - lblArgName.width - 10), Std.string(event_value), 8);
+                    txtCurrent_Variable.name = 'note_event_arg:${i}:array';
+                    arrayFocus.push(txtCurrent_Variable);
+                    note_event_sett_group.add(txtCurrent_Variable); 
+                    last_height += lblArgName.height + 5;
+                }
+                case 'List':{
+                    var clCurrent_Variable = new FlxUICustomList(0, last_height, Std.int(MENU.width) - 10, setting.list);
+                    clCurrent_Variable.setPrefix('${setting.name}: ['); clCurrent_Variable.setSuffix(']');
+                    clCurrent_Variable.name = 'note_event_arg:${i}';
+                    clCurrent_Variable.setLabel(event_value,true);
+                    note_event_sett_group.add(clCurrent_Variable); 
+                    last_height += clCurrent_Variable.height + 5;
+                }
+            }
+        }
+    }
+
+    private function loadEventSettings(?event:String):Void {
+        event_sett_group.clear();   
+
+        if(event == null){return;}
+        
+        this.pushTempScript(event);
+        var setting_list:Array<Dynamic> = tempScripts.get(event).getVariable("defaultValues");
+
+        var last_height:Float = 0;
+
+        for(i in 0...setting_list.length){
+            var setting:Dynamic = setting_list[i];
+            var event_value:Dynamic = selEvent.eventData[clEventListEvents.getSelectedIndex()][1][i];
+
+            switch(setting.type){
+                default:{
+                    var chkCurrent_Variable = new FlxUICheckBox(0, last_height, null, null, setting.name);
+                    chkCurrent_Variable.checked = event_value == "true";
+                    chkCurrent_Variable.name = 'event_arg:${i}';
+                    event_sett_group.add(chkCurrent_Variable);
+                    last_height += chkCurrent_Variable.height + 5;
+                }
+                case 'Float':{
+                    var lblArgName = new FlxText(0, last_height, 0, '${setting.name}: '); event_sett_group.add(lblArgName);
+                    var stpCurrent_Variable = new FlxUICustomNumericStepper(lblArgName.width, last_height, Std.int(MENU.width - lblArgName.width - 10), 0.1, Std.parseFloat(event_value), -999, 999, 3);
+                    stpCurrent_Variable.name = 'event_arg:${i}';
+                    @:privateAccess arrayFocus.push(cast stpCurrent_Variable.text_field);
+                    event_sett_group.add(stpCurrent_Variable);
+                    last_height += lblArgName.height + 5;
+                }
+                case 'Int':{
+                    var lblArgName = new FlxText(0, last_height, 0, '${setting.name}: '); event_sett_group.add(lblArgName);
+                    var stpCurrent_Variable = new FlxUICustomNumericStepper(lblArgName.width, last_height, Std.int(MENU.width - lblArgName.width - 10), 1, Std.parseFloat(event_value), -999, 999);
+                    stpCurrent_Variable.name = 'event_arg:${i}';
+                    @:privateAccess arrayFocus.push(cast stpCurrent_Variable.text_field);
+                    event_sett_group.add(stpCurrent_Variable);
+                    last_height += lblArgName.height + 5;
+                }
+                case 'String':{
+                    var lblArgName = new FlxText(0, last_height, 0, '${setting.name}: '); event_sett_group.add(lblArgName);
+                    var data:String = ''; try{data = Json.stringify(event_value);}catch(e){trace(e); data = '""';}
+                    var txtCurrent_Variable = new FlxUIInputText(lblArgName.width, last_height, Std.int(MENU.width - lblArgName.width - 10), Std.string(event_value), 8);
+                    txtCurrent_Variable.name = 'event_arg:${i}:string';
+                    arrayFocus.push(txtCurrent_Variable);
+                    event_sett_group.add(txtCurrent_Variable); 
+                    last_height += lblArgName.height + 5;
+                }
+                case 'Array':{
+                    var lblArgName = new FlxText(0, last_height, 0, '${setting.name}: '); event_sett_group.add(lblArgName);
+                    var data:String = ''; try{data = Json.stringify(Json.parse('{ "Events": ${event_value}}').Events);}catch(e){trace(e); data = '""';}
+                    var txtCurrent_Variable = new FlxUIInputText(lblArgName.width, last_height, Std.int(MENU.width - lblArgName.width - 10), Std.string(event_value), 8);
+                    txtCurrent_Variable.name = 'event_arg:${i}:array';
+                    arrayFocus.push(txtCurrent_Variable);
+                    event_sett_group.add(txtCurrent_Variable); 
+                    last_height += lblArgName.height + 5;
+                }
+                case 'List':{
+                    var clCurrent_Variable = new FlxUICustomList(0, last_height, Std.int(MENU.width) - 10, setting.list);
+                    clCurrent_Variable.setPrefix('${setting.name}: ['); clCurrent_Variable.setSuffix(']');
+                    clCurrent_Variable.name = 'event_arg:${i}';
+                    clCurrent_Variable.setLabel(event_value,true);
+                    event_sett_group.add(clCurrent_Variable); 
+                    last_height += clCurrent_Variable.height + 5;
+                }
+            }
+        }
     }
 }

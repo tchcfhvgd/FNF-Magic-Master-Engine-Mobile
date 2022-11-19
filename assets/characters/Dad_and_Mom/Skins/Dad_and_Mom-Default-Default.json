@@ -1,1 +1,82 @@
-{"aspect":"Default","position":[-350,-25],"anims":[{"indices":[],"symbol":"Parent Christmas Idle","fps":24,"anim":"idle","loop":false},{"indices":[],"symbol":"Parent Down Note Dad","fps":24,"anim":"singDown","loop":false},{"indices":[],"symbol":"Parent Down Note Mom","fps":24,"anim":"singDown-alt","loop":false},{"indices":[],"symbol":"Parent Left Note Dad","fps":24,"anim":"singLeft","loop":false},{"indices":[],"symbol":"Parent Left Note Mom","fps":24,"anim":"singLeft-alt","loop":false},{"indices":[],"symbol":"Parent Right Note Dad","fps":24,"anim":"singRight","loop":false},{"indices":[],"symbol":"Parent Right Note Mom","fps":24,"anim":"singRight-alt","loop":false},{"indices":[],"symbol":"Parent Up Note Dad","fps":24,"anim":"singUp","loop":false},{"indices":[],"symbol":"Parent Up Note Mom","fps":24,"anim":"singUp-alt","loop":false}],"name":"Dad_And_Mom","image":"mom_dad_christmas_assets","zoom":0.8,"onRight":true,"skin":"Default","healthicon":"bf","camera":[-48,-191]}
+{
+	"aspect": "Christmas",
+	"position": [
+		-330,
+		-5
+	],
+	"anims": [
+		{
+			"indices": [],
+			"symbol": "Parent Christmas Idle",
+			"fps": 24,
+			"anim": "idle",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "Parent Down Note Dad",
+			"fps": 24,
+			"anim": "singDOWN",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "Parent Down Note Mom",
+			"fps": 24,
+			"anim": "singDOWN-alt",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "Parent Left Note Dad",
+			"fps": 24,
+			"anim": "singLEFT",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "Parent Left Note Mom",
+			"fps": 24,
+			"anim": "singLEFT-alt",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "Parent Right Note Dad",
+			"fps": 24,
+			"anim": "singRIGHT",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "Parent Right Note Mom",
+			"fps": 24,
+			"anim": "singRIGHT-alt",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "Parent Up Note Dad",
+			"fps": 24,
+			"anim": "singUP",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "Parent Up Note Mom",
+			"fps": 24,
+			"anim": "singUP-alt",
+			"loop": false
+		}
+	],
+	"name": "Dad_and_Mom",
+	"image": "mom_dad_christmas_assets",
+	"zoom": 0.8,
+	"skin": "Default",
+	"onRight": true,
+	"camera": [
+		105,
+		-45
+	],
+	"healthicon": "bf"
+}

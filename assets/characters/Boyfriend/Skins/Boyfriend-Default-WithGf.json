@@ -1,0 +1,89 @@
+{
+	"aspect": "WithGf",
+	"position": [
+		0,
+		320
+	],
+	"anims": [
+		{
+			"indices": [],
+			"symbol": "BF NOTE DOWN",
+			"fps": 24,
+			"anim": "singDOWN",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "MISS BF NOTE DOWN",
+			"fps": 24,
+			"anim": "singDOWNmiss",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "BF NOTE LEFT",
+			"fps": 24,
+			"anim": "singLEFT",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "MISS BF NOTE LEFT",
+			"fps": 24,
+			"anim": "singLEFTmiss",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "BF NOTE RIGHT",
+			"fps": 24,
+			"anim": "singRIGHT",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "MISS BF NOTE RIGHT",
+			"fps": 24,
+			"anim": "singRIGHTmiss",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "BF NOTE UP",
+			"fps": 24,
+			"anim": "singUP",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "MISS BF NOTE UP",
+			"fps": 24,
+			"anim": "singUPmiss",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "BF catches GF",
+			"fps": 24,
+			"anim": "catch",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "BF idle dance w gf",
+			"fps": 24,
+			"anim": "idle",
+			"loop": false
+		}
+	],
+	"name": "Boyfriend",
+	"image": "bfAndGF",
+	"zoom": 0.8,
+	"skin": "Default",
+	"onRight": false,
+	"camera": [
+		0,
+		0
+	],
+	"healthicon": "bf"
+}

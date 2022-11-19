@@ -5,6 +5,7 @@
 %Visible:true:bool%
 %Flip_X:false:bool%
 %Flip_Y:false:bool%
+%Antialiasing:true:bool%
 
 var #Sprite_Name#_scroll:Array<Int> = #Scroll#;
 var #Sprite_Name#_scale:Array<Int> = #Scale#;
@@ -16,3 +17,4 @@ var #Sprite_Name#_scale:Array<Int> = #Scale#;
 #Sprite_Name#.alpha = #Alpha#;
 #Sprite_Name#.flipX = #Flip_X#;
 #Sprite_Name#.flipY = #Flip_Y#;
+#Sprite_Name#.antialiasing = #Antialiasing#;

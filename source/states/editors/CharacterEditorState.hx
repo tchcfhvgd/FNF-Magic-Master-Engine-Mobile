@@ -197,7 +197,7 @@ class CharacterEditorState extends MusicBeatState{
     public function reloadCharacter():Void{
         chrStage.setupByCharacterFile(_character);
         chrStage.turnLook(chkLEFT.checked);
-        chrStage.setPosition(charPos[0] + chrStage.positionArray[0], charPos[1] + chrStage.positionArray[1]);
+        chrStage.setPosition(charPos[0], charPos[1]);
         chrStage.playAnim(clAnims.getSelectedLabel(), true);
         
         stpCharacterY.value = _character.position[1];
@@ -220,6 +220,7 @@ class CharacterEditorState extends MusicBeatState{
     var txtImage:FlxUIInputText;
     var txtIcon:FlxUIInputText;
     var txtDeathChar:FlxUIInputText;
+    var txtScriptChar:FlxUIInputText;
     var stpCharacterX:FlxUINumericStepper;
     var stpCharacterY:FlxUINumericStepper;
     var stpCameraX:FlxUINumericStepper;
@@ -285,7 +286,7 @@ class CharacterEditorState extends MusicBeatState{
         txtDeathChar = new FlxUIInputText(lblDeathChar.x + lblDeathChar.width + 5, lblDeathChar.y, Std.int(MENU.width - lblDeathChar.width - 15), _character.deathCharacter, 8); tabMENU.add(txtDeathChar);
         arrayFocus.push(txtDeathChar);
         txtDeathChar.name = "CHARACTER_DEATHCHAR";
-
+        
         lblOriPos = new FlxText(lblDeathChar.x, lblDeathChar.y + lblDeathChar.height + 10, Std.int(MENU.width) - 10, 'Character Position: [${charPos[0]}, ${charPos[1]}]', 8); tabMENU.add(lblOriPos); lblOriPos.alignment = CENTER;
         var lblCharX = new FlxText(lblOriPos.x, lblOriPos.y + lblOriPos.height + 5, 0, "Offset [X]:", 8); tabMENU.add(lblCharX);
         stpCharacterX = new FlxUICustomNumericStepper(lblCharX.x + lblCharX.width + 5, lblCharX.y, Std.int(MENU.width - lblCharX.width - 15), 1, _character.position[0], -99999, 99999, 1); tabMENU.add(stpCharacterX);
@@ -450,15 +451,24 @@ class CharacterEditorState extends MusicBeatState{
             }
         }); tabMENU.add(btnSetXMLAnims);
 
-        var btnEditXEML:FlxButton = new FlxCustomButton(btnSetXMLAnims.x, btnSetXMLAnims.y + btnSetXMLAnims.height + 10, Std.int(MENU.width - 10), null, "EDIT POSITION ON XML", null, null, function(){
-            MusicBeatState.switchState(new states.editors.XMLEditorState(null, CharacterEditorState));
-        }); tabMENU.add(btnEditXEML);
+        var ttlCharFunc = new FlxText(btnSetXMLAnims.x, btnSetXMLAnims.y + btnSetXMLAnims.height + 5, Std.int(MENU.width - 10), "Script Function", 8); ttlCharFunc.alignment = CENTER; tabMENU.add(ttlCharFunc);
+        var txtCharFunc = new FlxUIInputText(ttlCharFunc.x, ttlCharFunc.y + ttlCharFunc.height + 5, Std.int(MENU.width - 10), "", 8); tabMENU.add(txtCharFunc);
+        arrayFocus.push(txtCharFunc);
+        var btnCharFunc:FlxButton = new FlxCustomButton(txtCharFunc.x, txtCharFunc.y + txtCharFunc.height, Std.int(MENU.width - 10), null, "Execute Script Function", null, null, function(){
+            chrStage.charScript.exFunction(txtCharFunc.text);
+        }); tabMENU.add(btnCharFunc);
 
 
         MENU.addGroup(tabMENU);
 
         MENU.showTabId("1Character");
     }
+
+    private function getFile(_file:FlxUIInputText):Void{
+        var fDialog = new FileDialog();
+        fDialog.onSelect.add(function(str){_file.text = str;});
+        fDialog.browse();
+	}
     
     override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>){
         if(id == FlxUICheckBox.CLICK_EVENT){

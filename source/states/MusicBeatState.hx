@@ -40,27 +40,16 @@ class MusicBeatState extends FlxUIState {
 	public var canControlle:Bool = false;
 
     public var tempScripts:Map<String, Script> = [];
-	public function pushTempScript(key:String, ?pre:Dynamic):Void {
-		if(pre == null){pre = [];}
-
-		if(tempScripts.exists(key) || ModSupport.staticScripts.exists(key)){
-			if(tempScripts.exists(key)){
-				var preCharge:Array<Dynamic> = tempScripts.get(key).getVariable("prefunctions");
-				preCharge.push(pre);
-				tempScripts.get(key).setVariable("prefunctions", preCharge);
-			}
-			if(ModSupport.staticScripts.exists(key)){
-				var preCharge:Array<Dynamic> = ModSupport.staticScripts.get(key).getVariable("prefunctions");
-				preCharge.push(pre);
-				ModSupport.staticScripts.get(key).setVariable("prefunctions", preCharge);
-			}
-			
-			return;
-		}
+	public function pushTempScript(key:String):Void {
+		if(tempScripts.exists(key) || ModSupport.staticScripts.exists(key)){return;}
 		var nScript = new Script(); nScript.Name = key;
-		nScript.setVariable("prefunctions", [pre]);
 		nScript.exScript(Paths.getText(Paths.event(key)));
 		tempScripts.set(key, nScript);
+	}
+	public function removeTempScript(key:String):Void {
+		if(!tempScripts.exists(key) && !ModSupport.staticScripts.exists(key)){return;}
+		ModSupport.staticScripts.remove(key);
+		tempScripts.remove(key);
 	}
 
 	private var script(get, never):Script;

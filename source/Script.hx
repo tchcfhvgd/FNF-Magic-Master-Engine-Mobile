@@ -103,7 +103,7 @@ class Script extends FlxBasic {
             }
         }
 
-        return null;
+        return toReturn;
     }
     
     public function exScript(script:String):Void{

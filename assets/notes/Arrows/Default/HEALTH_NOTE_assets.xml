@@ -1,13 +1,12 @@
 <TextureAtlas imagePath="HEALTH_NOTE_assets.png">
 	<!-- Created with Adobe Animate version 21.0.0.35450 -->
 	<!-- http://www.adobe.com/products/animate.html -->
-	<SubTexture x="0" frameWidth="154" y="0" frameX="0" name="SizeBase0000" frameHeight="157" frameY="0" width="154" height="157"/>
-	<SubTexture x="265" frameWidth="154" y="2" frameX="0" name="Left0000" frameHeight="157" frameY="0" width="154" height="157"/>
-	<SubTexture x="2" frameWidth="154" y="2" frameX="0" name="Down0000" frameHeight="157" frameY="0" width="157" height="154"/>
-	<SubTexture x="2" frameWidth="154" y="161" frameX="0" name="Middle0000" frameHeight="157" frameY="0" width="157" height="156"/>
-	<SubTexture x="2" frameWidth="154" y="320" frameX="0" name="Up0000" frameHeight="157" frameY="0" width="157" height="154"/>
-	<SubTexture x="161" frameWidth="154" y="161" frameX="0" name="Right0000" frameHeight="157" frameY="0" width="154" height="157"/>
-	<SubTexture x="213" frameWidth="154" y="2" frameX="-54" name="HoldPiece0000" frameHeight="157" frameY="0" width="50" height="44"/>
-	<SubTexture x="161" frameWidth="154" y="2" frameX="-54" name="HoldEnd0000" frameHeight="157" frameY="0" width="50" height="64"/>
-	<SubTexture x="317" frameWidth="154" y="161" frameX="-32" name="SwitchHold0000" frameHeight="157" frameY="-31" width="95" height="100"/>
+	<SubTexture x="265" y="2" frameWidth="154" name="Left0000" frameX="0" frameHeight="157" frameY="0" width="154" height="157"/>
+	<SubTexture x="2" y="2" frameWidth="154" name="Down0000" frameX="0" frameHeight="157" frameY="0" width="157" height="154"/>
+	<SubTexture x="2" y="161" frameWidth="154" name="Middle0000" frameX="0" frameHeight="157" frameY="0" width="157" height="156"/>
+	<SubTexture x="2" y="320" frameWidth="154" name="Up0000" frameX="0" frameHeight="157" frameY="0" width="157" height="154"/>
+	<SubTexture x="161" y="161" frameWidth="154" name="Right0000" frameX="0" frameHeight="157" frameY="0" width="154" height="157"/>
+	<SubTexture x="213" y="2" frameWidth="154" name="HoldPiece0000" frameX="-54" frameHeight="44" frameY="0" width="50" height="44"/>
+	<SubTexture x="161" y="2" frameWidth="154" name="HoldEnd0000" frameX="-54" frameHeight="64" frameY="0" width="50" height="64"/>
+	<SubTexture x="317" y="161" frameWidth="154" name="SwitchHold0000" frameX="-32" frameHeight="157" frameY="-31" width="95" height="100"/>
 </TextureAtlas>

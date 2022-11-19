@@ -93,7 +93,8 @@ class StaticNotes extends FlxUIGroup {
 
             for(i in 0...keyNum){
                 var strum:StrumNote = new StrumNote(i, keyNum, image, style, type);
-                strum.setGraphicSize(strumSize);
+                strum.note_size.set(strumSize, strumSize);
+                strum.playAnim('idle');
                 strum.x += strumSize * i;
                 strum.ID = i;
                 add(strum);
@@ -111,7 +112,8 @@ class StaticNotes extends FlxUIGroup {
             
             for(i in 0...keyNum){
                 var strum:StrumNote = new StrumNote(i, keyNum, image, style, type);
-                strum.setGraphicSize(strumSize);
+                strum.note_size.set(strumSize, strumSize);
+                strum.playAnim('idle');
                 strum.x += strumSize * i;
                 strum.y -= strumSize / 2;
                 strum.alpha = 0;
@@ -136,6 +138,8 @@ typedef Strums_Data = {
 }
 
 class StrumLine extends FlxTypedGroup<Dynamic> {
+    public static var strum_players:Array<StrumLine> = [];
+
     public static var GLOBAL_VARIABLES:Map<String, Dynamic> = [
         "Player" => null,
         "Enemy" => null
@@ -263,7 +267,9 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     }
 
     public function load_solo_ui():Void {
-		var cont:Array<Bool> = []; for(s in MusicBeatState.state.scripts){cont.push(s.exFunction('load_solo_${player}_ui'));}
+        strum_players.push(this);
+
+		var cont:Array<Bool> = []; for(s in MusicBeatState.state.scripts){cont.push(s.exFunction('load_solo_${player}_ui', [this]));}
 		if(cont.contains(true)){return; trace("RETURN");}
 
         if(healthBar == null){
@@ -298,36 +304,38 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     }
 
     public function load_global_ui():Void {
-		var cont:Array<Bool> = []; for(s in MusicBeatState.state.scripts){cont.push(s.exFunction('load_global_ui'));}
-		if(cont.contains(true)){return; trace("RETURN");}
+        strum_players.push(this);
+
+		var cont:Array<Bool> = []; for(s in MusicBeatState.state.scripts){cont.push(s.exFunction('load_global_ui',[this]));}
+		if(cont.contains(true)){trace("RETURN"); return;}
 
 		if(healthBar == null){
 			healthBar = new FlxBar(330, 663, RIGHT_TO_LEFT, Std.int(FlxG.width / 2) - 20, 16, this, 'HEALTH', 0, MAXHEALTH);
 			healthBar.numDivisions = 500;
 			//healthBar.cameras = [camHUD];
-			add(healthBar);
 		}
+        add(healthBar);
 
 		if(sprite_healthBar == null){
 			sprite_healthBar = new FlxSprite(326, 655).loadGraphic(Paths.styleImage("HealthBar", ui_style, "shared"));
 			sprite_healthBar.scale.set(0.7,0.7); sprite_healthBar.updateHitbox();
 			//sprite_healthBar.cameras = [camHUD];
-			add(sprite_healthBar);
 		}
+        add(sprite_healthBar);
 
 		if(leftIcon == null){
 			leftIcon = new HealthIcon('tankman');
 			leftIcon.setPosition(healthBar.x-(leftIcon.width/2),healthBar.y-(leftIcon.height/2));
 			//leftIcon.camera = camHUD;
-			add(leftIcon);
 		}
+        add(leftIcon);
 		
 		if(rightIcon == null){
 			rightIcon = new HealthIcon('bf', true);
 			rightIcon.setPosition(healthBar.x+healthBar.width-(rightIcon.width/2),healthBar.y-(rightIcon.height/2));
 			//rightIcon.camera = camHUD;
-			add(rightIcon);
 		}
+        add(rightIcon);
 
 		if(lblStats == null){
 			lblStats = new FlxText(0,0,0,"|| ...Starting Song... ||");
@@ -335,8 +343,8 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 			lblStats.screenCenter(X);
 			lblStats.y = FlxG.height - lblStats.height - 5;
 			//lblStats.cameras = [camHUD];
-			add(lblStats);
 		}
+        add(lblStats);
 
         update_hud = function(){
             if(healthBar != null){
@@ -349,9 +357,9 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
                         if(_char_left != null && leftIcon.curIcon != _char_left.healthIcon){leftIcon.setIcon(_char_left.healthIcon);}
         
                         if(_player.onRight){
-                            MagicStuff.lerpX(leftIcon, healthBar.x + (healthBar.width - (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01))) - leftIcon.width);
+                            leftIcon.x = healthBar.x + (healthBar.width - (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01))) - leftIcon.width;
                         }else{
-                            MagicStuff.lerpX(leftIcon, healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - leftIcon.width);
+                            leftIcon.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - leftIcon.width;
                         }
                         
                         leftIcon.playAnim(HEALTH < 0.8 ? 'default' : 'losing');		
@@ -362,9 +370,9 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
                         if(_char_right != null && rightIcon.curIcon != _char_right.healthIcon){rightIcon.setIcon(_char_right.healthIcon);}
     
                         if(_player.onRight){
-                            MagicStuff.lerpX(rightIcon, healthBar.x + (healthBar.width - (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01))));
+                            rightIcon.x = healthBar.x + (healthBar.width - (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)));
                         }else{
-                            MagicStuff.lerpX(rightIcon, healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)));
+                            rightIcon.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01));
                         }
 
                         rightIcon.playAnim(HEALTH > 0.2 ? 'default' : 'losing');
@@ -489,7 +497,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
                 var note:NoteData = Note.getNoteData(n);
         
                 var swagNote:Note = new Note(note, Song.getStrumKeys(cSection, curSection), image, style, type);
-                swagNote.setGraphicSize(getStrumSize());
+                swagNote.note_size.set(getStrumSize(), getStrumSize());
 
                 if(note.canMerge){mergedGroup.push(swagNote);}
                         
@@ -506,7 +514,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
                     nSData.strumTime = sStrumTime;
         
                     var nSustain:Note = new Note(nSData, key_number, image, style, type);
-                    nSustain.setGraphicSize(getStrumSize(), getSustainHeight());
+                    nSustain.note_size.set(getStrumSize(), getSustainHeight());
                     nSustain.updateHitbox();
         
                     nSustain.typeNote = "Sustain";
@@ -531,18 +539,18 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
                     changeCurrent = true;
                     n.typeNote = "Merge";
                     if(n.noteLength > 0 && n.nextNote == null){
-                        n.loadNote(); n.setGraphicSize(getStrumSize()); n.typeHit = "Release";
-                        var ndSustain1:NoteData = Note.getNoteData([n.strumTime, n.noteData]); var nSustain1:Note = new Note(ndSustain1, Song.getStrumKeys(cSection, curSection), image, style, type); nSustain1.nextNote = n; nSustain1.typeNote = "Sustain"; nSustain1.typeHit = "Hold"; nSustain1.setGraphicSize(getStrumSize(), getSustainHeight()); notelist.push(nSustain1); nSustain1.alpha = n.alpha;
-                        var ndSustain2:NoteData = Note.getNoteData([n.strumTime + (strumConductor.stepCrochet*0.25), n.noteData]); var nSustain2:Note = new Note(ndSustain2, Song.getStrumKeys(cSection, curSection), image, style, type); nSustain2.nextNote = n; nSustain2.typeNote = "Sustain"; nSustain2.typeHit = "Hold"; nSustain2.setGraphicSize(getStrumSize(), getSustainHeight()); notelist.push(nSustain2); nSustain2.alpha = n.alpha;
+                        n.loadNote(); n.note_size.set(getStrumSize(), getStrumSize()); n.typeHit = "Release";
+                        var ndSustain1:NoteData = Note.getNoteData([n.strumTime, n.noteData]); var nSustain1:Note = new Note(ndSustain1, Song.getStrumKeys(cSection, curSection), image, style, type); nSustain1.nextNote = n; nSustain1.typeNote = "Sustain"; nSustain1.typeHit = "Hold"; nSustain1.note_size.set(getStrumSize(), getSustainHeight()); notelist.push(nSustain1); nSustain1.alpha = n.alpha;
+                        var ndSustain2:NoteData = Note.getNoteData([n.strumTime + (strumConductor.stepCrochet*0.25), n.noteData]); var nSustain2:Note = new Note(ndSustain2, Song.getStrumKeys(cSection, curSection), image, style, type); nSustain2.nextNote = n; nSustain2.typeNote = "Sustain"; nSustain2.typeHit = "Hold"; nSustain2.note_size.set(getStrumSize(), getSustainHeight()); notelist.push(nSustain2); nSustain2.alpha = n.alpha;
                     }
                     curGroup.push(n);
                 }
                 if(changeCurrent){
                     curMerge.typeNote = "Merge";
                     if(curMerge.noteLength > 0 && curMerge.nextNote == null){
-                        curMerge.loadNote(); curMerge.setGraphicSize(getStrumSize()); curMerge.typeHit = "Release";
-                        var ndSustain1:NoteData = Note.getNoteData([curMerge.strumTime, curMerge.noteData]); var nSustain1:Note = new Note(ndSustain1, Song.getStrumKeys(cSection, curSection), image, style, type); nSustain1.nextNote = curMerge; nSustain1.typeNote = "Sustain"; nSustain1.typeHit = "Hold"; nSustain1.setGraphicSize(getStrumSize(), getSustainHeight()); notelist.push(nSustain1); nSustain1.alpha = curMerge.alpha;
-                        var ndSustain2:NoteData = Note.getNoteData([curMerge.strumTime + (strumConductor.stepCrochet*0.25), curMerge.noteData]); var nSustain2:Note = new Note(ndSustain2, Song.getStrumKeys(cSection, curSection), image, style, type); nSustain2.nextNote = curMerge; nSustain2.typeNote = "Sustain"; nSustain2.typeHit = "Hold"; nSustain2.setGraphicSize(getStrumSize(), getSustainHeight()); notelist.push(nSustain2); nSustain2.alpha = curMerge.alpha;
+                        curMerge.loadNote(); curMerge.note_size.set(getStrumSize(), getStrumSize()); curMerge.typeHit = "Release";
+                        var ndSustain1:NoteData = Note.getNoteData([curMerge.strumTime, curMerge.noteData]); var nSustain1:Note = new Note(ndSustain1, Song.getStrumKeys(cSection, curSection), image, style, type); nSustain1.nextNote = curMerge; nSustain1.typeNote = "Sustain"; nSustain1.typeHit = "Hold"; nSustain1.note_size.set(getStrumSize(), getSustainHeight()); notelist.push(nSustain1); nSustain1.alpha = curMerge.alpha;
+                        var ndSustain2:NoteData = Note.getNoteData([curMerge.strumTime + (strumConductor.stepCrochet*0.25), curMerge.noteData]); var nSustain2:Note = new Note(ndSustain2, Song.getStrumKeys(cSection, curSection), image, style, type); nSustain2.nextNote = curMerge; nSustain2.typeNote = "Sustain"; nSustain2.typeHit = "Hold"; nSustain2.note_size.set(getStrumSize(), getSustainHeight()); notelist.push(nSustain2); nSustain2.alpha = curMerge.alpha;
                     }
                 }
             
@@ -552,12 +560,12 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
                     var currentNote:Note = curGroup[ii]; var nextedNote:Note = curGroup[ii+1]; mergedGroup.remove(currentNote);
                     for(i in currentNote.noteData...(nextedNote.noteData + 1)){
                         if(i > currentNote.noteData){
-                            var ndSwitch1:NoteData = Note.getNoteData([currentNote.strumTime, i, 0, -2]); var nSwitcher1:Note = new Note(ndSwitch1, Song.getStrumKeys(cSection, curSection), image, style, type); nSwitcher1.setGraphicSize(getStrumSize()); nSwitcher1.typeNote = "Switch"; nSwitcher1.typeHit = "Ghost"; notelist.push(nSwitcher1); nSwitcher1.alpha = 0.5;
-                            var ndSwitch2:NoteData = Note.getNoteData([currentNote.strumTime, i, 0, -1]); var nSwitcher2:Note = new Note(ndSwitch2, Song.getStrumKeys(cSection, curSection), image, style, type); nSwitcher2.setGraphicSize(getStrumSize()); nSwitcher2.typeNote = "Switch"; nSwitcher2.typeHit = "Ghost"; notelist.push(nSwitcher2); nSwitcher2.alpha = 0.5;
+                            var ndSwitch1:NoteData = Note.getNoteData([currentNote.strumTime, i, 0, -2]); var nSwitcher1:Note = new Note(ndSwitch1, Song.getStrumKeys(cSection, curSection), image, style, type); nSwitcher1.note_size.set(getStrumSize(), getStrumSize()); nSwitcher1.typeNote = "Switch"; nSwitcher1.typeHit = "Ghost"; notelist.push(nSwitcher1); nSwitcher1.alpha = 0.5;
+                            var ndSwitch2:NoteData = Note.getNoteData([currentNote.strumTime, i, 0, -1]); var nSwitcher2:Note = new Note(ndSwitch2, Song.getStrumKeys(cSection, curSection), image, style, type); nSwitcher2.note_size.set(getStrumSize(), getStrumSize()); nSwitcher2.typeNote = "Switch"; nSwitcher2.typeHit = "Ghost"; notelist.push(nSwitcher2); nSwitcher2.alpha = 0.5;
                         }
                         if(i < nextedNote.noteData){
-                            var ndSwitch1:NoteData = Note.getNoteData([currentNote.strumTime, i, 0, 0]); var nSwitcher1:Note = new Note(ndSwitch1, Song.getStrumKeys(cSection, curSection), image, style, type); nSwitcher1.setGraphicSize(getStrumSize()); nSwitcher1.typeNote = "Switch"; nSwitcher1.typeHit = "Ghost"; notelist.push(nSwitcher1); nSwitcher1.alpha = 0.5;
-                            var ndSwitch2:NoteData = Note.getNoteData([currentNote.strumTime, i, 0, 1]); var nSwitcher2:Note = new Note(ndSwitch2, Song.getStrumKeys(cSection, curSection), image, style, type); nSwitcher2.setGraphicSize(getStrumSize()); nSwitcher2.typeNote = "Switch"; nSwitcher2.typeHit = "Ghost"; notelist.push(nSwitcher2); nSwitcher2.alpha = 0.5;
+                            var ndSwitch1:NoteData = Note.getNoteData([currentNote.strumTime, i, 0, 0]); var nSwitcher1:Note = new Note(ndSwitch1, Song.getStrumKeys(cSection, curSection), image, style, type); nSwitcher1.note_size.set(getStrumSize(), getStrumSize()); nSwitcher1.typeNote = "Switch"; nSwitcher1.typeHit = "Ghost"; notelist.push(nSwitcher1); nSwitcher1.alpha = 0.5;
+                            var ndSwitch2:NoteData = Note.getNoteData([currentNote.strumTime, i, 0, 1]); var nSwitcher2:Note = new Note(ndSwitch2, Song.getStrumKeys(cSection, curSection), image, style, type); nSwitcher2.note_size.set(getStrumSize(), getStrumSize()); nSwitcher2.typeNote = "Switch"; nSwitcher2.typeHit = "Ghost"; notelist.push(nSwitcher2); nSwitcher2.alpha = 0.5;
                         }
                     }
                 }

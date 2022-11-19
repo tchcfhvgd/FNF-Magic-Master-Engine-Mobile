@@ -1,144 +1,151 @@
-import("PreSettings");
-import("Paths");
-import("Std");
+/* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
+/* "Variables": [{"type":"Int","isPresset":true,"value":"5","id":"initChar"},{"type":"Array","isPresset":true,"value":[585,305],"id":"camP_1"},{"type":"Array","isPresset":true,"value":[980,610],"id":"camP_2"},{"id":"zoom","value":1.1,"isPresset":true,"type":"Float"}] */
 
-import("flixel.FlxG", "FlxG");
+import("Paths", "Paths");
 import("flixel.FlxSprite", "FlxSprite");
-import("flixel.system.FlxSound", "FlxSound");
-import("flixel.group.FlxTypedGroup", "FlxTypedGroup");
 
 presset("initChar", 5);
-presset("chrome", 0);
-presset("zoom", 1.05);
-
-var pre_BackgroundAnimated:Bool = PreSettings.getPreSetting("Background Animated", "Graphic Settings");
-
-var startedMoving:Bool = false;
-
-var trainMoving:Bool = false;
-var trainFrameTiming:Int = 0;
-
-var trainCars:Int = 8;
-var trainFinishing:Bool = false;
-var trainCooldown:Int = 0;
-
-var trainSound:FlxSound = null;
-
-var phillyTrain:FlxSprite = null;
-
-var light:FlxSprite = null;
-
-var phillyCityLights:Array<Int> = [
-    0xFF31A2FD,
-    0xFF31FD8C,
-    0xFFFB33F5,
-    0xFFFD4531,
-    0xFFFBA633,
-];
+presset("camP_1", [585,305]);
+presset("camP_2", [980,610]);
+presset("zoom", 1.1);
 
 function create(){
-    Paths.save(Paths.getPath('sounds/train_passes.'+Paths.SOUND_EXT, "SOUND"), "SOUND", "shared");
+//-<Sprite_Object>-//
+/* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
+/* "Variables": {"Position":[-100,0],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"sky","Graphic_Library":"stages/philly","Sprite_Name":"sky","Scroll":[0.1,0.1],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
-    var bg = new FlxSprite(-100, 0).loadGraphic(Paths.image('sky', 'stages/philly'));
-    bg.scrollFactor.set(0.1, 0.1);
-    instance.add(bg);
-    
-    var city = new FlxSprite(-10, 0).loadGraphic(Paths.image('city', 'stages/philly'));
-    city.scrollFactor.set(0.3, 0.3);
-    city.setGraphicSize(Std.int(city.width * 0.85));
-    city.updateHitbox();
-    instance.add(city);
-    
-    light = new FlxSprite(city.x, city.y).loadGraphic(Paths.image('win', 'stages/philly'));
-    light.scrollFactor.set(0.3, 0.3);
-    light.setGraphicSize(Std.int(light.width * 0.85));
-    light.updateHitbox();
-    instance.add(light);	
-    
-    var streetBehind = new FlxSprite(-40, 50).loadGraphic(Paths.image('behindTrain', 'stages/philly'));
-    instance.add(streetBehind);
-        
-    phillyTrain = new FlxSprite(2000, 360).loadGraphic(Paths.image('train', 'stages/philly'));
-    if(!pre_BackgroundAnimated){phillyTrain.x = -40;}
-    instance.add(phillyTrain);
-    
-    var street = new FlxSprite(-40, 50).loadGraphic(Paths.image('street', 'stages/philly'));
-    instance.add(street);
-    
-    trainSound = new FlxSound().loadEmbedded(Paths.sound('train_passes'));
-	FlxG.sound.list.add(trainSound);
+var sky_position:Array<Int> = [-100,0];
 
-    pushGlobal();
-}
+var sky = new FlxSprite(sky_position[0], sky_position[1]);
+instance.add(sky);
+//-{Advanced_Properties}-//
+/* "Packages": {} */
+/* "Variables": {"Position":[-100,0],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"sky","Graphic_Library":"stages/philly","Antialiasing":true,"Scroll":[0.1,0.1],"Sprite_Name":"sky","Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
-function update(elapsed){
-    if(pre_BackgroundAnimated){
-        if(trainMoving){
-            trainFrameTiming += elapsed;
+var sky_scroll:Array<Int> = [0.1,0.1];
+var sky_scale:Array<Int> = [1,1];
 
-            if(trainFrameTiming >= 1 / 24){
-               updateTrainPos();
-               trainFrameTiming = 0;
-            }
-        }
-    }
-}
+sky.scale.set(sky_scale[0], sky_scale[1]);
+sky.scrollFactor.set(sky_scroll[0], sky_scroll[1]);
+sky.visible = true;
+sky.angle = 0;
+sky.alpha = 1;
+sky.flipX = false;
+sky.flipY = false;
+sky.antialiasing = true;
+//-[Advanced_Properties]-//
+//-{Basic_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Position":[-100,0],"Scale":[1,1],"Visible":true,"Graphic_File":"sky","Angle":0,"Graphic_Library":"stages/philly","Sprite_Name":"sky","Scroll":[0.1,0.1],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
-function updateTrainPos(){
-		if(trainSound.time >= 4700){
-			startedMoving = true;
-            for(i in 0...stage.character_Length){stage.getCharacterById(i).playAnim('hairBlow', true);}
-		}
+sky.loadGraphic(Paths.image('sky', 'stages/philly'));
+//-[Basic_Graphic]-//
+//->Sprite_Object<-//
+//-<Sprite_Object>-//
+/* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
+/* "Variables": {"Position":[-10,0],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"city","Graphic_Library":"stages/philly","Sprite_Name":"city","Scroll":[0.3,0.3],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
-		if(startedMoving){
-			phillyTrain.x -= 400;
+var city_position:Array<Int> = [-10,0];
 
-			if(phillyTrain.x < -2000 && !trainFinishing){
-				phillyTrain.x = -1150;
-				trainCars -= 1;
+var city = new FlxSprite(city_position[0], city_position[1]);
+instance.add(city);
+//-{Advanced_Properties}-//
+/* "Packages": {} */
+/* "Variables": {"Position":[-10,0],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"city","Graphic_Library":"stages/philly","Antialiasing":true,"Scroll":[0.3,0.3],"Sprite_Name":"city","Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
-				if(trainCars <= 0){trainFinishing = true;}
-			}
+var city_scroll:Array<Int> = [0.3,0.3];
+var city_scale:Array<Int> = [1,1];
 
-			if(phillyTrain.x < -4000 && trainFinishing){trainReset();}
-		}
-	}
+city.scale.set(city_scale[0], city_scale[1]);
+city.scrollFactor.set(city_scroll[0], city_scroll[1]);
+city.visible = true;
+city.angle = 0;
+city.alpha = 1;
+city.flipX = false;
+city.flipY = false;
+city.antialiasing = true;
+//-[Advanced_Properties]-//
+//-{Basic_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Position":[-10,0],"Scale":[1,1],"Visible":true,"Graphic_File":"city","Angle":0,"Graphic_Library":"stages/philly","Sprite_Name":"city","Scroll":[0.3,0.3],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
-function trainReset(){
-    for(i in 0...stage.character_Length){stage.getCharacterById(i).playAnim('hairFall', true);}
-	phillyTrain.x = FlxG.width + 200;
-	trainMoving = false;
-	// trainSound.stop();
-	// trainSound.time = 0;
-	trainCars = 8;
-	trainFinishing = false;
-	startedMoving = false;
-}
+city.loadGraphic(Paths.image('city', 'stages/philly'));
+//-[Basic_Graphic]-//
+//->Sprite_Object<-//
+//-<Sprite_Object>-//
+/* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
+/* "Variables": {"Position":[0,0],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"win","Graphic_Library":"stages/philly","Sprite_Name":"lights","Scroll":[0.3,0.3],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
-function stepHit(curStep){
-    //trace("Step: " + curStep);
-}
+var lights_position:Array<Int> = [0,0];
 
-function beatHit(curBeat){
-    if(pre_BackgroundAnimated){
-        //trace("Beat: " + curBeat);
+var lights = new FlxSprite(lights_position[0], lights_position[1]);
+instance.add(lights);
+//-{Advanced_Properties}-//
+/* "Packages": {} */
+/* "Variables": {"Position":[0,0],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"win","Graphic_Library":"stages/philly","Antialiasing":true,"Scroll":[0.3,0.3],"Sprite_Name":"lights","Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
-        if(!trainMoving){trainCooldown += 1;}
-    
-        if(curBeat % 4 == 0){
-            var rl = FlxG.random.int(0, phillyCityLights.length - 1);
-            light.color = phillyCityLights[rl];
-        }
-        //curLight.loadGraphic(Paths.image('win' + FlxG.random.int(0, 4), 'stages/philly'));
-    
-        if(curBeat % 8 == 4 && !trainMoving && trainCooldown > 8){
-            trainCooldown = FlxG.random.int(-4, 0);
-            trainStart();
-        }
-    }
-}
+var lights_scroll:Array<Int> = [0.3,0.3];
+var lights_scale:Array<Int> = [1,1];
 
-function trainStart(){
-	trainMoving = true;
-	if(!trainSound.playing){trainSound.play(true);}
+lights.scale.set(lights_scale[0], lights_scale[1]);
+lights.scrollFactor.set(lights_scroll[0], lights_scroll[1]);
+lights.visible = true;
+lights.angle = 0;
+lights.alpha = 1;
+lights.flipX = false;
+lights.flipY = false;
+lights.antialiasing = true;
+//-[Advanced_Properties]-//
+//-{Basic_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Position":[0,0],"Scale":[1,1],"Visible":true,"Graphic_File":"win","Angle":0,"Graphic_Library":"stages/philly","Sprite_Name":"lights","Scroll":[0.3,0.3],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
+
+lights.loadGraphic(Paths.image('win', 'stages/philly'));
+//-[Basic_Graphic]-//
+//->Sprite_Object<-//
+//-<Sprite_Object>-//
+/* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
+/* "Variables": {"Graphic_Library":"stages/philly","Sprite_Name":"train","Position":[-40,50],"Graphic_File":"behindTrain"} */
+
+var train_position:Array<Int> = [-40,50];
+
+var train = new FlxSprite(train_position[0], train_position[1]);
+instance.add(train);
+//-{Basic_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Graphic_Library":"stages/philly","Graphic_File":"behindTrain","Position":[-40,50],"Sprite_Name":"train"} */
+
+train.loadGraphic(Paths.image('behindTrain', 'stages/philly'));
+//-[Basic_Graphic]-//
+//->Sprite_Object<-//
+//-<Sprite_Object>-//
+/* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
+/* "Variables": {"Graphic_Library":"stages/philly","Sprite_Name":"train","Position":[2000,360],"Graphic_File":"train"} */
+
+var train_position:Array<Int> = [2000,360];
+
+var train = new FlxSprite(train_position[0], train_position[1]);
+instance.add(train);
+//-{Basic_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Graphic_Library":"stages/philly","Graphic_File":"train","Position":[2000,360],"Sprite_Name":"train"} */
+
+train.loadGraphic(Paths.image('train', 'stages/philly'));
+//-[Basic_Graphic]-//
+//->Sprite_Object<-//
+//-<Sprite_Object>-//
+/* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
+/* "Variables": {"Graphic_Library":"stages/philly","Sprite_Name":"street","Position":[-40,50],"Graphic_File":"street"} */
+
+var street_position:Array<Int> = [-40,50];
+
+var street = new FlxSprite(street_position[0], street_position[1]);
+instance.add(street);
+//-{Basic_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Graphic_Library":"stages/philly","Graphic_File":"street","Position":[-40,50],"Sprite_Name":"street"} */
+
+street.loadGraphic(Paths.image('street', 'stages/philly'));
+//-[Basic_Graphic]-//
+//->Sprite_Object<-//
 }

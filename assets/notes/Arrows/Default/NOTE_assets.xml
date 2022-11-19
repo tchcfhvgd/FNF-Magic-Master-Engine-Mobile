@@ -1,7 +1,6 @@
 <TextureAtlas imagePath="NOTE_assets.png">
 	<!-- Created with Adobe Animate version 21.0.0.35450 -->
 	<!-- http://www.adobe.com/products/animate.html -->
-	<SubTexture x="0" frameWidth="154" y="0" frameX="0" name="SizeBase0000" frameHeight="157" frameY="0" width="154" height="157"/>
 	<SubTexture x="692" y="239" frameWidth="154" name="Left0000" frameX="0" frameHeight="157" frameY="0" width="154" height="157"/>
 	<SubTexture x="722" y="2" frameWidth="154" name="Down0000" frameX="0" frameHeight="157" frameY="0" width="157" height="154"/>
 	<SubTexture x="259" y="494" frameWidth="154" name="Middle0000" frameX="0" frameHeight="157" frameY="0" width="157" height="156"/>
@@ -56,6 +55,6 @@
 	<SubTexture x="158" y="749" frameWidth="154" name="StaticRight0000" frameX="0" frameHeight="157" frameY="0" width="154" height="157"/>
 	<SubTexture x="1338" y="749" frameWidth="154" name="StaticUp0000" frameX="0" frameHeight="157" frameY="0" width="157" height="154"/>
 	<SubTexture x="1756" y="2" frameWidth="154" name="SwitchHold0000" frameX="-33" frameHeight="157" frameY="-27" width="95" height="100"/>
-	<SubTexture x="1652" y="2" frameWidth="154" name="HoldEnd0000" frameX="-52" frameHeight="157" frameY="0" width="50" height="64"/>
-	<SubTexture x="1704" y="2" frameWidth="154" name="HoldPiece0000" frameX="-52" frameHeight="157" frameY="0" width="50" height="40"/>
+	<SubTexture x="1652" y="2" frameWidth="154" name="HoldEnd0000" frameX="-52" frameHeight="40" frameY="0" width="50" height="64"/>
+	<SubTexture x="1704" y="2" frameWidth="154" name="HoldPiece0000" frameX="-52" frameHeight="40" frameY="0" width="50" height="40"/>
 </TextureAtlas>

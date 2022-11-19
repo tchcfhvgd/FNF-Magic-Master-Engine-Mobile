@@ -1,1 +1,55 @@
-{"healthicon":"bf","position":[0,360],"camera":[50,-80],"onRight":true,"nAntialiasing":true,"anims":[{"indices":[],"symbol":"spirit down_","fps":24,"anim":"singDown","loop":false},{"indices":[],"symbol":"idle spirit_","fps":24,"anim":"idle","loop":false},{"indices":[],"symbol":"left_","fps":24,"anim":"singLeft","loop":false},{"indices":[],"symbol":"right_","fps":24,"anim":"singRight","loop":false},{"indices":[],"symbol":"up_","fps":24,"anim":"singUp","loop":false}],"image":"spirit","zoom":0.8}
+{
+	"aspect": "Default",
+	"position": [
+		150,
+		570
+	],
+	"nAntialiasing": true,
+	"anims": [
+		{
+			"indices": [],
+			"symbol": "idle spirit",
+			"fps": 24,
+			"anim": "idle",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "spirit down",
+			"fps": 24,
+			"anim": "singDOWN",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "left",
+			"fps": 24,
+			"anim": "singLEFT",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "right",
+			"fps": 24,
+			"anim": "singRIGHT",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "up",
+			"fps": 24,
+			"anim": "singUP",
+			"loop": false
+		}
+	],
+	"name": "Spirit",
+	"image": "spirit",
+	"zoom": 0.8,
+	"skin": "Default",
+	"onRight": true,
+	"camera": [
+		-6,
+		-3
+	],
+	"healthicon": "bf"
+}

@@ -1,0 +1,54 @@
+{
+	"aspect": "Default",
+	"position": [
+		-105,
+		40
+	],
+	"anims": [
+		{
+			"indices": [],
+			"symbol": "cassettegirl down",
+			"fps": 24,
+			"anim": "singDOWN",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "cassettegirl idle",
+			"fps": 24,
+			"anim": "idle",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "cassettegirl left",
+			"fps": 24,
+			"anim": "singLEFT",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "cassettegirl right",
+			"fps": 24,
+			"anim": "singRIGHT",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "cassettegirl up",
+			"fps": 24,
+			"anim": "singUP",
+			"loop": false
+		}
+	],
+	"name": "Cassette_Girl",
+	"image": "cassettegirl",
+	"zoom": 0.8,
+	"skin": "Default",
+	"onRight": true,
+	"camera": [
+		255,
+		405
+	],
+	"healthicon": "bf"
+}

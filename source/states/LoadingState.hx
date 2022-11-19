@@ -116,7 +116,7 @@ class LoadingState extends MusicBeatState {
 								var cur_Event:EventData = Note.getEventData(ii);
 								if(cur_Event == null || cur_Event.isBroken){continue;}
 								for(iii in cur_Event.eventData){
-									tempLoadingStuff.push({type:"FUNCTION",instance:function(){TARGET.pushTempScript(iii[0], iii[1]);}});
+									tempLoadingStuff.push({type:"FUNCTION",instance:function(){TARGET.pushTempScript(iii[0]);}});
 								}
 							}
 						}
@@ -127,7 +127,7 @@ class LoadingState extends MusicBeatState {
 									var cur_Note:NoteData = Note.getNoteData(ss);
 									if(cur_Note.eventData == null){continue;}
 									for(i in cur_Note.eventData){
-										tempLoadingStuff.push({type:"FUNCTION",instance:function(){TARGET.pushTempScript(i[0], i[1]);}});
+										tempLoadingStuff.push({type:"FUNCTION",instance:function(){TARGET.pushTempScript(i[0]);}});
 									}
 								}
 							}

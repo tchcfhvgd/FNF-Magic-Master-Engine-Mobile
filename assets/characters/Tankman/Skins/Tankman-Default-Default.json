@@ -6,91 +6,91 @@
 	],
 	"anims": [
 		{
-			"loop": false,
 			"symbol": "PRETTY GOOD tankman 1",
+			"loop": false,
+			"fps": 24,
 			"anim": "good",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "TANKMAN UGH 1",
+			"loop": false,
+			"fps": 24,
 			"anim": "hey",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "Tankman DOWN note 1",
+			"loop": false,
+			"fps": 24,
 			"anim": "singDOWN",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "Tankman Idle Dance 1",
+			"loop": false,
+			"fps": 24,
 			"anim": "idle",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "Tankman Note Left 1",
+			"loop": false,
+			"fps": 24,
 			"anim": "singLEFT",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "Tankman Right Note 1",
+			"loop": false,
+			"fps": 24,
 			"anim": "singRIGHT",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "Tankman UP note 1",
+			"loop": false,
+			"fps": 24,
 			"anim": "singUP",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "Tankman DOWN note MISS",
+			"loop": false,
+			"fps": 24,
 			"anim": "singDOWNmiss",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "Tankman Note Left MISS",
+			"loop": false,
+			"fps": 24,
 			"anim": "singLEFTmiss",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "Tankman Right Note MISS",
-			"anim": "singRIGHTmiss",
+			"loop": false,
 			"fps": 24,
+			"anim": "singRIGHTmiss",
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "Tankman UP note MISS",
-			"anim": "singUPmiss",
+			"loop": false,
 			"fps": 24,
+			"anim": "singUPmiss",
 			"indices": []
 		}
 	],
-	"zoom": 0.8,
-	"image": "tankmanCaptain",
 	"name": "Tankman",
-	"camera": [
-		-49,
-		-190
-	],
-	"healthicon": "tankman",
+	"image": "tankmanCaptain",
+	"zoom": 0.8,
+	"skin": "Default",
 	"onRight": false,
-	"skin": "Default"
+	"camera": [
+		-2,
+		-94
+	],
+	"healthicon": "tankman"
 }

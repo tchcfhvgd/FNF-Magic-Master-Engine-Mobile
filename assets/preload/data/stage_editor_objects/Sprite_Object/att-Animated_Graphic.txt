@@ -13,4 +13,4 @@ var cur_anim:Array<Dynamic> = cur_prefixs[i];
 while(cur_anim.length < 6){cur_anim.push(null);}
 #Sprite_Name#.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
 }
-#Sprite_Name#.animation.play(#Play_Anim#);
+#Sprite_Name#.animation.play('#Play_Anim#');

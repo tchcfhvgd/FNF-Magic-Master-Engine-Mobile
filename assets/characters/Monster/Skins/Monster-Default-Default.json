@@ -1,1 +1,54 @@
-{"aspect":"Default","position":[-135,100],"anims":[{"indices":[],"symbol":"Monster Right note","fps":24,"anim":"singLeft","loop":false},{"indices":[],"symbol":"Monster left note","fps":24,"anim":"singRight","loop":false},{"indices":[],"symbol":"monster down","fps":24,"anim":"singDown","loop":false},{"indices":[],"symbol":"monster idle","fps":24,"anim":"idle","loop":false},{"indices":[],"symbol":"monster up note","fps":24,"anim":"singUp","loop":false}],"name":"Monster","image":"Monster_Assets","zoom":0.8,"onRight":true,"skin":"Default","healthicon":"bf","camera":[-50,-190]}
+{
+	"aspect": "Default",
+	"position": [
+		-135,
+		100
+	],
+	"anims": [
+		{
+			"loop": false,
+			"symbol": "Monster Right note",
+			"anim": "singLEFT",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "Monster left note",
+			"anim": "singRIGHT",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "monster down",
+			"anim": "singDOWN",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "monster idle",
+			"anim": "idle",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "monster up note",
+			"anim": "singUP",
+			"fps": 24,
+			"indices": []
+		}
+	],
+	"zoom": 0.8,
+	"image": "Monster_Assets",
+	"name": "Monster",
+	"camera": [
+		15,
+		20
+	],
+	"healthicon": "bf",
+	"onRight": true,
+	"skin": "Default"
+}

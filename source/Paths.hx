@@ -335,18 +335,9 @@ class Paths {
 	}
 
 	inline static public function event(key:String, ?mod:String){
-		var path = getPath('events/$key/${key}.hx', TEXT, 'data', mod);
-		if(!Paths.exists(path)){path = getPath('note_events/$key/${key}.hx', TEXT, 'data', mod);}
+		var path = getPath('events/${key}.hx', TEXT, 'data', mod);
+		if(!Paths.exists(path)){path = getPath('note_events/${key}.hx', TEXT, 'data', mod);}
 		return path;
-	}
-	inline static public function event_info(key:String, ?mod:String):Array<Dynamic> {
-		var pre_Language:String = PreSettings.getPreSetting("Language","Game Settings");
-
-		var path = getPath('events/$key/information/lang_${pre_Language}.json', TEXT, 'data', mod);
-		if(!Paths.exists(path)){path = getPath('note_events/$key/information/lang_${pre_Language}.json', TEXT, 'data', mod);}
-
-		if(Paths.exists(path)){return Json.parse(getText(path)).information;}
-		return null;
 	}
 	
 	inline static public function strumline_json(keys:Int, ?type:String, isPath:Bool = false):StrumLine.StrumLine_Graphic_Data {
@@ -388,7 +379,7 @@ class Paths {
 		if(!Paths.exists(path)){path = getPath('${char}/Skins/${char}-Default-Default.json', TEXT, 'characters', mod);}
 		if(!Paths.exists(path)){path = getPath('Boyfriend/Skins/Boyfriend-Default-Default.json', TEXT, 'characters', mod);}
 
-		return Json.parse(getText(path));
+		return path;
 	}
 
 	inline static public function getSparrowAtlas(path:String):FlxAtlasFrames {
