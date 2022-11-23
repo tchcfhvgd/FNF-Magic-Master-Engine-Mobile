@@ -42,7 +42,7 @@ class Controls extends FlxActionSet {
 	}
 
 	public function getNoteDataFromKey(key:FlxKey, keys:Int):Int {
-		var cont:Array<Dynamic> = STATIC_STRUMCONTROLS.get(keys);		
+		var cont:Array<Dynamic> = CURRENT_STRUMCONTROLS.get(keys);
 		for(i in 0...cont.length){if(cont[i][0].contains(key)){return i;}}
 		return -1;
 	}

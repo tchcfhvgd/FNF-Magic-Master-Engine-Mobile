@@ -16,6 +16,7 @@ class PlayerSettings {
 
     public static function init():Void {
         PLAYERS = []; //Deleting Players
+        
 		//Adding Principal Player One
         var player1:PlayerSettings = new PlayerSettings(0, Solo);
         PLAYERS.push(player1);

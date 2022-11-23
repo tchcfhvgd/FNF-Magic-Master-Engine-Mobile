@@ -309,37 +309,35 @@ class Song{
 				["Girlfriend", [400, 130], false, "Default", "GF"]
 			];
 		}
+
+		if(swagShit.sectionStrums == null){swagShit.sectionStrums = [];}
+		if(swagShit.sectionStrums.length <= 0){swagShit.sectionStrums.push({noteStyle:"Default", keys:4, charToSing:[], notes:[]});}
 		if(swagShit.generalSection == null){swagShit.generalSection = [];}
+
 		while(swagShit.generalSection.length < swagShit.sectionStrums[0].notes.length){swagShit.generalSection.push({bpm: swagShit.bpm, changeBPM: false, lengthInSteps: 16, strumToFocus: 0, charToFocus: 0, events: []});}
 		if(swagEvents != null){
 			if(swagEvents.sections == null){swagEvents.sections = [];}
 			while(swagEvents.sections.length < swagShit.generalSection.length){swagEvents.sections.push({events: []});}
 		}
 		
-		for(i in 0...swagShit.generalSection.length){
-			if(swagShit.generalSection[i].events == null){
-				swagShit.generalSection[i].events = [];
-			}else{
-				for(ev in swagShit.generalSection[i].events){
-					Note.set_note(ev, Note.convEventData(Note.getEventData(ev)));
-				}
-			}
+		for(i in 0...swagShit.generalSection.length){			
+			if(swagShit.generalSection[i].events == null){swagShit.generalSection[i].events = [];}
 
 			if(swagEvents != null){
 				while(swagEvents.sections[i].events.length > 0){
-					var cur_glob:EventData = swagEvents.sections[i].events.shift();
+					var cur_glob:EventData = Note.getEventData(swagEvents.sections[i].events.shift());
 				
 					var has_note:Bool = false;
 					for(ev in swagShit.generalSection[i].events){
 						var cur_ev:EventData = Note.getEventData(ev);
-						if(Note.compNotes(cur_glob, cur_ev, false)){
-							has_note = true;
-						}
+						if(Note.compNotes(cur_glob, cur_ev, false)){has_note = true;}
 					}
 
 					if(!has_note){swagShit.generalSection[i].events.push(Note.convEventData(cur_glob));}
 				}
 			}
+
+			for(ev in swagShit.generalSection[i].events){Note.set_note(ev, Note.convEventData(Note.getEventData(ev)));}
 		}
 
 		if(swagShit.sectionStrums == null){

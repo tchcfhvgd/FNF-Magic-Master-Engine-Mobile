@@ -64,7 +64,6 @@ import sys.io.File;
 using StringTools;
 
 class ChartEditorState extends MusicBeatState {
-    public static var _song_path:String;
     public static var _song:SwagSong;
     
     var stage:Stage;
@@ -136,7 +135,6 @@ class ChartEditorState extends MusicBeatState {
 
         if(_song == null){_song = states.PlayState.SONG;}
         if(_song == null){_song = Song.loadFromJson("Test-Normal-Normal");}
-        _song_path = Paths.chart(Song.fileSong(_song.song,_song.category,_song.difficulty));
 
         autSave = FlxG.save.data.autSave;
         saveTimer.run = autoSave;
@@ -1267,7 +1265,7 @@ class ChartEditorState extends MusicBeatState {
         var btnSaveSong:FlxButton = new FlxCustomButton(lblDiff.x, lblDiff.y + lblDiff.height + 5, Std.int((MENU.width / 2) - 10), null, "Save Song", null, null, function(){
             canAutoSave = false;
             canControlle = false;
-            Song.save_song(Song.fileSong(_song.song,_song.category,_song.difficulty), _song, {path:_song_path,
+            Song.save_song(Song.fileSong(_song.song,_song.category,_song.difficulty), _song, {path:Paths.chart(Song.fileSong(_song.song,_song.category,_song.difficulty)),
                 onComplete: function(){
                     canAutoSave = true;
                     canControlle = true;
@@ -1287,19 +1285,27 @@ class ChartEditorState extends MusicBeatState {
             }});
         }); tabMENU.add(btnSaveSaveAs);
 
-        var btnLoad:FlxButton = new FlxCustomButton(btnSaveSong.x, btnSaveSong.y + btnSaveSong.height + 5, Std.int((MENU.width / 2) - 10), null, "Load Song", null, null, function(){loadSong(_song.song, _song.category, _song.difficulty);}); tabMENU.add(btnLoad);
-        var btnImport:FlxButton = new FlxCustomButton(btnLoad.x + btnLoad.width + 10, btnLoad.y, Std.int((MENU.width / 2) - 10), null, "Import Chart", null, null, function(){
+        var btnImport:FlxButton = new FlxCustomButton(5, btnSaveSong.y + btnSaveSong.height + 5, Std.int((MENU.width / 2) - 10), null, "Import Chart", null, null, function(){
                 getFile(function(str){
                     var song_data:SwagSong = cast Song.convert_song(Song.fileSong(_song.song, _song.category, _song.difficulty), Paths.getText(str).trim());
                     Song.parseJSONshit(song_data);
 
                     _song = song_data;
                     
-                    _song_path = Paths.chart(Song.fileSong(_song.song,_song.category,_song.difficulty));
-
                     updateSection();
                 });
         }); tabMENU.add(btnImport);
+
+        var btnImportChart:FlxButton = new FlxCustomButton(btnImport.x + btnImport.width + 10, btnImport.y, Std.int((MENU.width / 2) - 10), null, "Import Events", null, null, function(){
+            getFile(function(str){
+                var event_data:SwagEvent = cast Song.convert_events(Paths.getText(str).trim());
+                Song.parseJSONshit(_song, event_data);
+                
+                updateSection();
+            });
+    }); tabMENU.add(btnImportChart);
+
+        var btnLoad:FlxButton = new FlxCustomButton(5, btnImport.y + btnImport.height + 5, Std.int((MENU.width) - 10), null, "Load Song", null, null, function(){loadSong(_song.song, _song.category, _song.difficulty);}); tabMENU.add(btnLoad);
         
         var line2 = new FlxSprite(5, btnLoad.y + btnLoad.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line2);
 
@@ -1373,8 +1379,11 @@ class ChartEditorState extends MusicBeatState {
 
         var chkAutoSave:FlxUICheckBox = new FlxUICheckBox(5, line4.y + line4.height + 5, null, null, "Enable AutoSave", Std.int((MENU.width - 15)), null, function(){}); tabMENU.add(chkAutoSave); chkAutoSave.checked = autSave;
         var btnLoadAutoSave:FlxButton = new FlxCustomButton(5, chkAutoSave.y + chkAutoSave.height + 5, Std.int((MENU.width - 15)), null, "Load Auto Save", null, null, function(){
-            _song = cast Json.parse(FlxG.save.data.autosave);
+            if(FlxG.save.data.autosave == null){return;}
+            
+            _song = FlxG.save.data.autosave;
             Song.parseJSONshit(_song);
+
             FlxG.switchState(new states.LoadingState(new ChartEditorState(this.onBack, this.onConfirm), [{type:"SONG",instance:_song}], false));
         }); tabMENU.add(btnLoadAutoSave);
 
@@ -2108,7 +2117,7 @@ class ChartEditorState extends MusicBeatState {
     var canAutoSave:Bool = true;
     private function autoSave():Void {
         if(!autSave || !canAutoSave){trace("Auto Save Disabled!"); return;}
-        try{FlxG.save.data.autosave = Json.stringify({song: _song});}catch(e){trace(e); return;}
+        FlxG.save.data.autosave = _song;
 		FlxG.save.flush();
         trace("Auto Saved!!!");
     }

@@ -354,7 +354,7 @@ class Paths {
 		if(type == null){type = PreSettings.getPreSetting("Note Skin", "Visual Settings");}
 
 		var strumJSON:StrumLine.StrumLine_Graphic_Data = strumline_json(keys, type);
-		var noteJSON:Note.Note_Graphic_Data = strumJSON.gameplay_notes.notes[data % keys];
+		var noteJSON:Note.Note_Graphic_Data = strumJSON.gameplay_notes.notes[(data % keys) % strumJSON.gameplay_notes.notes.length];
 
 		if(strumJSON == null || strumJSON.gameplay_notes == null || strumJSON.gameplay_notes.general_animations == null || strumJSON.gameplay_notes.general_animations.length <= 0){return noteJSON;}
 		for(anim in strumJSON.gameplay_notes.general_animations){noteJSON.animations.push(anim);}
@@ -365,7 +365,7 @@ class Paths {
 		if(type == null){type = PreSettings.getPreSetting("Note Skin", "Visual Settings");}
 
 		var strumJSON:StrumLine.StrumLine_Graphic_Data = strumline_json(keys, type);
-		var noteJSON:Note.Note_Graphic_Data = strumJSON.static_notes.notes[data % keys];
+		var noteJSON:Note.Note_Graphic_Data = strumJSON.static_notes.notes[(data % keys) % strumJSON.static_notes.notes.length];
 		
 		if(strumJSON == null || strumJSON.gameplay_notes == null || strumJSON.static_notes.general_animations == null || strumJSON.static_notes.general_animations.length <= 0){return noteJSON;}
 		for(anim in strumJSON.static_notes.general_animations){noteJSON.animations.push(anim);}

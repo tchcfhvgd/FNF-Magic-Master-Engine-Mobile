@@ -96,7 +96,7 @@ class PlayState extends MusicBeatState {
 	private var thdGenerating:Thread;
 	private var songGenerated:Bool = false;
 	private var songPlaying:Bool = false;
-	public var canPause:Bool = true;
+	public var canPause:Bool = false;
 	public var isPaused:Bool = false;
 	public var onGameOver:Bool = false;
 	
@@ -313,6 +313,7 @@ class PlayState extends MusicBeatState {
 		#end
 		
 		songGenerated = true;
+		canPause = true;
 		resyncVocals();
 	}
 

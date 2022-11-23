@@ -83,7 +83,7 @@ class PauseSubState extends MusicBeatSubstate{
 				switch(daSelected){
 					case "Resume":{doClose();}
 					case "Options":{openSubState(new OptionsSubState());}
-					case "Restart Song":{FlxG.resetState();}
+					case "Restart Song":{MusicBeatState.switchState(new states.LoadingState(new states.PlayState(), [{type:"SONG", instance:states.PlayState.SONG}], false));}
 					case "Exit to menu":{
 						SongListData.resetVariables();
 						MusicBeatState.switchState(new states.MainMenuState());

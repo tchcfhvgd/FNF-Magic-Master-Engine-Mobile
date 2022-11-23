@@ -151,8 +151,8 @@ class MainMenuState extends MusicBeatState {
 		
 		if(stage.camP_1 != null && stage.camP_2 != null){
 			camFollow.setPosition(
-				(stage.camP_1[0] + (FlxG.mouse.x * (stage.camP_2[0] - stage.camP_1[0]) / FlxG.width)),
-				(stage.camP_1[1] + (FlxG.mouse.y * (stage.camP_2[1] - stage.camP_1[1]) / FlxG.height))
+				(stage.camP_1[0] + (FlxG.mouse.screenX * (stage.camP_2[0] - stage.camP_1[0]) / FlxG.width)),
+				(stage.camP_1[1] + (FlxG.mouse.screenY * (stage.camP_2[1] - stage.camP_1[1]) / FlxG.height))
 			);
 		}
 		

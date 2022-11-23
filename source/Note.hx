@@ -121,7 +121,7 @@ class StrumNote extends FlxSprite{
 
         if((shader is ColorFilterShader)){(cast (shader, ColorFilterShader)).setAlpha(alpha);}
 
-        if(animation != null && animation.finished && animation.curAnim.name != "static" && autoStatic){playAnim('static');}
+        if(animation != null && animation.curAnim != null && animation.finished && animation.curAnim.name != "static" && autoStatic){playAnim('static');}
 	}
 
     public function playAnim(anim:String, force:Bool = false){
@@ -257,8 +257,8 @@ class Note extends StrumNote {
         if(event.length >= 0 && Std.isOfType(event[0], Float)){toReturn.strumTime = event[0];}
         if(event.length >= 1 && Std.isOfType(event[1], Array)){toReturn.eventData = event[1];}
         if(event.length >= 2 && Std.isOfType(event[2], String)){toReturn.condition = event[2];}
-        if(event.length >= 3 && event[3]){toReturn.isExternal = event[3];}
-        if(event.length >= 4 && event[4]){toReturn.isBroken = event[4];}
+        if(event.length >= 3 && event[3]){toReturn.isExternal = true;}
+        if(event.length >= 4 && event[4]){toReturn.isBroken = true;}
 
         return toReturn;
     }

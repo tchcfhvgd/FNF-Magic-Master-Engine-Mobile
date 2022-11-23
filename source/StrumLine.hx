@@ -189,7 +189,17 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     public var onHIT:Note->Void = null;
     public var onMISS:Note->Void = null;
     public var onGAME_OVER:Void->Void = null;
-    public var update_hud:Void->Void = function(){};
+    public var update_hud:Void->Void = null;    
+    public dynamic function onLIFE(value){
+        HEALTH += value;
+        
+        if(HEALTH > MAXHEALTH){HEALTH = MAXHEALTH;}
+        if(HEALTH <= 0){  
+            HEALTH = 0;           
+            if(onGAME_OVER != null){onGAME_OVER();}
+        }
+
+    };
 
     // STATS VARIABLES    
     public static var P_STAT:Array<Dynamic> = [
@@ -346,70 +356,75 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 		}
         add(lblStats);
 
-        update_hud = function(){
-            if(healthBar != null){
-                var _player:Character = LOCAL_VARIABLES["Player"];
-                if(_player != null){
-                    healthBar.flipX = _player.onRight;
+        if(update_hud == null){
+            update_hud = function(){
+                if(STATS["Combo"] > STATS["MaxCombo"]){STATS["MaxCombo"] = STATS["Combo"];}
+                if(STATS["Score"] > STATS["Record"]){STATS["Record"] = STATS["Score"];}
 
-                    if(leftIcon != null){
-                        var _char_left:Character = (_player.onRight ? GLOBAL_VARIABLES["Player"] : GLOBAL_VARIABLES["Enemy"]);
-                        if(_char_left != null && leftIcon.curIcon != _char_left.healthIcon){leftIcon.setIcon(_char_left.healthIcon);}
+                if(healthBar != null){
+                    var _player:Character = LOCAL_VARIABLES["Player"];
+                    if(_player != null){
+                        healthBar.flipX = _player.onRight;
+    
+                        if(leftIcon != null){
+                            var _char_left:Character = (_player.onRight ? GLOBAL_VARIABLES["Player"] : GLOBAL_VARIABLES["Enemy"]);
+                            if(_char_left != null && leftIcon.curIcon != _char_left.healthIcon){leftIcon.setIcon(_char_left.healthIcon);}
+            
+                            if(_player.onRight){
+                                leftIcon.x = healthBar.x + (healthBar.width - (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01))) - leftIcon.width;
+                            }else{
+                                leftIcon.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - leftIcon.width;
+                            }
+                            
+                            leftIcon.playAnim(HEALTH < 0.8 ? 'default' : 'losing');		
+                        }
+    
+                        if(rightIcon != null){
+                            var _char_right:Character = (_player.onRight ? GLOBAL_VARIABLES["Enemy"] : GLOBAL_VARIABLES["Player"]);
+                            if(_char_right != null && rightIcon.curIcon != _char_right.healthIcon){rightIcon.setIcon(_char_right.healthIcon);}
         
-                        if(_player.onRight){
-                            leftIcon.x = healthBar.x + (healthBar.width - (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01))) - leftIcon.width;
-                        }else{
-                            leftIcon.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - leftIcon.width;
-                        }
-                        
-                        leftIcon.playAnim(HEALTH < 0.8 ? 'default' : 'losing');		
-                    }
-
-                    if(rightIcon != null){
-                        var _char_right:Character = (_player.onRight ? GLOBAL_VARIABLES["Enemy"] : GLOBAL_VARIABLES["Player"]);
-                        if(_char_right != null && rightIcon.curIcon != _char_right.healthIcon){rightIcon.setIcon(_char_right.healthIcon);}
+                            if(_player.onRight){
+                                rightIcon.x = healthBar.x + (healthBar.width - (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)));
+                            }else{
+                                rightIcon.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01));
+                            }
     
-                        if(_player.onRight){
-                            rightIcon.x = healthBar.x + (healthBar.width - (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)));
-                        }else{
-                            rightIcon.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01));
+                            rightIcon.playAnim(HEALTH > 0.2 ? 'default' : 'losing');
                         }
-
-                        rightIcon.playAnim(HEALTH > 0.2 ? 'default' : 'losing');
                     }
                 }
-            }
-    
-            if(lblStats != null){
-                switch(PreSettings.getPreSetting("Type HUD", "Visual Settings")){
-                    case "MagicHUD":{
-                        lblStats.text = '||'+
-                            ' ${LangSupport.getText('Gmp_Score')}: ${STATS['Score']} |' +
-                            //' ${LangSupport.getText('Gmp_Record')}: ${STATS['Record']} |' +
-                            ' ${LangSupport.getText('Gmp_Combo')}: ${STATS['Combo']} |' +
-                            //' ${LangSupport.getText('Gmp_MaxCombo')}: ${STATS['MaxCombo']} |' +
-                            ' ${LangSupport.getText('Gmp_Misses')}: ${STATS['Misses']} |' +
-                            //' ${LangSupport.getText('Gmp_Hits')}: ${STATS['Hits']} |' +
-                            ' ${LangSupport.getText('Gmp_Rating')}: ${STATS['Rating']} ' +
-                        '||';
+        
+                if(lblStats != null){
+                    switch(PreSettings.getPreSetting("Type HUD", "Visual Settings")){
+                        case "MagicHUD":{
+                            lblStats.text = '||'+
+                                ' ${LangSupport.getText('Gmp_Score')}: ${STATS['Score']} |' +
+                                //' ${LangSupport.getText('Gmp_Record')}: ${STATS['Record']} |' +
+                                ' ${LangSupport.getText('Gmp_Combo')}: ${STATS['Combo']} |' +
+                                //' ${LangSupport.getText('Gmp_MaxCombo')}: ${STATS['MaxCombo']} |' +
+                                ' ${LangSupport.getText('Gmp_Misses')}: ${STATS['Misses']} |' +
+                                //' ${LangSupport.getText('Gmp_Hits')}: ${STATS['Hits']} |' +
+                                ' ${LangSupport.getText('Gmp_Rating')}: ${STATS['Rating']} ' +
+                            '||';
+                        }
+                        case "Original":{
+                            lblStats.text = '||'+
+                                ' ${LangSupport.getText('Gmp_Score')}: ${STATS['Score']} |' +
+                                ' ${LangSupport.getText('Gmp_Misses')}: ${STATS['Misses']} ' +
+                            '||';
+                        }
+                        case "Minimized":{
+                            lblStats.text = '||'+
+                                ' ${LangSupport.getText('Gmp_Score')}: ${STATS['Score']} ' +
+                            '||';
+                        }
+                        case "OnlyNotes":{
+                            lblStats.text = '';
+                        }
                     }
-                    case "Original":{
-                        lblStats.text = '||'+
-                            ' ${LangSupport.getText('Gmp_Score')}: ${STATS['Score']} |' +
-                            ' ${LangSupport.getText('Gmp_Misses')}: ${STATS['Misses']} ' +
-                        '||';
-                    }
-                    case "Minimized":{
-                        lblStats.text = '||'+
-                            ' ${LangSupport.getText('Gmp_Score')}: ${STATS['Score']} ' +
-                        '||';
-                    }
-                    case "OnlyNotes":{
-                        lblStats.text = '';
-                    }
+                    
+                    lblStats.screenCenter(X);
                 }
-                
-                lblStats.screenCenter(X);
             }
         }
 	}
@@ -581,16 +596,6 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         
         if(update_hud != null){update_hud();}
 
-        if(HEALTH <= 0){
-        
-            if(onGAME_OVER != null){onGAME_OVER();}
-        }
-
-		if(HEALTH > MAXHEALTH){HEALTH = MAXHEALTH;}
-
-        if(STATS["Combo"] > STATS["MaxCombo"]){STATS["MaxCombo"] = STATS["Combo"];}
-        if(STATS["Score"] > STATS["Record"]){STATS["Record"] = STATS["Score"];}
-
         if(notelist[0] != null){
             if(notelist[0].strumTime - strumConductor.songPosition < 3500){
                 var nNote:Note = notelist[0];
@@ -704,6 +709,9 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         
         if(daNote.hitMiss){missNOTE(daNote); return;}
 
+        
+        if(daNote.typeNote == "Sustain"){daNote.hitHealth *= 0.25;}
+
         if(daNote.noteHits > 0){
             daNote.noteStatus = "MultiTap";
             daNote.strumTime = daNote.strumTime + daNote.noteLength;            
@@ -715,6 +723,8 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         }
 
         if(daNote.typeHit != "Ghost"){
+            onLIFE(daNote.hitHealth);
+
             rankNote(daNote);
             if(onHIT != null){onHIT(daNote);}
         }
@@ -735,7 +745,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         
         if(daNote.ignoreMiss && !daNote.hitMiss){return;}
 
-        HEALTH -= daNote.missHealth;
+        onLIFE(-daNote.missHealth);
 
         STATS["TotalNotes"]++;
         STATS["Misses"] += 1 + daNote.noteHits;
@@ -748,9 +758,6 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     public function rankNote(daNote:Note){
         if(typeStrum == 'BotPlay' || daNote.typeNote == "Sustain"){return;}
         
-        if(daNote.typeNote == "Sustain"){daNote.hitHealth *= 0.25;}
-        HEALTH += daNote.hitHealth;
-
         STATS["TotalNotes"]++;
         STATS["Hits"]++;
         STATS["Combo"]++;

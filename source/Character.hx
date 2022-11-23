@@ -80,8 +80,8 @@ class Character extends FlxSpriteGroup{
 	public static function setCameraToCharacter(char:Character, cam:FlxObject){
 		if(char == null){return;}
 
-		var camMoveX = char.character_sprite.getMidpoint().x;
-		var camMoveY = char.character_sprite.getMidpoint().y;
+		var camMoveX = char.character_sprite.getGraphicMidpoint().x;
+		var camMoveY = char.character_sprite.getGraphicMidpoint().y;
 					
 		camMoveX += char.cameraPosition[0];
 		camMoveY += char.cameraPosition[1];

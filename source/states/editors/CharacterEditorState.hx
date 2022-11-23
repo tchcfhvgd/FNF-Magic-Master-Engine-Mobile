@@ -133,11 +133,11 @@ class CharacterEditorState extends MusicBeatState{
         healthIcon.camera = camHUD;
         add(healthIcon);
 
-        cameraPointer = new FlxSprite(chrStage.getGraphicMidpoint().x + _character.camera[0], chrStage.getGraphicMidpoint().y + _character.camera[1]).makeGraphic(5, 5);
+        cameraPointer = new FlxSprite(chrStage.character_sprite.getGraphicMidpoint().x + _character.camera[0], chrStage.character_sprite.getGraphicMidpoint().y + _character.camera[1]).makeGraphic(5, 5);
         cameraPointer.camera = camFGame;
         add(cameraPointer);
 
-		camFollow = new FlxObject(chrStage.getGraphicMidpoint().x, chrStage.getGraphicMidpoint().y, 1, 1);
+		camFollow = new FlxObject(chrStage.character_sprite.getGraphicMidpoint().x, chrStage.character_sprite.getGraphicMidpoint().y, 1, 1);
         camFGame.follow(camFollow, LOCKON);
 		add(camFollow);
 
@@ -191,7 +191,7 @@ class CharacterEditorState extends MusicBeatState{
         
         super.update(elapsed);
     
-        cameraPointer.setPosition(chrStage.getGraphicMidpoint().x + _character.camera[0], chrStage.getGraphicMidpoint().y + _character.camera[1]);
+        cameraPointer.setPosition(chrStage.character_sprite.getGraphicMidpoint().x + _character.camera[0], chrStage.character_sprite.getGraphicMidpoint().y + _character.camera[1]);
     }
 
     public function reloadCharacter():Void{
