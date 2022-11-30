@@ -57,9 +57,6 @@ class MainMenuState extends MusicBeatState {
 
 	public static var curSelected:Int = 0;
 
-    var camFollow:FlxObject;
-	var stage:Stage;
-
 	var optionGroup:FlxTypedGroup<FlxSprite>;
 	override function create(){		
 		transIn = FlxTransitionableState.defaultTransIn;
@@ -76,11 +73,10 @@ class MainMenuState extends MusicBeatState {
 
 		if(FlxG.sound.music == null || (FlxG.sound.music != null && !FlxG.sound.music.playing)){FlxG.sound.playMusic(Paths.music('freakyMenu'));}
 
-		var rSong:SwagSong = getRandomSong();
-		stage = new Stage(rSong.stage, rSong.characters);
-		add(stage);
-
-		FlxG.camera.zoom = stage.zoom;
+		var bg = new FlxSprite().loadGraphic(Paths.image('menuBG'));
+		bg.setGraphicSize(FlxG.width, FlxG.height);
+		bg.screenCenter();
+		add(bg);
 
 		optionGroup = new FlxTypedGroup<FlxSprite>();
 		add(optionGroup);
@@ -93,8 +89,6 @@ class MainMenuState extends MusicBeatState {
 			_opt.animation.addByPrefix('idle', 'Idle', 30, false);
 			_opt.animation.addByPrefix('over', 'Over', 30, false);
 			_opt.animation.addByPrefix('selected', 'Hit', 30, false);
-			_opt.cameras = [camHUD];
-
 			_opt.y = (FlxG.height / 2) - (_opt.height / 2);
 
 			optionGroup.add(_opt);
@@ -103,7 +97,6 @@ class MainMenuState extends MusicBeatState {
 		var front_ui:FlxSprite = new FlxSprite().loadGraphic(Paths.image("main_menu/UI_Front"));
 		front_ui.setGraphicSize(Std.int(FlxG.width*1.1), FlxG.height);
 		front_ui.screenCenter();
-		front_ui.cameras = [camHUD];
 		add(front_ui);
 
 		var lastWidth:Float = 5;
@@ -111,9 +104,8 @@ class MainMenuState extends MusicBeatState {
 			var o:Dynamic = secondary_options[i];
 			
 			var _opt:FlxButton = new FlxCustomButton(lastWidth, FlxG.height - 75, 80, 70, "", [Paths.getAtlas(Paths.image('main_menu/options/icon_${o.icon}', null, true)), [["normal", "Idle"], ["highlight", "Over"], ["pressed", "Hit"]]], null, o.func);
-			_opt.ID = i;
 			_opt.antialiasing = true;
-			_opt.cameras = [camHUD];
+			_opt.ID = i;
 			add(_opt);
 
 			lastWidth += _opt.width + 5;
@@ -122,10 +114,6 @@ class MainMenuState extends MusicBeatState {
 		changeSelection();
 		
 		super.create();
-
-        camFollow = new FlxObject(0, 0, 1, 1);
-		FlxG.camera.follow(camFollow, LOCKON);
-		add(camFollow);
 	}
 
 	override function update(elapsed:Float){
@@ -139,21 +127,7 @@ class MainMenuState extends MusicBeatState {
 
 			if(principal_controls.checkAction("Menu_Left", JUST_PRESSED)){changeSelection(-1);}
 			if(principal_controls.checkAction("Menu_Right", JUST_PRESSED)){changeSelection(1);}
-			if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED)){chooseSelection();}
-
-			if(FlxG.mouse.justPressed){
-				for(i in 0...stage.character_Length){
-					var nChar = stage.getCharacterById(i);
-					if(FlxG.mouse.overlaps(nChar)){nChar.playAnim("hey", true);}
-				}
-			}			
-		}
-		
-		if(stage.camP_1 != null && stage.camP_2 != null){
-			camFollow.setPosition(
-				(stage.camP_1[0] + (FlxG.mouse.screenX * (stage.camP_2[0] - stage.camP_1[0]) / FlxG.width)),
-				(stage.camP_1[1] + (FlxG.mouse.screenY * (stage.camP_2[1] - stage.camP_1[1]) / FlxG.height))
-			);
+			if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED)){chooseSelection();}		
 		}
 		
 		super.update(elapsed);		
@@ -173,21 +147,5 @@ class MainMenuState extends MusicBeatState {
 
 		for(opt in optionGroup){opt.animation.play("idle");}
 		optionGroup.members[curSelected].animation.play("over");
-	}
-
-	function getRandomSong():SwagSong {
-		var arrSongs:Array<String> = [];
-		for(song in Highscore.songScores.keys()){arrSongs.push(song);}
-		if(arrSongs.length <= 0){arrSongs.push("Test-Normal-Normal");}
-		trace(arrSongs);
-
-		var c_song:String = arrSongs[FlxG.random.int(0, arrSongs.length - 1)];
-		trace(c_song);
-
-		var sSong:SwagSong = Song.loadFromJson(c_song);
-
-		trace(sSong.song);
-
-		return sSong;
 	}
 }

@@ -1,8 +1,16 @@
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": [{"type":"Int","isPresset":true,"value":1,"id":"initChar"},{"isPresset":true,"type":"Array","id":"camP_1","value":[250,180]},{"isPresset":true,"type":"Array","id":"camP_2","value":[1095,800]},{"id":"zoom","value":0.9,"isPresset":true,"type":"Float"}] */
+/* "Variables": [{"type":"Int","isPresset":true,"value":1,"id":"initChar"},{"isPresset":true,"type":"Array","id":"camP_1","value":[250,180]},{"isPresset":true,"type":"Array","id":"camP_2","value":[1095,800]},{"isPresset":true,"type":"Float","id":"zoom","value":0.9}] */
 
 import("Paths", "Paths");
 import("flixel.FlxSprite", "FlxSprite");
+
+function addToLoad(temp){
+temp.push({type:"ATLAS",instance:Paths.image('stageback','stages/stage',true)});
+temp.push({type:"ATLAS",instance:Paths.image('stagefront','stages/stage',true)});
+temp.push({type:"ATLAS",instance:Paths.image('stage_light','stages/stage',true)});
+temp.push({type:"ATLAS",instance:Paths.image('stage_light','stages/stage',true)});
+temp.push({type:"ATLAS",instance:Paths.image('stagecurtains','stages/stage',true)});
+}
 
 presset("initChar", 1);
 presset("camP_1", [250,180]);
@@ -12,7 +20,7 @@ presset("zoom", 0.9);
 function create(){
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[-600,-300],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"stageback","Graphic_Library":"stages/stage","Sprite_Name":"stageback","Scroll":[0.5,0.5],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[-600,-300],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"stageback","Antialiasing":true,"Graphic_Library":"stages/stage","Sprite_Name":"stageback","Scroll":[0.5,0.5],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 var stageback_position:Array<Int> = [-600,-300];
 
@@ -36,7 +44,7 @@ stageback.antialiasing = true;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[-600,-300],"Scale":[1,1],"Visible":true,"Graphic_File":"stageback","Angle":0,"Graphic_Library":"stages/stage","Sprite_Name":"stageback","Scroll":[0.5,0.5],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[-600,-300],"Scale":[1,1],"Visible":true,"Graphic_File":"stageback","Angle":0,"Graphic_Library":"stages/stage","Antialiasing":true,"Scroll":[0.5,0.5],"Sprite_Name":"stageback","Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 stageback.loadGraphic(Paths.image('stageback', 'stages/stage'));
 //-[Basic_Graphic]-//
@@ -58,7 +66,7 @@ stage_front.loadGraphic(Paths.image('stagefront', 'stages/stage'));
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[-125,-100],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"stage_light","Graphic_Library":"stages/stage","Sprite_Name":"stage_light_1","Scroll":[0.9,0.9],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[-125,-100],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"stage_light","Antialiasing":true,"Graphic_Library":"stages/stage","Sprite_Name":"stage_light_1","Scroll":[0.9,0.9],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 var stage_light_1_position:Array<Int> = [-125,-100];
 
@@ -82,14 +90,14 @@ stage_light_1.antialiasing = true;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[-125,-100],"Scale":[1,1],"Visible":true,"Graphic_File":"stage_light","Angle":0,"Graphic_Library":"stages/stage","Sprite_Name":"stage_light_1","Scroll":[0.9,0.9],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[-125,-100],"Scale":[1,1],"Visible":true,"Graphic_File":"stage_light","Angle":0,"Graphic_Library":"stages/stage","Antialiasing":true,"Scroll":[0.9,0.9],"Sprite_Name":"stage_light_1","Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 stage_light_1.loadGraphic(Paths.image('stage_light', 'stages/stage'));
 //-[Basic_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[1225,-100],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"stage_light","Graphic_Library":"stages/stage","Sprite_Name":"stage_light_2","Scroll":[0.9,0.9],"Flip_X":true,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[1225,-100],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"stage_light","Antialiasing":true,"Graphic_Library":"stages/stage","Sprite_Name":"stage_light_2","Scroll":[0.9,0.9],"Flip_X":true,"Alpha":1,"Flip_Y":false} */
 
 var stage_light_2_position:Array<Int> = [1225,-100];
 
@@ -113,14 +121,14 @@ stage_light_2.antialiasing = true;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[1225,-100],"Scale":[1,1],"Visible":true,"Graphic_File":"stage_light","Angle":0,"Graphic_Library":"stages/stage","Sprite_Name":"stage_light_2","Scroll":[0.9,0.9],"Alpha":1,"Flip_X":true,"Flip_Y":false} */
+/* "Variables": {"Position":[1225,-100],"Scale":[1,1],"Visible":true,"Graphic_File":"stage_light","Angle":0,"Graphic_Library":"stages/stage","Antialiasing":true,"Scroll":[0.9,0.9],"Sprite_Name":"stage_light_2","Alpha":1,"Flip_X":true,"Flip_Y":false} */
 
 stage_light_2.loadGraphic(Paths.image('stage_light', 'stages/stage'));
 //-[Basic_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[-600,-300],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"stagecurtains","Graphic_Library":"stages/stage","Sprite_Name":"stagecurtains","Scroll":[1.3,1.3],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[-600,-300],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"stagecurtains","Antialiasing":true,"Graphic_Library":"stages/stage","Sprite_Name":"stagecurtains","Scroll":[1.3,1.3],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 var stagecurtains_position:Array<Int> = [-600,-300];
 
@@ -144,7 +152,7 @@ stagecurtains.antialiasing = true;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[-600,-300],"Scale":[1,1],"Visible":true,"Graphic_File":"stagecurtains","Angle":0,"Graphic_Library":"stages/stage","Sprite_Name":"stagecurtains","Scroll":[1.3,1.3],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[-600,-300],"Scale":[1,1],"Visible":true,"Graphic_File":"stagecurtains","Angle":0,"Graphic_Library":"stages/stage","Antialiasing":true,"Scroll":[1.3,1.3],"Sprite_Name":"stagecurtains","Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 stagecurtains.loadGraphic(Paths.image('stagecurtains', 'stages/stage'));
 //-[Basic_Graphic]-//

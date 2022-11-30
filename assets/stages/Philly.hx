@@ -1,8 +1,17 @@
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": [{"type":"Int","isPresset":true,"value":"5","id":"initChar"},{"type":"Array","isPresset":true,"value":[585,305],"id":"camP_1"},{"type":"Array","isPresset":true,"value":[980,610],"id":"camP_2"},{"id":"zoom","value":1.1,"isPresset":true,"type":"Float"}] */
+/* "Variables": [{"type":"Int","isPresset":true,"value":"5","id":"initChar"},{"type":"Array","isPresset":true,"value":[585,305],"id":"camP_1"},{"type":"Array","isPresset":true,"value":[980,610],"id":"camP_2"},{"isPresset":true,"type":"Float","id":"zoom","value":1.1}] */
 
 import("Paths", "Paths");
 import("flixel.FlxSprite", "FlxSprite");
+
+function addToLoad(temp){
+temp.push({type:"ATLAS",instance:Paths.image('sky','stages/philly',true)});
+temp.push({type:"ATLAS",instance:Paths.image('city','stages/philly',true)});
+temp.push({type:"ATLAS",instance:Paths.image('win','stages/philly',true)});
+temp.push({type:"ATLAS",instance:Paths.image('behindTrain','stages/philly',true)});
+temp.push({type:"ATLAS",instance:Paths.image('train','stages/philly',true)});
+temp.push({type:"ATLAS",instance:Paths.image('street','stages/philly',true)});
+}
 
 presset("initChar", 5);
 presset("camP_1", [585,305]);
@@ -12,7 +21,7 @@ presset("zoom", 1.1);
 function create(){
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[-100,0],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"sky","Graphic_Library":"stages/philly","Sprite_Name":"sky","Scroll":[0.1,0.1],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[-100,0],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"sky","Antialiasing":true,"Graphic_Library":"stages/philly","Sprite_Name":"sky","Scroll":[0.1,0.1],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 var sky_position:Array<Int> = [-100,0];
 
@@ -36,14 +45,14 @@ sky.antialiasing = true;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[-100,0],"Scale":[1,1],"Visible":true,"Graphic_File":"sky","Angle":0,"Graphic_Library":"stages/philly","Sprite_Name":"sky","Scroll":[0.1,0.1],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[-100,0],"Scale":[1,1],"Visible":true,"Graphic_File":"sky","Angle":0,"Graphic_Library":"stages/philly","Antialiasing":true,"Scroll":[0.1,0.1],"Sprite_Name":"sky","Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 sky.loadGraphic(Paths.image('sky', 'stages/philly'));
 //-[Basic_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[-10,0],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"city","Graphic_Library":"stages/philly","Sprite_Name":"city","Scroll":[0.3,0.3],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[-10,0],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"city","Antialiasing":true,"Graphic_Library":"stages/philly","Sprite_Name":"city","Scroll":[0.3,0.3],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 var city_position:Array<Int> = [-10,0];
 
@@ -67,14 +76,14 @@ city.antialiasing = true;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[-10,0],"Scale":[1,1],"Visible":true,"Graphic_File":"city","Angle":0,"Graphic_Library":"stages/philly","Sprite_Name":"city","Scroll":[0.3,0.3],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[-10,0],"Scale":[1,1],"Visible":true,"Graphic_File":"city","Angle":0,"Graphic_Library":"stages/philly","Antialiasing":true,"Scroll":[0.3,0.3],"Sprite_Name":"city","Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 city.loadGraphic(Paths.image('city', 'stages/philly'));
 //-[Basic_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[0,0],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"win","Graphic_Library":"stages/philly","Sprite_Name":"lights","Scroll":[0.3,0.3],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[0,0],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"win","Antialiasing":true,"Graphic_Library":"stages/philly","Sprite_Name":"lights","Scroll":[0.3,0.3],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 var lights_position:Array<Int> = [0,0];
 
@@ -98,7 +107,7 @@ lights.antialiasing = true;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[0,0],"Scale":[1,1],"Visible":true,"Graphic_File":"win","Angle":0,"Graphic_Library":"stages/philly","Sprite_Name":"lights","Scroll":[0.3,0.3],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[0,0],"Scale":[1,1],"Visible":true,"Graphic_File":"win","Angle":0,"Graphic_Library":"stages/philly","Antialiasing":true,"Scroll":[0.3,0.3],"Sprite_Name":"lights","Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 lights.loadGraphic(Paths.image('win', 'stages/philly'));
 //-[Basic_Graphic]-//

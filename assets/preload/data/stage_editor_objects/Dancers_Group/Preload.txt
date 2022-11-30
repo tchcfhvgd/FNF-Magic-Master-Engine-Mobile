@@ -1,0 +1,1 @@
+{type:"ATLAS",instance:Paths.image("limoDancer","stages/limo",true)}

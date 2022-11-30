@@ -1,8 +1,18 @@
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": [{"isPresset":true,"type":"Int","id":"initChar","value":"6"},{"type":"Float","isPresset":true,"value":1,"id":"zoom"},{"type":"Array","isPresset":true,"value":[380,310],"id":"camP_1"},{"type":"Array","isPresset":true,"value":[930,530],"id":"camP_2"}] */
+/* "Variables": [{"type":"Int","isPresset":true,"value":"6","id":"initChar"},{"isPresset":true,"type":"Float","id":"zoom","value":1},{"isPresset":true,"type":"Array","id":"camP_1","value":[380,310]},{"isPresset":true,"type":"Array","id":"camP_2","value":[930,530]}] */
 
 import("Paths", "Paths");
 import("flixel.FlxSprite", "FlxSprite");
+
+function addToLoad(temp){
+temp.push({type:"ATLAS",instance:Paths.image('weebSky','stages/school',true)});
+temp.push({type:"ATLAS",instance:Paths.image('weebSchool','stages/school',true)});
+temp.push({type:"ATLAS",instance:Paths.image('weebStreet','stages/school',true)});
+temp.push({type:"ATLAS",instance:Paths.image('weebTreesBack','stages/school',true)});
+temp.push({type:"ATLAS",instance:Paths.image('weebTrees','stages/school',true)});
+temp.push({type:"ATLAS",instance:Paths.image('petals','stages/school',true)});
+temp.push({type:"ATLAS",instance:Paths.image('bgFreaks','stages/school',true)});
+}
 
 presset("initChar", 6);
 presset("zoom", 1);
@@ -12,7 +22,7 @@ presset("camP_2", [930,530]);
 function create(){
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[500,350],"Visible":true,"Scale":[6,6],"Graphic_File":"weebSky","Angle":0,"Graphic_Library":"stages/school","Antialiasing":false,"Sprite_Name":"bgSky","Scroll":[0.1,0.1],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[500,350],"Visible":true,"Scale":[6,6],"Angle":0,"Graphic_File":"weebSky","Graphic_Library":"stages/school","Antialiasing":false,"Sprite_Name":"bgSky","Scroll":[0.1,0.1],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 var bgSky_position:Array<Int> = [500,350];
 
@@ -36,14 +46,14 @@ bgSky.antialiasing = false;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[500,350],"Scale":[6,6],"Visible":true,"Graphic_File":"weebSky","Angle":0,"Graphic_Library":"stages/school","Antialiasing":false,"Scroll":[0.1,0.1],"Sprite_Name":"bgSky","Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[500,350],"Scale":[6,6],"Visible":true,"Graphic_File":"weebSky","Angle":0,"Graphic_Library":"stages/school","Antialiasing":false,"Scroll":[0.1,0.1],"Sprite_Name":"bgSky","Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 bgSky.loadGraphic(Paths.image('weebSky', 'stages/school'));
 //-[Basic_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[500,350],"Visible":true,"Scale":[6,6],"Graphic_File":"weebSchool","Angle":0,"Graphic_Library":"stages/school","Antialiasing":false,"Sprite_Name":"bgSchool","Scroll":[0.3,1],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[500,350],"Visible":true,"Scale":[6,6],"Angle":0,"Graphic_File":"weebSchool","Graphic_Library":"stages/school","Antialiasing":false,"Sprite_Name":"bgSchool","Scroll":[0.3,1],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 var bgSchool_position:Array<Int> = [500,350];
 
@@ -67,14 +77,14 @@ bgSchool.antialiasing = false;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[500,350],"Scale":[6,6],"Visible":true,"Graphic_File":"weebSchool","Angle":0,"Graphic_Library":"stages/school","Antialiasing":false,"Scroll":[0.3,1],"Sprite_Name":"bgSchool","Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[500,350],"Scale":[6,6],"Visible":true,"Graphic_File":"weebSchool","Angle":0,"Graphic_Library":"stages/school","Antialiasing":false,"Scroll":[0.3,1],"Sprite_Name":"bgSchool","Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 bgSchool.loadGraphic(Paths.image('weebSchool', 'stages/school'));
 //-[Basic_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[500,350],"Visible":true,"Scale":[6,6],"Graphic_File":"weebStreet","Angle":0,"Graphic_Library":"stages/school","Antialiasing":false,"Sprite_Name":"bgStreet","Scroll":[1,1],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[500,350],"Visible":true,"Scale":[6,6],"Angle":0,"Graphic_File":"weebStreet","Graphic_Library":"stages/school","Antialiasing":false,"Sprite_Name":"bgStreet","Scroll":[1,1],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 var bgStreet_position:Array<Int> = [500,350];
 
@@ -98,14 +108,14 @@ bgStreet.antialiasing = false;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[500,350],"Scale":[6,6],"Visible":true,"Graphic_File":"weebStreet","Angle":0,"Graphic_Library":"stages/school","Antialiasing":false,"Scroll":[1,1],"Sprite_Name":"bgStreet","Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[500,350],"Scale":[6,6],"Visible":true,"Graphic_File":"weebStreet","Angle":0,"Graphic_Library":"stages/school","Antialiasing":false,"Scroll":[1,1],"Sprite_Name":"bgStreet","Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 bgStreet.loadGraphic(Paths.image('weebStreet', 'stages/school'));
 //-[Basic_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[500,350],"Visible":true,"Scale":[6,6],"Graphic_File":"weebTreesBack","Angle":0,"Graphic_Library":"stages/school","Antialiasing":false,"Sprite_Name":"gfTrees","Scroll":[1,1],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[500,350],"Visible":true,"Scale":[6,6],"Angle":0,"Graphic_File":"weebTreesBack","Graphic_Library":"stages/school","Antialiasing":false,"Sprite_Name":"gfTrees","Scroll":[1,1],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 var gfTrees_position:Array<Int> = [500,350];
 
@@ -129,33 +139,19 @@ gfTrees.antialiasing = false;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[500,350],"Scale":[6,6],"Visible":true,"Graphic_File":"weebTreesBack","Angle":0,"Graphic_Library":"stages/school","Antialiasing":false,"Scroll":[1,1],"Sprite_Name":"gfTrees","Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[500,350],"Scale":[6,6],"Visible":true,"Graphic_File":"weebTreesBack","Angle":0,"Graphic_Library":"stages/school","Antialiasing":false,"Scroll":[1,1],"Sprite_Name":"gfTrees","Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 gfTrees.loadGraphic(Paths.image('weebTreesBack', 'stages/school'));
 //-[Basic_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[389,171],"Scale":[6,6],"Visible":true,"Angle":0,"Graphic_File":"weebTrees","Graphic_Library":"stages/school","Antialiasing":false,"Play_Anim":"idle","Sprite_Name":"bgTrees","Scroll":[1,1],"Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[]} */
+/* "Variables": {"Position":[389,171],"Scale":[6,6],"Visible":true,"Graphic_File":"weebTrees","Angle":0,"Graphic_Library":"stages/school","Antialiasing":false,"Play_Anim":"idle","Sprite_Name":"bgTrees","Scroll":[1,1],"Alpha":1,"Flip_X":false,"Anims_Prefix":[],"Flip_Y":false} */
 
 var bgTrees_position:Array<Int> = [389,171];
 
 var bgTrees = new FlxSprite(bgTrees_position[0], bgTrees_position[1]);
 instance.add(bgTrees);
-//-{Animated_Graphic}-//
-/* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[389,171],"Visible":true,"Scale":[6,6],"Graphic_File":"weebTrees","Angle":0,"Antialiasing":false,"Graphic_Library":"stages/school","Play_Anim":"idle","Scroll":[1,1],"Sprite_Name":"bgTrees","Alpha":1,"Flip_X":false,"Anims_Prefix":[],"Flip_Y":false} */
-
-bgTrees.frames = Paths.getAtlas(Paths.image('weebTrees', 'stages/school', true));
-
-var cur_prefixs:Array<Dynamic> = [];
-for(i in 0...cur_prefixs.length){
-var cur_anim:Array<Dynamic> = cur_prefixs[i];
-while(cur_anim.length < 6){cur_anim.push(null);}
-bgTrees.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
-}
-bgTrees.animation.play('idle');
-//-[Animated_Graphic]-//
 //-{Advanced_Properties}-//
 /* "Packages": {} */
 /* "Variables": {"Position":[389,171],"Visible":true,"Scale":[6,6],"Angle":0,"Graphic_File":"weebTrees","Play_Anim":"idle","Graphic_Library":"stages/school","Antialiasing":false,"Scroll":[1,1],"Sprite_Name":"bgTrees","Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[]} */
@@ -172,29 +168,29 @@ bgTrees.flipX = false;
 bgTrees.flipY = false;
 bgTrees.antialiasing = false;
 //-[Advanced_Properties]-//
+//-{Animated_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Position":[389,171],"Visible":true,"Scale":[6,6],"Graphic_File":"weebTrees","Angle":0,"Antialiasing":false,"Graphic_Library":"stages/school","Play_Anim":"idle","Scroll":[1,1],"Sprite_Name":"bgTrees","Flip_X":false,"Alpha":1,"Anims_Prefix":[],"Flip_Y":false} */
+
+bgTrees.frames = Paths.getAtlas(Paths.image('weebTrees', 'stages/school', true));
+
+var cur_prefixs:Array<Dynamic> = [];
+for(i in 0...cur_prefixs.length){
+var cur_anim:Array<Dynamic> = cur_prefixs[i];
+while(cur_anim.length < 6){cur_anim.push(null);}
+bgTrees.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
+}
+bgTrees.animation.play('idle');
+//-[Animated_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[500,450],"Scale":[6,6],"Visible":true,"Angle":0,"Graphic_File":"petals","Graphic_Library":"stages/school","Antialiasing":false,"Play_Anim":"idle","Sprite_Name":"treeLeaves","Scroll":[1,1],"Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["idle","PETALS ALL"]]} */
+/* "Variables": {"Position":[500,450],"Scale":[6,6],"Visible":true,"Graphic_File":"petals","Angle":0,"Graphic_Library":"stages/school","Antialiasing":false,"Play_Anim":"idle","Sprite_Name":"treeLeaves","Scroll":[1,1],"Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","PETALS ALL"]],"Flip_Y":false} */
 
 var treeLeaves_position:Array<Int> = [500,450];
 
 var treeLeaves = new FlxSprite(treeLeaves_position[0], treeLeaves_position[1]);
 instance.add(treeLeaves);
-//-{Animated_Graphic}-//
-/* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[500,450],"Visible":true,"Scale":[6,6],"Graphic_File":"petals","Angle":0,"Antialiasing":false,"Graphic_Library":"stages/school","Play_Anim":"idle","Scroll":[1,1],"Sprite_Name":"treeLeaves","Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","PETALS ALL"]],"Flip_Y":false} */
-
-treeLeaves.frames = Paths.getAtlas(Paths.image('petals', 'stages/school', true));
-
-var cur_prefixs:Array<Dynamic> = [["idle","PETALS ALL"]];
-for(i in 0...cur_prefixs.length){
-var cur_anim:Array<Dynamic> = cur_prefixs[i];
-while(cur_anim.length < 6){cur_anim.push(null);}
-treeLeaves.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
-}
-treeLeaves.animation.play('idle');
-//-[Animated_Graphic]-//
 //-{Advanced_Properties}-//
 /* "Packages": {} */
 /* "Variables": {"Position":[500,450],"Visible":true,"Scale":[6,6],"Angle":0,"Graphic_File":"petals","Play_Anim":"idle","Graphic_Library":"stages/school","Antialiasing":false,"Scroll":[1,1],"Sprite_Name":"treeLeaves","Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["idle","PETALS ALL"]]} */
@@ -211,29 +207,29 @@ treeLeaves.flipX = false;
 treeLeaves.flipY = false;
 treeLeaves.antialiasing = false;
 //-[Advanced_Properties]-//
+//-{Animated_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Position":[500,450],"Visible":true,"Scale":[6,6],"Graphic_File":"petals","Angle":0,"Antialiasing":false,"Graphic_Library":"stages/school","Play_Anim":"idle","Scroll":[1,1],"Sprite_Name":"treeLeaves","Flip_X":false,"Alpha":1,"Anims_Prefix":[["idle","PETALS ALL"]],"Flip_Y":false} */
+
+treeLeaves.frames = Paths.getAtlas(Paths.image('petals', 'stages/school', true));
+
+var cur_prefixs:Array<Dynamic> = [["idle","PETALS ALL"]];
+for(i in 0...cur_prefixs.length){
+var cur_anim:Array<Dynamic> = cur_prefixs[i];
+while(cur_anim.length < 6){cur_anim.push(null);}
+treeLeaves.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
+}
+treeLeaves.animation.play('idle');
+//-[Animated_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[502,351],"Scale":[6,6],"Visible":true,"Angle":0,"Graphic_File":"bgFreaks","Graphic_Library":"stages/school","Antialiasing":false,"Play_Anim":"idle","Sprite_Name":"bgGirls","Scroll":[1,1],"Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["idle","BG girls group"]]} */
+/* "Variables": {"Position":[502,351],"Scale":[6,6],"Visible":true,"Graphic_File":"bgFreaks","Angle":0,"Graphic_Library":"stages/school","Antialiasing":false,"Play_Anim":"idle","Sprite_Name":"bgGirls","Scroll":[1,1],"Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","BG girls group"]],"Flip_Y":false} */
 
 var bgGirls_position:Array<Int> = [502,351];
 
 var bgGirls = new FlxSprite(bgGirls_position[0], bgGirls_position[1]);
 instance.add(bgGirls);
-//-{Animated_Graphic}-//
-/* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[502,351],"Visible":true,"Scale":[6,6],"Graphic_File":"bgFreaks","Angle":0,"Antialiasing":false,"Graphic_Library":"stages/school","Play_Anim":"idle","Scroll":[1,1],"Sprite_Name":"bgGirls","Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","BG girls group"]],"Flip_Y":false} */
-
-bgGirls.frames = Paths.getAtlas(Paths.image('bgFreaks', 'stages/school', true));
-
-var cur_prefixs:Array<Dynamic> = [["idle","BG girls group"]];
-for(i in 0...cur_prefixs.length){
-var cur_anim:Array<Dynamic> = cur_prefixs[i];
-while(cur_anim.length < 6){cur_anim.push(null);}
-bgGirls.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
-}
-bgGirls.animation.play('idle');
-//-[Animated_Graphic]-//
 //-{Advanced_Properties}-//
 /* "Packages": {} */
 /* "Variables": {"Position":[502,351],"Visible":true,"Scale":[6,6],"Angle":0,"Graphic_File":"bgFreaks","Play_Anim":"idle","Graphic_Library":"stages/school","Antialiasing":false,"Scroll":[1,1],"Sprite_Name":"bgGirls","Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["idle","BG girls group"]]} */
@@ -250,5 +246,19 @@ bgGirls.flipX = false;
 bgGirls.flipY = false;
 bgGirls.antialiasing = false;
 //-[Advanced_Properties]-//
+//-{Animated_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Position":[502,351],"Visible":true,"Scale":[6,6],"Graphic_File":"bgFreaks","Angle":0,"Antialiasing":false,"Graphic_Library":"stages/school","Play_Anim":"idle","Scroll":[1,1],"Sprite_Name":"bgGirls","Flip_X":false,"Alpha":1,"Anims_Prefix":[["idle","BG girls group"]],"Flip_Y":false} */
+
+bgGirls.frames = Paths.getAtlas(Paths.image('bgFreaks', 'stages/school', true));
+
+var cur_prefixs:Array<Dynamic> = [["idle","BG girls group"]];
+for(i in 0...cur_prefixs.length){
+var cur_anim:Array<Dynamic> = cur_prefixs[i];
+while(cur_anim.length < 6){cur_anim.push(null);}
+bgGirls.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
+}
+bgGirls.animation.play('idle');
+//-[Animated_Graphic]-//
 //->Sprite_Object<-//
 }

@@ -93,7 +93,6 @@ class PlayState extends MusicBeatState {
 	public var followChar:Bool = true;
 
 	//Other
-	private var thdGenerating:Thread;
 	private var songGenerated:Bool = false;
 	private var songPlaying:Bool = false;
 	public var canPause:Bool = false;
@@ -126,7 +125,6 @@ class PlayState extends MusicBeatState {
 
 	public var timers:Array<FlxTimer> = [];
 	
-	//Stage
 	public var stage:Stage;
 
     var camFollow:FlxObject;
@@ -166,22 +164,10 @@ class PlayState extends MusicBeatState {
 		strumsGroup.cameras = [camHUD];
 		add(strumsGroup);
 		
-		generateSong();
 
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 		FlxG.fixedTimestep = false;
-		
-		//StartSongMethod
-		if(SongListData.isStoryMode){
-			switch(SONG.song){
-				default:{startCountdown(startSong);}
-			}
-		}else{
-			switch(SONG.song){
-				default:{startCountdown(startSong);}
-			}
-		}
-	
+			
         camFollow = new FlxObject(0, 0, 1, 1);
 		camFollow.setPosition(0, 0);
 		if (prevCamFollow != null){
@@ -190,9 +176,22 @@ class PlayState extends MusicBeatState {
 		}
 		FlxG.camera.follow(camFollow, LOCKON, 0.04);
 		add(camFollow);
+
+		generateSong(function(){
+			if(SongListData.isStoryMode){
+				switch(SONG.song){
+					default:{startCountdown(startSong);}
+				}
+			}else{
+				switch(SONG.song){
+					default:{startCountdown(startSong);}
+				}
+			}
+		});
 	}
 
-	private function generateSong():Void {
+	private var loadedStrums:Int = 0;
+	private function generateSong(toEndFun:Void->Void = function(){}):Void {
 		// FlxG.log.add(ChartParser.parse());
 
 		var songData = SONG;
@@ -215,6 +214,7 @@ class PlayState extends MusicBeatState {
             voices.add(voice);
         }
 
+		var strumsloaded:Int = songData.sectionStrums.length;
 		for(i in 0...songData.sectionStrums.length){
 			var strumLine = new StrumLine(0, 0, songData.sectionStrums[i].keys, Std.int(FlxG.width / 3), principal_controls, null, songData.sectionStrums[i].noteStyle);
 
@@ -289,8 +289,22 @@ class PlayState extends MusicBeatState {
 
 			strumsGroup.add(strumLine);
 		}
-
+		
 		for(s in scripts){s.exFunction('preload');}
+
+		thdLoading = Thread.create(() -> {
+			while(true){
+				var allLoaded:Int = 0;
+				for(s in strumsGroup.members){allLoaded += s.strumGenerated ? 1 : 0;}
+				
+				if(strumsloaded.length <= allLoaded){
+					songGenerated = true;
+					toEndFun();
+
+					return;
+				}
+			}
+		});
 	}
 	
 	var previousFrameTime:Int = 0;
@@ -312,7 +326,6 @@ class PlayState extends MusicBeatState {
 		song_Length = inst.length;
 		#end
 		
-		songGenerated = true;
 		canPause = true;
 		resyncVocals();
 	}

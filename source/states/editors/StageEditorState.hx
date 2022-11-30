@@ -676,6 +676,11 @@ class StageScripManager {
 
         for(key in packages.keys()){toReturn += 'import("${packages[key]}", "${key}");\n';}
         toReturn += '\n';
+        
+        toReturn += 'function addToLoad(temp){\n';
+        for(obj in objects){toReturn += 'temp.push(${obj.buildPreload()});\n';}
+        toReturn += '}\n\n';
+
         for(v in variables){
             if(v.type == "Array"){
                 var data:String = "[]";
@@ -719,6 +724,7 @@ class StageObjectScript {
     public var variables:Map<String, Dynamic> = [];
     public var attributes:Map<String, StageObjectScript> = [];
     private var source:String = '';
+    private var preload:String = '';
 
     public var name:String = "";
     public var ID:Int = 0;
@@ -734,6 +740,9 @@ class StageObjectScript {
             if(_i == name){continue;}
             possible_attributes.push(_i);
         }
+
+        var preload_path:String = Paths.setPath('assets/data/stage_editor_objects/${_name}/Preload.txt');
+        if(Paths.exists(preload_path)){preload = Paths.getText(preload_path);}
     }
 
     public function parseTemplate(_src:String):Void {
@@ -850,6 +859,36 @@ class StageObjectScript {
         
         if(!isAttribute){toReturn += '//->${name}<-//\n';}else{toReturn += '//-[${name}]-//\n';}
 
+        return toReturn;
+    }
+
+    public function buildPreload():String {
+        var toReturn:String = '';
+
+        var current_tag:String = '';
+        var current_variable:String = '';
+
+        for(c in preload.split("")){
+            switch(c){
+                default:{
+                    if(current_tag == ''){toReturn += c; continue;}
+                    current_variable += c;
+                }
+                case "#":{
+                    if(current_tag == ''){current_tag = '#'; continue;}
+                    if(current_tag != '#'){trace('Building Error [Unexpected $c on #]'); return '';}
+                    if(!variables.exists(current_variable)){trace('Building Error [UnLoaded Variable ${current_variable}]'); return '';}
+                    if(value_types.get(current_variable) == "array"){
+                        toReturn += Json.stringify(variables.get(current_variable));
+                    }else{
+                        toReturn += variables.get(current_variable);
+                    }
+                    current_variable = '';
+                    current_tag = '';
+                }
+            }
+        }
+        
         return toReturn;
     }
 

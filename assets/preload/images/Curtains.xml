@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Curtains.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Curtains0000" x="2" y="2" width="2724" height="1432"/>
+	<SubTexture name="Curtains0001" x="2" y="2" width="2724" height="1432"/>
+	<SubTexture name="Curtains0002" x="2728" y="2" width="2724" height="1432"/>
+	<SubTexture name="Curtains0003" x="2728" y="2" width="2724" height="1432"/>
+	<SubTexture name="Curtains0004" x="5454" y="2" width="2724" height="1432"/>
+	<SubTexture name="Curtains0005" x="5454" y="2" width="2724" height="1432"/>
+	<SubTexture name="Curtains0006" x="2" y="1436" width="2724" height="1432"/>
+	<SubTexture name="Curtains0007" x="2" y="1436" width="2724" height="1432"/>
+	<SubTexture name="Curtains0008" x="2728" y="1436" width="2724" height="1432"/>
+	<SubTexture name="Curtains0009" x="2728" y="1436" width="2724" height="1432"/>
+	<SubTexture name="Curtains0010" x="5454" y="1436" width="2724" height="1432"/>
+	<SubTexture name="Curtains0011" x="5454" y="1436" width="2724" height="1432"/>
+	<SubTexture name="Curtains0012" x="5454" y="1436" width="2724" height="1432"/>
+	<SubTexture name="Curtains0013" x="5454" y="1436" width="2724" height="1432"/>
+	<SubTexture name="Curtains0014" x="5454" y="1436" width="2724" height="1432"/>
+	<SubTexture name="Curtains0015" x="5454" y="1436" width="2724" height="1432"/>
+	<SubTexture name="Curtains0016" x="2" y="2870" width="2724" height="1432"/>
+	<SubTexture name="Curtains0017" x="2" y="2870" width="2724" height="1432"/>
+	<SubTexture name="Curtains0018" x="2728" y="2870" width="2724" height="1432"/>
+	<SubTexture name="Curtains0019" x="2728" y="2870" width="2724" height="1432"/>
+	<SubTexture name="Curtains0020" x="5454" y="2870" width="2724" height="1432"/>
+	<SubTexture name="Curtains0021" x="2" y="2" width="2724" height="1432"/>
+	<SubTexture name="Curtains0022" x="2" y="4304" width="2724" height="1432"/>
+	<SubTexture name="Curtains0023" x="2728" y="4304" width="2724" height="1432"/>
+	<SubTexture name="Curtains0024" x="2728" y="4304" width="2724" height="1432"/>
+</TextureAtlas>

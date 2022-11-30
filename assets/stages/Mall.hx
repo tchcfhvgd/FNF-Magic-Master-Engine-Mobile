@@ -1,8 +1,18 @@
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": [{"type":"Int","isPresset":true,"value":"5","id":"initChar"},{"id":"zoom","value":0.8,"isPresset":true,"type":"Float"},{"id":"camP_1","value":[-15,-290],"isPresset":true,"type":"Array"},{"id":"camP_2","value":[1340,490],"isPresset":true,"type":"Array"}] */
+/* "Variables": [{"isPresset":true,"type":"Int","id":"initChar","value":"5"},{"type":"Float","isPresset":true,"value":0.8,"id":"zoom"},{"type":"Array","isPresset":true,"value":[-15,-290],"id":"camP_1"},{"type":"Array","isPresset":true,"value":[1340,490],"id":"camP_2"}] */
 
 import("Paths", "Paths");
 import("flixel.FlxSprite", "FlxSprite");
+
+function addToLoad(temp){
+temp.push({type:"ATLAS",instance:Paths.image('bgWalls','stages/mall',true)});
+temp.push({type:"ATLAS",instance:Paths.image('upperBop','stages/mall',true)});
+temp.push({type:"ATLAS",instance:Paths.image('bgEscalator','stages/mall',true)});
+temp.push({type:"ATLAS",instance:Paths.image('christmasTree','stages/mall',true)});
+temp.push({type:"ATLAS",instance:Paths.image('bottomBop','stages/mall',true)});
+temp.push({type:"ATLAS",instance:Paths.image('fgSnow','stages/mall',true)});
+temp.push({type:"ATLAS",instance:Paths.image('santa','stages/mall',true)});
+}
 
 presset("initChar", 5);
 presset("zoom", 0.8);
@@ -12,7 +22,7 @@ presset("camP_2", [1340,490]);
 function create(){
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[-1300,-500],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"bgWalls","Graphic_Library":"stages/mall","Sprite_Name":"bg","Scroll":[0.2,0.2],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[-1300,-500],"Visible":true,"Scale":[1,1],"Graphic_File":"bgWalls","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/mall","Sprite_Name":"bg","Scroll":[0.2,0.2],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 var bg_position:Array<Int> = [-1300,-500];
 
@@ -36,19 +46,33 @@ bg.antialiasing = true;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[-1300,-500],"Scale":[1,1],"Visible":true,"Graphic_File":"bgWalls","Angle":0,"Graphic_Library":"stages/mall","Sprite_Name":"bg","Scroll":[0.2,0.2],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[-1300,-500],"Scale":[1,1],"Visible":true,"Graphic_File":"bgWalls","Angle":0,"Graphic_Library":"stages/mall","Antialiasing":true,"Scroll":[0.2,0.2],"Sprite_Name":"bg","Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 bg.loadGraphic(Paths.image('bgWalls', 'stages/mall'));
 //-[Basic_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[-330,0],"Scale":[1,1],"Visible":true,"Graphic_File":"upperBop","Angle":0,"Play_Anim":"beat","Graphic_Library":"stages/mall","Sprite_Name":"upperBoopers","Scroll":[0.33,0.33],"Alpha":1,"Flip_X":false,"Anims_Prefix":[["beat","Upper Crowd Bob",30,false]],"Flip_Y":false} */
+/* "Variables": {"Position":[-330,0],"Scale":[1,1],"Visible":true,"Angle":0,"Graphic_File":"upperBop","Play_Anim":"beat","Graphic_Library":"stages/mall","Antialiasing":true,"Sprite_Name":"upperBoopers","Scroll":[0.33,0.33],"Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["beat","Upper Crowd Bob",30,false]]} */
 
 var upperBoopers_position:Array<Int> = [-330,0];
 
 var upperBoopers = new FlxSprite(upperBoopers_position[0], upperBoopers_position[1]);
 instance.add(upperBoopers);
+//-{Animated_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Position":[-330,0],"Visible":true,"Scale":[1,1],"Graphic_File":"upperBop","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/mall","Play_Anim":"beat","Scroll":[0.33,0.33],"Sprite_Name":"upperBoopers","Alpha":1,"Flip_X":false,"Anims_Prefix":[["beat","Upper Crowd Bob",30,false]],"Flip_Y":false} */
+
+upperBoopers.frames = Paths.getAtlas(Paths.image('upperBop', 'stages/mall', true));
+
+var cur_prefixs:Array<Dynamic> = [["beat","Upper Crowd Bob",30,false]];
+for(i in 0...cur_prefixs.length){
+var cur_anim:Array<Dynamic> = cur_prefixs[i];
+while(cur_anim.length < 6){cur_anim.push(null);}
+upperBoopers.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
+}
+upperBoopers.animation.play('beat');
+//-[Animated_Graphic]-//
 //-{Advanced_Properties}-//
 /* "Packages": {} */
 /* "Variables": {"Position":[-330,0],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"upperBop","Graphic_Library":"stages/mall","Play_Anim":"beat","Antialiasing":true,"Scroll":[0.33,0.33],"Sprite_Name":"upperBoopers","Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["beat","Upper Crowd Bob",30,false]]} */
@@ -65,24 +89,10 @@ upperBoopers.flipX = false;
 upperBoopers.flipY = false;
 upperBoopers.antialiasing = true;
 //-[Advanced_Properties]-//
-//-{Animated_Graphic}-//
-/* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[-330,0],"Visible":true,"Scale":[1,1],"Graphic_File":"upperBop","Angle":0,"Graphic_Library":"stages/mall","Play_Anim":"beat","Scroll":[0.33,0.33],"Sprite_Name":"upperBoopers","Flip_X":false,"Alpha":1,"Anims_Prefix":[["beat","Upper Crowd Bob",30,false]],"Flip_Y":false} */
-
-upperBoopers.frames = Paths.getAtlas(Paths.image('upperBop', 'stages/mall', true));
-
-var cur_prefixs:Array<Dynamic> = [["beat","Upper Crowd Bob",30,false]];
-for(i in 0...cur_prefixs.length){
-var cur_anim:Array<Dynamic> = cur_prefixs[i];
-while(cur_anim.length < 6){cur_anim.push(null);}
-upperBoopers.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
-}
-upperBoopers.animation.play('beat');
-//-[Animated_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[-1350,-550],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"bgEscalator","Graphic_Library":"stages/mall","Sprite_Name":"bgEscalator","Scroll":[0.3,0.3],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[-1350,-550],"Visible":true,"Scale":[1,1],"Graphic_File":"bgEscalator","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/mall","Sprite_Name":"bgEscalator","Scroll":[0.3,0.3],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 var bgEscalator_position:Array<Int> = [-1350,-550];
 
@@ -106,14 +116,14 @@ bgEscalator.antialiasing = true;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[-1350,-550],"Scale":[1,1],"Visible":true,"Graphic_File":"bgEscalator","Angle":0,"Graphic_Library":"stages/mall","Sprite_Name":"bgEscalator","Scroll":[0.3,0.3],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[-1350,-550],"Scale":[1,1],"Visible":true,"Graphic_File":"bgEscalator","Angle":0,"Graphic_Library":"stages/mall","Antialiasing":true,"Scroll":[0.3,0.3],"Sprite_Name":"bgEscalator","Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 bgEscalator.loadGraphic(Paths.image('bgEscalator', 'stages/mall'));
 //-[Basic_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[400,-250],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"christmasTree","Graphic_Library":"stages/mall","Sprite_Name":"tree","Scroll":[0.4,0.4],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[400,-250],"Visible":true,"Scale":[1,1],"Graphic_File":"christmasTree","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/mall","Sprite_Name":"tree","Scroll":[0.4,0.4],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 var tree_position:Array<Int> = [400,-250];
 
@@ -137,19 +147,33 @@ tree.antialiasing = true;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[400,-250],"Scale":[1,1],"Visible":true,"Graphic_File":"christmasTree","Angle":0,"Graphic_Library":"stages/mall","Sprite_Name":"tree","Scroll":[0.4,0.4],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[400,-250],"Scale":[1,1],"Visible":true,"Graphic_File":"christmasTree","Angle":0,"Graphic_Library":"stages/mall","Antialiasing":true,"Scroll":[0.4,0.4],"Sprite_Name":"tree","Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 tree.loadGraphic(Paths.image('christmasTree', 'stages/mall'));
 //-[Basic_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[-470,140],"Scale":[1,1],"Visible":true,"Graphic_File":"bottomBop","Angle":0,"Play_Anim":"beat","Graphic_Library":"stages/mall","Sprite_Name":"bottomBopers","Scroll":[0.9,0.9],"Alpha":1,"Flip_X":false,"Anims_Prefix":[["beat","Bottom Level Boppers Idle",30,false]],"Flip_Y":false} */
+/* "Variables": {"Position":[-470,140],"Scale":[1,1],"Visible":true,"Angle":0,"Graphic_File":"bottomBop","Play_Anim":"beat","Graphic_Library":"stages/mall","Antialiasing":true,"Sprite_Name":"bottomBopers","Scroll":[0.9,0.9],"Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["beat","Bottom Level Boppers Idle",30,false]]} */
 
 var bottomBopers_position:Array<Int> = [-470,140];
 
 var bottomBopers = new FlxSprite(bottomBopers_position[0], bottomBopers_position[1]);
 instance.add(bottomBopers);
+//-{Animated_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Position":[-470,140],"Visible":true,"Scale":[1,1],"Graphic_File":"bottomBop","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/mall","Play_Anim":"beat","Scroll":[0.9,0.9],"Sprite_Name":"bottomBopers","Alpha":1,"Flip_X":false,"Anims_Prefix":[["beat","Bottom Level Boppers Idle",30,false]],"Flip_Y":false} */
+
+bottomBopers.frames = Paths.getAtlas(Paths.image('bottomBop', 'stages/mall', true));
+
+var cur_prefixs:Array<Dynamic> = [["beat","Bottom Level Boppers Idle",30,false]];
+for(i in 0...cur_prefixs.length){
+var cur_anim:Array<Dynamic> = cur_prefixs[i];
+while(cur_anim.length < 6){cur_anim.push(null);}
+bottomBopers.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
+}
+bottomBopers.animation.play('beat');
+//-[Animated_Graphic]-//
 //-{Advanced_Properties}-//
 /* "Packages": {} */
 /* "Variables": {"Position":[-470,140],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"bottomBop","Graphic_Library":"stages/mall","Play_Anim":"beat","Antialiasing":true,"Scroll":[0.9,0.9],"Sprite_Name":"bottomBopers","Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["beat","Bottom Level Boppers Idle",30,false]]} */
@@ -166,20 +190,6 @@ bottomBopers.flipX = false;
 bottomBopers.flipY = false;
 bottomBopers.antialiasing = true;
 //-[Advanced_Properties]-//
-//-{Animated_Graphic}-//
-/* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[-470,140],"Visible":true,"Scale":[1,1],"Graphic_File":"bottomBop","Angle":0,"Graphic_Library":"stages/mall","Play_Anim":"beat","Scroll":[0.9,0.9],"Sprite_Name":"bottomBopers","Flip_X":false,"Alpha":1,"Anims_Prefix":[["beat","Bottom Level Boppers Idle",30,false]],"Flip_Y":false} */
-
-bottomBopers.frames = Paths.getAtlas(Paths.image('bottomBop', 'stages/mall', true));
-
-var cur_prefixs:Array<Dynamic> = [["beat","Bottom Level Boppers Idle",30,false]];
-for(i in 0...cur_prefixs.length){
-var cur_anim:Array<Dynamic> = cur_prefixs[i];
-while(cur_anim.length < 6){cur_anim.push(null);}
-bottomBopers.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
-}
-bottomBopers.animation.play('beat');
-//-[Animated_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
@@ -198,7 +208,7 @@ fgSnow.loadGraphic(Paths.image('fgSnow', 'stages/mall'));
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Play_Anim":"idle","Graphic_Library":"stages/mall","Sprite_Name":"santa","Position":[-640,150],"Graphic_File":"santa","Anims_Prefix":[["idle","santa idle in fear",30,false]]} */
+/* "Variables": {"Graphic_Library":"stages/mall","Play_Anim":"idle","Sprite_Name":"santa","Position":[-640,150],"Anims_Prefix":[["idle","santa idle in fear",30,false]],"Graphic_File":"santa"} */
 
 var santa_position:Array<Int> = [-640,150];
 

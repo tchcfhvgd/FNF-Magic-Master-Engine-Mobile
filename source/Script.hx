@@ -8,9 +8,15 @@ import openfl.Lib;
 using StringTools;
 
 class Script extends FlxBasic {
-    public static function getScript(key:String){
+    public static function getScript(key:String):Script {
         if(MusicBeatState.state.tempScripts.exists(key)){return MusicBeatState.state.tempScripts.get(key);}
         return ModSupport.staticScripts.get(key);
+    }
+    public static function importScript(file:String):Script {
+        var new_sript = new Script();
+        new_sript.exScript(Paths.getText(file));
+        if(new_sript == null){return null;}
+        return new_sript;
     }
 
     public static var parser = new hscript.Parser();

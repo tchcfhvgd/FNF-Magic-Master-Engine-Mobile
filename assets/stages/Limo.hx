@@ -1,10 +1,21 @@
 /* "Packages": {"Paths":"Paths","Type":"Type","FlxSprite":"flixel.FlxSprite","FlxTypedGroup":"flixel.group.FlxTypedGroup"} */
-/* "Variables": [{"type":"Int","isPresset":true,"value":"6","id":"initChar"},{"type":"Array","isPresset":true,"value":[230,330],"id":"camP_1"},{"type":"Array","isPresset":true,"value":[1130,700],"id":"camP_2"},{"id":"zoom","value":0.9,"isPresset":true,"type":"Float"}] */
+/* "Variables": [{"isPresset":true,"type":"Int","id":"initChar","value":"6"},{"isPresset":true,"type":"Array","id":"camP_1","value":[230,330]},{"isPresset":true,"type":"Array","id":"camP_2","value":[1130,700]},{"type":"Float","isPresset":true,"value":0.9,"id":"zoom"}] */
 
 import("Type", "Type");
 import("Paths", "Paths");
 import("flixel.group.FlxTypedGroup", "FlxTypedGroup");
 import("flixel.FlxSprite", "FlxSprite");
+
+function addToLoad(temp){
+temp.push({type:"ATLAS",instance:Paths.image('limoSunset','stages/limo',true)});
+temp.push({type:"ATLAS",instance:Paths.image('metalPole','stages/limo',true)});
+temp.push({type:"ATLAS",instance:Paths.image('bgLimo','stages/limo',true)});
+temp.push({type:"ATLAS",instance:Paths.image("limoDancer","stages/limo",true)});
+temp.push({type:"ATLAS",instance:Paths.image('coldHeartKiller','stages/limo',true)});
+temp.push({type:"ATLAS",instance:Paths.image('stage_light','stages/stage',true)});
+temp.push({type:"ATLAS",instance:Paths.image('limoDrive','stages/limo',true)});
+temp.push({type:"ATLAS",instance:Paths.image('fastCarLol','stages/limo',true)});
+}
 
 presset("initChar", 6);
 presset("camP_1", [230,330]);
@@ -14,7 +25,7 @@ presset("zoom", 0.9);
 function create(){
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[-120,-50],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"limoSunset","Graphic_Library":"stages/limo","Sprite_Name":"sunset","Scroll":[0.1,0.1],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[-120,-50],"Visible":true,"Scale":[1,1],"Graphic_File":"limoSunset","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/limo","Sprite_Name":"sunset","Scroll":[0.1,0.1],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 var sunset_position:Array<Int> = [-120,-50];
 
@@ -38,14 +49,14 @@ sunset.antialiasing = true;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[-120,-50],"Scale":[1,1],"Visible":true,"Graphic_File":"limoSunset","Angle":0,"Graphic_Library":"stages/limo","Sprite_Name":"sunset","Scroll":[0.1,0.1],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[-120,-50],"Scale":[1,1],"Visible":true,"Graphic_File":"limoSunset","Angle":0,"Graphic_Library":"stages/limo","Antialiasing":true,"Scroll":[0.1,0.1],"Sprite_Name":"sunset","Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 sunset.loadGraphic(Paths.image('limoSunset', 'stages/limo'));
 //-[Basic_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[-500,220],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"metalPole","Graphic_Library":"stages/limo","Sprite_Name":"limo","Scroll":[0.4,0.4],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[-500,220],"Visible":true,"Scale":[1,1],"Graphic_File":"metalPole","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/limo","Sprite_Name":"limo","Scroll":[0.4,0.4],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 var limo_position:Array<Int> = [-500,220];
 
@@ -69,19 +80,33 @@ limo.antialiasing = true;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[-500,220],"Scale":[1,1],"Visible":true,"Graphic_File":"metalPole","Angle":0,"Graphic_Library":"stages/limo","Sprite_Name":"limo","Scroll":[0.4,0.4],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[-500,220],"Scale":[1,1],"Visible":true,"Graphic_File":"metalPole","Angle":0,"Graphic_Library":"stages/limo","Antialiasing":true,"Scroll":[0.4,0.4],"Sprite_Name":"limo","Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 limo.loadGraphic(Paths.image('metalPole', 'stages/limo'));
 //-[Basic_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[-150,480],"Scale":[1,1],"Visible":true,"Graphic_File":"bgLimo","Angle":0,"Play_Anim":"idle","Graphic_Library":"stages/limo","Sprite_Name":"bglimo","Scroll":[0.4,0.4],"Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","background limo pink"]],"Flip_Y":false} */
+/* "Variables": {"Position":[-150,480],"Scale":[1,1],"Visible":true,"Angle":0,"Graphic_File":"bgLimo","Play_Anim":"idle","Graphic_Library":"stages/limo","Antialiasing":true,"Sprite_Name":"bglimo","Scroll":[0.4,0.4],"Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["idle","background limo pink"]]} */
 
 var bglimo_position:Array<Int> = [-150,480];
 
 var bglimo = new FlxSprite(bglimo_position[0], bglimo_position[1]);
 instance.add(bglimo);
+//-{Animated_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Position":[-150,480],"Visible":true,"Scale":[1,1],"Graphic_File":"bgLimo","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/limo","Play_Anim":"idle","Scroll":[0.4,0.4],"Sprite_Name":"bglimo","Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","background limo pink"]],"Flip_Y":false} */
+
+bglimo.frames = Paths.getAtlas(Paths.image('bgLimo', 'stages/limo', true));
+
+var cur_prefixs:Array<Dynamic> = [["idle","background limo pink"]];
+for(i in 0...cur_prefixs.length){
+var cur_anim:Array<Dynamic> = cur_prefixs[i];
+while(cur_anim.length < 6){cur_anim.push(null);}
+bglimo.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
+}
+bglimo.animation.play('idle');
+//-[Animated_Graphic]-//
 //-{Advanced_Properties}-//
 /* "Packages": {} */
 /* "Variables": {"Position":[-150,480],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"bgLimo","Graphic_Library":"stages/limo","Play_Anim":"idle","Antialiasing":true,"Scroll":[0.4,0.4],"Sprite_Name":"bglimo","Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["idle","background limo pink"]]} */
@@ -98,20 +123,6 @@ bglimo.flipX = false;
 bglimo.flipY = false;
 bglimo.antialiasing = true;
 //-[Advanced_Properties]-//
-//-{Animated_Graphic}-//
-/* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[-150,480],"Visible":true,"Scale":[1,1],"Graphic_File":"bgLimo","Angle":0,"Graphic_Library":"stages/limo","Play_Anim":"idle","Scroll":[0.4,0.4],"Sprite_Name":"bglimo","Flip_X":false,"Alpha":1,"Anims_Prefix":[["idle","background limo pink"]],"Flip_Y":false} */
-
-bglimo.frames = Paths.getAtlas(Paths.image('bgLimo', 'stages/limo', true));
-
-var cur_prefixs:Array<Dynamic> = [["idle","background limo pink"]];
-for(i in 0...cur_prefixs.length){
-var cur_anim:Array<Dynamic> = cur_prefixs[i];
-while(cur_anim.length < 6){cur_anim.push(null);}
-bglimo.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
-}
-bglimo.animation.play('idle');
-//-[Animated_Graphic]-//
 //->Sprite_Object<-//
 //-<Dancers_Group>-//
 /* "Packages": {"Paths":"Paths","Type":"Type","FlxTypedGroup":"flixel.group.FlxTypedGroup","FlxSprite":"flixel.FlxSprite"} */
@@ -134,7 +145,7 @@ instance.add(dancers);
 //->Dancers_Group<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[-700,180],"Visible":true,"Scale":[1,1],"Graphic_File":"coldHeartKiller","Angle":0,"Graphic_Library":"stages/limo","Sprite_Name":"limolight","Scroll":[0.4,0.4],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[-700,180],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"coldHeartKiller","Antialiasing":true,"Graphic_Library":"stages/limo","Sprite_Name":"limolight","Scroll":[0.4,0.4],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 var limolight_position:Array<Int> = [-700,180];
 
@@ -158,39 +169,45 @@ limolight.antialiasing = true;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[-700,180],"Scale":[1,1],"Visible":true,"Graphic_File":"coldHeartKiller","Angle":0,"Graphic_Library":"stages/limo","Sprite_Name":"limolight","Scroll":[0.4,0.4],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[-700,180],"Scale":[1,1],"Visible":true,"Graphic_File":"coldHeartKiller","Angle":0,"Graphic_Library":"stages/limo","Antialiasing":true,"Scroll":[0.4,0.4],"Sprite_Name":"limolight","Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 limolight.loadGraphic(Paths.image('coldHeartKiller', 'stages/limo'));
 //-[Basic_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
-/* "Packages": {"FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[0,0],"Visible":false,"Scale":[1,1],"Angle":0,"Sprite_Name":"placeholder","Scroll":[1,1],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
+/* "Variables": {"Position":[0,0],"Visible":false,"Scale":[1,1],"Angle":0,"Antialiasing":true,"Sprite_Name":"gfsprite","Scroll":[1,1],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
-var placeholder_position:Array<Int> = [0,0];
+var gfsprite_position:Array<Int> = [0,0];
 
-var placeholder = new FlxSprite(placeholder_position[0], placeholder_position[1]);
-instance.add(placeholder);
+var gfsprite = new FlxSprite(gfsprite_position[0], gfsprite_position[1]);
+instance.add(gfsprite);
 //-{Advanced_Properties}-//
 /* "Packages": {} */
-/* "Variables": {"Position":[0,0],"Visible":false,"Scale":[1,1],"Angle":0,"Antialiasing":true,"Sprite_Name":"placeholder","Scroll":[1,1],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[0,0],"Visible":false,"Scale":[1,1],"Angle":0,"Antialiasing":true,"Sprite_Name":"gfsprite","Scroll":[1,1],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
-var placeholder_scroll:Array<Int> = [1,1];
-var placeholder_scale:Array<Int> = [1,1];
+var gfsprite_scroll:Array<Int> = [1,1];
+var gfsprite_scale:Array<Int> = [1,1];
 
-placeholder.scale.set(placeholder_scale[0], placeholder_scale[1]);
-placeholder.scrollFactor.set(placeholder_scroll[0], placeholder_scroll[1]);
-placeholder.visible = false;
-placeholder.angle = 0;
-placeholder.alpha = 1;
-placeholder.flipX = false;
-placeholder.flipY = false;
-placeholder.antialiasing = true;
+gfsprite.scale.set(gfsprite_scale[0], gfsprite_scale[1]);
+gfsprite.scrollFactor.set(gfsprite_scroll[0], gfsprite_scroll[1]);
+gfsprite.visible = false;
+gfsprite.angle = 0;
+gfsprite.alpha = 1;
+gfsprite.flipX = false;
+gfsprite.flipY = false;
+gfsprite.antialiasing = true;
 //-[Advanced_Properties]-//
+//-{Basic_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Position":[0,0],"Scale":[1,1],"Visible":false,"Graphic_File":"stage_light","Angle":0,"Graphic_Library":"stages/stage","Antialiasing":true,"Sprite_Name":"gfsprite","Scroll":[1,1],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
+
+gfsprite.loadGraphic(Paths.image('stage_light', 'stages/stage'));
+//-[Basic_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Graphic_Library":"stages/limo","Play_Anim":"idle","Sprite_Name":"limo_floor","Position":[-120,550],"Anims_Prefix":[["idle","Limo stage"]],"Graphic_File":"limoDrive"} */
+/* "Variables": {"Play_Anim":"idle","Graphic_Library":"stages/limo","Sprite_Name":"limo_floor","Position":[-120,550],"Graphic_File":"limoDrive","Anims_Prefix":[["idle","Limo stage"]]} */
 
 var limo_floor_position:Array<Int> = [-120,550];
 

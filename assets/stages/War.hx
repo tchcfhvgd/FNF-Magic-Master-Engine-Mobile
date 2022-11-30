@@ -1,8 +1,27 @@
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": [{"isPresset":true,"type":"Int","id":"initChar","value":"9"},{"id":"zoom","value":1.1,"isPresset":true,"type":"Float"},{"id":"camP_1","value":[340,-3000],"isPresset":true,"type":"Array"},{"id":"camP_2","value":[1070,630],"isPresset":true,"type":"Array"}] */
+/* "Variables": [{"type":"Int","isPresset":true,"value":"9","id":"initChar"},{"type":"Float","isPresset":true,"value":1.1,"id":"zoom"},{"type":"Array","isPresset":true,"value":[340,-3000],"id":"camP_1"},{"type":"Array","isPresset":true,"value":[1070,630],"id":"camP_2"}] */
 
 import("Paths", "Paths");
 import("flixel.FlxSprite", "FlxSprite");
+
+function addToLoad(temp){
+temp.push({type:"ATLAS",instance:Paths.image('tankSky','stages/war',true)});
+temp.push({type:"ATLAS",instance:Paths.image('tankClouds','stages/war',true)});
+temp.push({type:"ATLAS",instance:Paths.image('tankMountains','stages/war',true)});
+temp.push({type:"ATLAS",instance:Paths.image('tankBuildings','stages/war',true)});
+temp.push({type:"ATLAS",instance:Paths.image('tankRuins','stages/war',true)});
+temp.push({type:"ATLAS",instance:Paths.image('smokeLeft','stages/war',true)});
+temp.push({type:"ATLAS",instance:Paths.image('smokeRight','stages/war',true)});
+temp.push({type:"ATLAS",instance:Paths.image('tankWatchtower','stages/war',true)});
+temp.push({type:"ATLAS",instance:Paths.image('tankRolling','stages/war',true)});
+temp.push({type:"ATLAS",instance:Paths.image('tankGround','stages/war',true)});
+temp.push({type:"ATLAS",instance:Paths.image('tank0','stages/war',true)});
+temp.push({type:"ATLAS",instance:Paths.image('tank1','stages/war',true)});
+temp.push({type:"ATLAS",instance:Paths.image('tank2','stages/war',true)});
+temp.push({type:"ATLAS",instance:Paths.image('tank4','stages/war',true)});
+temp.push({type:"ATLAS",instance:Paths.image('tank5','stages/war',true)});
+temp.push({type:"ATLAS",instance:Paths.image('tank3','stages/war',true)});
+}
 
 presset("initChar", 9);
 presset("zoom", 1.1);
@@ -12,7 +31,7 @@ presset("camP_2", [1070,630]);
 function create(){
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[-250,-250],"Visible":true,"Scale":[2,3],"Graphic_File":"tankSky","Angle":0,"Graphic_Library":"stages/war","Antialiasing":true,"Sprite_Name":"tankBG","Scroll":[0,0],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[-250,-250],"Visible":true,"Scale":[2,3],"Angle":0,"Graphic_File":"tankSky","Graphic_Library":"stages/war","Antialiasing":true,"Sprite_Name":"tankBG","Scroll":[0,0],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 var tankBG_position:Array<Int> = [-250,-250];
 
@@ -36,14 +55,14 @@ tankBG.antialiasing = true;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[-250,-250],"Scale":[2,3],"Visible":true,"Graphic_File":"tankSky","Angle":0,"Graphic_Library":"stages/war","Antialiasing":true,"Scroll":[0,0],"Sprite_Name":"tankBG","Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[-250,-250],"Scale":[2,3],"Visible":true,"Graphic_File":"tankSky","Angle":0,"Graphic_Library":"stages/war","Antialiasing":true,"Scroll":[0,0],"Sprite_Name":"tankBG","Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 tankBG.loadGraphic(Paths.image('tankSky', 'stages/war'));
 //-[Basic_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[-500,150],"Visible":true,"Scale":[1,1],"Graphic_File":"tankClouds","Angle":0,"Graphic_Library":"stages/war","Antialiasing":true,"Sprite_Name":"tankClouds","Scroll":[0.1,0.1],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[-500,150],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"tankClouds","Graphic_Library":"stages/war","Antialiasing":true,"Sprite_Name":"tankClouds","Scroll":[0.1,0.1],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 var tankClouds_position:Array<Int> = [-500,150];
 
@@ -67,14 +86,14 @@ tankClouds.antialiasing = true;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[-500,150],"Scale":[1,1],"Visible":true,"Graphic_File":"tankClouds","Angle":0,"Graphic_Library":"stages/war","Antialiasing":true,"Scroll":[0.1,0.1],"Sprite_Name":"tankClouds","Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[-500,150],"Scale":[1,1],"Visible":true,"Graphic_File":"tankClouds","Angle":0,"Graphic_Library":"stages/war","Antialiasing":true,"Scroll":[0.1,0.1],"Sprite_Name":"tankClouds","Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 tankClouds.loadGraphic(Paths.image('tankClouds', 'stages/war'));
 //-[Basic_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[-90,100],"Visible":true,"Scale":[1,1],"Graphic_File":"tankMountains","Angle":0,"Graphic_Library":"stages/war","Antialiasing":true,"Sprite_Name":"tankMountains","Scroll":[0.2,0.2],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[-90,100],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"tankMountains","Graphic_Library":"stages/war","Antialiasing":true,"Sprite_Name":"tankMountains","Scroll":[0.2,0.2],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 var tankMountains_position:Array<Int> = [-90,100];
 
@@ -98,14 +117,14 @@ tankMountains.antialiasing = true;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[-90,100],"Scale":[1,1],"Visible":true,"Graphic_File":"tankMountains","Angle":0,"Graphic_Library":"stages/war","Antialiasing":true,"Scroll":[0.2,0.2],"Sprite_Name":"tankMountains","Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[-90,100],"Scale":[1,1],"Visible":true,"Graphic_File":"tankMountains","Angle":0,"Graphic_Library":"stages/war","Antialiasing":true,"Scroll":[0.2,0.2],"Sprite_Name":"tankMountains","Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 tankMountains.loadGraphic(Paths.image('tankMountains', 'stages/war'));
 //-[Basic_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[-200,130],"Visible":true,"Scale":[1,1],"Graphic_File":"tankBuildings","Angle":0,"Graphic_Library":"stages/war","Antialiasing":true,"Sprite_Name":"tankBuildings","Scroll":[0.3,0.3],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[-200,130],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"tankBuildings","Graphic_Library":"stages/war","Antialiasing":true,"Sprite_Name":"tankBuildings","Scroll":[0.3,0.3],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 var tankBuildings_position:Array<Int> = [-200,130];
 
@@ -129,14 +148,14 @@ tankBuildings.antialiasing = true;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[-200,130],"Scale":[1,1],"Visible":true,"Graphic_File":"tankBuildings","Angle":0,"Graphic_Library":"stages/war","Antialiasing":true,"Scroll":[0.3,0.3],"Sprite_Name":"tankBuildings","Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[-200,130],"Scale":[1,1],"Visible":true,"Graphic_File":"tankBuildings","Angle":0,"Graphic_Library":"stages/war","Antialiasing":true,"Scroll":[0.3,0.3],"Sprite_Name":"tankBuildings","Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 tankBuildings.loadGraphic(Paths.image('tankBuildings', 'stages/war'));
 //-[Basic_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[-180,150],"Visible":true,"Scale":[1,1],"Graphic_File":"tankRuins","Angle":0,"Graphic_Library":"stages/war","Antialiasing":true,"Sprite_Name":"tankRuins","Scroll":[0.35,0.35],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+/* "Variables": {"Position":[-180,150],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"tankRuins","Graphic_Library":"stages/war","Antialiasing":true,"Sprite_Name":"tankRuins","Scroll":[0.35,0.35],"Alpha":1,"Flip_X":false,"Flip_Y":false} */
 
 var tankRuins_position:Array<Int> = [-180,150];
 
@@ -160,19 +179,33 @@ tankRuins.antialiasing = true;
 //-[Advanced_Properties]-//
 //-{Basic_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[-180,150],"Scale":[1,1],"Visible":true,"Graphic_File":"tankRuins","Angle":0,"Graphic_Library":"stages/war","Antialiasing":true,"Scroll":[0.35,0.35],"Sprite_Name":"tankRuins","Alpha":1,"Flip_X":false,"Flip_Y":false} */
+/* "Variables": {"Position":[-180,150],"Scale":[1,1],"Visible":true,"Graphic_File":"tankRuins","Angle":0,"Graphic_Library":"stages/war","Antialiasing":true,"Scroll":[0.35,0.35],"Sprite_Name":"tankRuins","Flip_X":false,"Alpha":1,"Flip_Y":false} */
 
 tankRuins.loadGraphic(Paths.image('tankRuins', 'stages/war'));
 //-[Basic_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[0,0],"Visible":true,"Scale":[1,1],"Graphic_File":"smokeLeft","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Sprite_Name":"smokeLeft","Scroll":[0.4,0.4],"Flip_X":false,"Alpha":1,"Anims_Prefix":[["idle","SmokeBlurLeft"]],"Flip_Y":false} */
+/* "Variables": {"Position":[0,0],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"smokeLeft","Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Sprite_Name":"smokeLeft","Scroll":[0.4,0.4],"Alpha":1,"Flip_X":false,"Flip_Y":false,"Anims_Prefix":[["idle","SmokeBlurLeft"]]} */
 
 var smokeLeft_position:Array<Int> = [0,0];
 
 var smokeLeft = new FlxSprite(smokeLeft_position[0], smokeLeft_position[1]);
 instance.add(smokeLeft);
+//-{Animated_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Position":[0,0],"Scale":[1,1],"Visible":true,"Graphic_File":"smokeLeft","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Scroll":[0.4,0.4],"Sprite_Name":"smokeLeft","Flip_X":false,"Alpha":1,"Anims_Prefix":[["idle","SmokeBlurLeft"]],"Flip_Y":false} */
+
+smokeLeft.frames = Paths.getAtlas(Paths.image('smokeLeft', 'stages/war', true));
+
+var cur_prefixs:Array<Dynamic> = [["idle","SmokeBlurLeft"]];
+for(i in 0...cur_prefixs.length){
+var cur_anim:Array<Dynamic> = cur_prefixs[i];
+while(cur_anim.length < 6){cur_anim.push(null);}
+smokeLeft.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
+}
+smokeLeft.animation.play('idle');
+//-[Animated_Graphic]-//
 //-{Advanced_Properties}-//
 /* "Packages": {} */
 /* "Variables": {"Position":[0,0],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"smokeLeft","Play_Anim":"idle","Graphic_Library":"stages/war","Antialiasing":true,"Scroll":[0.4,0.4],"Sprite_Name":"smokeLeft","Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["idle","SmokeBlurLeft"]]} */
@@ -189,29 +222,29 @@ smokeLeft.flipX = false;
 smokeLeft.flipY = false;
 smokeLeft.antialiasing = true;
 //-[Advanced_Properties]-//
-//-{Animated_Graphic}-//
-/* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[0,0],"Scale":[1,1],"Visible":true,"Graphic_File":"smokeLeft","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Scroll":[0.4,0.4],"Sprite_Name":"smokeLeft","Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","SmokeBlurLeft"]],"Flip_Y":false} */
-
-smokeLeft.frames = Paths.getAtlas(Paths.image('smokeLeft', 'stages/war', true));
-
-var cur_prefixs:Array<Dynamic> = [["idle","SmokeBlurLeft"]];
-for(i in 0...cur_prefixs.length){
-var cur_anim:Array<Dynamic> = cur_prefixs[i];
-while(cur_anim.length < 6){cur_anim.push(null);}
-smokeLeft.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
-}
-smokeLeft.animation.play('idle');
-//-[Animated_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[900,0],"Visible":true,"Scale":[1,1],"Graphic_File":"smokeRight","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Sprite_Name":"smokeRight","Scroll":[0.4,0.4],"Flip_X":false,"Alpha":1,"Anims_Prefix":[["idle","SmokeRight"]],"Flip_Y":false} */
+/* "Variables": {"Position":[900,0],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"smokeRight","Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Sprite_Name":"smokeRight","Scroll":[0.4,0.4],"Alpha":1,"Flip_X":false,"Flip_Y":false,"Anims_Prefix":[["idle","SmokeRight"]]} */
 
 var smokeRight_position:Array<Int> = [900,0];
 
 var smokeRight = new FlxSprite(smokeRight_position[0], smokeRight_position[1]);
 instance.add(smokeRight);
+//-{Animated_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Position":[900,0],"Scale":[1,1],"Visible":true,"Graphic_File":"smokeRight","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Scroll":[0.4,0.4],"Sprite_Name":"smokeRight","Flip_X":false,"Alpha":1,"Anims_Prefix":[["idle","SmokeRight"]],"Flip_Y":false} */
+
+smokeRight.frames = Paths.getAtlas(Paths.image('smokeRight', 'stages/war', true));
+
+var cur_prefixs:Array<Dynamic> = [["idle","SmokeRight"]];
+for(i in 0...cur_prefixs.length){
+var cur_anim:Array<Dynamic> = cur_prefixs[i];
+while(cur_anim.length < 6){cur_anim.push(null);}
+smokeRight.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
+}
+smokeRight.animation.play('idle');
+//-[Animated_Graphic]-//
 //-{Advanced_Properties}-//
 /* "Packages": {} */
 /* "Variables": {"Position":[900,0],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"smokeRight","Play_Anim":"idle","Graphic_Library":"stages/war","Antialiasing":true,"Scroll":[0.4,0.4],"Sprite_Name":"smokeRight","Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["idle","SmokeRight"]]} */
@@ -228,29 +261,29 @@ smokeRight.flipX = false;
 smokeRight.flipY = false;
 smokeRight.antialiasing = true;
 //-[Advanced_Properties]-//
-//-{Animated_Graphic}-//
-/* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[900,0],"Scale":[1,1],"Visible":true,"Graphic_File":"smokeRight","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Scroll":[0.4,0.4],"Sprite_Name":"smokeRight","Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","SmokeRight"]],"Flip_Y":false} */
-
-smokeRight.frames = Paths.getAtlas(Paths.image('smokeRight', 'stages/war', true));
-
-var cur_prefixs:Array<Dynamic> = [["idle","SmokeRight"]];
-for(i in 0...cur_prefixs.length){
-var cur_anim:Array<Dynamic> = cur_prefixs[i];
-while(cur_anim.length < 6){cur_anim.push(null);}
-smokeRight.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
-}
-smokeRight.animation.play('idle');
-//-[Animated_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[100,50],"Visible":true,"Scale":[1,1],"Graphic_File":"tankWatchtower","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Sprite_Name":"tankWatchTower","Scroll":[0.5,0.5],"Flip_X":false,"Alpha":1,"Anims_Prefix":[["idle","watchtower gradient color",30,false]],"Flip_Y":false} */
+/* "Variables": {"Position":[100,50],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"tankWatchtower","Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Sprite_Name":"tankWatchTower","Scroll":[0.5,0.5],"Alpha":1,"Flip_X":false,"Flip_Y":false,"Anims_Prefix":[["idle","watchtower gradient color",30,false]]} */
 
 var tankWatchTower_position:Array<Int> = [100,50];
 
 var tankWatchTower = new FlxSprite(tankWatchTower_position[0], tankWatchTower_position[1]);
 instance.add(tankWatchTower);
+//-{Animated_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Position":[100,50],"Scale":[1,1],"Visible":true,"Graphic_File":"tankWatchtower","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Scroll":[0.5,0.5],"Sprite_Name":"tankWatchTower","Flip_X":false,"Alpha":1,"Anims_Prefix":[["idle","watchtower gradient color",30,false]],"Flip_Y":false} */
+
+tankWatchTower.frames = Paths.getAtlas(Paths.image('tankWatchtower', 'stages/war', true));
+
+var cur_prefixs:Array<Dynamic> = [["idle","watchtower gradient color",30,false]];
+for(i in 0...cur_prefixs.length){
+var cur_anim:Array<Dynamic> = cur_prefixs[i];
+while(cur_anim.length < 6){cur_anim.push(null);}
+tankWatchTower.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
+}
+tankWatchTower.animation.play('idle');
+//-[Animated_Graphic]-//
 //-{Advanced_Properties}-//
 /* "Packages": {} */
 /* "Variables": {"Position":[100,50],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"tankWatchtower","Play_Anim":"idle","Graphic_Library":"stages/war","Antialiasing":true,"Scroll":[0.5,0.5],"Sprite_Name":"tankWatchTower","Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["idle","watchtower gradient color",30,false]]} */
@@ -267,29 +300,29 @@ tankWatchTower.flipX = false;
 tankWatchTower.flipY = false;
 tankWatchTower.antialiasing = true;
 //-[Advanced_Properties]-//
-//-{Animated_Graphic}-//
-/* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[100,50],"Scale":[1,1],"Visible":true,"Graphic_File":"tankWatchtower","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Scroll":[0.5,0.5],"Sprite_Name":"tankWatchTower","Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","watchtower gradient color",30,false]],"Flip_Y":false} */
-
-tankWatchTower.frames = Paths.getAtlas(Paths.image('tankWatchtower', 'stages/war', true));
-
-var cur_prefixs:Array<Dynamic> = [["idle","watchtower gradient color",30,false]];
-for(i in 0...cur_prefixs.length){
-var cur_anim:Array<Dynamic> = cur_prefixs[i];
-while(cur_anim.length < 6){cur_anim.push(null);}
-tankWatchTower.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
-}
-tankWatchTower.animation.play('idle');
-//-[Animated_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[0,300],"Visible":true,"Scale":[1,1],"Graphic_File":"tankRolling","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Sprite_Name":"tankRolling","Scroll":[0.5,0.5],"Flip_X":false,"Alpha":1,"Anims_Prefix":[["idle","BG tank w lighting instance 1"]],"Flip_Y":false} */
+/* "Variables": {"Position":[0,300],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"tankRolling","Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Sprite_Name":"tankRolling","Scroll":[0.5,0.5],"Alpha":1,"Flip_X":false,"Flip_Y":false,"Anims_Prefix":[["idle","BG tank w lighting instance 1"]]} */
 
 var tankRolling_position:Array<Int> = [0,300];
 
 var tankRolling = new FlxSprite(tankRolling_position[0], tankRolling_position[1]);
 instance.add(tankRolling);
+//-{Animated_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Position":[0,300],"Scale":[1,1],"Visible":true,"Graphic_File":"tankRolling","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Scroll":[0.5,0.5],"Sprite_Name":"tankRolling","Flip_X":false,"Alpha":1,"Anims_Prefix":[["idle","BG tank w lighting instance 1"]],"Flip_Y":false} */
+
+tankRolling.frames = Paths.getAtlas(Paths.image('tankRolling', 'stages/war', true));
+
+var cur_prefixs:Array<Dynamic> = [["idle","BG tank w lighting instance 1"]];
+for(i in 0...cur_prefixs.length){
+var cur_anim:Array<Dynamic> = cur_prefixs[i];
+while(cur_anim.length < 6){cur_anim.push(null);}
+tankRolling.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
+}
+tankRolling.animation.play('idle');
+//-[Animated_Graphic]-//
 //-{Advanced_Properties}-//
 /* "Packages": {} */
 /* "Variables": {"Position":[0,300],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"tankRolling","Play_Anim":"idle","Graphic_Library":"stages/war","Antialiasing":true,"Scroll":[0.5,0.5],"Sprite_Name":"tankRolling","Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["idle","BG tank w lighting instance 1"]]} */
@@ -306,20 +339,6 @@ tankRolling.flipX = false;
 tankRolling.flipY = false;
 tankRolling.antialiasing = true;
 //-[Advanced_Properties]-//
-//-{Animated_Graphic}-//
-/* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[0,300],"Scale":[1,1],"Visible":true,"Graphic_File":"tankRolling","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Scroll":[0.5,0.5],"Sprite_Name":"tankRolling","Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","BG tank w lighting instance 1"]],"Flip_Y":false} */
-
-tankRolling.frames = Paths.getAtlas(Paths.image('tankRolling', 'stages/war', true));
-
-var cur_prefixs:Array<Dynamic> = [["idle","BG tank w lighting instance 1"]];
-for(i in 0...cur_prefixs.length){
-var cur_anim:Array<Dynamic> = cur_prefixs[i];
-while(cur_anim.length < 6){cur_anim.push(null);}
-tankRolling.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
-}
-tankRolling.animation.play('idle');
-//-[Animated_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
@@ -338,12 +357,26 @@ tankGround.loadGraphic(Paths.image('tankGround', 'stages/war'));
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[-500,700],"Visible":true,"Scale":[1,1],"Graphic_File":"tank0","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Sprite_Name":"tank0","Scroll":[1.7,1.5],"Flip_X":false,"Alpha":1,"Anims_Prefix":[["idle","fg",24,false]],"Flip_Y":false} */
+/* "Variables": {"Position":[-500,700],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"tank0","Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Sprite_Name":"tank0","Scroll":[1.7,1.5],"Alpha":1,"Flip_X":false,"Flip_Y":false,"Anims_Prefix":[["idle","fg",24,false]]} */
 
 var tank0_position:Array<Int> = [-500,700];
 
 var tank0 = new FlxSprite(tank0_position[0], tank0_position[1]);
 instance.add(tank0);
+//-{Animated_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Position":[-500,700],"Scale":[1,1],"Visible":true,"Graphic_File":"tank0","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Scroll":[1.7,1.5],"Sprite_Name":"tank0","Flip_X":false,"Alpha":1,"Anims_Prefix":[["idle","fg",24,false]],"Flip_Y":false} */
+
+tank0.frames = Paths.getAtlas(Paths.image('tank0', 'stages/war', true));
+
+var cur_prefixs:Array<Dynamic> = [["idle","fg",24,false]];
+for(i in 0...cur_prefixs.length){
+var cur_anim:Array<Dynamic> = cur_prefixs[i];
+while(cur_anim.length < 6){cur_anim.push(null);}
+tank0.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
+}
+tank0.animation.play('idle');
+//-[Animated_Graphic]-//
 //-{Advanced_Properties}-//
 /* "Packages": {} */
 /* "Variables": {"Position":[-500,700],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"tank0","Play_Anim":"idle","Graphic_Library":"stages/war","Antialiasing":true,"Scroll":[1.7,1.5],"Sprite_Name":"tank0","Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["idle","fg",24,false]]} */
@@ -360,29 +393,29 @@ tank0.flipX = false;
 tank0.flipY = false;
 tank0.antialiasing = true;
 //-[Advanced_Properties]-//
-//-{Animated_Graphic}-//
-/* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[-500,700],"Scale":[1,1],"Visible":true,"Graphic_File":"tank0","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Scroll":[1.7,1.5],"Sprite_Name":"tank0","Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","fg",24,false]],"Flip_Y":false} */
-
-tank0.frames = Paths.getAtlas(Paths.image('tank0', 'stages/war', true));
-
-var cur_prefixs:Array<Dynamic> = [["idle","fg",24,false]];
-for(i in 0...cur_prefixs.length){
-var cur_anim:Array<Dynamic> = cur_prefixs[i];
-while(cur_anim.length < 6){cur_anim.push(null);}
-tank0.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
-}
-tank0.animation.play('idle');
-//-[Animated_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[-300,640],"Visible":true,"Scale":[1,1],"Graphic_File":"tank1","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Sprite_Name":"tank1","Scroll":[2,0.2],"Flip_X":false,"Alpha":1,"Anims_Prefix":[["idle","fg",24,false]],"Flip_Y":false} */
+/* "Variables": {"Position":[-300,640],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"tank1","Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Sprite_Name":"tank1","Scroll":[2,0.2],"Alpha":1,"Flip_X":false,"Flip_Y":false,"Anims_Prefix":[["idle","fg",24,false]]} */
 
 var tank1_position:Array<Int> = [-300,640];
 
 var tank1 = new FlxSprite(tank1_position[0], tank1_position[1]);
 instance.add(tank1);
+//-{Animated_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Position":[-300,640],"Scale":[1,1],"Visible":true,"Graphic_File":"tank1","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Scroll":[2,0.2],"Sprite_Name":"tank1","Flip_X":false,"Alpha":1,"Anims_Prefix":[["idle","fg",24,false]],"Flip_Y":false} */
+
+tank1.frames = Paths.getAtlas(Paths.image('tank1', 'stages/war', true));
+
+var cur_prefixs:Array<Dynamic> = [["idle","fg",24,false]];
+for(i in 0...cur_prefixs.length){
+var cur_anim:Array<Dynamic> = cur_prefixs[i];
+while(cur_anim.length < 6){cur_anim.push(null);}
+tank1.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
+}
+tank1.animation.play('idle');
+//-[Animated_Graphic]-//
 //-{Advanced_Properties}-//
 /* "Packages": {} */
 /* "Variables": {"Position":[-300,640],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"tank1","Play_Anim":"idle","Graphic_Library":"stages/war","Antialiasing":true,"Scroll":[2,0.2],"Sprite_Name":"tank1","Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["idle","fg",24,false]]} */
@@ -399,43 +432,15 @@ tank1.flipX = false;
 tank1.flipY = false;
 tank1.antialiasing = true;
 //-[Advanced_Properties]-//
-//-{Animated_Graphic}-//
-/* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[-300,640],"Scale":[1,1],"Visible":true,"Graphic_File":"tank1","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Scroll":[2,0.2],"Sprite_Name":"tank1","Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","fg",24,false]],"Flip_Y":false} */
-
-tank1.frames = Paths.getAtlas(Paths.image('tank1', 'stages/war', true));
-
-var cur_prefixs:Array<Dynamic> = [["idle","fg",24,false]];
-for(i in 0...cur_prefixs.length){
-var cur_anim:Array<Dynamic> = cur_prefixs[i];
-while(cur_anim.length < 6){cur_anim.push(null);}
-tank1.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
-}
-tank1.animation.play('idle');
-//-[Animated_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[450,940],"Scale":[1,1],"Visible":true,"Angle":0,"Graphic_File":"tank2","Graphic_Library":"stages/war","Antialiasing":true,"Play_Anim":"idle","Sprite_Name":"tank2","Scroll":[1.5,1.5],"Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["idle","foreground",24,"tank"]]} */
+/* "Variables": {"Position":[450,940],"Scale":[1,1],"Visible":true,"Graphic_File":"tank2","Angle":0,"Graphic_Library":"stages/war","Antialiasing":true,"Play_Anim":"idle","Sprite_Name":"tank2","Scroll":[1.5,1.5],"Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","foreground",24,"tank"]],"Flip_Y":false} */
 
 var tank2_position:Array<Int> = [450,940];
 
 var tank2 = new FlxSprite(tank2_position[0], tank2_position[1]);
 instance.add(tank2);
-//-{Animated_Graphic}-//
-/* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[450,940],"Visible":true,"Scale":[1,1],"Graphic_File":"tank2","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Scroll":[1.5,1.5],"Sprite_Name":"tank2","Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","foreground",24,"tank"]],"Flip_Y":false} */
-
-tank2.frames = Paths.getAtlas(Paths.image('tank2', 'stages/war', true));
-
-var cur_prefixs:Array<Dynamic> = [["idle","foreground",24,"tank"]];
-for(i in 0...cur_prefixs.length){
-var cur_anim:Array<Dynamic> = cur_prefixs[i];
-while(cur_anim.length < 6){cur_anim.push(null);}
-tank2.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
-}
-tank2.animation.play('idle');
-//-[Animated_Graphic]-//
 //-{Advanced_Properties}-//
 /* "Packages": {} */
 /* "Variables": {"Position":[450,940],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"tank2","Play_Anim":"idle","Graphic_Library":"stages/war","Antialiasing":true,"Scroll":[1.5,1.5],"Sprite_Name":"tank2","Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["idle","foreground",24,"tank"]]} */
@@ -452,29 +457,29 @@ tank2.flipX = false;
 tank2.flipY = false;
 tank2.antialiasing = true;
 //-[Advanced_Properties]-//
+//-{Animated_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Position":[450,940],"Visible":true,"Scale":[1,1],"Graphic_File":"tank2","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Scroll":[1.5,1.5],"Sprite_Name":"tank2","Flip_X":false,"Alpha":1,"Anims_Prefix":[["idle","foreground",24,"tank"]],"Flip_Y":false} */
+
+tank2.frames = Paths.getAtlas(Paths.image('tank2', 'stages/war', true));
+
+var cur_prefixs:Array<Dynamic> = [["idle","foreground",24,"tank"]];
+for(i in 0...cur_prefixs.length){
+var cur_anim:Array<Dynamic> = cur_prefixs[i];
+while(cur_anim.length < 6){cur_anim.push(null);}
+tank2.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
+}
+tank2.animation.play('idle');
+//-[Animated_Graphic]-//
 //->Sprite_Object<-//
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[1300,900],"Scale":[1,1],"Visible":true,"Angle":0,"Graphic_File":"tank4","Graphic_Library":"stages/war","Antialiasing":true,"Play_Anim":"idle","Sprite_Name":"tank4","Scroll":[1.5,1.5],"Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["idle","fg",24,false]]} */
+/* "Variables": {"Position":[1300,900],"Scale":[1,1],"Visible":true,"Graphic_File":"tank4","Angle":0,"Graphic_Library":"stages/war","Antialiasing":true,"Play_Anim":"idle","Sprite_Name":"tank4","Scroll":[1.5,1.5],"Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","fg",24,false]],"Flip_Y":false} */
 
 var tank4_position:Array<Int> = [1300,900];
 
 var tank4 = new FlxSprite(tank4_position[0], tank4_position[1]);
 instance.add(tank4);
-//-{Animated_Graphic}-//
-/* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[1300,900],"Visible":true,"Scale":[1,1],"Graphic_File":"tank4","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Scroll":[1.5,1.5],"Sprite_Name":"tank4","Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","fg",24,false]],"Flip_Y":false} */
-
-tank4.frames = Paths.getAtlas(Paths.image('tank4', 'stages/war', true));
-
-var cur_prefixs:Array<Dynamic> = [["idle","fg",24,false]];
-for(i in 0...cur_prefixs.length){
-var cur_anim:Array<Dynamic> = cur_prefixs[i];
-while(cur_anim.length < 6){cur_anim.push(null);}
-tank4.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
-}
-tank4.animation.play('idle');
-//-[Animated_Graphic]-//
 //-{Advanced_Properties}-//
 /* "Packages": {} */
 /* "Variables": {"Position":[1300,900],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"tank4","Play_Anim":"idle","Graphic_Library":"stages/war","Antialiasing":true,"Scroll":[1.5,1.5],"Sprite_Name":"tank4","Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["idle","fg",24,false]]} */
@@ -491,29 +496,29 @@ tank4.flipX = false;
 tank4.flipY = false;
 tank4.antialiasing = true;
 //-[Advanced_Properties]-//
-//->Sprite_Object<-//
-//-<Sprite_Object>-//
-/* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[1620,700],"Scale":[1,1],"Visible":true,"Angle":0,"Graphic_File":"tank5","Graphic_Library":"stages/war","Antialiasing":true,"Play_Anim":"idle","Sprite_Name":"tank5","Scroll":[1.5,1.5],"Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["idle","fg",24,false]]} */
-
-var tank5_position:Array<Int> = [1620,700];
-
-var tank5 = new FlxSprite(tank5_position[0], tank5_position[1]);
-instance.add(tank5);
 //-{Animated_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[1620,700],"Visible":true,"Scale":[1,1],"Graphic_File":"tank5","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Scroll":[1.5,1.5],"Sprite_Name":"tank5","Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","fg",24,false]],"Flip_Y":false} */
+/* "Variables": {"Position":[1300,900],"Visible":true,"Scale":[1,1],"Graphic_File":"tank4","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Scroll":[1.5,1.5],"Sprite_Name":"tank4","Flip_X":false,"Alpha":1,"Anims_Prefix":[["idle","fg",24,false]],"Flip_Y":false} */
 
-tank5.frames = Paths.getAtlas(Paths.image('tank5', 'stages/war', true));
+tank4.frames = Paths.getAtlas(Paths.image('tank4', 'stages/war', true));
 
 var cur_prefixs:Array<Dynamic> = [["idle","fg",24,false]];
 for(i in 0...cur_prefixs.length){
 var cur_anim:Array<Dynamic> = cur_prefixs[i];
 while(cur_anim.length < 6){cur_anim.push(null);}
-tank5.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
+tank4.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
 }
-tank5.animation.play('idle');
+tank4.animation.play('idle');
 //-[Animated_Graphic]-//
+//->Sprite_Object<-//
+//-<Sprite_Object>-//
+/* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
+/* "Variables": {"Position":[1620,700],"Scale":[1,1],"Visible":true,"Graphic_File":"tank5","Angle":0,"Graphic_Library":"stages/war","Antialiasing":true,"Play_Anim":"idle","Sprite_Name":"tank5","Scroll":[1.5,1.5],"Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","fg",24,false]],"Flip_Y":false} */
+
+var tank5_position:Array<Int> = [1620,700];
+
+var tank5 = new FlxSprite(tank5_position[0], tank5_position[1]);
+instance.add(tank5);
 //-{Advanced_Properties}-//
 /* "Packages": {} */
 /* "Variables": {"Position":[1620,700],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"tank5","Play_Anim":"idle","Graphic_Library":"stages/war","Antialiasing":true,"Scroll":[1.5,1.5],"Sprite_Name":"tank5","Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["idle","fg",24,false]]} */
@@ -530,29 +535,29 @@ tank5.flipX = false;
 tank5.flipY = false;
 tank5.antialiasing = true;
 //-[Advanced_Properties]-//
-//->Sprite_Object<-//
-//-<Sprite_Object>-//
-/* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Position":[1000,640],"Scale":[1,1],"Visible":true,"Angle":0,"Graphic_File":"tank3","Graphic_Library":"stages/war","Antialiasing":true,"Play_Anim":"idle","Sprite_Name":"tank3","Scroll":[2,0.3],"Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["idle","fg",24,false]]} */
-
-var tank3_position:Array<Int> = [1000,640];
-
-var tank3 = new FlxSprite(tank3_position[0], tank3_position[1]);
-instance.add(tank3);
 //-{Animated_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Position":[1000,640],"Visible":true,"Scale":[1,1],"Graphic_File":"tank3","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Scroll":[2,0.3],"Sprite_Name":"tank3","Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","fg",24,false]],"Flip_Y":false} */
+/* "Variables": {"Position":[1620,700],"Visible":true,"Scale":[1,1],"Graphic_File":"tank5","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Scroll":[1.5,1.5],"Sprite_Name":"tank5","Flip_X":false,"Alpha":1,"Anims_Prefix":[["idle","fg",24,false]],"Flip_Y":false} */
 
-tank3.frames = Paths.getAtlas(Paths.image('tank3', 'stages/war', true));
+tank5.frames = Paths.getAtlas(Paths.image('tank5', 'stages/war', true));
 
 var cur_prefixs:Array<Dynamic> = [["idle","fg",24,false]];
 for(i in 0...cur_prefixs.length){
 var cur_anim:Array<Dynamic> = cur_prefixs[i];
 while(cur_anim.length < 6){cur_anim.push(null);}
-tank3.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
+tank5.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
 }
-tank3.animation.play('idle');
+tank5.animation.play('idle');
 //-[Animated_Graphic]-//
+//->Sprite_Object<-//
+//-<Sprite_Object>-//
+/* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
+/* "Variables": {"Position":[1000,640],"Scale":[1,1],"Visible":true,"Graphic_File":"tank3","Angle":0,"Graphic_Library":"stages/war","Antialiasing":true,"Play_Anim":"idle","Sprite_Name":"tank3","Scroll":[2,0.3],"Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","fg",24,false]],"Flip_Y":false} */
+
+var tank3_position:Array<Int> = [1000,640];
+
+var tank3 = new FlxSprite(tank3_position[0], tank3_position[1]);
+instance.add(tank3);
 //-{Advanced_Properties}-//
 /* "Packages": {} */
 /* "Variables": {"Position":[1000,640],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"tank3","Play_Anim":"idle","Graphic_Library":"stages/war","Antialiasing":true,"Scroll":[2,0.3],"Sprite_Name":"tank3","Flip_X":false,"Alpha":1,"Flip_Y":false,"Anims_Prefix":[["idle","fg",24,false]]} */
@@ -569,5 +574,19 @@ tank3.flipX = false;
 tank3.flipY = false;
 tank3.antialiasing = true;
 //-[Advanced_Properties]-//
+//-{Animated_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Position":[1000,640],"Visible":true,"Scale":[1,1],"Graphic_File":"tank3","Angle":0,"Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Scroll":[2,0.3],"Sprite_Name":"tank3","Flip_X":false,"Alpha":1,"Anims_Prefix":[["idle","fg",24,false]],"Flip_Y":false} */
+
+tank3.frames = Paths.getAtlas(Paths.image('tank3', 'stages/war', true));
+
+var cur_prefixs:Array<Dynamic> = [["idle","fg",24,false]];
+for(i in 0...cur_prefixs.length){
+var cur_anim:Array<Dynamic> = cur_prefixs[i];
+while(cur_anim.length < 6){cur_anim.push(null);}
+tank3.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
+}
+tank3.animation.play('idle');
+//-[Animated_Graphic]-//
 //->Sprite_Object<-//
 }

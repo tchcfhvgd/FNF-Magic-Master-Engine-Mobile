@@ -40,6 +40,7 @@ class Paths {
 		if(savedTempMap.exists(setPath(file))){return true;}
 		if(savedGlobMap.exists(file)){return true;}
 		if(savedGlobMap.exists(setPath(file))){return true;}
+		trace('No Saved: ${file}');
 		return false;
 	}
 	inline static public function getSavedFile(file:String):Any {
@@ -413,6 +414,8 @@ class Paths {
 	}
 
 	static public function getAtlas(path:String):FlxAtlasFrames {
+		if(path.contains('.png')){Paths.getGraphic(path);}
+
 		path = path.replace(".png", "").replace(".xml", "").replace(".txt", "");
 		
 		if(Paths.exists('${path}.xml')){return getSparrowAtlas('$path.xml');}

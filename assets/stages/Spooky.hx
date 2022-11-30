@@ -1,8 +1,12 @@
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": [{"isPresset":true,"type":"Int","id":"initChar","value":"0"},{"isPresset":true,"type":"Array","id":"camP_1","value":[400,230]},{"isPresset":true,"type":"Array","id":"camP_2","value":[1300,570]},{"id":"zoom","value":1.1,"isPresset":true,"type":"Float"}] */
+/* "Variables": [{"type":"Int","isPresset":true,"value":"0","id":"initChar"},{"type":"Array","isPresset":true,"value":[400,230],"id":"camP_1"},{"type":"Array","isPresset":true,"value":[1300,570],"id":"camP_2"},{"type":"Float","isPresset":true,"value":1.1,"id":"zoom"}] */
 
 import("Paths", "Paths");
 import("flixel.FlxSprite", "FlxSprite");
+
+function addToLoad(temp){
+temp.push({type:"ATLAS",instance:Paths.image('halloween_bg','stages/spooky',true)});
+}
 
 presset("initChar", 0);
 presset("camP_1", [400,230]);
@@ -12,7 +16,7 @@ presset("zoom", 1.1);
 function create(){
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Graphic_Library":"stages/spooky","Play_Anim":"idle","Sprite_Name":"background","Position":[-200,-110],"Anims_Prefix":[["idle","halloweem bg lightning strike",30,false]],"Graphic_File":"halloween_bg"} */
+/* "Variables": {"Play_Anim":"idle","Graphic_Library":"stages/spooky","Sprite_Name":"background","Position":[-200,-110],"Graphic_File":"halloween_bg","Anims_Prefix":[["idle","halloweem bg lightning strike",30,false]]} */
 
 var background_position:Array<Int> = [-200,-110];
 

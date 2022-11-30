@@ -254,7 +254,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     public var pressArray:Array<Bool> = [];
     public var releaseArray:Array<Bool> = [];
     public var holdArray:Array<Bool> = [];
-
+    
     public function new(X:Float, Y:Float, ?_keys:Int, ?_size:Int, ?_controls:Controls, ?_image:String, ?_style:String, ?_type:String){
         this.controls = _controls;
         super();
@@ -327,7 +327,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         add(healthBar);
 
 		if(sprite_healthBar == null){
-			sprite_healthBar = new FlxSprite(326, 655).loadGraphic(Paths.styleImage("HealthBar", ui_style, "shared"));
+			sprite_healthBar = new FlxSprite(326, 655).loadGraphic(Paths.styleImage("healthbar", ui_style, "shared"));
 			sprite_healthBar.scale.set(0.7,0.7); sprite_healthBar.updateHitbox();
 			//sprite_healthBar.cameras = [camHUD];
 		}
@@ -500,91 +500,48 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     public function loadStrumNotes(swagStrum:SwagStrum){
         var pre_TypeNotes:String = PreSettings.getPreSetting("Note Skin", "Visual Settings");
         this.swagStrum = swagStrum;
+        var tempSecs = swagStrum.notes[curSection].copy();
 
         notelist = [];
-        for(curSection in 0...swagStrum.notes.length){
-            var sectionInfo:Array<Dynamic> = swagStrum.notes[curSection].sectionNotes.copy();
+        while(tempSecs.length > 0){
+            var sectionInfo:Array<Dynamic> = tempSecs.shift().sectionNotes;
             for(n in sectionInfo){if(n[1] < 0 || n[1] >= Song.getStrumKeys(swagStrum, curSection)){sectionInfo.remove(n);}}
+                 
+            var thdLoading = Thread.create(() -> {
+                while(true){
+                    var note:NoteData = Note.getNoteData(sectionInfo.shift());
+        
+                    var swagNote:Note = new Note(note, Song.getStrumKeys(swagStrum, curSection), image, style, type);
+                    swagNote.note_size.set(getStrumSize(), getStrumSize());
+    
+                            
+                    notelist.push(swagNote);
             
-            var cSection = swagStrum;
-            var mergedGroup:Array<Note> = [];
-            for(n in sectionInfo){
-                var note:NoteData = Note.getNoteData(n);
-        
-                var swagNote:Note = new Note(note, Song.getStrumKeys(cSection, curSection), image, style, type);
-                swagNote.note_size.set(getStrumSize(), getStrumSize());
-
-                if(note.canMerge){mergedGroup.push(swagNote);}
-                        
-                notelist.push(swagNote);
-        
-                if(note.sustainLength <= 0 || note.multiHits > 0){continue;}
-
-                var cSusNote = Math.floor(note.sustainLength / (strumConductor.stepCrochet * 0.25)) + 2;
-        
-                var prevSustain:Note = swagNote;
-                for(sNote in 0...Math.floor(note.sustainLength / (strumConductor.stepCrochet * 0.25)) + 2){
-                    var sStrumTime = note.strumTime + (strumConductor.stepCrochet / 2) + ((strumConductor.stepCrochet * 0.25) * sNote);
-                    var nSData:NoteData = Note.getNoteData(Note.convNoteData(note));
-                    nSData.strumTime = sStrumTime;
-        
-                    var nSustain:Note = new Note(nSData, key_number, image, style, type);
-                    nSustain.note_size.set(getStrumSize(), getSustainHeight());
-                    nSustain.updateHitbox();
-        
-                    nSustain.typeNote = "Sustain";
-                    nSustain.typeHit = "Hold";
-                    prevSustain.nextNote = nSustain;
-                    
-                    if(cSusNote == 1 && nSData.canMerge){mergedGroup.push(nSustain);}        
-                    notelist.push(nSustain);
-        
-                    prevSustain = nSustain;
-                    cSusNote--;
-                }  
-            }
-
-            while(mergedGroup.length > 0){
-                var curMerge = mergedGroup.shift();
-                var curGroup:Array<Note> = [curMerge];
-
-                var changeCurrent:Bool = false;
-                for(n in mergedGroup){
-                    if(!Note.compNotes(Note.getNoteData([curMerge.strumTime]), Note.getNoteData([n.strumTime]))){continue;}
-                    changeCurrent = true;
-                    n.typeNote = "Merge";
-                    if(n.noteLength > 0 && n.nextNote == null){
-                        n.loadNote(); n.note_size.set(getStrumSize(), getStrumSize()); n.typeHit = "Release";
-                        var ndSustain1:NoteData = Note.getNoteData([n.strumTime, n.noteData]); var nSustain1:Note = new Note(ndSustain1, Song.getStrumKeys(cSection, curSection), image, style, type); nSustain1.nextNote = n; nSustain1.typeNote = "Sustain"; nSustain1.typeHit = "Hold"; nSustain1.note_size.set(getStrumSize(), getSustainHeight()); notelist.push(nSustain1); nSustain1.alpha = n.alpha;
-                        var ndSustain2:NoteData = Note.getNoteData([n.strumTime + (strumConductor.stepCrochet*0.25), n.noteData]); var nSustain2:Note = new Note(ndSustain2, Song.getStrumKeys(cSection, curSection), image, style, type); nSustain2.nextNote = n; nSustain2.typeNote = "Sustain"; nSustain2.typeHit = "Hold"; nSustain2.note_size.set(getStrumSize(), getSustainHeight()); notelist.push(nSustain2); nSustain2.alpha = n.alpha;
-                    }
-                    curGroup.push(n);
-                }
-                if(changeCurrent){
-                    curMerge.typeNote = "Merge";
-                    if(curMerge.noteLength > 0 && curMerge.nextNote == null){
-                        curMerge.loadNote(); curMerge.note_size.set(getStrumSize(), getStrumSize()); curMerge.typeHit = "Release";
-                        var ndSustain1:NoteData = Note.getNoteData([curMerge.strumTime, curMerge.noteData]); var nSustain1:Note = new Note(ndSustain1, Song.getStrumKeys(cSection, curSection), image, style, type); nSustain1.nextNote = curMerge; nSustain1.typeNote = "Sustain"; nSustain1.typeHit = "Hold"; nSustain1.note_size.set(getStrumSize(), getSustainHeight()); notelist.push(nSustain1); nSustain1.alpha = curMerge.alpha;
-                        var ndSustain2:NoteData = Note.getNoteData([curMerge.strumTime + (strumConductor.stepCrochet*0.25), curMerge.noteData]); var nSustain2:Note = new Note(ndSustain2, Song.getStrumKeys(cSection, curSection), image, style, type); nSustain2.nextNote = curMerge; nSustain2.typeNote = "Sustain"; nSustain2.typeHit = "Hold"; nSustain2.note_size.set(getStrumSize(), getSustainHeight()); notelist.push(nSustain2); nSustain2.alpha = curMerge.alpha;
-                    }
-                }
+                    if(note.sustainLength <= 0 || note.multiHits > 0){continue;}
+    
+                    var cSusNote = Math.floor(note.sustainLength / (strumConductor.stepCrochet * 0.25)) + 2;
             
-                curGroup.sort((a, b) -> (a.noteData - b.noteData));
-                for(ii in 0...curGroup.length){
-                    if(curGroup[ii+1] == null){continue;}
-                    var currentNote:Note = curGroup[ii]; var nextedNote:Note = curGroup[ii+1]; mergedGroup.remove(currentNote);
-                    for(i in currentNote.noteData...(nextedNote.noteData + 1)){
-                        if(i > currentNote.noteData){
-                            var ndSwitch1:NoteData = Note.getNoteData([currentNote.strumTime, i, 0, -2]); var nSwitcher1:Note = new Note(ndSwitch1, Song.getStrumKeys(cSection, curSection), image, style, type); nSwitcher1.note_size.set(getStrumSize(), getStrumSize()); nSwitcher1.typeNote = "Switch"; nSwitcher1.typeHit = "Ghost"; notelist.push(nSwitcher1); nSwitcher1.alpha = 0.5;
-                            var ndSwitch2:NoteData = Note.getNoteData([currentNote.strumTime, i, 0, -1]); var nSwitcher2:Note = new Note(ndSwitch2, Song.getStrumKeys(cSection, curSection), image, style, type); nSwitcher2.note_size.set(getStrumSize(), getStrumSize()); nSwitcher2.typeNote = "Switch"; nSwitcher2.typeHit = "Ghost"; notelist.push(nSwitcher2); nSwitcher2.alpha = 0.5;
-                        }
-                        if(i < nextedNote.noteData){
-                            var ndSwitch1:NoteData = Note.getNoteData([currentNote.strumTime, i, 0, 0]); var nSwitcher1:Note = new Note(ndSwitch1, Song.getStrumKeys(cSection, curSection), image, style, type); nSwitcher1.note_size.set(getStrumSize(), getStrumSize()); nSwitcher1.typeNote = "Switch"; nSwitcher1.typeHit = "Ghost"; notelist.push(nSwitcher1); nSwitcher1.alpha = 0.5;
-                            var ndSwitch2:NoteData = Note.getNoteData([currentNote.strumTime, i, 0, 1]); var nSwitcher2:Note = new Note(ndSwitch2, Song.getStrumKeys(cSection, curSection), image, style, type); nSwitcher2.note_size.set(getStrumSize(), getStrumSize()); nSwitcher2.typeNote = "Switch"; nSwitcher2.typeHit = "Ghost"; notelist.push(nSwitcher2); nSwitcher2.alpha = 0.5;
-                        }
+                    var prevSustain:Note = swagNote;
+                    for(sNote in 0...Math.floor(note.sustainLength / (strumConductor.stepCrochet * 0.25)) + 2){
+                        var sStrumTime = note.strumTime + (strumConductor.stepCrochet / 2) + ((strumConductor.stepCrochet * 0.25) * sNote);
+                        var nSData:NoteData = Note.getNoteData(Note.convNoteData(note));
+                        nSData.strumTime = sStrumTime;
+            
+                        var nSustain:Note = new Note(nSData, key_number, image, style, type);
+                        nSustain.note_size.set(getStrumSize(), getSustainHeight());
+                        nSustain.updateHitbox();
+            
+                        nSustain.typeNote = "Sustain";
+                        nSustain.typeHit = "Hold";
+                        prevSustain.nextNote = nSustain;
+                            
+                        notelist.push(nSustain);
+            
+                        prevSustain = nSustain;
+                        cSusNote--;
                     }
                 }
-            }
+            });
         }
 
         strumGenerated = true;
