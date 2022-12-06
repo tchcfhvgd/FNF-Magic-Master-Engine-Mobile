@@ -223,7 +223,6 @@ class ItemMod extends FlxUITabMenu {
         mScript.exScript(Paths.getText('${refMod.path}/itemMod.hx'));
 
         var back_ = new FlxUI9SliceSprite(0, 0, Paths.image("custom_default_chrome_flat", null, false, refMod.name), new Rectangle(0, 0, 100, 100), [20, 20, 78, 78], FlxUI9SliceSprite.TILE_BOTH);
-        back_.antialiasing = true;
 
         super(back_, null, []);
         resize(Std.int(FlxG.width - 20), 300);

@@ -116,6 +116,10 @@ class Stage extends FlxTypedGroup<Dynamic>{
 
         script.exFunction("create");
         
+        charge();
+    }
+
+    public function charge():Void {
         var numCont:Int = 0;
         for(sPart in stageData){
             add(sPart);

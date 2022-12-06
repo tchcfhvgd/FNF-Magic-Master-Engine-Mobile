@@ -1,0 +1,33 @@
+<TextureAtlas imagePath="Arrow.png">
+	<!-- Created with Adobe Animate version 22.0.7.214 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="0" frameWidth="127" y="0" frameX="0" name="Arrow Idle0000" frameHeight="196" frameY="0" width="127" height="196"/>
+	<SubTexture x="127" frameWidth="127" y="0" frameX="-5" name="Arrow Hit0000" frameHeight="196" frameY="-21" width="120" height="153"/>
+	<SubTexture x="127" frameWidth="127" y="0" frameX="-5" name="Arrow Hit0001" frameHeight="196" frameY="-21" width="120" height="153"/>
+	<SubTexture x="247" frameWidth="127" y="0" frameX="25" name="Arrow Hit0002" frameHeight="196" frameY="24" width="180" height="244"/>
+	<SubTexture x="247" frameWidth="127" y="0" frameX="25" name="Arrow Hit0003" frameHeight="196" frameY="24" width="180" height="244"/>
+	<SubTexture x="427" frameWidth="127" y="0" frameX="10" name="Arrow Hit0004" frameHeight="196" frameY="11" width="150" height="217"/>
+	<SubTexture x="427" frameWidth="127" y="0" frameX="10" name="Arrow Hit0005" frameHeight="196" frameY="11" width="150" height="217"/>
+	<SubTexture x="577" frameWidth="127" y="0" frameX="12" name="Arrow Hit0006" frameHeight="196" frameY="17" width="154" height="230"/>
+	<SubTexture x="577" frameWidth="127" y="0" frameX="12" name="Arrow Hit0007" frameHeight="196" frameY="17" width="154" height="230"/>
+	<SubTexture x="731" frameWidth="127" y="0" frameX="11" name="Arrow Hit0008" frameHeight="196" frameY="16" width="151" height="227"/>
+	<SubTexture x="731" frameWidth="127" y="0" frameX="11" name="Arrow Hit0009" frameHeight="196" frameY="16" width="151" height="227"/>
+	<SubTexture x="0" frameWidth="127" y="244" frameX="8" name="Arrow Hit0010" frameHeight="196" frameY="11" width="146" height="217"/>
+	<SubTexture x="0" frameWidth="127" y="244" frameX="8" name="Arrow Hit0011" frameHeight="196" frameY="11" width="146" height="217"/>
+	<SubTexture x="146" frameWidth="127" y="244" frameX="6" name="Arrow Hit0012" frameHeight="196" frameY="8" width="142" height="211"/>
+	<SubTexture x="146" frameWidth="127" y="244" frameX="6" name="Arrow Hit0013" frameHeight="196" frameY="8" width="142" height="211"/>
+	<SubTexture x="288" frameWidth="127" y="244" frameX="0" name="Arrow Over0000" frameHeight="196" frameY="0" width="127" height="196"/>
+	<SubTexture x="288" frameWidth="127" y="244" frameX="0" name="Arrow Over0001" frameHeight="196" frameY="0" width="127" height="196"/>
+	<SubTexture x="415" frameWidth="127" y="244" frameX="0" name="Arrow Over0002" frameHeight="196" frameY="7" width="139" height="211"/>
+	<SubTexture x="415" frameWidth="127" y="244" frameX="0" name="Arrow Over0003" frameHeight="196" frameY="7" width="139" height="211"/>
+	<SubTexture x="554" frameWidth="127" y="244" frameX="0" name="Arrow Over0004" frameHeight="196" frameY="4" width="135" height="205"/>
+	<SubTexture x="554" frameWidth="127" y="244" frameX="0" name="Arrow Over0005" frameHeight="196" frameY="4" width="135" height="205"/>
+	<SubTexture x="554" frameWidth="127" y="244" frameX="0" name="Arrow Over0006" frameHeight="196" frameY="4" width="135" height="205"/>
+	<SubTexture x="554" frameWidth="127" y="244" frameX="0" name="Arrow Over0007" frameHeight="196" frameY="4" width="135" height="205"/>
+	<SubTexture x="554" frameWidth="127" y="244" frameX="0" name="Arrow Over0008" frameHeight="196" frameY="4" width="135" height="205"/>
+	<SubTexture x="554" frameWidth="127" y="244" frameX="0" name="Arrow Over0009" frameHeight="196" frameY="4" width="135" height="205"/>
+	<SubTexture x="554" frameWidth="127" y="244" frameX="0" name="Arrow Over0010" frameHeight="196" frameY="4" width="135" height="205"/>
+	<SubTexture x="554" frameWidth="127" y="244" frameX="0" name="Arrow Over0011" frameHeight="196" frameY="4" width="135" height="205"/>
+	<SubTexture x="554" frameWidth="127" y="244" frameX="0" name="Arrow Over0012" frameHeight="196" frameY="4" width="135" height="205"/>
+	<SubTexture x="554" frameWidth="127" y="244" frameX="0" name="Arrow Over0013" frameHeight="196" frameY="4" width="135" height="205"/>
+</TextureAtlas>

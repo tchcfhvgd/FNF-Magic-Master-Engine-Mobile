@@ -97,6 +97,13 @@ class Controls extends FlxActionSet {
 			[FlxKey.RIGHT, FlxKey.D],
 			[FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT, FlxGamepadInputID.DPAD_RIGHT]
 		],
+        //Character General Movement Actions
+        "Player_Left" => [[FlxKey.LEFT]],
+        "Player_Down" => [[FlxKey.DOWN]],
+        "Player_Right" => [[FlxKey.RIGHT]],
+        "Player_Up" => [[FlxKey.UP]],
+        "Player_Run" => [[FlxKey.SHIFT]],
+        "Player_Interact" => [[FlxKey.C]]
     ];
 
 	public static var CURRENT_STRUMCONTROLS:Map<Int, Array<Array<Array<Int>>>> = [];

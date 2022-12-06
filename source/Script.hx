@@ -54,9 +54,11 @@ class Script extends FlxBasic {
         setVariable('beatHit', function(curBeat:Int) {});
         setVariable('stepHit', function(curStep:Int) {});
         
+        setVariable('onFocus', nFunc);
+        setVariable('onFocusLost', nFunc);
+        
         setVariable('openSubState', nFunc);
         setVariable('closeSubState', nFunc);
-        setVariable('onFocusLost', nFunc);
 
         setVariable("presset", function(name:String, func:Any){setVariable(name, func);});
         setVariable('destroy', function(){this.program = null; this.destroy();});

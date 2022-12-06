@@ -49,7 +49,6 @@ import Note.StrumNote;
 import Note.EventData;
 import Song.SwagSection;
 import Song.SongStuffManager;
-import WiggleEffect.WiggleEffectType;
 
 #if desktop
 import Discord.DiscordClient;
@@ -62,7 +61,8 @@ class PlayState extends MusicBeatState {
 	public static var isStoryMode:Bool = false;
 	public static var playablesStrums:Array<Int> = [1];
 
-	private var curSection:Int = 0;
+    public var curSection(get, never):Int;
+	inline function get_curSection():Int{return Std.int(conductor.getCurStep() / 16);}
 
 	//Audio
 	public var inst:FlxSound;
@@ -131,6 +131,8 @@ class PlayState extends MusicBeatState {
 
 	override public function create(){
 		super.create();
+
+		FlxG.mouse.visible = false;
 		
 		persistentUpdate = true;
 		persistentDraw = true;
@@ -145,9 +147,6 @@ class PlayState extends MusicBeatState {
 		}else{
 			SONG = Song.loadFromJson('Tutorial-Normal-Normal');
 		}
-
-		conductor.mapBPMChanges(SONG);
-		conductor.changeBPM(SONG.bpm);
 		
 		uiStyleCheck = SONG.uiStyle;
 
@@ -191,11 +190,11 @@ class PlayState extends MusicBeatState {
 	}
 
 	private var loadedStrums:Int = 0;
-	private function generateSong(toEndFun:Void->Void = function(){}):Void {
-		// FlxG.log.add(ChartParser.parse());
-
+	private function generateSong(toEndFun:Void->Void):Void {
 		var songData = SONG;
+
 		conductor.changeBPM(songData.bpm);
+		conductor.mapBPMChanges(songData);
 
 		//Loading Instrumental
 		inst.loadEmbedded(Paths.inst(songData.song, songData.category), false);
@@ -292,19 +291,8 @@ class PlayState extends MusicBeatState {
 		
 		for(s in scripts){s.exFunction('preload');}
 
-		thdLoading = Thread.create(() -> {
-			while(true){
-				var allLoaded:Int = 0;
-				for(s in strumsGroup.members){allLoaded += s.strumGenerated ? 1 : 0;}
-				
-				if(strumsloaded.length <= allLoaded){
-					songGenerated = true;
-					toEndFun();
-
-					return;
-				}
-			}
-		});
+		songGenerated = true;
+		toEndFun();
 	}
 	
 	var previousFrameTime:Int = 0;
@@ -348,8 +336,6 @@ class PlayState extends MusicBeatState {
 	var curStrumLinePos:String = "";
 	override public function update(elapsed:Float){
 		super.update(elapsed);
-
-		curSection = Std.int(curStep / 16);
 
 		checkEvents();
 
@@ -452,7 +438,7 @@ class PlayState extends MusicBeatState {
 	private var exEvents:Array<Dynamic> = [];
 	function checkEvents(){
 		if(!songGenerated || PlayState.SONG.generalSection[curSection] == null || PlayState.SONG.generalSection[curSection].events.length <= 0){return;}
-		var sEvents:Array<Dynamic> = SONG.generalSection[Math.floor(curStep / 16)].events;
+		var sEvents:Array<Dynamic> = SONG.generalSection[curSection].events;
 		for(event in sEvents.copy()){
 			var cur_Event:EventData = Note.getEventData(event);
 			if(conductor.songPosition > cur_Event.strumTime && !cur_Event.isBroken && !exEvents.contains(event)){
@@ -470,6 +456,7 @@ class PlayState extends MusicBeatState {
 	function endSong():Void{
 		trace("End Song");
 		canPause = false;
+		isPaused = true;
 		songPlaying = false;
 
 		inst.stop();
@@ -482,12 +469,8 @@ class PlayState extends MusicBeatState {
 		}
 
 		SongListData.nextSong(0);
+
 		if(SongListData.songPlaylist.length <= 0){
-			transIn = FlxTransitionableState.defaultTransIn;
-			transOut = FlxTransitionableState.defaultTransOut;
-
-			isPaused = true;
-
 			SongListData.resetVariables();
 			MusicBeatState.switchState(new states.MainMenuState());
 
@@ -498,12 +481,9 @@ class PlayState extends MusicBeatState {
 		}else{
 			trace('LOADING NEXT SONG');
 
-			FlxTransitionableState.skipNextTransIn = true;
-			FlxTransitionableState.skipNextTransOut = true;
-
 			prevCamFollow = camFollow;
 
-			SongListData.playWeek();
+			SongListData.playSong();
 		}
 	}
 
@@ -556,6 +536,9 @@ class PlayState extends MusicBeatState {
 
 	override public function onFocusLost():Void {
 		super.onFocusLost();
+
+		if(!songPlaying){return;}
+
 		pauseAndOpen(
 			PauseSubState,
 			[
@@ -575,18 +558,21 @@ class PlayState extends MusicBeatState {
 
 	override function stepHit(){
 		super.stepHit();
-		if(songPlaying && inst.time > conductor.songPosition + 20 || inst.time < conductor.songPosition - 20){resyncVocals();}
+
+		if(songPlaying && inst.time > conductor.songPosition + 20 || inst.time < conductor.songPosition - 20){
+			resyncVocals();
+		}
 	}
 
 	override function beatHit(){
 		super.beatHit();
-		if(SONG.generalSection[Math.floor(curStep / 16)] != null){
-			if(SONG.generalSection[Math.floor(curStep / 16)].changeBPM){
-				conductor.changeBPM(SONG.generalSection[Math.floor(curStep / 16)].bpm);
+
+		if(SONG.generalSection[curSection] != null){
+			if(SONG.generalSection[curSection].changeBPM){
+				conductor.changeBPM(SONG.generalSection[curSection].bpm);
 				FlxG.log.add('CHANGED BPM!');
+				trace('Changed BPM');
 			}
-			// else
-			// conductor.changeBPM(SONG.bpm);
 		}
 	}
 }
@@ -613,20 +599,16 @@ class SongListData {
 		}
 	}
 
-	public static function addWeek(songList:Array<SwagSong>){for(song in songList){songPlaylist.push(song);}}
+	public static function addSongs(songList:Array<SwagSong>){for(song in songList){songPlaylist.push(song);}}
 	public static function addSong(song:SwagSong){songPlaylist.push(song);}
 
-	public static function playWeek(_isStoryMode:Bool = true){
+	public static function playSong(_isStoryMode:Bool = true):Void {
 		isStoryMode = _isStoryMode;
-
-		var toLoad:Array<Dynamic> = [];
-		for(s in songPlaylist){toLoad.push({type:"SONG", instance:s});}
-
-		MusicBeatState.switchState(new states.LoadingState(new PlayState(), toLoad, false));
+		MusicBeatState.switchState(new states.LoadingState(new PlayState(), [{type:"SONG", instance:songPlaylist[0]}], false));
 	}
 
-	public static function playSong(SONG:SwagSong) {
-		isStoryMode = false;
+	public static function loadAndPlaySong(SONG:SwagSong, _isStoryMode:Bool = false):Void {
+		isStoryMode = _isStoryMode;
 
 		resetVariables();
 		songPlaylist.push(SONG);

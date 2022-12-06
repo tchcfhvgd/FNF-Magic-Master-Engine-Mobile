@@ -19,6 +19,7 @@ import flixel.text.FlxText;
 import openfl.utils.Assets;
 import flixel.math.FlxMath;
 import haxe.DynamicAccess;
+import sys.thread.Thread;
 import flixel.FlxSprite;
 import flixel.ui.FlxBar;
 import flixel.FlxObject;
@@ -481,7 +482,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     }
 
     public function getStrumSize():Int {return Std.int(genWidth / key_number);}
-    public function getSustainHeight():Int {return Std.int(getScrollSpeed() * getStrumSize() / (bpm * 2.3 / 150));}
+    public function getSustainHeight():Int {return Std.int(getScrollSpeed() * (getStrumSize() / (bpm * 2.3 / 150)));}
 
     public function setGraphicToNotes(?_image:String, ?_style:String, ?_type:String){
         staticnotes.setGraphicToNotes(_image, _style, _type);
@@ -500,48 +501,45 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     public function loadStrumNotes(swagStrum:SwagStrum){
         var pre_TypeNotes:String = PreSettings.getPreSetting("Note Skin", "Visual Settings");
         this.swagStrum = swagStrum;
-        var tempSecs = swagStrum.notes[curSection].copy();
 
         notelist = [];
-        while(tempSecs.length > 0){
-            var sectionInfo:Array<Dynamic> = tempSecs.shift().sectionNotes;
-            for(n in sectionInfo){if(n[1] < 0 || n[1] >= Song.getStrumKeys(swagStrum, curSection)){sectionInfo.remove(n);}}
-                 
-            var thdLoading = Thread.create(() -> {
-                while(true){
-                    var note:NoteData = Note.getNoteData(sectionInfo.shift());
+        for(i in 0...swagStrum.notes.length){
+            var sectionInfo:Array<Dynamic> = swagStrum.notes[i].sectionNotes.copy();
+
+            for(n in sectionInfo){if(n[1] < 0 || n[1] >= Song.getStrumKeys(swagStrum, i)){sectionInfo.remove(n);}}
+
+            for(n in sectionInfo){
+                var note:NoteData = Note.getNoteData(n);
+    
+                var swagNote:Note = new Note(note, Song.getStrumKeys(swagStrum, i), image, style, type);
+                swagNote.note_size.set(getStrumSize(), getStrumSize());
+
+                notelist.push(swagNote);
         
-                    var swagNote:Note = new Note(note, Song.getStrumKeys(swagStrum, curSection), image, style, type);
-                    swagNote.note_size.set(getStrumSize(), getStrumSize());
-    
-                            
-                    notelist.push(swagNote);
-            
-                    if(note.sustainLength <= 0 || note.multiHits > 0){continue;}
-    
-                    var cSusNote = Math.floor(note.sustainLength / (strumConductor.stepCrochet * 0.25)) + 2;
-            
-                    var prevSustain:Note = swagNote;
-                    for(sNote in 0...Math.floor(note.sustainLength / (strumConductor.stepCrochet * 0.25)) + 2){
-                        var sStrumTime = note.strumTime + (strumConductor.stepCrochet / 2) + ((strumConductor.stepCrochet * 0.25) * sNote);
-                        var nSData:NoteData = Note.getNoteData(Note.convNoteData(note));
-                        nSData.strumTime = sStrumTime;
-            
-                        var nSustain:Note = new Note(nSData, key_number, image, style, type);
-                        nSustain.note_size.set(getStrumSize(), getSustainHeight());
-                        nSustain.updateHitbox();
-            
-                        nSustain.typeNote = "Sustain";
-                        nSustain.typeHit = "Hold";
-                        prevSustain.nextNote = nSustain;
-                            
-                        notelist.push(nSustain);
-            
-                        prevSustain = nSustain;
-                        cSusNote--;
-                    }
+                if(note.sustainLength <= 0 || note.multiHits > 0){continue;}
+
+                var cSusNote = Math.floor(note.sustainLength / (strumConductor.stepCrochet * 0.25)) + 2;
+        
+                var prevSustain:Note = swagNote;
+                for(sNote in 0...Math.floor(note.sustainLength / (strumConductor.stepCrochet * 0.25)) + 2){
+                    var sStrumTime = note.strumTime + (strumConductor.stepCrochet / 2) + ((strumConductor.stepCrochet * 0.25) * sNote);
+                    var nSData:NoteData = Note.getNoteData(Note.convNoteData(note));
+                    nSData.strumTime = sStrumTime;
+        
+                    var nSustain:Note = new Note(nSData, key_number, image, style, type);
+                    nSustain.note_size.set(getStrumSize(), getSustainHeight());
+                    nSustain.updateHitbox();
+        
+                    nSustain.typeNote = "Sustain";
+                    nSustain.typeHit = "Hold";
+                    prevSustain.nextNote = nSustain;
+                        
+                    notelist.push(nSustain);
+        
+                    prevSustain = nSustain;
+                    cSusNote--;
                 }
-            });
+            }
         }
 
         strumGenerated = true;

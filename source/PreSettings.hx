@@ -17,14 +17,14 @@ class PreSettings {
             "ScrollSpeed" => 1
         ],
         "Visual Settings" => [
-            "Type HUD" => [0, ["MagicHUD", "Original", "Minimized", "OnlyNotes"]],
+            "Type HUD" => [0, ["MagicHUD", "Original", "Minimized", "Detailed", "OnlyNotes"]],
             "Note Skin" => [0, ["Arrows", "Circles", "Rhombuses", "Bars"]],
             "Type Scroll" => [0, ["UpScroll", "DownScroll"]],
             "Default Strum Position" => [0, ["Middle", "Right", "Left"]],
             "Type Middle Scroll" => [0, ["None", "OnlyPlayer", "FadeOthers"]],
             "Type Camera" => [1, ["Static", "MoveToSing"]],
             "Type Light Strums" => [0, ["All", "OnlyMyStrum", "OnlyOtherStrums", "None"]],
-            "Type Splash" => [0, ["OnSick", "TransparencyOnRate", "None"]]
+            "Type Splash" => [0, ["OnSick", "TransparencyOnRate", "None"]],
         ],
         "Graphic Settings" => [
             "FrameRate" => 60,

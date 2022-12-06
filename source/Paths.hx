@@ -180,22 +180,30 @@ class Paths {
 		return getPath(file, type, library);
 	}
 
-	inline public static function getSound(file:String):Sound{
-		if(getSavedFile(file)){return getSavedFile(file);}
+	inline public static function getSound(file:String):Any {
+		if(isSaved(file)){return getSavedFile(file);}
 
-		saveFile(file, Assets.exists(file) ? Assets.getSound(file) : Sound.fromFile(file));
+		var sound:Sound = null;
+		if(Assets.exists(file)){sound = Assets.getSound(file);}
+		if(sound == null){sound = Sound.fromFile(file);}	
+
+		if(sound == null){return file;}
+		
+		saveFile(file, sound);
 
 		return getSavedFile(file);
 	}
-	inline public static function getBytes(file:String):Any{
+	inline public static function getBytes(file:String):Any {
 		if(isSaved(file)){return getSavedFile(file);}
 
 		saveFile(file, Assets.exists(file) ? Assets.getBytes(file) : File.getBytes(file));
 		
 		return getSavedFile(file);
 	}
-	inline public static function getGraphic(file:String):Any{
+	inline public static function getGraphic(file:String):Any {
 		if(isSaved(file)){return getSavedFile(file);}
+		
+		if(!Paths.exists(file)){return file;}
 
 		var bit:BitmapData = BitmapData.fromFile(file);
 
@@ -221,6 +229,11 @@ class Paths {
 		
 		return isPath ? path : getGraphic(path);
 	}
+	
+	inline static public function xml(key:String, ?library:String, isPath:Bool = false, ?mod:String){
+		var path = getPath('images/$key.xml', TEXT, library, mod);
+		return isPath ? path : getText(path);
+	}
 		
 	inline static public function styleImage(key:String, style:String = "Default", ?library:String, isPath:Bool = false, ?mod:String):Any {
 		var path = getPath('images/style_UI/$style/$key.png', IMAGE, library, mod);
@@ -242,11 +255,6 @@ class Paths {
 
 	inline static public function shader(key:String, ?library:String, isPath:Bool = false, ?mod:String){
 		var path = getPath('shaders/$key.frag', TEXT, library, mod);
-		return isPath ? path : getText(path);
-	}
-
-	inline static public function xml(key:String, ?library:String, isPath:Bool = false, ?mod:String){
-		var path = getPath('data/$key.xml', TEXT, library, mod);
 		return isPath ? path : getText(path);
 	}
 

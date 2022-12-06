@@ -1,7 +1,7 @@
 {
     "weekData": [
         {
-            "name": "Tutorial",
+            "name": "week0",
             "display": "Tutorial",
             "title": "",
             "categories": [
@@ -13,7 +13,7 @@
             "hiddenOnFreeplay": false
         },
         {
-            "name": "Week1",
+            "name": "week1",
             "display": "Week 1",
             "title": "Daddy Dearest",
             "categories": [
@@ -25,7 +25,7 @@
             "hiddenOnFreeplay": false
         },
         {
-            "name": "Week2",
+            "name": "week2",
             "display": "Week 2",
             "title": "Spooky Month",
             "categories": [
@@ -37,7 +37,7 @@
             "hiddenOnFreeplay": false
         },
         {
-            "name": "Week3",
+            "name": "week3",
             "display": "Week 3",
             "title": "PICO",
             "categories": [
@@ -49,7 +49,7 @@
             "hiddenOnFreeplay": false
         },
         {
-            "name": "Week4",
+            "name": "week4",
             "display": "Week 4",
             "title": "MOMMY MUST MURDER",
             "categories": [
@@ -61,7 +61,7 @@
             "hiddenOnFreeplay": false
         },
         {
-            "name": "Week5",
+            "name": "week5",
             "display": "Week 5",
             "title": "RED SNOW",
             "categories": [
@@ -73,7 +73,7 @@
             "hiddenOnFreeplay": false
         },
         {
-            "name": "Week6",
+            "name": "week6",
             "display": "Week 6",
             "title": "hating simulator ft. moawling",
             "categories": [
@@ -85,7 +85,7 @@
             "hiddenOnFreeplay": false
         },
         {
-            "name": "Week7",
+            "name": "week7",
             "display": "Week 7",
             "title": "Tankman",
             "categories": [
@@ -97,7 +97,7 @@
             "hiddenOnFreeplay": false
         },
         {
-            "name": "LostTapes",
+            "name": "losttapes",
             "display": "Lost Tapes",
             "title": "And this Week?",
             "categories": [

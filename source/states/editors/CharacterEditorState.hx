@@ -309,7 +309,7 @@ class CharacterEditorState extends MusicBeatState{
         stpCameraY.name = "CHARACTER_CameraY";
         
         chkFlipImage = new FlxUICheckBox(lblCamY.x, lblCamY.y + lblCamY.height + 5, null, null, "Character Image is Looking Right", 500); chkFlipImage.checked = _character.onRight; tabMENU.add(chkFlipImage);
-        chkAntialiasing = new FlxUICheckBox(chkFlipImage.x, chkFlipImage.y + chkFlipImage.height + 5, null, null, "Without Antialiasing", 0); chkAntialiasing.checked = _character.nAntialiasing; tabMENU.add(chkAntialiasing);
+        chkAntialiasing = new FlxUICheckBox(chkFlipImage.x, chkFlipImage.y + chkFlipImage.height + 5, null, null, "With Antialiasing", 0); chkAntialiasing.checked = _character.antialiasing; tabMENU.add(chkAntialiasing);
         chkDanceIdle = new FlxUICheckBox(chkAntialiasing.x, chkAntialiasing.y + chkAntialiasing.height + 5, null, null, "Dance on Idle", 0); chkDanceIdle.checked = _character.danceIdle; tabMENU.add(chkDanceIdle);
 
         var line2 = new FlxSprite(5, chkDanceIdle.y + chkDanceIdle.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line2);
@@ -479,7 +479,7 @@ class CharacterEditorState extends MusicBeatState{
                 case "onRight?":{lblOriPos.text = 'Character Position: [${charPos[0]}, ${charPos[1]}]'; reloadCharacter();}
                 case "Girlfriend Position?":{lblOriPos.text = 'Character Position: [${charPos[0]}, ${charPos[1]}]'; reloadCharacter();}
                 case "Character Image is Looking Right":{_character.onRight = check.checked; reloadCharacter();}
-                case "Without Antialiasing":{_character.nAntialiasing = check.checked; reloadCharacter();}
+                case "With Antialiasing":{_character.antialiasing = check.checked; reloadCharacter();}
                 case "Dance on Idle":{_character.danceIdle = check.checked; reloadCharacter();}
 			}
 		}else if(id == FlxUIInputText.CHANGE_EVENT && (sender is FlxUIInputText)){

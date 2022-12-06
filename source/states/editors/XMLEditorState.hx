@@ -199,30 +199,32 @@ class XMLEditorState extends MusicBeatState {
 		super.update(elapsed);
     }
 
-    private function getFile(_file:FlxUIInputText):Void{
+    private function getFile(_file:FlxUIInputText):Void {
         var fDialog = new FileDialog();
         fDialog.onSelect.add(function(str){_file.text = str;});
         fDialog.browse();
 	}
     
-    private function loadArchives():Void{
-        if(txtIMAGE.text.length > 0){_IMG = FlxGraphic.fromBitmapData(BitmapData.fromFile(txtIMAGE.text));}
-        if(txtXML.text.length > 0){
-            _XML = new Access((Xml.parse(Paths.getText(txtXML.text))).firstElement());
-            for(elm in _XML.elements){
-                if(!elm.has.x){elm.att.x = "0";}
-                if(!elm.has.y){elm.att.y = "0";}
-                if(!elm.has.width){elm.att.width = "0";}
-                if(!elm.has.height){elm.att.height = "0";}
-                if(!elm.has.frameX){elm.att.frameX = "0";}
-                if(!elm.has.frameY){elm.att.frameY = "0";}
-                if(!elm.has.frameWidth){elm.att.frameWidth = "0";}
-                if(!elm.has.frameHeight){elm.att.frameHeight = "0";}
-            }
+    private function loadArchives():Void {
+        if(!txtIMAGE.text.contains(".png") || !txtXML.text.contains(".xml")){return;}
+        
+        _IMG = FlxGraphic.fromBitmapData(BitmapData.fromFile(txtIMAGE.text));
+        _XML = new Access((Xml.parse(Paths.getText(txtXML.text))).firstElement());
+        for(elm in _XML.elements){
+            if(!elm.has.x){elm.att.x = "0";}
+            if(!elm.has.y){elm.att.y = "0";}
+            if(!elm.has.width){elm.att.width = "0";}
+            if(!elm.has.height){elm.att.height = "0";}
+            if(!elm.has.frameX){elm.att.frameX = "0";}
+            if(!elm.has.frameY){elm.att.frameY = "0";}
+            if(!elm.has.frameWidth){elm.att.frameWidth = "0";}
+            if(!elm.has.frameHeight){elm.att.frameHeight = "0";}
         }
     }
 
     private function loadGhostSprites():Void {
+        if(!txtIMAGE.text.contains(".png") || !txtXML.text.contains(".xml")){return;}
+
         bSprite.frames = fromUncachedSparrow(BitmapData.fromFile(txtIMAGE.text), Paths.getText(txtXML.text));
 
         var animArr = getNamesArray(new Access((Xml.parse(Paths.getText(txtXML.text))).firstElement()).elements);
@@ -260,10 +262,11 @@ class XMLEditorState extends MusicBeatState {
         var toReturn:Array<String> = new Array<String>();
 
         for(chr in arr){
-            var toDel:String = "";
-            for(i in 0...chr.att.name.length){if(i >= chr.att.name.length - 4){toDel = toDel + chr.att.name.charAt(i);}}
-            var nChar = chr.att.name.replace(toDel, "");
-            if(!toReturn.contains(nChar)){toReturn.push(nChar);}
+            var arr_name:Array<String> = chr.att.name.split(""); arr_name.resize(chr.att.name.length - 4);
+            var char_anim:String = "";
+            for(c in arr_name){char_anim = '${char_anim}${c}';}
+
+            if(!toReturn.contains(char_anim)){toReturn.push(char_anim);}
         }
 
         return toReturn;
@@ -520,7 +523,7 @@ class XMLEditorState extends MusicBeatState {
         lblFrameName.alignment = CENTER;
         var txtFrameName = new FlxUIInputText(5, lblFrameName.y + lblFrameName.height, Std.int(tabSPRITE.width) - 10, ""); uiBase.add(txtFrameName);
         var btnAddFrame = new FlxUICustomButton(5, txtFrameName.y + txtFrameName.height + 3, Std.int(tabSPRITE.width / 2) - 7, null, "Create Frame", null, FlxColor.fromRGB(94, 255, 99), function(){
-            
+            //_XML.elements.push(txtFrameName.text);
         }); uiBase.add(btnAddFrame);
         var btnDelFrame = new FlxUICustomButton(btnAddFrame.x + btnAddFrame.width + 5, btnAddFrame.y, Std.int(tabSPRITE.width / 2) - 7, null, "Delete Frame", null, FlxColor.fromRGB(255, 94, 94), function(){
             

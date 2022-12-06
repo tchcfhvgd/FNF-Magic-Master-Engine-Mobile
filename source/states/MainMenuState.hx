@@ -41,9 +41,10 @@ using StringTools;
 
 class MainMenuState extends MusicBeatState {
 	public static var principal_options:Array<Dynamic> = [
-		{option:"StoryMode", icon:"storymode", display:"menu_storymode", func:function(){}},
+		{option:"StoryMode", icon:"storymode", display:"menu_storymode", func:function(){MusicBeatState.switchState(new StoryMenuState(null, MainMenuState));}},
 		{option:"Freeplay", icon:"freeplay", display:"menu_freeplay", func:function(){MusicBeatState.switchState(new FreeplayState(null, MainMenuState));}},
-		{option:"Skins", icon:"skins", display:"menu_skins", func:function(){}},
+		{option:"Multiplayer", icon:"multiplayer", display:"menu_multiplayer", func:function(){MusicBeatState.switchState(new states.multiplayer.LobbyState());}},
+		{option:"Skins", icon:"skins", display:"menu_skins", func:function(){MusicBeatState.switchState(new SkinsMenuState(null, MainMenuState));}},
 		{option:"Options", icon:"options", display:"menu_options", func:function(){MusicBeatState.state.canControlle = false; MusicBeatState.state.openSubState(new substates.OptionsSubState(function(){MusicBeatState.state.canControlle = true;}));}},
 		{option:"Mods", icon:"mods", display:"menu_mods", func:function(){if(ModSupport.MODS.length > 0){MusicBeatState.switchState(new ModListState(MainMenuState, null));}}},
 		{option:"Credits", icon:"credits", display:"menu_credits", func:function(){}}

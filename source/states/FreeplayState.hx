@@ -39,9 +39,6 @@ class FreeplayState extends MusicBeatState {
 
 	var grpSongs:FlxTypedGroup<Alphabet>;
 
-	var stage:Stage;
-    var camFollow:FlxObject;
-
 	var curMod:Int = 0;
 	var curSong:Int = 0;
 	var curDiff:String = "";
@@ -56,15 +53,12 @@ class FreeplayState extends MusicBeatState {
 
 		songList = SongStuffManager.getSongList();
 
-		stage = new Stage("Stage",[
-			["Girlfriend", [400, 130], 1, false, "Default", "GF", 0],
-			["Daddy_Dearest", [100, 100], 1, true, "Default", "NORMAL", 0],
-			["Boyfriend", [770, 100], 1, false, "Default", "NORMAL", 0]
-		]);
-		add(stage);
+        var bg = new FlxSprite().loadGraphic(Paths.image('menuBG'));
+		bg.setGraphicSize(FlxG.width, FlxG.height);
+        bg.color = FlxColor.GRAY;
+		bg.screenCenter();
+		add(bg);
 		
-		FlxG.camera.zoom = stage.zoom;
-
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		for(i in 0...songList.length){
 			var songText:Alphabet = new Alphabet(10,0,Paths.getFileName(songList[i].song));
@@ -89,10 +83,6 @@ class FreeplayState extends MusicBeatState {
 
 		super.create();
 
-        camFollow = new FlxObject(0, 0, 1, 1);
-		FlxG.camera.follow(camFollow, LOCKON);
-		add(camFollow);
-
 		changeSong();
 	}
 
@@ -102,22 +92,10 @@ class FreeplayState extends MusicBeatState {
 			if(FlxG.mouse.wheel > 0){changeSong(-1);}
 
 			if(FlxG.mouse.justPressed){
-				for(i in 0...stage.character_Length){
-					var nChar = stage.getCharacterById(i);
-					if(FlxG.mouse.overlaps(nChar)){nChar.playAnim("hey", true);}
-				}
-
 				for(btn in grpSongs){if(FlxG.mouse.overlaps(btn)){changeSong(btn.ID, true); break;}}
-			}			
+			}
 		}
 		
-		if(stage.camP_1 != null && stage.camP_2 != null){
-			camFollow.setPosition(
-				(stage.camP_1[0] + (FlxG.mouse.screenX * (stage.camP_2[0] - stage.camP_1[0]) / FlxG.width)),
-				(stage.camP_1[1] + (FlxG.mouse.screenY * (stage.camP_2[1] - stage.camP_1[1]) / FlxG.height))
-			);
-		}
-
 		MagicStuff.sortMembersByY(cast grpSongs, (FlxG.height / 2) - (grpSongs.members[curSong].height / 2), curSong);
 		
 		super.update(elapsed);		
@@ -138,6 +116,6 @@ class FreeplayState extends MusicBeatState {
 	public function chooseSong():Void {
 		var songInput:String = Song.fileSong(songList[curSong].song, "Normal", "Hard");
 		var songdata:SwagSong = Song.loadFromJson(songInput);
-		SongListData.playSong(songdata);
+		SongListData.loadAndPlaySong(songdata);
 	}
 }

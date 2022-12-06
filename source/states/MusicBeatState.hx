@@ -20,7 +20,6 @@ using StringTools;
 
 class MusicBeatState extends FlxUIState {
 	public static var state:MusicBeatState;
-	public static var popList:Array<String> = [];
 
 	public var conductor:Conductor = new Conductor();
 

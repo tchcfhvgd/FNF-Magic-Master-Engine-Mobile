@@ -114,28 +114,7 @@ class Main extends Sprite {
 		Sys.println(errMsg);
 		Sys.println("Crash dump saved in " + Path.normalize(path));
 
-		var crashDialoguePath:String = "Crash-Dialog";
-
-		#if windows
-		crashDialoguePath += ".exe";
-		#end
-
-		if (FileSystem.exists("./" + crashDialoguePath))
-		{
-			Sys.println("Found crash dialog: " + crashDialoguePath);
-
-			#if linux
-			crashDialoguePath = "./" + crashDialoguePath;
-			#end
-			new Process(crashDialoguePath, [path]);
-		}
-		else
-		{
-			Sys.println("Not Found crash dialog: " + crashDialoguePath);
-			// I had to do this or the stupid CI won't build :distress:
-			Sys.println("No crash dialog found! Making a simple alert instead...");
-			Application.current.window.alert(errMsg, "Error!");
-		}
+		Application.current.window.alert(errMsg, "Error!");
 
 		Sys.exit(1);
 	}

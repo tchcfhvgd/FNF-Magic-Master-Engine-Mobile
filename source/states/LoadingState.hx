@@ -111,7 +111,6 @@ class LoadingState extends MusicBeatState {
 						trace("SONG");
 						
 						tempLoadingStuff.push({type:SOUND,instance:Paths.inst(_song.song, _song.category, true)});
-
 						if(_song.hasVoices){for(i in 0..._song.characters.length){tempLoadingStuff.push({type:SOUND,instance:Paths.voice(i, _song.characters[i][0], _song.song, _song.category, true)});}}
 						
 						for(i in Paths.readDirectory('assets/shared/images/style_UI/${_song.uiStyle}', true)){
@@ -174,6 +173,8 @@ class LoadingState extends MusicBeatState {
 				
 				var _stuff:Dynamic = tempLoadingStuff.shift();
 
+				if(_stuff.type == null || _stuff.instance == null){continue;}
+
 				switch(_stuff.type){
 					default:{trace(_stuff);}
 					case IMAGE: Paths.getGraphic(_stuff.instance);
@@ -181,10 +182,8 @@ class LoadingState extends MusicBeatState {
 					case TEXT: Paths.getText(_stuff.instance);
 					case "ATLAS": Paths.getAtlas(_stuff.instance);
 
-					case "FUNCTION":{if(_stuff.instance != null){_stuff.instance();}}
+					case "FUNCTION":{_stuff.instance();}
 				}
-				
-				//trace('Cached: ${_stuff.instance}');
 			}
 		});
 	}

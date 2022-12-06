@@ -1242,7 +1242,7 @@ class ChartEditorState extends MusicBeatState {
 
         var btnPlaySong:FlxButton = new FlxCustomButton(5, 10, Std.int(MENU.width - 10), null, "Play Song", null, null, function(){
             lastSection = curSection;
-            SongListData.playSong(_song);
+            SongListData.loadAndPlaySong(_song);
         }); tabMENU.add(btnPlaySong);
 
         var line1 = new FlxSprite(5, btnPlaySong.y + btnPlaySong.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line1);
