@@ -1,6 +1,5 @@
 package states;
 
-import Note.NoteSplash;
 import substates.PauseSubState;
 #if desktop
 import Discord.DiscordClient;
@@ -36,6 +35,9 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
+import Note.NoteSplash;
+import Character.Skins;
+
 using StringTools;
 
 class PreLoaderState extends FlxUIState {
@@ -63,6 +65,7 @@ class PreLoaderState extends FlxUIState {
 		Highscore.load();	
 		LangSupport.init();
 		ModSupport.init();
+		Skins.init();
 		
 		#if desktop
 		DiscordClient.initialize();

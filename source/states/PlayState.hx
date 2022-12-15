@@ -462,22 +462,21 @@ class PlayState extends MusicBeatState {
 		inst.stop();
 		for(sound in voices.sounds){sound.stop();}
 
-		if (SONG.validScore){
-			#if !switch
-			Highscore.saveSongScore(SONG.song, 0, SONG.difficulty, SONG.category);
-			#end
-		}
+		var song_score:Int = 0;
+		for(i in playablesStrums){song_score += strumsGroup.members[i].STATS.get("Score");}
 
-		SongListData.nextSong(0);
+		if(SONG.validScore){Highscore.saveSongScore(SONG.song, song_score, SONG.difficulty, SONG.category);}
+
+		SongListData.nextSong(song_score);
 
 		if(SongListData.songPlaylist.length <= 0){
-			SongListData.resetVariables();
-			MusicBeatState.switchState(new states.MainMenuState());
-
 			if(SONG.validScore){
 				NGio.unlockMedal(60961);
 				Highscore.saveWeekScore(SongListData.weekName, SongListData.campScore, SONG.difficulty, SONG.category);
 			}
+
+			SongListData.resetVariables();
+			MusicBeatState.switchState(new states.MainMenuState());
 		}else{
 			trace('LOADING NEXT SONG');
 

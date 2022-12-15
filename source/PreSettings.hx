@@ -104,7 +104,7 @@ class PreSettings {
 
     public static function changePreSetting(setting:String, category:String, value:Int = 0){
         var check = CURRENT_SETTINGS.get(category).get(setting);
-        if((check is Array<Dynamic>)){
+        if((check is Array)){
             check[0] += value;
 
             if(check[0] < 0){check[0] = check[1].length - 1;}

@@ -11,6 +11,8 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxG;
 
+import Character.Skins;
+
 import openfl.Lib;
 
 class MagicStuff {
@@ -29,6 +31,7 @@ class MagicStuff {
 		PlayerSettings.init();
         PreSettings.loadSettings();
 		LangSupport.init();
+		Skins.init();
         
         for(s in ModSupport.modDataScripts){s.exFunction("onLoaded");}
     }

@@ -399,24 +399,24 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
                     switch(PreSettings.getPreSetting("Type HUD", "Visual Settings")){
                         case "MagicHUD":{
                             lblStats.text = '||'+
-                                ' ${LangSupport.getText('Gmp_Score')}: ${STATS['Score']} |' +
-                                //' ${LangSupport.getText('Gmp_Record')}: ${STATS['Record']} |' +
-                                ' ${LangSupport.getText('Gmp_Combo')}: ${STATS['Combo']} |' +
-                                //' ${LangSupport.getText('Gmp_MaxCombo')}: ${STATS['MaxCombo']} |' +
-                                ' ${LangSupport.getText('Gmp_Misses')}: ${STATS['Misses']} |' +
-                                //' ${LangSupport.getText('Gmp_Hits')}: ${STATS['Hits']} |' +
-                                ' ${LangSupport.getText('Gmp_Rating')}: ${STATS['Rating']} ' +
+                                ' ${LangSupport.getText('gmp_score')}: ${STATS['Score']} |' +
+                                //' ${LangSupport.getText('gmp_record')}: ${STATS['Record']} |' +
+                                ' ${LangSupport.getText('gmp_combo')}: ${STATS['Combo']} |' +
+                                //' ${LangSupport.getText('gmp_maxCombo')}: ${STATS['MaxCombo']} |' +
+                                ' ${LangSupport.getText('gmp_misses')}: ${STATS['Misses']} |' +
+                                //' ${LangSupport.getText('gmp_hits')}: ${STATS['Hits']} |' +
+                                ' ${LangSupport.getText('gmp_rating')}: ${STATS['Rating']} ' +
                             '||';
                         }
                         case "Original":{
                             lblStats.text = '||'+
-                                ' ${LangSupport.getText('Gmp_Score')}: ${STATS['Score']} |' +
-                                ' ${LangSupport.getText('Gmp_Misses')}: ${STATS['Misses']} ' +
+                                ' ${LangSupport.getText('gmp_score')}: ${STATS['Score']} |' +
+                                ' ${LangSupport.getText('gmp_misses')}: ${STATS['Misses']} ' +
                             '||';
                         }
                         case "Minimized":{
                             lblStats.text = '||'+
-                                ' ${LangSupport.getText('Gmp_Score')}: ${STATS['Score']} ' +
+                                ' ${LangSupport.getText('gmp_score')}: ${STATS['Score']} ' +
                             '||';
                         }
                         case "OnlyNotes":{

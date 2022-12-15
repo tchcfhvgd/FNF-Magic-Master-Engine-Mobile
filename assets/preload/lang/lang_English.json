@@ -1,63 +1,50 @@
 {
-	"ModAdv_1":[
-		{
-			"animated":true,
-			"bold":true,
-			"scale":0.5,
-			"text":"\t  Looks like you have Mods Installed"
-		},
-		{
-			"scale":0.35,
-			"animated":true,
-			"bold":true,
-			"text": "\n\nWould you like to configure them before starting the game?"
-		}
+	"mod_advert":[
+		{"animated":true, "bold":true, "scale":0.5, "text":"\t  Looks like you have Mods Installed"},
+		{"scale":0.35, "animated":true, "bold":true, "text": "\n\nWould you like to configure them before starting the game?"}
 	],
 
-	"Sett_1": "Settings",
+	"mod_list": [{"animated":true, "bold":true, "text":"Mod List"}],
 
-	"ModList": [
-		{
-			"animated":true,
-			"bold":true,
-			"text":"Mod List"
-		}
+    "menu_storymode": [{"bold":true, "animated":true, "text":"StoryMode"}],
+    "menu_freeplay": [{"bold":true, "animated":true, "text":"FreePlay"}],
+	"menu_multiplayer": [{"bold":true, "animated":true, "text":"Multiplayer"}],
+	"menu_skins": [{"bold":true, "animated":true, "text":"Skins"}],
+	"menu_options": [{"bold":true, "animated":true, "text":"Options"}],
+	"menu_mods": [{"bold":true, "animated":true, "text":"Mods"}],
+	"menu_credits": [{"bold":true, "animated":true, "text":"Credits"}],
+
+	"story_info_1":[
+		{"bold":true, "text":"       "},
+		{"bold":true, "scale":0.4, "text":"Category"},
+		{"bold":true, "text":"          "},
+		{"bold":true, "scale":0.6, "text":"Week"},
+		{"bold":true, "text":"         "},
+		{"bold":true, "scale":0.4, "text":"Difficulty"}
+	],
+	
+	"freeplay_info_1":[
+		{"bold":true, "text":"       "},
+		{"bold":true, "scale":0.4, "text":"Category"},
+		{"bold":true, "text":"          "},
+		{"bold":true, "scale":0.6, "text":"Song"},
+		{"bold":true, "text":"         "},
+		{"bold":true, "scale":0.4, "text":"Difficulty"}
 	],
 
-    "StoryMode": "StoryMode",
-    "FreePlay": "FreePlay",
-	"Skins": "Skins",
-	"Options": "Options",
-	"Extras": "Extras",
-	"Credits": "Credits",
-
-	"Charting_Adv_1":[
-		{
-			"animated":true,
-			"bold":true,
-			"scale":1.1,
-			"text":"Chart Editor Wiki:"
-		},
-		{
-			"animated":true,
-			"bold":true,
-			"scale":0.5,
-			"text":"\n\nPequeña wiki para que sea mas facil usar el Editor."
-
-		},
-		{
-			"animated":true,
-			"bold":true,
-			"scale":0.7,
-			"text":"\n\nTab.1: Song:"
-		}
+	"charting_adv_1":[
+		{"animated":true, "bold":true, "scale":1.1, "text":"Chart Editor Wiki:"},
+		{"animated":true, "bold":true, "scale":0.5, "text":"\n\nPequeña wiki para que sea mas facil usar el Editor."},
+		{"animated":true, "bold":true, "scale":0.7, "text":"\n\nTab.1: Song:"}
 	],
 
-	"Gmp_Score":"Score",
-	"Gmp_Record":"Record",
-	"Gmp_Combo":"Combo",
-	"Gmp_MaxCombo":"Max Combo",
-	"Gmp_Misses":"Misses",
-	"Gmp_Hits":"Hits",
-	"Gmp_Rating":"Rating"
+	"skins_info_1":[{"bold":true, "scale":0.5, "text":"Load Character\n\t\t[SPACE]"}],
+
+	"gmp_score":"Score",
+	"gmp_record":"Record",
+	"gmp_combo":"Combo",
+	"gmp_maxCombo":"Max Combo",
+	"gmp_misses":"Misses",
+	"gmp_hits":"Hits",
+	"gmp_rating":"Rating"
 }

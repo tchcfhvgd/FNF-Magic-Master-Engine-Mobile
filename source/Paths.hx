@@ -67,8 +67,8 @@ class Paths {
 		return false;
 	}
 
-	inline public static function readDirectory(file:String, isPath:Bool = false):Array<Dynamic>{
-		var toReturn:Array<Dynamic> = [];
+	inline public static function readDirectory(file:String, isPath:Bool = false):Array<String> {
+		var toReturn:Array<String> = [];
 
 		#if sys
 		var hideVan:Bool = false;
@@ -196,7 +196,13 @@ class Paths {
 	inline public static function getBytes(file:String):Any {
 		if(isSaved(file)){return getSavedFile(file);}
 
-		saveFile(file, Assets.exists(file) ? Assets.getBytes(file) : File.getBytes(file));
+		var bites = null;
+		if(Assets.exists(file)){bites = Assets.getBytes(file);}
+		if(bites == null){bites = File.getBytes(file);}	
+
+		if(bites == null){return file;}
+
+		saveFile(file, bites);
 		
 		return getSavedFile(file);
 	}
@@ -219,7 +225,13 @@ class Paths {
 	inline public static function getText(file:String):String{
 		if(isSaved(file)){return getSavedFile(file);}
 		
-		saveFile(file, Assets.exists(file) ? Assets.getText(file) : File.getContent(file));
+		var text = null;
+		if(Assets.exists(file)){text = Assets.getText(file);}
+		if(text == null){text = File.getContent(file);}	
+
+		if(text == null){return file;}
+
+		saveFile(file, text);
 		
 		return getSavedFile(file);
 	}
@@ -402,7 +414,12 @@ class Paths {
 
 		if(bit == null|| xml == null){return null;}
 
-		saveFile(custom_path, FlxAtlasFrames.fromSparrow(bit, xml));
+		var atlas = FlxAtlasFrames.fromSparrow(bit, xml);
+
+		if(atlas == null){return null;}
+
+		saveFile(custom_path, atlas);
+
 		return getSavedFile(custom_path);
 	}
 
@@ -416,8 +433,13 @@ class Paths {
 		var txt = Paths.getText('$path.txt');
 
 		if(bit == null|| txt == null){return null;}
+		
+		var atlas = FlxAtlasFrames.fromSpriteSheetPacker(bit, txt);
 
-		saveFile(custom_path, FlxAtlasFrames.fromSpriteSheetPacker(bit, txt));
+		if(atlas == null){return null;}
+
+		saveFile(custom_path, atlas);
+		
 		return getSavedFile(custom_path);
 	}
 

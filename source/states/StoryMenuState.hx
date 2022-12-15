@@ -8,7 +8,6 @@ import flixel.addons.ui.FlxUIButton;
 import flixel.input.mouse.FlxMouse;
 import flixel.effects.FlxFlicker;
 import flixel.util.FlxGradient;
-import flixel.util.FlxGradient;
 import flixel.tweens.FlxEase;
 import flixel.util.FlxColor;
 import lime.app.Application;
@@ -53,6 +52,10 @@ class StoryMenuState extends MusicBeatState {
 
     public var difficulty:FlxSprite;
     public var category:FlxSprite;
+    
+	var infoAlpha:Alphabet;
+    var titleAlpha:Alphabet;
+    var scoreAlpha:Alphabet;
 
 	override function create(){
 		FlxG.mouse.visible = false;
@@ -73,6 +76,12 @@ class StoryMenuState extends MusicBeatState {
 
         var shape_1:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, 60, FlxColor.BLACK);
         add(shape_1);
+
+        titleAlpha = new Alphabet(0, 0, [{text:"PlaceHolder"}]);
+        add(titleAlpha);
+
+        scoreAlpha = new Alphabet(0, 0, [{text:"PlaceHolder"}]);
+        add(scoreAlpha);
 
         var shape_2:FlxSprite = new FlxSprite(0, 65).makeGraphic(FlxG.width, 5, FlxColor.BLACK);
         add(shape_2);
@@ -138,6 +147,11 @@ class StoryMenuState extends MusicBeatState {
         }
         grpArrows.cameras = [camWeeks];
         add(grpArrows);
+
+        infoAlpha = new Alphabet(0, 0, LangSupport.getText("story_info_1"));
+        infoAlpha.cameras = [camWeeks];
+        infoAlpha.y = FlxG.height - 220;
+        add(infoAlpha);
         
 		changeWeek();
 	}
@@ -163,8 +177,8 @@ class StoryMenuState extends MusicBeatState {
                 grpArrows.members[1].y = category.y + category.height + 5;
             }
             case 1:{
-                if(principal_controls.checkAction("Menu_Up", JUST_PRESSED)){changeWeek(-1);}
-                if(principal_controls.checkAction("Menu_Down", JUST_PRESSED)){changeWeek(1);}
+                if(principal_controls.checkAction("Menu_Up", JUST_PRESSED) || FlxG.mouse.wheel > 0){changeWeek(-1);}
+                if(principal_controls.checkAction("Menu_Down", JUST_PRESSED) || FlxG.mouse.wheel < 0){changeWeek(1);}
 
                 for(a in grpArrows.members){MagicStuff.lerpX(cast a, (FlxG.width / 2));}
                 grpArrows.members[0].y = grpWeeks.members[curWeek].y - grpArrows.members[0].height - 5;
@@ -198,8 +212,11 @@ class StoryMenuState extends MusicBeatState {
         for(w in grpWeeks.members){w.alpha = 0.5;}
         grpWeeks.members[curWeek].alpha = 1;
 
+        titleAlpha.cur_data = [{scale:0.6, bold:true, text:weeks[curWeek].title}];
+        titleAlpha.loadText();
+        titleAlpha.screenCenter(X);
+
         changeCateg();
-        changeDiff();
 	}
     
     function changeCateg(value:Int = 0, force:Bool = false):Void {
@@ -215,6 +232,8 @@ class StoryMenuState extends MusicBeatState {
 
         category.loadGraphic(Paths.image('categories/${Paths.getFileName(curCat.toLowerCase(), true)}'));
         category.setPosition(250 - (category.width / 2), (FlxG.height - 110) - (category.height / 2));
+        
+        changeDiff();
     }
 
     function changeDiff(value:Int = 0, force:Bool = false):Void {
@@ -231,6 +250,9 @@ class StoryMenuState extends MusicBeatState {
 
         difficulty.loadGraphic(Paths.image('difficulties/${Paths.getFileName(curDiff.toLowerCase(), true)}'));
         difficulty.setPosition((FlxG.width - 250) - (difficulty.width / 2), (FlxG.height - 110) - (difficulty.height / 2));
+        
+        scoreAlpha.cur_data = [{scale:0.4, bold:true, text:'${LangSupport.getText('gmp_score')}: ${Highscore.getWeekScore(weeks[curWeek].name, curDiff, curCat)}'}];
+        scoreAlpha.loadText();
     }
 
     function chooseWeek():Void {

@@ -55,7 +55,7 @@ class PopModState extends MusicBeatState {
         bg.color = 0xff77ffd6;
         add(bg);
         
-        var lblAdvice_1:Alphabet = new Alphabet(0,0,LangSupport.getText('ModAdv_1')); add(lblAdvice_1);
+        var lblAdvice_1:Alphabet = new Alphabet(0,0,LangSupport.getText('mod_advert')); add(lblAdvice_1);
         lblAdvice_1.screenCenter(); lblAdvice_1.y -= 120;
         
         var btnNo = new FlxUICustomButton(0, 0, 80, 80, "", Paths.image("tach", null, true), null, function(){MagicStuff.reload_data(); MusicBeatState.switchState(new LoadingState(new TitleState(), []));});
@@ -125,7 +125,7 @@ class ModListState extends MusicBeatState {
         btnReady.antialiasing = true;
         add(btnReady);
         
-        var lblModList = new Alphabet(10,20,LangSupport.getText("ModList")); add(lblModList);
+        var lblModList = new Alphabet(10,20,LangSupport.getText("mod_list")); add(lblModList);
 
 		super.create();
 	}

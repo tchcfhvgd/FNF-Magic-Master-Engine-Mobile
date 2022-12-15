@@ -54,9 +54,127 @@ typedef AnimArray = {
 	var loop:Bool;
 }
 
-class Character extends FlxSpriteGroup {
-	public static function getSkin(character:String):String {return "Default";}
+class Skins {
+	private static var skin_manager:Map<String, Dynamic> = [];
 
+	public static function init():Void {
+		skin_manager.clear();
+
+		var character_list:Array<String> = Character.getCharacters();
+
+		for(char in character_list){
+			var current_skin_char = {
+				current_skin: "Default",
+				skins: [
+					{name: "Default", locked: false}
+				]
+			};
+
+			var json_founded:Array<String> = Paths.readDirectory('assets/characters/$char/Skins');
+
+			for(json in json_founded){
+				var j_array:Array<String> = json.split("-");
+
+				if(j_array.length < 2){continue;}
+
+				var cur_skin:String = j_array[1];
+
+				var toContinue:Bool = false;
+				for(s in current_skin_char.skins){if(s.name == cur_skin){toContinue = true;}}
+				if(toContinue){continue;}
+
+				current_skin_char.skins.push({name: cur_skin, locked: true});
+			}
+			
+			skin_manager.set(char, current_skin_char);
+		}
+
+		var saved_skin_data:Map<String, Dynamic> = FlxG.save.data.skins;
+
+		if(saved_skin_data == null){return;}
+		for(skin_key in saved_skin_data.keys()){
+			setSkin(skin_key, saved_skin_data[skin_key].skin);
+
+			var character_unlockeds:Array<Dynamic> = saved_skin_data[skin_key].unlockeds;
+			for(unlocked in character_unlockeds){
+				unlockSkin(skin_key, unlocked);
+			}
+		}
+	}
+
+	public static function getSkin(character:String):String {
+		if(!skin_manager.exists(character)){return "Default";}
+		return skin_manager.get(character).current_skin;
+	}
+
+	public static function getSkinList(character:String):Array<Dynamic> {
+		if(!skin_manager.exists(character)){return ["Default"];}
+		return skin_manager.get(character).skins;
+	}
+
+	public static function unlockSkin(character:String, skin:String):Void {		
+		if(!skin_manager.exists(character)){trace("Null Character"); return;}
+
+		var character_skins:Array<Dynamic> =skin_manager.get(character).skins;
+
+		for(_skin in character_skins){
+			if(_skin.name == skin){
+				_skin.locked = false;
+				return;
+			}
+		}
+
+		trace("Skin Not Found");
+	}
+
+	public static function rewardSkin(character:String, skin:String):Void {
+		unlockSkin(character, skin);
+		save();
+	}
+
+	public static function setSkin(character:String, skin:String):Void {
+		if(!skin_manager.exists(character)){trace("Null Character"); return;}
+		skin_manager.get(character).current_skin = skin;
+	}
+
+	public static function checkLocked(character:String, skin:String):Bool {
+		if(!skin_manager.exists(character)){trace("Null Character"); return true;}
+
+		var skin_list:Array<Dynamic> = skin_manager.get(character).skins;
+
+		for(_skin in skin_list){
+			if(_skin.name == skin){
+				return _skin.locked;
+			}
+		}
+
+		return true;
+	}
+
+	public static function save():Void {
+		var skins_to_save:Map<String, Dynamic> = [];
+
+		for(char_key in skin_manager.keys()){
+			var current_skin_data = {
+				skin: getSkin(char_key),
+				unlockeds: []
+			};
+
+			for(skin in getSkinList(char_key)){
+				if(!skin.locked){
+					current_skin_data.unlockeds.push(skin.name);
+				}
+			}
+
+			skins_to_save.set(char_key, current_skin_data);
+		}
+
+		FlxG.save.data.skins = skins_to_save;
+		FlxG.save.flush();
+	}
+}
+
+class Character extends FlxSpriteGroup {
 	public static function getFocusCharID(song:SwagSong, section:Int, ?strum:Int):Int {
 		var strum_list = song.sectionStrums;
 		var focused_strum = strum != null ? strum : song.generalSection[section].strumToFocus;
@@ -132,7 +250,7 @@ class Character extends FlxSpriteGroup {
 
 		curCharacter = character;
 
-		curSkin = Character.getSkin(curCharacter);
+		curSkin = Skins.getSkin(curCharacter);
 		curCategory = category;
 		curType = type;
 
@@ -142,7 +260,7 @@ class Character extends FlxSpriteGroup {
 	}
 
 	public static function addPreloadersToList(list:Array<Dynamic>, ?character:String = 'Boyfriend', ?category:String = 'Default', ?type:String = "NORMAL"):Void {
-		var char_path:String = Paths.getCharacterJSON(character, Character.getSkin(character), category);
+		var char_path:String = Paths.getCharacterJSON(character, Skins.getSkin(character), category);
 		var char_file:CharacterFile = cast Json.parse(Paths.getText(char_path));
 
 		list.push({type: "ATLAS", instance: Paths.character(character, char_file.image)});
