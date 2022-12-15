@@ -1,0 +1,56 @@
+{
+	"aspect": "Default",
+	"position": [
+		-77,
+		33
+	],
+	"anims": [
+		{
+			"indices": [],
+			"symbol": "down",
+			"fps": 24,
+			"anim": "singDOWN",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "idle",
+			"fps": 24,
+			"anim": "idle",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "left",
+			"fps": 24,
+			"anim": "singLEFT",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "right",
+			"fps": 24,
+			"anim": "singRIGHT",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "up",
+			"fps": 24,
+			"anim": "singUP",
+			"loop": false
+		}
+	],
+	"name": "SugarMoon",
+	"image": "sugarmoon",
+	"zoom": 0.8,
+	"antialiasing": true,
+	"deathCharacter": "Boyfriend_Death",
+	"skin": "Default",
+	"onRight": true,
+	"healthicon": "moon",
+	"camera": [
+		0,
+		0
+	]
+}

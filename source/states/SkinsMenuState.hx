@@ -214,8 +214,8 @@ class SkinsMenuState extends MusicBeatState {
 		alpSkinName.loadText();
 		alpSkinName.x = 1070 - (alpSkinName.width / 2);
 
-		arrowsgroup.members[2].setPosition(alpSkinName.x - arrowsgroup.members[0].width, alpSkinName.y + (alpSkinName.height / 2) - (arrowsgroup.members[0].height / 2));
-		arrowsgroup.members[3].setPosition(alpSkinName.x + alpSkinName.width, alpSkinName.y + (alpSkinName.height / 2) - (arrowsgroup.members[1].height / 2));
+		arrowsgroup.members[2].setPosition(alpSkinName.x - arrowsgroup.members[0].width - 5, alpSkinName.y + (alpSkinName.height / 2) - (arrowsgroup.members[0].height / 2));
+		arrowsgroup.members[3].setPosition(alpSkinName.x + alpSkinName.width + 5, alpSkinName.y + (alpSkinName.height / 2) - (arrowsgroup.members[1].height / 2));
 
 		alpReloadCharacter.visible = true;
 		canChange = true;
