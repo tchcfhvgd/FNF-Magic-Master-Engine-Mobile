@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Limusine.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Limusine0000" x="0" y="0" width="1158" height="342" frameX="0" frameY="-2" frameWidth="1158" frameHeight="344"/>
+	<SubTexture name="Limusine0001" x="0" y="352" width="1157" height="344" frameX="-1" frameY="0" frameWidth="1158" frameHeight="344"/>
+	<SubTexture name="Limusine0002" x="0" y="706" width="1158" height="343" frameX="0" frameY="-1" frameWidth="1158" frameHeight="344"/>
+</TextureAtlas>

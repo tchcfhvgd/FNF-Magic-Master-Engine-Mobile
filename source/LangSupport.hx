@@ -57,7 +57,7 @@ class LangSupport {
         Language = _lang;
 
         var nLang:DynamicAccess<Dynamic> = {};
-        for(langFile in Paths.readFileToArray('assets/lang/lang_${Language}.json', true)){
+        for(langFile in Paths.readFile('assets/lang/lang_${Language}.json')){
             var path:DynamicAccess<Dynamic> = cast Json.parse(Paths.getText(langFile));
             for(key in path.keys()){
                 if(!nLang.exists(key)){nLang.set(key, path.get(key));}
@@ -89,7 +89,7 @@ class PopLangState extends states.MusicBeatState {
         
         var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBG'));
         bg.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height)); bg.screenCenter();
-        bg.color = 0xfff765;
+        bg.color = 0xfffffd75;
         add(bg);
 
         langGroup = new FlxTypedGroup<Alphabet>();
@@ -116,8 +116,8 @@ class PopLangState extends states.MusicBeatState {
         
         MagicStuff.sortMembersByY(cast langGroup, (FlxG.height / 2) - (langGroup.members[curLang].height / 2), curLang, 25);
 
-        if(FlxG.mouse.wheel < 0){changeLang(1);}
-        if(FlxG.mouse.wheel > 0){changeLang(-1);}
+		if(principal_controls.checkAction("Menu_Up", JUST_PRESSED) || FlxG.mouse.wheel > 0){changeLang(-1);}
+		if(principal_controls.checkAction("Menu_Down", JUST_PRESSED) || FlxG.mouse.wheel < 0){changeLang(1);}
 
 		if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED)){chooseLang();}
 	}

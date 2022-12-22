@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Fire_Car.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="SD_Car0000" x="0" y="0" width="1909" height="788" frameX="0" frameY="-6" frameWidth="1927" frameHeight="794"/>
+	<SubTexture name="SD_Car0001" x="1919" y="0" width="1903" height="794" frameX="0" frameY="0" frameWidth="1927" frameHeight="794"/>
+	<SubTexture name="SD_Car0002" x="0" y="804" width="1927" height="792" frameX="0" frameY="-2" frameWidth="1927" frameHeight="794"/>
+</TextureAtlas>

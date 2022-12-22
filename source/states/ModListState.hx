@@ -52,7 +52,7 @@ class PopModState extends MusicBeatState {
 
         var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBG'));
         bg.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height)); bg.screenCenter();
-        bg.color = 0xff77ffd6;
+        bg.color = 0xff7dffd8;
         add(bg);
         
         var lblAdvice_1:Alphabet = new Alphabet(0,0,LangSupport.getText('mod_advert')); add(lblAdvice_1);
@@ -216,10 +216,10 @@ class ItemMod extends FlxUITabMenu {
     
     public function new(mod:Mod){
         this.refMod = mod;
-
+ 
         mScript = new Script();
         mScript.setVariable("getInstance", function(){return this;});
-        mScript.setVariable("mod_name", refMod.name);
+        mScript.setVariable("mod", refMod);
         mScript.exScript(Paths.getText('${refMod.path}/itemMod.hx'));
 
         var back_ = new FlxUI9SliceSprite(0, 0, Paths.image("custom_default_chrome_flat", null, false, refMod.name), new Rectangle(0, 0, 100, 100), [20, 20, 78, 78], FlxUI9SliceSprite.TILE_BOTH);
@@ -243,7 +243,7 @@ class ItemMod extends FlxUITabMenu {
         add(_btnMoveUp);
         
         _btnMoveDown = new FlxUICustomButton(0,5,30,15,"", Paths.image("down_button", null, true, refMod.name), null, function(){ModSupport.moveMod(this.ID, false); onButton();});
-        _btnMoveDown.x = _btnMoveUp.x - _btnMoveDown.width;
+        _btnMoveDown.setPosition(_btnMoveUp.x - _btnMoveDown.width, -(_btnMoveDown.height));
         _btnMoveDown.antialiasing = true;
         add(_btnMoveDown);
 
@@ -265,9 +265,10 @@ class ItemMod extends FlxUITabMenu {
 
         var curSize:FlxPoint = closedSize;
         if(_selected){
-            for(tab in this._tabs){if(!tab.alive){tab.revive();}} curSize = openSize;
-        }else if(this.selected_tab_id != "4ModUnSelected"){
-            this.showTabId("4ModUnSelected");
+            curSize = openSize;
+            if(this.selected_tab_id != "Selected"){this.showTabId("Selected");}
+        }else if(this.selected_tab_id != "UnSelected"){
+            this.showTabId("UnSelected");
         }
         if((this.width < curSize.x - 5 || this.width > curSize.x + 5) || (this.height < curSize.y - 5 || this.height > curSize.y + 5)){resize(FlxMath.lerp(this.width, curSize.x, delay), FlxMath.lerp(this.height, curSize.y, delay));}
 	

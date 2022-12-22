@@ -101,29 +101,18 @@ class Paths {
 		return toReturn;
 	}
 
-	inline public static function readFileToArray(file:String, forceVanilla:Bool = false):Array<Dynamic> {
+	inline public static function readFile(file:String):Array<Dynamic> {
 		var toReturn:Array<Dynamic> = [];
 
 		#if sys
 		var hideVan:Bool = false;
 		for(mod in ModSupport.MODS){if(mod.enabled && mod.hideVanilla){hideVan = true;}}
-		if((forceVanilla || (!forceVanilla && !hideVan)) && FileSystem.exists(setPath(file))){toReturn.push(setPath(file));}
+		if(!hideVan && FileSystem.exists(setPath(file))){toReturn.push(setPath(file));}
 		for(mod in ModSupport.MODS){
 			var _path = setPath('${mod.path}/$file');
 			if(mod.enabled && FileSystem.exists(_path)){toReturn.push(_path);
 			if(mod.onlyThis){break;}}
 		}
-		#end
-
-		return toReturn;
-	}
-	inline public static function readFileToMap(file:String):Map<String, Dynamic> {
-		var toReturn:Map<String, Dynamic> = [];
-		#if sys
-		var hideVan:Bool = false; var i:Int = 0;
-		for(mod in ModSupport.MODS){if(mod.enabled && mod.hideVanilla){hideVan = true;}}
-		if(!hideVan && FileSystem.exists(setPath(file))){toReturn.set('$i|Friday Night Funkin', setPath(file)); i++;}
-		for(mod in ModSupport.MODS){if(mod.enabled && FileSystem.exists(setPath('${mod.path}/$file'))){toReturn.set('$i|${mod.name}', setPath('${mod.path}/$file')); i++; if(mod.onlyThis){break;}}}
 		#end
 
 		return toReturn;
@@ -321,6 +310,11 @@ class Paths {
 
 		if(!Paths.exists(path)){path = getPath('Test/Data/Test-Normal-Normal.json', TEXT, 'songs', mod);}
 
+		return path;
+	}
+	inline static public function song_script(song:String, ?mod:String):String {
+		var path = getPath('${song}/Data/Song_Events.hx', TEXT, 'songs', mod);
+		
 		return path;
 	}
 	

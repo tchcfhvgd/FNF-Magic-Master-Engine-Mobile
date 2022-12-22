@@ -72,11 +72,12 @@ class SkinsMenuState extends MusicBeatState {
 		var background = new FlxSprite().loadGraphic(Paths.image('menuBG'));
 		background.setGraphicSize(FlxG.width, FlxG.height);
 		background.scrollFactor.set(0, 0);
-        background.color = 0xfffffd75;
+        background.color = 0xffffd98c;
 		background.screenCenter();
 		add(background);
 		
 		character = new Character(-25, 100);
+		character.scale.set(0,0);
 		character.cameras = [camFGame];
 		add(character);
 		
@@ -163,13 +164,15 @@ class SkinsMenuState extends MusicBeatState {
 	override function update(elapsed:Float){		
 		super.update(elapsed);
 
+		if(principal_controls.checkAction("Menu_Back", JUST_PRESSED)){character.scale.set(0,0);}
+		
 		if(canControlle){
 			if(principal_controls.checkAction("Menu_Up", JUST_PRESSED)){changeCharacter(-1);}
 			if(principal_controls.checkAction("Menu_Down", JUST_PRESSED)){changeCharacter(1);}
 			
 			if(principal_controls.checkAction("Menu_Left", JUST_PRESSED)){changeSkin(-1);}
 			if(principal_controls.checkAction("Menu_Right", JUST_PRESSED)){changeSkin(1);}
-
+			
 			if(FlxG.keys.justPressed.SPACE && canChange){updateCharacter();}
 		}
 	}
@@ -188,7 +191,7 @@ class SkinsMenuState extends MusicBeatState {
 
 		changeSkin();
 	}
-	
+
 	function changeSkin(value:Int = 0, force:Bool = false):Void {
 		var cur_skin:Int = 0;
 		var cur_character_skins:Array<Dynamic> = Skins.getSkinList(character_list[curCharacter]);
@@ -210,7 +213,14 @@ class SkinsMenuState extends MusicBeatState {
 		curSkin = cur_character_skins[cur_skin].name;
 		if(!cur_character_skins[cur_skin].locked){Skins.setSkin(character_list[curCharacter], curSkin);}
 
-		alpSkinName.cur_data = [{scale: 0.5, bold: true, text: Paths.getFileName(curSkin)}];
+		var display_name:String = Paths.getFileName(curSkin);		
+		if(Skins.checkLocked(character_list[curCharacter], curSkin)){
+			var arr_display:Array<String> = display_name.split("");
+			display_name = "";
+			for(i in arr_display){display_name += "?";}
+		}
+
+		alpSkinName.cur_data = [{scale: 0.5, bold: true, text: display_name}];
 		alpSkinName.loadText();
 		alpSkinName.x = 1070 - (alpSkinName.width / 2);
 

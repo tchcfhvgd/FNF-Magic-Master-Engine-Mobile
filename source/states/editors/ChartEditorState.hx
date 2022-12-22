@@ -378,73 +378,33 @@ class ChartEditorState extends MusicBeatState {
                         curHits++;
                     }
                 }else{
-                    var cSusNote:Int = Math.floor(nData.sustainLength / (conductor.stepCrochet * 0.25) + 2);
+                    var cSusNote:Int = Math.floor(nData.sustainLength / (conductor.stepCrochet / 4) + 1);
                     var prevSustain:Note = note;
-        
-                    for(sNote in 0...Math.floor(nData.sustainLength / (conductor.stepCrochet * 0.25)) + 2){
-                        var sStrumTime = nData.strumTime + (conductor.stepCrochet / 2) + ((conductor.stepCrochet * 0.25) * sNote);
-                        var nSData:NoteData = Note.getNoteData(Note.convNoteData(nData));
-                        nSData.strumTime = sStrumTime;
-                                
-                        var nSustain:Note = new Note(nSData, Song.getStrumKeys(cSection, curSection), null, cSection.noteStyle);
-        
-                        nSustain.typeNote = "Sustain";
-                        nSustain.typeHit = "Hold";
-                        prevSustain.nextNote = nSustain;
-                        
-                        setupNote(nSustain, ii);
-                        nSustain.alpha = isSelected || inst.playing ? 0.5 : 0.3;
-
-                        if(cSusNote == 1 && nSData.canMerge){mergedGroup.push(nSustain);}
-                                
-                        renderedSustains.add(nSustain);
-                        notesCanHit[ii].push(nSustain);
-        
-                        prevSustain = nSustain;
-                        cSusNote--;
-                    }
-                }
-            }
-
-            while(mergedGroup.length > 0){
-                var curMerge = mergedGroup.shift();
-                var curGroup:Array<Note> = [curMerge];
-
-                var changeCurrent:Bool = false;
-                for(n in mergedGroup){
-                    if(!Note.compNotes(Note.getNoteData([curMerge.strumTime]), Note.getNoteData([n.strumTime]))){continue;}
-                    changeCurrent = true;
-                    n.typeNote = "Merge";
-                    if(n.noteLength > 0 && n.nextNote == null){
-                        renderedSustains.remove(n); renderedNotes.add(n);
-                        var ndSustain1:NoteData = Note.getNoteData([n.strumTime, n.noteData]); var nSustain1:Note = new Note(ndSustain1, Song.getStrumKeys(cSection, curSection), null, cSection.noteStyle); nSustain1.nextNote = n; nSustain1.typeNote = "Sustain"; nSustain1.typeHit = "Hold"; setupNote(nSustain1, ii); renderedSustains.add(nSustain1); nSustain1.alpha = n.alpha;
-                        var ndSustain2:NoteData = Note.getNoteData([n.strumTime + (conductor.stepCrochet*0.25), n.noteData]); var nSustain2:Note = new Note(ndSustain2, Song.getStrumKeys(cSection, curSection), null, cSection.noteStyle); nSustain2.nextNote = n; nSustain2.typeNote = "Sustain"; nSustain2.typeHit = "Hold"; setupNote(nSustain2, ii); renderedSustains.add(nSustain2); nSustain2.alpha = n.alpha;
-                    }
-                    curGroup.push(n);
-                }
-                if(changeCurrent){
-                    curMerge.typeNote = "Merge";
-                    if(curMerge.noteLength > 0 && curMerge.nextNote == null){
-                        renderedSustains.remove(curMerge); renderedNotes.add(curMerge);
-                        var ndSustain1:NoteData = Note.getNoteData([curMerge.strumTime, curMerge.noteData]); var nSustain1:Note = new Note(ndSustain1, Song.getStrumKeys(cSection, curSection), null, cSection.noteStyle); nSustain1.nextNote = curMerge; nSustain1.typeNote = "Sustain"; nSustain1.typeHit = "Hold"; setupNote(nSustain1, ii); renderedSustains.add(nSustain1); nSustain1.alpha = curMerge.alpha;
-                        var ndSustain2:NoteData = Note.getNoteData([curMerge.strumTime + (conductor.stepCrochet*0.25), curMerge.noteData]); var nSustain2:Note = new Note(ndSustain2, Song.getStrumKeys(cSection, curSection), null, cSection.noteStyle); nSustain2.nextNote = curMerge; nSustain2.typeNote = "Sustain"; nSustain2.typeHit = "Hold"; setupNote(nSustain2, ii); renderedSustains.add(nSustain2); nSustain2.alpha = curMerge.alpha;
-                    }
-                }
-            
-                curGroup.sort((a, b) -> (a.noteData - b.noteData));
-                for(c in 0...curGroup.length){
-                    if(curGroup[c+1] == null){continue;}
-                    var currentNote:Note = curGroup[c]; var nextedNote:Note = curGroup[c+1]; mergedGroup.remove(currentNote);
-                    for(i in currentNote.noteData...(nextedNote.noteData + 1)){
-                        if(i > currentNote.noteData){
-                            var ndSwitch1:NoteData = Note.getNoteData([currentNote.strumTime, i]); var nSwitcher1:Note = new Note(ndSwitch1, Song.getStrumKeys(cSection, curSection), null, cSection.noteStyle); nSwitcher1.typeNote = "Switch"; nSwitcher1.typeHit = "Ghost"; setupNote(nSwitcher1, ii); nSwitcher1.x += (KEYSIZE * 0.00); renderedSustains.add(nSwitcher1); nSwitcher1.alpha = 0.5;
-                            var ndSwitch2:NoteData = Note.getNoteData([currentNote.strumTime, i]); var nSwitcher2:Note = new Note(ndSwitch2, Song.getStrumKeys(cSection, curSection), null, cSection.noteStyle); nSwitcher2.typeNote = "Switch"; nSwitcher2.typeHit = "Ghost"; setupNote(nSwitcher2, ii); nSwitcher2.x += (KEYSIZE * 0.25); renderedSustains.add(nSwitcher2); nSwitcher2.alpha = 0.5;
-                        }
-                        if(i < nextedNote.noteData){
-                            var ndSwitch1:NoteData = Note.getNoteData([currentNote.strumTime, i]); var nSwitcher1:Note = new Note(ndSwitch1, Song.getStrumKeys(cSection, curSection), null, cSection.noteStyle); nSwitcher1.typeNote = "Switch"; nSwitcher1.typeHit = "Ghost"; setupNote(nSwitcher1, ii); nSwitcher1.x += (KEYSIZE * 0.50); renderedSustains.add(nSwitcher1); nSwitcher1.alpha = 0.5;
-                            var ndSwitch2:NoteData = Note.getNoteData([currentNote.strumTime, i]); var nSwitcher2:Note = new Note(ndSwitch2, Song.getStrumKeys(cSection, curSection), null, cSection.noteStyle); nSwitcher2.typeNote = "Switch"; nSwitcher2.typeHit = "Ghost"; setupNote(nSwitcher2, ii); nSwitcher2.x += (KEYSIZE * 0.75); renderedSustains.add(nSwitcher2); nSwitcher2.alpha = 0.5;
-                        }
-                    }
+                    
+                    var nSData:NoteData = Note.getNoteData(Note.convNoteData(nData));
+                    nSData.strumTime += (conductor.stepCrochet / 2);
+                    var nSustain:Note = new Note(nSData, Song.getStrumKeys(cSection, curSection), null, cSection.noteStyle);
+                    nSustain.typeNote = "Sustain";
+                    nSustain.typeHit = "Hold";
+                    prevSustain.nextNote = nSustain;
+                    setupNote(nSustain, ii);
+                    nSustain.note_size.set(KEYSIZE,KEYSIZE*cSusNote);
+                    nSustain.alpha = isSelected || inst.playing ? 0.5 : 0.3;
+                    renderedSustains.add(nSustain);
+                    notesCanHit[ii].push(nSustain);
+                    prevSustain = nSustain;
+                    
+                    var nEData:NoteData = Note.getNoteData(Note.convNoteData(nData));
+                    nEData.strumTime += ((conductor.stepCrochet / 4) * (cSusNote + 2));
+                    var nSustainEnd:Note = new Note(nEData, Song.getStrumKeys(cSection, curSection), null, cSection.noteStyle);
+                    nSustainEnd.typeNote = "Sustain";
+                    nSustainEnd.typeHit = "Hold";
+                    prevSustain.nextNote = nSustainEnd;
+                    setupNote(nSustainEnd, ii);
+                    nSustainEnd.alpha = isSelected || inst.playing ? 0.5 : 0.3;
+                    renderedSustains.add(nSustainEnd);
+                    notesCanHit[ii].push(nSustainEnd);
+                    prevSustain = nSustainEnd;
                 }
             }
         }
@@ -842,6 +802,8 @@ class ChartEditorState extends MusicBeatState {
 
     function setupNote(note:Dynamic, ?grid:Int):Void {
         note.note_size.set(KEYSIZE,KEYSIZE);
+        if(note.typeNote == "Switch"){note.note_size.set(KEYSIZE,KEYSIZE/4);}
+
         note.onDebug = true;
         note.y = Math.floor(getYfromStrum((note.strumTime - sectionStartTime()) % (conductor.stepCrochet * _song.generalSection[curSection].lengthInSteps)));
         note.x = gridGroup.members[grid + 1].x;
@@ -1303,7 +1265,7 @@ class ChartEditorState extends MusicBeatState {
                 
                 updateSection();
             });
-    }); tabMENU.add(btnImportChart);
+        }); tabMENU.add(btnImportChart);
 
         var btnLoad:FlxButton = new FlxCustomButton(5, btnImport.y + btnImport.height + 5, Std.int((MENU.width) - 10), null, "Load Song", null, null, function(){loadSong(_song.song, _song.category, _song.difficulty);}); tabMENU.add(btnLoad);
         

@@ -4,11 +4,13 @@ import flixel.FlxSubState;
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.keyboard.FlxKey;
+import flixel.util.FlxGradient;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flash.geom.Rectangle;
 import flixel.util.FlxColor;
 import flixel.math.FlxPoint;
+import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
@@ -17,81 +19,168 @@ import flixel.FlxG;
 import flixel.addons.ui.*;
 
 class OptionsSubState extends MusicBeatSubstate {
+	private var backgrad:FlxSprite;
+
+	private var category_list:Array<String> = [];
+	private var gpCategorys:FlxTypedGroup<Alphabet>;
 	private var gpOptions:FlxTypedGroup<Alphabet>;
 
-	private var curOption:Int = 0;
-
+	private var onOptions:Bool = false;
+	public var curCategory:Int = 0;
+	public var curOption:Int = 0;
+	
 	public function new(?onClose:Void->Void){
 		FlxG.mouse.visible = true;
 		super(onClose);
 		curCamera.alpha = 0;
+		
+		//---------------------------------------------------------------------------------------------------------//
+		for(i in PreSettings.CURRENT_SETTINGS.keys()){category_list.push(i);}
+		category_list.push('Controls'); category_list.push('Key Controls');
+		//---------------------------------------------------------------------------------------------------------//
+
+		backgrad = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, [0xff000000, 0x00000000], 1, 0);
+		backgrad.cameras = [curCamera];
+		add(backgrad);
+
+		gpCategorys = new FlxTypedGroup<Alphabet>();
+		gpCategorys.cameras = [curCamera];
 
 		gpOptions = new FlxTypedGroup<Alphabet>();
 		gpOptions.cameras = [curCamera];
 		
-		var optsList:Array<String> = ['Controls', 'Key Controls'];
-		for(i in PreSettings.CURRENT_SETTINGS.keys()){optsList.push(i);}
-
-		for(i in 0...optsList.length){
-			var _cat:Alphabet = new Alphabet(10,0,'> ${optsList[i]}');
-			gpOptions.add(_cat);
-
-			switch(optsList[i]){
-				case "Controls":{
-					for(control in Controls.STATIC_ACTIONS.keys()){
-						var _control_opt:ControlOption = new ControlOption(control, principal_controls, this);
-						gpOptions.add(_control_opt);
-					}					
-				}
-				case "Key Controls":{
-					for(key in Controls.STATIC_STRUMCONTROLS.keys()){
-						var _control_opt:ControlStrumOption = new ControlStrumOption(key, principal_controls, this);
-						gpOptions.add(_control_opt);
-					}
-				}
-				default:{
-					for(setting in PreSettings.CURRENT_SETTINGS.get(optsList[i]).keys()){
-						var _presetting_opt:PreSettingOption = new PreSettingOption(setting, optsList[i], principal_controls);
-						gpOptions.add(_presetting_opt);
-					}
-				}
-			}
+		for(i in 0...category_list.length){
+			var _cat:Alphabet = new Alphabet(10,0,[{scale:0.8,bold:true,text:'${category_list[i]}:'}]);
+			_cat.ID = i;
+			gpCategorys.add(_cat);
 		}
 
+		add(gpCategorys);
 		add(gpOptions);
 
-		changeValue();
+		changeCategory();
 		FlxTween.tween(curCamera, {alpha: 1}, 1, {onComplete: function(twn){canControlle = true;}});
 	}
 
 	override function update(elapsed:Float){
 		super.update(elapsed);
 
-		MagicStuff.sortMembersByY(cast gpOptions, FlxG.height / 2, curOption);
 
 		if(canControlle){
-			if(principal_controls.checkAction("Menu_Up", JUST_PRESSED)){changeValue(-1);}
-			if(principal_controls.checkAction("Menu_Down", JUST_PRESSED)){changeValue(1);}
+			if(onOptions){
+				MagicStuff.sortMembersByY(cast gpOptions, FlxG.height / 2, curOption, 10);
+				for(o in gpCategorys.members){
+					if(o.ID == curCategory){
+						o.alpha = FlxMath.lerp(o.alpha, 1, 0.1);
+						o.x = FlxMath.lerp(o.x, (FlxG.width/2)-(o.width/2), 0.1);
+						o.y = FlxMath.lerp(o.y, 10, 0.1);
+					}else{
+						o.alpha = FlxMath.lerp(o.alpha, 0, 0.1);
+					}
+				}
 
-			if(principal_controls.checkAction("Menu_Back", JUST_PRESSED)){
-				Controls.saveControls();
-				PreSettings.saveSettings();
-				PlayerSettings.init();
+				if(principal_controls.checkAction("Menu_Up", JUST_PRESSED)){changeOption(-1);}
+				if(principal_controls.checkAction("Menu_Down", JUST_PRESSED)){changeOption(1);}
 
-				doClose();
+				if(principal_controls.checkAction("Menu_Back", JUST_PRESSED)){backOption();}
+			}else{
+				MagicStuff.sortMembersByY(cast gpCategorys, FlxG.height / 2, curCategory, 50);
+				for(o in gpCategorys.members){
+					if(o.ID == curCategory){
+						o.x = FlxMath.lerp(o.x, 30, 0.1);
+					}else{
+						o.x = FlxMath.lerp(o.x, 10, 0.1);
+					}
+				}
+
+				if(principal_controls.checkAction("Menu_Up", JUST_PRESSED)){changeCategory(-1);}
+				if(principal_controls.checkAction("Menu_Down", JUST_PRESSED)){changeCategory(1);}
+				
+				if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED)){chooseCategory();}
+
+				if(principal_controls.checkAction("Menu_Back", JUST_PRESSED)){
+					Controls.saveControls();
+					PreSettings.saveSettings();
+					PlayerSettings.init();
+	
+					doClose();
+				}
 			}
 		}
 	}
 
-	public function changeValue(change:Int = 0):Void {
+	public function chooseCategory():Void {
+		onOptions = true;
+
+		curOption = 0;
+
+		gpOptions.clear();
+
+		switch(category_list[curCategory]){
+			case "Controls":{
+				var _i:Int = 0;
+				for(control in Controls.STATIC_ACTIONS.keys()){
+					var _control_opt:ControlOption = new ControlOption(control, principal_controls, this);
+					gpOptions.add(_control_opt);
+
+					_control_opt.ID = _i;
+
+					_i++;
+				}
+			}
+			case "Key Controls":{
+				var _i:Int = 0;
+				for(key in Controls.STATIC_STRUMCONTROLS.keys()){
+					var _control_opt:ControlStrumOption = new ControlStrumOption(key, principal_controls, this);
+					gpOptions.add(_control_opt);
+
+					_control_opt.ID = _i;
+
+					_i++;
+				}
+			}
+			default:{
+				var _i:Int = 0;
+				for(setting in PreSettings.CURRENT_SETTINGS.get(category_list[curCategory]).keys()){
+					var _presetting_opt:PreSettingOption = new PreSettingOption(setting, category_list[curCategory], principal_controls, this);
+					gpOptions.add(_presetting_opt);
+
+					_presetting_opt.ID = _i;
+
+					_i++;
+				}
+			}
+		}
+
+		changeOption();
+	}
+	
+	public function backOption():Void {
+		onOptions = false;
+		
+		gpOptions.clear();
+
+		changeCategory();
+	}
+
+	public function changeCategory(change:Int = 0):Void {
+		curCategory += change;
+	
+		if(curCategory < 0){curCategory = gpCategorys.members.length - 1;}
+		if(curCategory >= gpCategorys.members.length){curCategory = 0;}
+		
+		for(c in gpCategorys.members){c.alpha = 0.5;}
+		gpCategorys.members[curCategory].alpha = 1;
+	}
+
+	public function changeOption(change:Int = 0):Void {
 		curOption += change;
 	
 		if(curOption < 0){curOption = gpOptions.members.length - 1;}
 		if(curOption >= gpOptions.members.length){curOption = 0;}
 
-		for(c in gpOptions.members){c.ID = 0; c.alpha = 0.5;}
+		for(c in gpOptions.members){c.alpha = 0.5;}
 		gpOptions.members[curOption].alpha = 1;
-		gpOptions.members[curOption].ID = 1;
 	}
 
 	public function doClose(){
@@ -103,7 +192,7 @@ class OptionsSubState extends MusicBeatSubstate {
 class ControlOption extends Alphabet {
 	public var control:String = null;
 	private var controls:Controls = null;
-	public var state:MusicBeatSubstate = null;
+	public var state:OptionsSubState = null;
 	
 	private var unChanged:Bool = false;
 	private var isChanging:Bool = false;
@@ -112,7 +201,7 @@ class ControlOption extends Alphabet {
 
 	public var isGamepad:Bool = false;
 
-	public function new(_control:String, _controls:Controls, _state:MusicBeatSubstate){
+	public function new(_control:String, _controls:Controls, _state:OptionsSubState){
 		this.controls = _controls;
 		this.control = _control;
 		this.state = _state;
@@ -135,7 +224,7 @@ class ControlOption extends Alphabet {
 	}
 
 	override function update(elapsed:Float){
-		if(ID == 1){
+		if(ID == state.curOption){
 			if(!isChanging){
 				if(controls.checkAction("Menu_Left", JUST_PRESSED)){changeKey(-1);}
 				if(controls.checkAction("Menu_Right", JUST_PRESSED)){changeKey(1);}
@@ -172,7 +261,7 @@ class ControlOption extends Alphabet {
 class ControlStrumOption extends Alphabet {
 	public var keys:Int = 0;
 	private var controls:Controls = null;
-	public var state:MusicBeatSubstate = null;
+	public var state:OptionsSubState = null;
 	
 	private var unChanged:Bool = false;
 	private var isChanging:Bool = false;
@@ -181,7 +270,7 @@ class ControlStrumOption extends Alphabet {
 
 	public var isGamepad:Bool = false;
 
-	public function new(_keys:Int, _controls:Controls, _state:MusicBeatSubstate){
+	public function new(_keys:Int, _controls:Controls, _state:OptionsSubState){
 		this.controls = _controls;
 		this.state = _state;
 		this.keys = _keys;
@@ -206,7 +295,7 @@ class ControlStrumOption extends Alphabet {
 	override function update(elapsed:Float){
 		super.update(elapsed);
 
-		if(ID == 1){
+		if(ID == state.curOption){
 			if(!isChanging){
 				if(controls.checkAction("Menu_Left", JUST_PRESSED)){changeKey(-1);}
 				if(controls.checkAction("Menu_Right", JUST_PRESSED)){changeKey(1);}
@@ -242,13 +331,15 @@ class PreSettingOption extends Alphabet {
 	public var setting:String = "";
 	public var category:String = "";
 	private var controls:Controls = null;
+	public var state:OptionsSubState = null;
 
 	public var unChanged:Bool = false;
 
-	public function new(_setting:String, _category:String, _controls:Controls){
+	public function new(_setting:String, _category:String, _controls:Controls, _state:OptionsSubState){
 		this.setting = _setting;
 		this.category = _category;
 		this.controls = _controls;
+		this.state = _state;
 		super(0,0,null);
 		loadText();
 	}
@@ -265,7 +356,7 @@ class PreSettingOption extends Alphabet {
 	override function update(elapsed:Float){
 		super.update(elapsed);
 
-		if(ID == 1){
+		if(ID == state.curOption){
 			if(controls.checkAction("Menu_Left", JUST_PRESSED)){changeSetting(-1);}
 			if(controls.checkAction("Menu_Right", JUST_PRESSED)){changeSetting(1);}
 

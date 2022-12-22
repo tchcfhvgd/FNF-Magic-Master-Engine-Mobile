@@ -3,8 +3,6 @@ import("Paths");
 import("Character");
 import("Std");
 
-import("flixel.math.FlxPoint", "FlxPoint");
-
 presset("defaultValues", 
     [
         {name:"Id",type:"Int",value:0},

@@ -9,7 +9,7 @@ import("Std");
 presset("defaultValues", 
     [
         {name:"Zoom",type:"Float",value:0},
-        {name:"Time",type:"Float",value:4},
+        {name:"Steps",type:"Float",value:4},
         {name:"Type",type:"List",value:0,list:["Add","Set","Percent"]}
     ]
 );
@@ -33,5 +33,5 @@ function execute(_zoom:Float, _delay:Float, _type:String):Void {
     }
 
     var step:Float = getState().conductor.stepCrochet / 1000;
-    if(_delay <= 0){FlxG.camera.zoom = cur_zoom;}else{curTween = FlxTween.tween(FlxG.camera, {zoom: cur_zoom}, step * _delay, {ease: FlxEase.cubeInOut});}
+    if(_delay <= 0){FlxG.camera.zoom = cur_zoom;}else{curTween = FlxTween.tween(FlxG.camera, {zoom: cur_zoom}, step * _delay, {ease: FlxEase.quadInOut});}
 }

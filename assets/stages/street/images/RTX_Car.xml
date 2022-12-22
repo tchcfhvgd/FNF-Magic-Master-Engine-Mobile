@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="RTX_Car.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="RTX0000" x="0" y="0" width="1317" height="480" frameX="0" frameY="-2" frameWidth="1318" frameHeight="482"/>
+	<SubTexture name="RTX0001" x="0" y="490" width="1317" height="482" frameX="-1" frameY="0" frameWidth="1318" frameHeight="482"/>
+	<SubTexture name="RTX0002" x="0" y="982" width="1317" height="481" frameX="0" frameY="-1" frameWidth="1318" frameHeight="482"/>
+</TextureAtlas>

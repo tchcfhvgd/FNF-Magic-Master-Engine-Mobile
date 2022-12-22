@@ -14,19 +14,125 @@
 				"events": []
 			},
 			{
-				"events": []
+				"events": [
+					[
+						6575.34246575342,
+						[
+							[
+								"Set_Bars",
+								[
+									true
+								]
+							],
+							[
+								"Set_Camera_Zoom",
+								[
+									0.2,
+									16,
+									"Add"
+								]
+							]
+						],
+						"OnHit",
+						true,
+						false
+					]
+				]
 			},
 			{
 				"events": []
 			},
 			{
-				"events": []
+				"events": [
+					[
+						9863.01369863014,
+						[
+							[
+								"Set_Camera_Zoom",
+								[
+									-0.1,
+									8,
+									"Add"
+								]
+							]
+						],
+						"OnHit",
+						true,
+						false
+					]
+				]
 			},
 			{
-				"events": []
+				"events": [
+					[
+						11506.8493150685,
+						[
+							[
+								"Set_Camera_Zoom",
+								[
+									0.05,
+									4,
+									"Add"
+								]
+							]
+						],
+						"OnHit",
+						true,
+						false
+					],
+					[
+						12123.2876712329,
+						[
+							[
+								"Set_Camera_Zoom",
+								[
+									0.05,
+									4,
+									"Add"
+								]
+							]
+						],
+						"OnHit",
+						true,
+						false
+					],
+					[
+						12739.7260273973,
+						[
+							[
+								"Set_Camera_Zoom",
+								[
+									0.05,
+									4,
+									"Add"
+								]
+							]
+						],
+						"OnHit",
+						true,
+						false
+					]
+				]
 			},
 			{
-				"events": []
+				"events": [
+					[
+						13150.6849315069,
+						[
+							[
+								"Set_Camera_Zoom",
+								[
+									1,
+									16,
+									"Percent"
+								]
+							]
+						],
+						"OnHit",
+						true,
+						false
+					]
+				]
 			},
 			{
 				"events": []

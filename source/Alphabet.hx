@@ -107,7 +107,6 @@ class Alphabet extends FlxSpriteGroup {
                     text += char;
                 }
             }else if(cur_image != null){
-                trace('Imagen Pa:${Paths.setPath(cur_image)}');
                 var _image:FlxSprite = new FlxSprite(curX, curY).loadGraphic(Paths.image(cur_image));
                 _image.scale.set(cur_scale.x, cur_scale.y); _image.updateHitbox();
                 _image.color = cur_color;
@@ -182,7 +181,7 @@ class PopUpScore extends FlxSpriteGroup {
             _n.updateHitbox();
             add(_n);
 
-            lastWidth += _n.width + 5;
+            lastWidth += _n.width - 5;
 
             FlxTween.tween(_n, {y: _n.y - 35, alpha: 0}, 0.5 + (i * 0.2), {ease:FlxEase.quadOut});
         }

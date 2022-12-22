@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="To Green.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="semaforo:Red to Green0000" x="0" y="0" width="488" height="708" frameX="-1" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0001" x="498" y="0" width="488" height="708" frameX="-1" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0002" x="996" y="0" width="487" height="708" frameX="-2" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0003" x="1493" y="0" width="487" height="708" frameX="-2" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0004" x="1990" y="0" width="487" height="708" frameX="-2" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0005" x="2487" y="0" width="487" height="708" frameX="-2" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0006" x="2984" y="0" width="488" height="708" frameX="-1" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0007" x="3482" y="0" width="488" height="708" frameX="-1" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0008" x="3980" y="0" width="488" height="708" frameX="-1" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0009" x="4478" y="0" width="488" height="708" frameX="-1" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0010" x="4976" y="0" width="487" height="708" frameX="-2" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0011" x="5473" y="0" width="487" height="708" frameX="-2" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0012" x="5970" y="0" width="487" height="708" frameX="-2" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0013" x="6467" y="0" width="487" height="708" frameX="-2" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0014" x="6964" y="0" width="488" height="708" frameX="-1" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0015" x="7462" y="0" width="488" height="708" frameX="-1" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0016" x="0" y="718" width="488" height="708" frameX="-1" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0017" x="498" y="718" width="488" height="708" frameX="-1" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0018" x="996" y="718" width="487" height="708" frameX="-2" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0019" x="1493" y="718" width="487" height="708" frameX="-2" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0020" x="1990" y="718" width="487" height="708" frameX="-2" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0021" x="2487" y="718" width="487" height="708" frameX="-2" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0022" x="2984" y="718" width="488" height="708" frameX="-1" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0023" x="3482" y="718" width="488" height="708" frameX="-1" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0024" x="3980" y="718" width="488" height="708" frameX="-1" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0025" x="4478" y="718" width="488" height="708" frameX="-1" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0026" x="4976" y="718" width="487" height="708" frameX="-2" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0027" x="5473" y="718" width="487" height="708" frameX="-2" frameY="0" frameWidth="489" frameHeight="708"/>
+	<SubTexture name="semaforo:Red to Green0028" x="5970" y="718" width="489" height="708"/>
+	<SubTexture name="semaforo:Red to Green0029" x="6469" y="718" width="489" height="708"/>
+	<SubTexture name="semaforo:Red to Green0030" x="6968" y="718" width="489" height="708"/>
+	<SubTexture name="semaforo:Red to Green0031" x="7467" y="718" width="489" height="708"/>
+	<SubTexture name="semaforo:Red to Green0032" x="0" y="1436" width="489" height="708"/>
+	<SubTexture name="semaforo:Red to Green0033" x="499" y="1436" width="489" height="708"/>
+	<SubTexture name="semaforo:Red to Green0034" x="998" y="1436" width="489" height="708"/>
+	<SubTexture name="semaforo:Red to Green0035" x="1497" y="1436" width="489" height="708"/>
+	<SubTexture name="semaforo:Red to Green0036" x="1996" y="1436" width="489" height="708"/>
+	<SubTexture name="semaforo:Red to Green0037" x="2495" y="1436" width="489" height="708"/>
+	<SubTexture name="semaforo:Red to Green0038" x="2994" y="1436" width="489" height="708"/>
+	<SubTexture name="semaforo:Red to Green0039" x="3493" y="1436" width="489" height="708"/>
+	<SubTexture name="semaforo:Yellow to Green0000" x="3992" y="1436" width="495" height="708"/>
+	<SubTexture name="semaforo:Yellow to Green0001" x="4497" y="1436" width="495" height="708"/>
+	<SubTexture name="semaforo:Yellow to Green0002" x="5002" y="1436" width="487" height="708" frameX="-8" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0003" x="5499" y="1436" width="487" height="708" frameX="-8" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0004" x="5996" y="1436" width="487" height="708" frameX="-8" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0005" x="6493" y="1436" width="487" height="708" frameX="-8" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0006" x="6990" y="1436" width="495" height="708"/>
+	<SubTexture name="semaforo:Yellow to Green0007" x="7495" y="1436" width="495" height="708"/>
+	<SubTexture name="semaforo:Yellow to Green0008" x="0" y="2154" width="495" height="708"/>
+	<SubTexture name="semaforo:Yellow to Green0009" x="505" y="2154" width="495" height="708"/>
+	<SubTexture name="semaforo:Yellow to Green0010" x="1010" y="2154" width="487" height="708" frameX="-8" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0011" x="1507" y="2154" width="487" height="708" frameX="-8" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0012" x="2004" y="2154" width="487" height="708" frameX="-8" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0013" x="2501" y="2154" width="487" height="708" frameX="-8" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0014" x="2998" y="2154" width="495" height="708"/>
+	<SubTexture name="semaforo:Yellow to Green0015" x="3503" y="2154" width="495" height="708"/>
+	<SubTexture name="semaforo:Yellow to Green0016" x="4008" y="2154" width="495" height="708"/>
+	<SubTexture name="semaforo:Yellow to Green0017" x="4513" y="2154" width="495" height="708"/>
+	<SubTexture name="semaforo:Yellow to Green0018" x="5018" y="2154" width="487" height="708" frameX="-8" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0019" x="5515" y="2154" width="487" height="708" frameX="-8" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0020" x="6012" y="2154" width="487" height="708" frameX="-8" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0021" x="6509" y="2154" width="487" height="708" frameX="-8" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0022" x="7006" y="2154" width="495" height="708"/>
+	<SubTexture name="semaforo:Yellow to Green0023" x="7511" y="2154" width="495" height="708"/>
+	<SubTexture name="semaforo:Yellow to Green0024" x="0" y="2872" width="495" height="708"/>
+	<SubTexture name="semaforo:Yellow to Green0025" x="505" y="2872" width="495" height="708"/>
+	<SubTexture name="semaforo:Yellow to Green0026" x="1010" y="2872" width="487" height="708" frameX="-8" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0027" x="1507" y="2872" width="487" height="708" frameX="-8" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0028" x="2004" y="2872" width="489" height="708" frameX="-6" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0029" x="2503" y="2872" width="489" height="708" frameX="-6" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0030" x="3002" y="2872" width="489" height="708" frameX="-6" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0031" x="3501" y="2872" width="489" height="708" frameX="-6" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0032" x="4000" y="2872" width="489" height="708" frameX="-6" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0033" x="4499" y="2872" width="489" height="708" frameX="-6" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0034" x="4998" y="2872" width="489" height="708" frameX="-6" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0035" x="5497" y="2872" width="489" height="708" frameX="-6" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0036" x="5996" y="2872" width="489" height="708" frameX="-6" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0037" x="6495" y="2872" width="489" height="708" frameX="-6" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0038" x="6994" y="2872" width="489" height="708" frameX="-6" frameY="0" frameWidth="495" frameHeight="708"/>
+	<SubTexture name="semaforo:Yellow to Green0039" x="7493" y="2872" width="489" height="708" frameX="-6" frameY="0" frameWidth="495" frameHeight="708"/>
+</TextureAtlas>

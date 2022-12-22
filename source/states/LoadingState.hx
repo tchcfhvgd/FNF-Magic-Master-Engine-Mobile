@@ -44,6 +44,8 @@ class LoadingState extends MusicBeatState {
 	];
 	public var toLoadStuff:Array<Dynamic> = [];
 
+	public var loadingText:Alphabet;
+
 	private var totalCount:Int = 0;
 	private var tempLoadingStuff:Array<Dynamic> = [];
 	
@@ -70,13 +72,18 @@ class LoadingState extends MusicBeatState {
 
 		var bg = new FlxSprite().loadGraphic(Paths.image('menuBG'));
 		bg.setGraphicSize(FlxG.width, FlxG.height);
+        bg.color = 0xffff8cf7;
 		bg.screenCenter();
 		add(bg);
 
-		var grad_1:FlxSprite = FlxGradient.createGradientFlxSprite(FlxG.width, 300, [FlxColor.BLACK, FlxColor.TRANSPARENT]); add(grad_1);
-		var grad_2:FlxSprite = FlxGradient.createGradientFlxSprite(FlxG.width, 300, [FlxColor.TRANSPARENT, FlxColor.BLACK]); grad_2.y = FlxG.height - 300; add(grad_2);
-		
-		loadingBar = new FlxBar(0, FlxG.height - 15, LEFT_TO_RIGHT, FlxG.width, 15, null, null, 0, totalCount); add(loadingBar);
+		var shape_1:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, 100, FlxColor.BLACK); add(shape_1);
+        var shape_2:FlxSprite = new FlxSprite(0, 105).makeGraphic(FlxG.width, 5, FlxColor.BLACK); add(shape_2);
+        var shape_3:FlxSprite = new FlxSprite(0, FlxG.height - 110).makeGraphic(FlxG.width, 5, FlxColor.BLACK); add(shape_3);
+        var shape_4:FlxSprite = new FlxSprite(0, FlxG.height - 100).makeGraphic(FlxG.width, 100, FlxColor.BLACK); add(shape_4);
+
+		loadingText = new Alphabet(20,500,[{text:'${LangSupport.getText("loading_info_1")} 0%'}]); add(loadingText);
+
+		loadingBar = new FlxBar(loadingText.x, loadingText.y + loadingText.height + 30, LEFT_TO_RIGHT, Std.int(FlxG.width / 3), 10, null, null, 0, totalCount); add(loadingBar);
 
 		loadStuff();
 				
@@ -87,6 +94,10 @@ class LoadingState extends MusicBeatState {
 		super.update(elapsed);
 
 		loadingBar.value = totalCount - tempLoadingStuff.length;
+
+		var percent:Int = Std.int((totalCount - tempLoadingStuff.length) * 100 / totalCount);
+		loadingText.cur_data = [{text:'${LangSupport.getText("loading_info_1")} ${percent}%'}];
+		loadingText.loadText();
 	}
 
 	private function preLoadStuff():Void {
@@ -123,6 +134,14 @@ class LoadingState extends MusicBeatState {
 						}
 						
 						Stage.getStageScript(_song.stage).exFunction("addToLoad", [tempLoadingStuff]);
+
+						var song_path:String = Paths.song_script(_song.song);
+						if(Paths.exists(song_path)){
+							var song_script:Script = new Script();
+							song_script.Name = "ScriptSong";
+							song_script.exScript(Paths.getText(song_path));
+							TARGET.tempScripts.set("ScriptSong", song_script);
+						}
 
 						for(char in _song.characters){Character.addPreloadersToList(tempLoadingStuff, char[0], char[3], char[4]);}
 

@@ -1,15 +1,52 @@
 {
-	"ModAdv_1": "Looks like you have Mods Installed",
-	"ModAdv_2": "Would you like to configure them before starting the game?",
+	"mod_advert":[
+		{"animated":true, "bold":true, "scale":0.5, "text":"\t  Parece que tienes Mods Instalados"},
+		{"scale":0.35, "animated":true, "bold":true, "text": "\n\nQuieres configurarlos antes de empezar el juego?"}
+	],
 
-	"Sett_1": "Settings",
+	"mod_list": [{"animated":true, "bold":true, "text":"Lista de Mods"}],
 
-	"ModList": "Mod List",
+    "menu_storymode": [{"bold":true, "animated":true, "text":"Modo Historia"}],
+    "menu_freeplay": [{"bold":true, "animated":true, "text":"Juego libre"}],
+	"menu_multiplayer": [{"bold":true, "animated":true, "text":"Multijugador"}],
+	"menu_skins": [{"bold":true, "animated":true, "text":"Skins"}],
+	"menu_options": [{"bold":true, "animated":true, "text":"Opciones"}],
+	"menu_mods": [{"bold":true, "animated":true, "text":"Mods"}],
+	"menu_credits": [{"bold":true, "animated":true, "text":"Creditos"}],
 
-    "StoryMode": "StoryMode",
-    "FreePlay": "FreePlay",
-	"Skins": "Skins",
-	"Options": "Options",
-	"Extras": "Extras",
-	"Credits": "Credits"
+	"loading_info_1":"Cargando",
+
+	"story_info_1":[
+		{"bold":true, "text":"     "},
+		{"bold":true, "scale":0.4, "text":"Categoria"},
+		{"bold":true, "text":"         "},
+		{"bold":true, "scale":0.6, "text":"Semana"},
+		{"bold":true, "text":"        "},
+		{"bold":true, "scale":0.4, "text":"Dificultad"}
+	],
+	
+	"freeplay_info_1":[
+		{"bold":true, "text":"      "},
+		{"bold":true, "scale":0.4, "text":"Categoria"},
+		{"bold":true, "text":"        "},
+		{"bold":true, "scale":0.6, "text":"Cancion"},
+		{"bold":true, "text":"        "},
+		{"bold":true, "scale":0.4, "text":"Dificultad"}
+	],
+
+	"charting_adv_1":[
+		{"animated":true, "bold":true, "scale":1.1, "text":"Editor de Chart Wiki:"},
+		{"animated":true, "bold":true, "scale":0.5, "text":"\n\nPequeña wiki para que sea mas facil usar el Editor."},
+		{"animated":true, "bold":true, "scale":0.7, "text":"\n\nTab.1: Song:"}
+	],
+
+	"skins_info_1":[{"bold":true, "scale":0.5, "text":"Cargar Personaje\n\t\t[ESPACIO]"}],
+
+	"gmp_score":"Puntaje",
+	"gmp_record":"Record",
+	"gmp_combo":"Combo",
+	"gmp_maxCombo":"Max Combo",
+	"gmp_misses":"Fallos",
+	"gmp_hits":"Hits",
+	"gmp_rating":"Rating"
 }

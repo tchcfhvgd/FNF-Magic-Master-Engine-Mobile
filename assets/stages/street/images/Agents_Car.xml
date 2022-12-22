@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Agents_Car.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="AgentsCar0000" x="0" y="0" width="2025" height="979" frameX="0" frameY="-4" frameWidth="2026" frameHeight="983"/>
+	<SubTexture name="AgentsCar0001" x="2035" y="0" width="2026" height="983"/>
+	<SubTexture name="AgentsCar0002" x="0" y="993" width="2025" height="981" frameX="0" frameY="-2" frameWidth="2026" frameHeight="983"/>
+</TextureAtlas>

@@ -133,7 +133,7 @@ class SongStuffManager {
 	public static function getSongList():Array<ItemSong> {
 		var SongList:Array<ItemSong> = [];
 
-		var modlist:Array<Dynamic> = Paths.readFileToArray('assets/data/weeks.json');
+		var modlist:Array<Dynamic> = Paths.readFile('assets/data/weeks.json');
 		for(_mod in modlist){
 			var modData:SongsData = cast Json.parse(Paths.getText(_mod));
 
@@ -210,7 +210,7 @@ class SongStuffManager {
 	public static function getWeekList(showLocked:Bool = false):Array<ItemWeek> {
 		var WeekList:Array<ItemWeek> = [];
 
-		var modlist:Array<Dynamic> = Paths.readFileToArray('assets/data/weeks.json');
+		var modlist:Array<Dynamic> = Paths.readFile('assets/data/weeks.json');
 
 		for(_mod in modlist){
 			var modData:SongsData = cast Json.parse(Paths.getText(_mod));
@@ -262,7 +262,7 @@ class Song{
 	public var characters:Array<Dynamic> = [
 		["Daddy_Dearest", [100, 100], true, "Default", "NORMAL"],
 		["Boyfriend", [770, 100], false, "Default", "NORMAL"],
-		["Girlfriend", [400, 130], false, "Default", "GF"]
+		["Girlfriend", [540, 50], false, "Default", "GF"]
 	];
 
 	public var generalSection:Array<SwagGeneralSection>;
@@ -306,7 +306,7 @@ class Song{
 			swagShit.characters = [
 				["Daddy_Dearest", [100, 100], true, "Default", "NORMAL"],
 				["Boyfriend", [770, 100], false, "Default", "NORMAL"],
-				["Girlfriend", [400, 130], false, "Default", "GF"]
+				["Girlfriend", [540, 50], false, "Default", "GF"]
 			];
 		}
 
@@ -425,10 +425,10 @@ class Song{
 		if(!aSong.exists("characters")){
 			var chrs:Array<Dynamic> = [];
 
-			if(aSong.exists("player3")){chrs.push([aSong.get("player3"),[400,130],1,false,"Default","GF",0]); aSong.remove("player3");}
-			else if(aSong.exists("gfVersion")){chrs.push([aSong.get("gfVersion"),[400,130],1,false,"Default","GF",0]); aSong.remove("gfVersion");}
-			else if(aSong.exists("gf")){chrs.push([aSong.get("gf"),[400,130],1,false,"Default","GF",0]); aSong.remove("gf");}
-			else{chrs.push(["Girlfriend",[400,130],1,false,"Default","GF",0]);}
+			if(aSong.exists("player3")){chrs.push([aSong.get("player3"),[540,50],1,false,"Default","GF",0]); aSong.remove("player3");}
+			else if(aSong.exists("gfVersion")){chrs.push([aSong.get("gfVersion"),[540,50],1,false,"Default","GF",0]); aSong.remove("gfVersion");}
+			else if(aSong.exists("gf")){chrs.push([aSong.get("gf"),[540,50],1,false,"Default","GF",0]); aSong.remove("gf");}
+			else{chrs.push(["Girlfriend",[540, 50],1,false,"Default","GF",0]);}
 
 			if(aSong.exists("player2")){chrs.push([aSong.get("player2"),[100,100],1,true,"Default","NORMAL",0]); aSong.remove("player2");}
 			else{chrs.push(["Daddy_Dearest",[100,100],1,true,"Default","NORMAL",0]);}
@@ -555,7 +555,7 @@ class Song{
 	public static function save_song(fileName:String, songData:SwagSong, options:{?onComplete:Void->Void, ?throwFunc:Exception->Void, ?returnOnThrow:Bool, ?path:String, ?saveAs:Bool}):Void {
 		if(song_file != null || songData == null){return;}
 
-		var _song:SwagSong = cast songData;
+		var _song:SwagSong = songData;
 
 		parseJSONshit(_song);
 		var _global_events:SwagEvent = {sections: []};

@@ -70,7 +70,7 @@ class StaticNotes extends FlxUIGroup {
         changeKeyNumber(keyNum, genWidth, true, true);
     }
     
-    public function playById(id:Int, anim:String, force:Bool = false, doSplash:Bool = false){
+    public function playById(id:Int, anim:String, force:Bool = false){
         var curStrum:StrumNote = statics[id];
         if(curStrum == null){return;}
         curStrum.playAnim(anim, force);
@@ -617,13 +617,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     public function getScroll(daNote:Note):Float {
         switch(daNote.noteStatus){
             default:{return 0.45 * (strumConductor.songPosition - daNote.strumTime) * getScrollSpeed();}
-            case "MultiTap":{
-                var x_1:Float = (strumConductor.songPosition - daNote.strumTime);
-                var x_2:Float = daNote.noteLength;
-                var x_3:Float = 0;
-
-                return 0.0045*(Math.pow(x_1, 2) - (x_2 - x_3) * x_1 - x_2 * x_3);
-            }
+            case "MultiTap":{return 0.45 * (strumConductor.songPosition - daNote.strumTime) * getScrollSpeed();}
         }
     }
 
@@ -652,7 +646,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         daNote.noteStatus = "Pressed";
 
         if((pre_TypeStrums == "All" || pre_TypeStrums == "OnlyOtherStrums") && daNote.typeHit != "Ghost"){
-            staticnotes.playById(daNote.noteData, "confirm", true, daNote.typeHit != "Hold");
+            staticnotes.playById(daNote.noteData, "confirm", true);
         }
 
         for(event in daNote.otherData){
@@ -669,7 +663,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 
         if(daNote.noteHits > 0){
             daNote.noteStatus = "MultiTap";
-            daNote.strumTime = daNote.strumTime + daNote.noteLength;            
+            daNote.strumTime += daNote.noteLength;            
             daNote.noteHits--;
         }else{
             daNote.kill();
@@ -743,6 +737,8 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         var stuff_x:Float = staticnotes.x + genWidth + 5;
         if(LOCAL_VARIABLES["Player"] != null && !LOCAL_VARIABLES["Player"].onRight){stuff_x = staticnotes.x - 250;}
 
+        if(_score >= 350){splashNote(daNote);}
+
         var popRank:FlxSprite = recycleGrp.recycle(FlxSprite);
         popRank.loadGraphic(Paths.styleImage(_popImage, ui_style));
         popRank.scale.set(0.7, 0.7); popRank.updateHitbox();
@@ -770,6 +766,17 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         ppCombo.popup(STATS["Combo"]);
         add(ppCombo);
         new FlxTimer().start(0.5 + (0.2 * ('${STATS["Combo"]}'.length - 1)), function(tmr){remove(ppCombo);});
+    }
+
+    public function splashNote(daNote:Note):Void {
+        var cur_data:Int =  daNote.noteData % key_number;
+
+        var cur_strum:StrumNote = staticnotes.statics[cur_data];
+        if(cur_strum == null){return;}
+
+        var note_splash = recycleGrp.recycle(NoteSplash);
+        note_splash.setupByNote(daNote, cur_strum);
+        add(note_splash);
     }
 
     public function getScrollSpeed():Float{

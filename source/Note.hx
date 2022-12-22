@@ -406,6 +406,19 @@ class NoteSplash extends FlxSprite {
         playAnim("Splash");
     }
 
+    public function setupByNote(daNote:Note, strumNote:StrumNote):Void {
+        this.setPosition(strumNote.x, strumNote.y);
+
+        frames = Paths.getAtlas(Paths.note(IMAGE_DEFAULT, daNote.style, daNote.type));
+        animation.addByPrefix("Splash", "Splash", 30, false);
+
+        playColor = daNote.playColor;
+
+        shader = new ColorFilterShader(Paths.colorNote(Paths.note(daNote.image, daNote.style, daNote.type)), FlxColor.fromString(playColor));
+
+        playAnim("Splash");
+    }
+
     public function playAnim(anim:String, ?force:Bool = false){
         animation.play(anim, force);
 	}

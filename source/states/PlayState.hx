@@ -127,7 +127,7 @@ class PlayState extends MusicBeatState {
 	
 	public var stage:Stage;
 
-    var camFollow:FlxObject;
+    public var camFollow:FlxObject;
 
 	override public function create(){
 		super.create();
@@ -176,17 +176,19 @@ class PlayState extends MusicBeatState {
 		FlxG.camera.follow(camFollow, LOCKON, 0.04);
 		add(camFollow);
 
-		generateSong(function(){
-			if(SongListData.isStoryMode){
-				switch(SONG.song){
-					default:{startCountdown(startSong);}
-				}
-			}else{
-				switch(SONG.song){
-					default:{startCountdown(startSong);}
+		generateSong(
+			function(){
+				if(SongListData.isStoryMode){
+					switch(SONG.song){
+						default:{startCountdown(startSong);}
+					}
+				}else{
+					switch(SONG.song){
+						default:{startCountdown(startSong);}
+					}
 				}
 			}
-		});
+		);
 	}
 
 	private var loadedStrums:Int = 0;
@@ -292,6 +294,13 @@ class PlayState extends MusicBeatState {
 		for(s in scripts){s.exFunction('preload');}
 
 		songGenerated = true;
+
+		var song_script:Script = Script.getScript("ScriptSong");
+		if(song_script != null){
+			song_script.exFunction("startSong", [toEndFun]);
+			if(song_script.getVariable("startCountdown")){return;}
+		}
+
 		toEndFun();
 	}
 	

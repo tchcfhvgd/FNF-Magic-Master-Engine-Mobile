@@ -14,6 +14,8 @@
 	"menu_mods": [{"bold":true, "animated":true, "text":"Mods"}],
 	"menu_credits": [{"bold":true, "animated":true, "text":"Credits"}],
 
+	"loading_info_1":"Loading",
+
 	"story_info_1":[
 		{"bold":true, "text":"       "},
 		{"bold":true, "scale":0.4, "text":"Category"},

@@ -1,0 +1,96 @@
+{
+    "Magic Master Engine [Dev Team]":[
+        {
+            "Name": "Yirius125",
+            "Icon": "yirius125",
+            "Description": "",
+            "Rol": "Coder"
+        },
+        {
+            "Name": "SugarMoon",
+            "Icon": "sugarmoon",
+            "Description": "",
+            "Rol": "Composer"
+        },
+        {
+            "Name": "Massacre",
+            "Icon": "massacre",
+            "Description": "",
+            "Rol": "Artist / Animator"
+        },
+        {
+            "Name": "ElSniper",
+            "Icon": "sniper",
+            "Description": "",
+            "Rol": "Artist / Animator"
+        },
+        {
+            "Name": "Manolo Dev",
+            "Icon": "manolo",
+            "Description": "",
+            "Rol": "Artist / Animator"
+        },
+        {
+            "Name": "Doggy",
+            "Icon": "doggy",
+            "Description": "",
+            "Rol": "Artist"
+        },
+        {
+            "Name": "AceDavid",
+            "Icon": "acedavid",
+            "Description": "",
+            "Rol": "Artist"
+        },
+        {
+            "Name": "CaptainCheddar",
+            "Icon": "cheddar",
+            "Description": "",
+            "Rol": "Artist"
+        },
+        {
+            "Name": "Ricky",
+            "Icon": "ricky",
+            "Description": "",
+            "Rol": "Charter"
+        },
+        {
+            "Name": "Farsy",
+            "Icon": "farsy",
+            "Description": "",
+            "Rol": "Charter"
+        },
+        {
+            "Name": "Saruky",
+            "Icon": "saru",
+            "Description": "",
+            "Rol": "Cassette Girl [Chromatic]"
+        }
+    ],
+    "Funkin' Crew":[
+        {
+            "Name": "ninjamuffin99",
+            "Icon": "ninja",
+            "Description": "",
+            "Rol": "Coder"
+        },
+        {
+            "Name": "kawaisprite",
+            "Icon": "kawai",
+            "Description": "",
+            "Rol": "Composer"
+        },
+        {
+            "Name": "PhantomArcade",
+            "Icon": "phantom",
+            "Description": "",
+            "Rol": "Animator"
+        },
+        {
+            "Name": "evilsk8r",
+            "Icon": "evils",
+            "Description": "",
+            "Rol": "Artist"
+        }
+    ]
+}

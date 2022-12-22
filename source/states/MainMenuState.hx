@@ -47,7 +47,7 @@ class MainMenuState extends MusicBeatState {
 		{option:"Skins", icon:"skins", display:"menu_skins", func:function(){MusicBeatState.switchState(new SkinsMenuState(null, MainMenuState));}},
 		{option:"Options", icon:"options", display:"menu_options", func:function(){MusicBeatState.state.canControlle = false; MusicBeatState.state.openSubState(new substates.OptionsSubState(function(){MusicBeatState.state.canControlle = true;}));}},
 		{option:"Mods", icon:"mods", display:"menu_mods", func:function(){if(ModSupport.MODS.length > 0){MusicBeatState.switchState(new ModListState(MainMenuState, null));}}},
-		{option:"Credits", icon:"credits", display:"menu_credits", func:function(){}}
+		{option:"Credits", icon:"credits", display:"menu_credits", func:function(){MusicBeatState.switchState(new CreditsState(null, MainMenuState));}}
 	];
 	public static var secondary_options:Array<Dynamic> = [
 		{option:"Chart", icon:"chart_editor", display:"menu_chart_editor", func:function(){MusicBeatState.switchState(new states.editors.ChartEditorState(null, MainMenuState));}},
@@ -79,6 +79,7 @@ class MainMenuState extends MusicBeatState {
 
 		var bg = new FlxSprite().loadGraphic(Paths.image('menuBG'));
 		bg.setGraphicSize(FlxG.width, FlxG.height);
+        bg.color = 0xff7ddeff;
 		bg.screenCenter();
 		add(bg);
 

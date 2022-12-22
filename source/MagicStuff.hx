@@ -21,7 +21,7 @@ class MagicStuff {
     public static function reload_data():Void {
         Paths.savedTempMap.clear();
         Paths.savedGlobMap.clear();
-
+        
         PreSettings.init();
         Controls.init();
         ModSupport.reload_mods();

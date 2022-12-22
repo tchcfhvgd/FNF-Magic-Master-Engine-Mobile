@@ -59,7 +59,7 @@ class FreeplayState extends MusicBeatState {
 		#end
 
 		songList = SongStuffManager.getSongList();
-
+		
         var bg = new FlxSprite().loadGraphic(Paths.image('menuBG'));
 		bg.setGraphicSize(FlxG.width, FlxG.height);
         bg.color = 0xfffffd75;
@@ -149,13 +149,13 @@ class FreeplayState extends MusicBeatState {
 					if(FlxG.mouse.justPressed){for(btn in grpSongs){if(FlxG.mouse.overlaps(btn)){changeSong(btn.ID, true); break;}}}
 	
 					for(a in grpArrows.members){MagicStuff.lerpX(cast a, (FlxG.width / 2) - (a.width / 2));}
-					grpArrows.members[0].y = grpSongs.members[curSong].y - grpArrows.members[0].height - 5;
-					grpArrows.members[1].y = grpSongs.members[curSong].y + grpSongs.members[curSong].height + 5;
+					grpArrows.members[0].y = (FlxG.height / 2) - (grpSongs.members[curSong].height / 2) - grpArrows.members[0].height - 5;
+					grpArrows.members[1].y = (FlxG.height / 2) + (grpSongs.members[curSong].height / 2) + 5;
 				}
 				case 2:{
 					if(principal_controls.checkAction("Menu_Up", JUST_PRESSED)){changeDiff(-1);}
 					if(principal_controls.checkAction("Menu_Down", JUST_PRESSED)){changeDiff(1);}
-	
+					
 					for(a in grpArrows.members){MagicStuff.lerpX(cast a, (FlxG.width - 250));}	
 					grpArrows.members[0].y = difficulty.y - grpArrows.members[0].height - 5;
 					grpArrows.members[1].y = difficulty.y + difficulty.height + 5;

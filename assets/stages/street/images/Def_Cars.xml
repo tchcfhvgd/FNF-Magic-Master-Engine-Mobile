@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Def_Cars.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="CarBlack0000" x="0" y="0" width="839" height="347" frameX="0" frameY="-2" frameWidth="839" frameHeight="349"/>
+	<SubTexture name="CarBlack0001" x="849" y="0" width="839" height="349"/>
+	<SubTexture name="CarBlack0002" x="1698" y="0" width="839" height="348" frameX="0" frameY="-1" frameWidth="839" frameHeight="349"/>
+	<SubTexture name="CarBlue0000" x="2547" y="0" width="839" height="347" frameX="0" frameY="-2" frameWidth="839" frameHeight="349"/>
+	<SubTexture name="CarBlue0001" x="0" y="359" width="839" height="349"/>
+	<SubTexture name="CarBlue0002" x="849" y="359" width="839" height="348" frameX="0" frameY="-1" frameWidth="839" frameHeight="349"/>
+	<SubTexture name="CarGreen0000" x="1698" y="359" width="839" height="347" frameX="0" frameY="-2" frameWidth="839" frameHeight="349"/>
+	<SubTexture name="CarGreen0001" x="2547" y="359" width="839" height="349"/>
+	<SubTexture name="CarGreen0002" x="0" y="718" width="839" height="348" frameX="0" frameY="-1" frameWidth="839" frameHeight="349"/>
+	<SubTexture name="CarGrey0000" x="849" y="718" width="839" height="347" frameX="0" frameY="-2" frameWidth="839" frameHeight="349"/>
+	<SubTexture name="CarGrey0001" x="1698" y="718" width="839" height="349"/>
+	<SubTexture name="CarGrey0002" x="2547" y="718" width="839" height="348" frameX="0" frameY="-1" frameWidth="839" frameHeight="349"/>
+	<SubTexture name="CarPink0000" x="0" y="1077" width="839" height="347" frameX="0" frameY="-2" frameWidth="839" frameHeight="349"/>
+	<SubTexture name="CarPink0001" x="849" y="1077" width="839" height="349"/>
+	<SubTexture name="CarPink0002" x="1698" y="1077" width="839" height="348" frameX="0" frameY="-1" frameWidth="839" frameHeight="349"/>
+	<SubTexture name="CarRed0000" x="2547" y="1077" width="839" height="347" frameX="0" frameY="-2" frameWidth="839" frameHeight="349"/>
+	<SubTexture name="CarRed0001" x="0" y="1436" width="839" height="349"/>
+	<SubTexture name="CarRed0002" x="849" y="1436" width="839" height="348" frameX="0" frameY="-1" frameWidth="839" frameHeight="349"/>
+</TextureAtlas>

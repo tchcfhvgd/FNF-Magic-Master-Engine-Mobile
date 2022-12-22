@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Formula1.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="formula10000" x="0" y="0" width="1257" height="335" frameX="0" frameY="-4" frameWidth="1259" frameHeight="339"/>
+	<SubTexture name="formula10001" x="0" y="345" width="1258" height="339" frameX="-1" frameY="0" frameWidth="1259" frameHeight="339"/>
+	<SubTexture name="formula10002" x="0" y="694" width="1258" height="337" frameX="0" frameY="-2" frameWidth="1259" frameHeight="339"/>
+</TextureAtlas>

@@ -101,7 +101,7 @@ class StageEditorState extends MusicBeatState {
         add(bgGrid);
 
         stage = new Stage("Stage", [
-            ["Girlfriend", [400, 130], 1, false, "Default", "GF", 0],
+            ["Girlfriend", [540, 50], 1, false, "Default", "GF", 0],
             ["Daddy_Dearest", [100, 100], 1, true, "Default", "NORMAL", 0],
             ["Boyfriend", [770, 100], 1, false, "Default", "NORMAL", 0]
         ]);

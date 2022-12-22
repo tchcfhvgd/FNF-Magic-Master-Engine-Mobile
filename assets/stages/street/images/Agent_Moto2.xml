@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Agent_Moto2.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="agentMotoAlt0000" x="0" y="0" width="577" height="413" frameX="0" frameY="-2" frameWidth="578" frameHeight="415"/>
+	<SubTexture name="agentMotoAlt0001" x="587" y="0" width="578" height="415"/>
+	<SubTexture name="agentMotoAlt0002" x="1175" y="0" width="577" height="414" frameX="0" frameY="-1" frameWidth="578" frameHeight="415"/>
+</TextureAtlas>

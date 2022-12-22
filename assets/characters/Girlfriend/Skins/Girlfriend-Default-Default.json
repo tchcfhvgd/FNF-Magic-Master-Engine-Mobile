@@ -1,86 +1,85 @@
 {
-	"antialiasing": true,
 	"aspect": "Default",
 	"position": [
-		0,
-		0
+		-140,
+		85
 	],
 	"anims": [
 		{
-			"loop": false,
 			"symbol": "GF Cheer",
+			"loop": false,
+			"fps": 24,
 			"anim": "hey",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "GF Dancing Beat",
+			"loop": false,
+			"fps": 24,
 			"anim": "idle",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "GF Dancing Beat Hair Landing",
+			"loop": false,
+			"fps": 24,
 			"anim": "hairFall",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "GF Dancing Beat Hair blowing",
+			"loop": false,
+			"fps": 24,
 			"anim": "hairBlow",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "GF Down Note",
+			"loop": false,
+			"fps": 24,
 			"anim": "singDOWN",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "GF FEAR ",
+			"loop": false,
+			"fps": 24,
 			"anim": "scared",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "GF Right Note",
+			"loop": false,
+			"fps": 24,
 			"anim": "singRIGHT",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "GF Up Note",
+			"loop": false,
+			"fps": 24,
 			"anim": "singUP",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "GF left note",
+			"loop": false,
+			"fps": 24,
 			"anim": "singLEFT",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "gf sad",
-			"anim": "sad",
+			"loop": false,
 			"fps": 24,
+			"anim": "sad",
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "GF Dancing Beat",
-			"anim": "danceLeft",
+			"loop": false,
 			"fps": 24,
+			"anim": "danceLeft",
 			"indices": [
 				0,
 				1,
@@ -100,10 +99,10 @@
 			]
 		},
 		{
-			"loop": false,
 			"symbol": "GF Dancing Beat",
-			"anim": "danceRight",
+			"loop": false,
 			"fps": 24,
+			"anim": "danceRight",
 			"indices": [
 				16,
 				17,
@@ -122,15 +121,17 @@
 			]
 		}
 	],
-	"zoom": 0.8,
-	"image": "GF_assets",
 	"name": "Girlfriend",
-	"skin": "Default",
-	"healthicon": "bf",
+	"image": "GF_assets",
+	"zoom": 0.8,
+	"antialiasing": true,
+	"deathCharacter": "Boyfriend_Death",
+	"onRight": false,
 	"camera": [
 		-50,
 		-190
 	],
-	"onRight": false,
+	"healthicon": "bf",
+	"skin": "Default",
 	"danceIdle": true
 }
