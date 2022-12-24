@@ -72,6 +72,8 @@ class ChartEditorState extends MusicBeatState {
     var curSection:Int = 0;
     public static var lastSection:Int = 0;
 
+	var tempBpm:Float = 0;
+
     var strumLineEvent:FlxSprite;
     var strumLine:FlxSprite;
     var strumStatics:FlxTypedGroup<StaticNotes>;
@@ -148,6 +150,7 @@ class ChartEditorState extends MusicBeatState {
         FlxG.mouse.visible = true;
 
         curSection = lastSection;
+		tempBpm = _song.bpm;
         
         stage = new Stage(_song.stage, _song.characters);
         stage.showCamPoints = true;
@@ -527,14 +530,14 @@ class ChartEditorState extends MusicBeatState {
 
         conductor.songPosition = inst.time;
 
-        if(_song.generalSection[curSection] != null){strumLine.y = getYfromStrum((conductor.songPosition - sectionStartTime()) % (conductor.stepCrochet * _song.generalSection[curSection].lengthInSteps));}
+        if(_song.generalSection[curSection] != null){strumLine.y = getYfromStrum((conductor.songPosition - sectionStartTime()));}
         for(strums in strumStatics){strums.y = strumLine.y;} strumLineEvent.y = strumLine.y;
 
         if(_song.generalSection[curSection + 1] == null){addGenSection();}
         for(i in 0..._song.sectionStrums.length){if(_song.sectionStrums[i].notes[curSection + 1] == null){addSection(i, _song.generalSection[curSection].lengthInSteps, Song.getStrumKeys(_song.sectionStrums[i], curSection));}}
 
-        if(curStep >= (_song.generalSection[curSection].lengthInSteps * (curSection + 1))){changeSection(curSection + 1, false);}
-        if(curStep + 1 < (_song.generalSection[curSection].lengthInSteps * curSection) && curSection > 0){changeSection(curSection - 1, false);}
+        if(Math.ceil(strumLine.y) >= curGrid.height){changeSection(curSection + 1, false);}
+        if(strumLine.y <= -10){changeSection(curSection - 1, false);}
     
         FlxG.watch.addQuick('daBeat', curBeat);
         FlxG.watch.addQuick('daStep', curStep);
@@ -596,6 +599,8 @@ class ChartEditorState extends MusicBeatState {
         for(item in arrayFocus){if(item.hasFocus){arrayControlle = false;}}
 
         if(canControlle && arrayControlle){
+		    _song.bpm = tempBpm;
+
             if(!inst.playing){
                 if(!chkHideChart.checked && (FlxG.mouse.x > eveGrid.x && FlxG.mouse.x < eveGrid.x + eveGrid.width && FlxG.mouse.y > eveGrid.y && FlxG.mouse.y < eveGrid.y + eveGrid.height)){
                     cursor_Arrow.alpha = 0;
@@ -1991,7 +1996,7 @@ class ChartEditorState extends MusicBeatState {
                 }
                 case "SONG_Speed":{_song.speed = nums.value;}
                 case "SONG_BPM":{
-                    _song.bpm = nums.value;
+                    tempBpm = nums.value;
                     
 				    conductor.mapBPMChanges(_song);
 				    conductor.changeBPM(nums.value);

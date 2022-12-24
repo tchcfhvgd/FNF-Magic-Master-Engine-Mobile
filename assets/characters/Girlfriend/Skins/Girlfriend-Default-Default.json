@@ -4,6 +4,7 @@
 		-140,
 		85
 	],
+	"scale": 1,
 	"anims": [
 		{
 			"symbol": "GF Cheer",
@@ -128,10 +129,10 @@
 	"deathCharacter": "Boyfriend_Death",
 	"onRight": false,
 	"camera": [
-		-50,
-		-190
+		-10,
+		-100
 	],
-	"healthicon": "bf",
+	"healthicon": "gf",
 	"skin": "Default",
 	"danceIdle": true
 }

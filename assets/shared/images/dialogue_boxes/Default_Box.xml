@@ -1,0 +1,35 @@
+<TextureAtlas imagePath="Default_Box.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="2" frameWidth="1263" y="2" frameX="0" name="Normal_Appear0000" frameHeight="330" frameY="0" width="1263" height="330"/>
+	<SubTexture x="1267" frameWidth="1263" y="2" frameX="0" name="Normal_Appear0001" frameHeight="330" frameY="0" width="1263" height="330"/>
+	<SubTexture x="2532" frameWidth="1263" y="2" frameX="0" name="Normal_Appear0002" frameHeight="330" frameY="0" width="1263" height="330"/>
+	<SubTexture x="2" frameWidth="1263" y="334" frameX="0" name="Normal_Appear0003" frameHeight="330" frameY="0" width="1263" height="330"/>
+	<SubTexture x="2" frameWidth="1263" y="334" frameX="0" name="Normal_Appear0004" frameHeight="330" frameY="0" width="1263" height="330"/>
+	<SubTexture x="1267" frameWidth="1263" y="334" frameX="-62" name="Normal_Idle0000" frameHeight="330" frameY="-13" width="1171" height="328"/>
+	<SubTexture x="1267" frameWidth="1263" y="334" frameX="-62" name="Normal_Idle0001" frameHeight="330" frameY="-13" width="1171" height="328"/>
+	<SubTexture x="1267" frameWidth="1263" y="334" frameX="-62" name="Normal_Idle0002" frameHeight="330" frameY="-13" width="1171" height="328"/>
+	<SubTexture x="1267" frameWidth="1263" y="334" frameX="-62" name="Normal_Idle0003" frameHeight="330" frameY="-13" width="1171" height="328"/>
+	<SubTexture x="1267" frameWidth="1263" y="334" frameX="-62" name="Normal_Idle0004" frameHeight="330" frameY="-13" width="1171" height="328"/>
+	<SubTexture x="2440" frameWidth="1263" y="334" frameX="-62" name="Normal_Idle0005" frameHeight="330" frameY="-13" width="1171" height="328"/>
+	<SubTexture x="2440" frameWidth="1263" y="334" frameX="-62" name="Normal_Idle0006" frameHeight="330" frameY="-13" width="1171" height="328"/>
+	<SubTexture x="2440" frameWidth="1263" y="334" frameX="-62" name="Normal_Idle0007" frameHeight="330" frameY="-13" width="1171" height="328"/>
+	<SubTexture x="2440" frameWidth="1263" y="334" frameX="-62" name="Normal_Idle0008" frameHeight="330" frameY="-13" width="1171" height="328"/>
+	<SubTexture x="2440" frameWidth="1263" y="334" frameX="-62" name="Normal_Idle0009" frameHeight="330" frameY="-13" width="1171" height="328"/>
+	<SubTexture x="2" frameWidth="1263" y="666" frameX="-62" name="Normal_Idle0010" frameHeight="330" frameY="-13" width="1171" height="328"/>
+	<SubTexture x="2" frameWidth="1263" y="666" frameX="-62" name="Normal_Idle0011" frameHeight="330" frameY="-13" width="1171" height="328"/>
+	<SubTexture x="2" frameWidth="1263" y="666" frameX="-62" name="Normal_Idle0012" frameHeight="330" frameY="-13" width="1171" height="328"/>
+	<SubTexture x="2" frameWidth="1263" y="666" frameX="-62" name="Normal_Idle0013" frameHeight="330" frameY="-13" width="1171" height="328"/>
+	<SubTexture x="2" frameWidth="1263" y="666" frameX="-62" name="Normal_Idle0014" frameHeight="330" frameY="-13" width="1171" height="328"/>
+	<SubTexture x="1175" frameWidth="1263" y="666" frameX="-62" name="Normal_Idle0015" frameHeight="330" frameY="-13" width="1171" height="328"/>
+	<SubTexture x="1175" frameWidth="1263" y="666" frameX="-62" name="Normal_Idle0016" frameHeight="330" frameY="-13" width="1171" height="328"/>
+	<SubTexture x="1175" frameWidth="1263" y="666" frameX="-62" name="Normal_Idle0017" frameHeight="330" frameY="-13" width="1171" height="328"/>
+	<SubTexture x="1175" frameWidth="1263" y="666" frameX="-62" name="Normal_Idle0018" frameHeight="330" frameY="-13" width="1171" height="328"/>
+	<SubTexture x="1175" frameWidth="1263" y="666" frameX="-62" name="Normal_Idle0019" frameHeight="330" frameY="-13" width="1171" height="328"/>
+	<SubTexture x="2348" frameWidth="1263" y="666" frameX="63" name="Scream_Appear0000" frameHeight="330" frameY="103" width="1367" height="507"/>
+	<SubTexture x="2" frameWidth="1263" y="1175" frameX="63" name="Scream_Appear0001" frameHeight="330" frameY="103" width="1367" height="507"/>
+	<SubTexture x="2" frameWidth="1263" y="1175" frameX="63" name="Scream_Appear0002" frameHeight="330" frameY="103" width="1367" height="507"/>
+	<SubTexture x="1371" frameWidth="1263" y="1175" frameX="-6" name="Scream_Idle0000" frameHeight="330" frameY="54" width="1244" height="422"/>
+	<SubTexture x="2617" frameWidth="1263" y="1175" frameX="-6" name="Scream_Idle0001" frameHeight="330" frameY="54" width="1244" height="422"/>
+	<SubTexture x="2" frameWidth="1263" y="1684" frameX="-6" name="Scream_Idle0002" frameHeight="330" frameY="54" width="1244" height="422"/>
+</TextureAtlas>

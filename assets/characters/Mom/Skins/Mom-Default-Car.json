@@ -1,2 +1,57 @@
 {
-	"antialiasing": true,"aspect":"Car","position":[70,-65],"anims":[{"loop":false,"symbol":"MOM DOWN POSE","anim":"singDOWN","fps":24,"indices":[]},{"loop":false,"symbol":"Mom Idle","anim":"idle","fps":24,"indices":[]},{"loop":false,"symbol":"Mom Left Pose","anim":"singLEFT","fps":24,"indices":[]},{"loop":false,"symbol":"Mom Pose Left","anim":"singRIGHT","fps":24,"indices":[]},{"loop":false,"symbol":"Mom Up Pose","anim":"singUP","fps":24,"indices":[]}],"zoom":0.8,"image":"momCar","name":"Mom","camera":[33,-189],"healthicon":"bf","onRight":true,"skin":"Default"}
+	"aspect": "Car",
+	"position": [
+		70,
+		-65
+	],
+	"scale": 1,
+	"anims": [
+		{
+			"symbol": "MOM DOWN POSE",
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWN",
+			"indices": []
+		},
+		{
+			"symbol": "Mom Idle",
+			"loop": false,
+			"fps": 24,
+			"anim": "idle",
+			"indices": []
+		},
+		{
+			"symbol": "Mom Left Pose",
+			"loop": false,
+			"fps": 24,
+			"anim": "singLEFT",
+			"indices": []
+		},
+		{
+			"symbol": "Mom Pose Left",
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHT",
+			"indices": []
+		},
+		{
+			"symbol": "Mom Up Pose",
+			"loop": false,
+			"fps": 24,
+			"anim": "singUP",
+			"indices": []
+		}
+	],
+	"name": "Mom",
+	"image": "momCar",
+	"zoom": 0.8,
+	"antialiasing": true,
+	"deathCharacter": "Boyfriend_Death",
+	"skin": "Default",
+	"onRight": true,
+	"healthicon": "mom",
+	"camera": [
+		-10,
+		-50
+	]
+}

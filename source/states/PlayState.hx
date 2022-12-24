@@ -137,11 +137,6 @@ class PlayState extends MusicBeatState {
 		persistentUpdate = true;
 		persistentDraw = true;
 
-		//Audio Stuff
-		voices = new FlxSoundGroup();
-		inst = new FlxSound();
-		FlxG.sound.list.add(inst);
-
 		if(SongListData.songPlaylist.length > 0){
 			SONG = SongListData.songPlaylist[0];
 		}else{
@@ -162,7 +157,6 @@ class PlayState extends MusicBeatState {
 		strumsGroup = new FlxTypedGroup<StrumLine>();
 		strumsGroup.cameras = [camHUD];
 		add(strumsGroup);
-		
 
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 		FlxG.fixedTimestep = false;
@@ -176,19 +170,7 @@ class PlayState extends MusicBeatState {
 		FlxG.camera.follow(camFollow, LOCKON, 0.04);
 		add(camFollow);
 
-		generateSong(
-			function(){
-				if(SongListData.isStoryMode){
-					switch(SONG.song){
-						default:{startCountdown(startSong);}
-					}
-				}else{
-					switch(SONG.song){
-						default:{startCountdown(startSong);}
-					}
-				}
-			}
-		);
+		generateSong(function(){startCountdown(startSong);});
 	}
 
 	private var loadedStrums:Int = 0;
@@ -199,10 +181,16 @@ class PlayState extends MusicBeatState {
 		conductor.mapBPMChanges(songData);
 
 		//Loading Instrumental
-		inst.loadEmbedded(Paths.inst(songData.song, songData.category), false);
+		inst = new FlxSound().loadEmbedded(Paths.inst(songData.song, songData.category), false, false, endSong);
+		inst.autoDestroy = false;
+		inst.looped = false;
+		inst.onComplete = endSong.bind();
+		FlxG.sound.list.add(inst);
 
 		//Loading Voices
+		voices = new FlxSoundGroup();		
 		voices.sounds = [];
+
 		if(songData.hasVoices){
             for(i in 0...songData.characters.length){
                 var voice = new FlxSound().loadEmbedded(Paths.voice(i, songData.characters[i][0], songData.song, songData.category));
@@ -215,6 +203,7 @@ class PlayState extends MusicBeatState {
             voices.add(voice);
         }
 
+		//Loading Strumlines
 		var strumsloaded:Int = songData.sectionStrums.length;
 		for(i in 0...songData.sectionStrums.length){
 			var strumLine = new StrumLine(0, 0, songData.sectionStrums[i].keys, Std.int(FlxG.width / 3), principal_controls, null, songData.sectionStrums[i].noteStyle);
@@ -310,8 +299,6 @@ class PlayState extends MusicBeatState {
 		
 		conductor.songPosition = 0;
 
-		inst.onComplete = endSong;
-
 		inst.play(true);
 		for(sound in voices.sounds){sound.play(true);}
 		songPlaying = true;
@@ -329,6 +316,8 @@ class PlayState extends MusicBeatState {
 
 	function resyncVocals():Void{
 		if(!songPlaying){return;}
+
+		if(inst.time >= inst.length){endSong();}
 
 		inst.pause();
 		for(sound in voices.sounds){sound.pause();}
@@ -393,6 +382,9 @@ class PlayState extends MusicBeatState {
 
 		if(!pre_OnlyNotes){
 			if(songGenerated && PlayState.SONG.generalSection[curSection] != null){
+				var left_used:Bool = false;
+				var right_used:Bool = false;
+
 				for(i in 0...strumsGroup.length){
 					var curStrumLine = strumsGroup.members[i];
 					var strumPlayer:Character = stage.getCharacterById(Character.getFocusCharID(SONG, curSection, i));
@@ -418,11 +410,36 @@ class PlayState extends MusicBeatState {
 							}
 						}						
 					}else{
-						newStrumLineX = strumPlayer.onRight ? (strumLeftPos) : (strumRightPos - curStrumLine.genWidth);
-						curStrumPosX = strumPlayer.onRight ? "Left" : "Right";
-
 						if(pre_TypeMiddle == "OnlyPlayer"){newStrumLineAlpha = 0;}
 						if(pre_TypeMiddle == "FadeOthers"){newStrumLineAlpha = 0.3;}
+
+						curStrumPosX = strumPlayer.onRight ? "Left" : "Right";
+
+						if(curStrumPosX == curStrumLinePos){
+							switch(curStrumLinePos){
+								case "Left":{curStrumPosX = "Right";}
+								case "Right":{curStrumPosX = "Left";}
+								case "Middle":{newStrumLineAlpha = 0;}
+							}
+						}
+
+						if(curStrumPosX == "Right"){
+							if(right_used){
+								newStrumLineAlpha = 0;
+							}else{
+								right_used = true;
+							}
+						}
+
+						if(curStrumPosX == "Left"){
+							if(left_used){
+								newStrumLineAlpha = 0;
+							}else{
+								left_used = true;
+							}
+						}
+
+						newStrumLineX = curStrumPosX == "Left" ? (strumLeftPos) : (strumRightPos - curStrumLine.genWidth);
 					}
 					
 					curStrumLine.y = FlxMath.lerp(curStrumLine.y, newStrumLineY, 0.1);
@@ -462,7 +479,11 @@ class PlayState extends MusicBeatState {
 		}
 	}
 
+	var songEnded:Bool = false;
 	function endSong():Void{
+		if(songEnded){return;}
+		songEnded = true;
+
 		trace("End Song");
 		canPause = false;
 		isPaused = true;
@@ -478,6 +499,16 @@ class PlayState extends MusicBeatState {
 
 		SongListData.nextSong(song_score);
 
+		var song_script:Script = Script.getScript("ScriptSong");
+		if(song_script != null){
+			song_script.exFunction("endSong", [toEndSong]);
+			if(song_script.getVariable("endCountdown")){return;}
+		}
+
+		toEndSong();
+	}
+
+	public function toEndSong():Void {
 		if(SongListData.songPlaylist.length <= 0){
 			if(SONG.validScore){
 				NGio.unlockMedal(60961);
@@ -570,6 +601,8 @@ class PlayState extends MusicBeatState {
 		if(songPlaying && inst.time > conductor.songPosition + 20 || inst.time < conductor.songPosition - 20){
 			resyncVocals();
 		}
+
+		trace('${inst.time} / ${inst.length}');
 	}
 
 	override function beatHit(){

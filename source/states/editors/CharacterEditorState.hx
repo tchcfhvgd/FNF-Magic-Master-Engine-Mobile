@@ -216,7 +216,7 @@ class CharacterEditorState extends MusicBeatState{
     var lblOriPos:FlxText;
     var txtCharacter:FlxUIInputText;
     var txtSkin:FlxUIInputText;
-    var txtCategory:FlxUIInputText;
+    var txtAspect:FlxUIInputText;
     var txtImage:FlxUIInputText;
     var txtIcon:FlxUIInputText;
     var txtDeathChar:FlxUIInputText;
@@ -225,6 +225,7 @@ class CharacterEditorState extends MusicBeatState{
     var stpCharacterY:FlxUINumericStepper;
     var stpCameraX:FlxUINumericStepper;
     var stpCameraY:FlxUINumericStepper;
+    var stpScale:FlxUINumericStepper;
     var chkFlipImage:FlxUICheckBox;
     var chkAntialiasing:FlxUICheckBox;
     var chkDanceIdle:FlxUICheckBox;
@@ -249,19 +250,19 @@ class CharacterEditorState extends MusicBeatState{
         txtSkin.name = "CHARACTER_SKIN";
         
         var lblCat = new FlxText(lblCharacter.x, txtSkin.y + txtSkin.height + 5, 0, "ASPECT:", 8); tabMENU.add(lblCat);
-        txtCategory = new FlxUIInputText(lblCat.x + lblCat.width + 5, lblCat.y, Std.int(MENU.width - lblCat.width - 15), _character.aspect, 8); tabMENU.add(txtCategory);
-        arrayFocus.push(txtCategory);
-        txtCategory.name = "CHARACTER_CATEGORY";
+        txtAspect = new FlxUIInputText(lblCat.x + lblCat.width + 5, lblCat.y, Std.int(MENU.width - lblCat.width - 15), _character.aspect, 8); tabMENU.add(txtAspect);
+        arrayFocus.push(txtAspect);
+        txtAspect.name = "CHARACTER_ASPECT";
 
         var btnLoadCharacter:FlxButton = new FlxCustomButton(lblCat.x, lblCat.y + lblCat.height + 5, Std.int(MENU.width / 2) - 10, null, "Load Character", null, null, function(){
-            var newCharacter:Character = new Character(0, 0, Paths.getFileName(txtCharacter.text, true), Paths.getFileName(txtCategory.text, true));
+            var newCharacter:Character = new Character(0, 0, Paths.getFileName(txtCharacter.text, true), Paths.getFileName(txtAspect.text, true));
             newCharacter.curSkin = Paths.getFileName(txtSkin.text, true);
             newCharacter.setupByCharacterFile();
 
             CharacterEditorState.editCharacter(onConfirm, onBack, newCharacter.charFile);
         }); tabMENU.add(btnLoadCharacter);
 
-        var btnSaveCharacter:FlxButton = new FlxCustomButton(btnLoadCharacter.x + btnLoadCharacter.width + 10, btnLoadCharacter.y, Std.int(MENU.width / 2) - 10, null, "Save Character", null, null, function(){saveCharacter('${txtCharacter.text}-${txtSkin.text}-${txtCategory.text}');}); tabMENU.add(btnSaveCharacter);
+        var btnSaveCharacter:FlxButton = new FlxCustomButton(btnLoadCharacter.x + btnLoadCharacter.width + 10, btnLoadCharacter.y, Std.int(MENU.width / 2) - 10, null, "Save Character", null, null, function(){saveCharacter('${txtCharacter.text}-${txtSkin.text}-${txtAspect.text}');}); tabMENU.add(btnSaveCharacter);
 
         var line0 = new FlxSprite(5, btnLoadCharacter.y + btnLoadCharacter.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line0);
 
@@ -270,14 +271,7 @@ class CharacterEditorState extends MusicBeatState{
 
         var line1 = new FlxSprite(5, chkGFPos.y + chkGFPos.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line1);
 
-        var clStages:FlxUICustomList = new FlxUICustomList(line1.x, line1.y + 7, Std.int(MENU.width - 10), Stage.getStages(), function(lst:FlxUICustomList){backStage.loadStage(lst.getSelectedLabel());}); tabMENU.add(clStages);
-        clStages.setPrefix("Stage: ");
-        clStages.setLabel("Stage");
-        clStages.name = "STAGES";
-        
-        var line = new FlxSprite(5, clStages.y + clStages.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line);
-
-        var lblIcon = new FlxText(line.x, line.y + line.height + 5, 0, "Icon:", 8); tabMENU.add(lblIcon);
+        var lblIcon = new FlxText(line1.x, line1.y + line1.height + 5, 0, "Icon:", 8); tabMENU.add(lblIcon);
         txtIcon = new FlxUIInputText(lblIcon.x + lblIcon.width + 5, lblIcon.y, Std.int(MENU.width - lblIcon.width - 15), _character.healthicon, 8); tabMENU.add(txtIcon);
         arrayFocus.push(txtIcon);
         txtIcon.name = "CHARACTER_ICON";
@@ -307,8 +301,13 @@ class CharacterEditorState extends MusicBeatState{
         stpCameraY = new FlxUICustomNumericStepper(lblCamY.x + lblCamY.width + 5, lblCamY.y, Std.int(MENU.width - lblCamY.width - 15), 1, _character.camera[1], -99999, 99999, 1); tabMENU.add(stpCameraY);
             @:privateAccess arrayFocus.push(cast stpCameraY.text_field);
         stpCameraY.name = "CHARACTER_CameraY";
+
+        var lblScale = new FlxText(lblCamY.x, lblCamY.y + lblCamY.height + 5, 0, "Scale:", 8); tabMENU.add(lblScale);
+        stpScale = new FlxUICustomNumericStepper(lblScale.x + lblScale.width + 5, lblScale.y, Std.int(MENU.width - lblScale.width - 15), 0.1, _character.scale, -99999, 99999, 1); tabMENU.add(stpScale);
+            @:privateAccess arrayFocus.push(cast stpScale.text_field);
+        stpScale.name = "CHARACTER_Scale";
         
-        chkFlipImage = new FlxUICheckBox(lblCamY.x, lblCamY.y + lblCamY.height + 5, null, null, "Character Image is Looking Right", 500); chkFlipImage.checked = _character.onRight; tabMENU.add(chkFlipImage);
+        chkFlipImage = new FlxUICheckBox(lblScale.x, lblScale.y + lblScale.height + 5, null, null, "Flip Image", 0); chkFlipImage.checked = _character.onRight; tabMENU.add(chkFlipImage);
         chkAntialiasing = new FlxUICheckBox(chkFlipImage.x, chkFlipImage.y + chkFlipImage.height + 5, null, null, "With Antialiasing", 0); chkAntialiasing.checked = _character.antialiasing; tabMENU.add(chkAntialiasing);
         chkDanceIdle = new FlxUICheckBox(chkAntialiasing.x, chkAntialiasing.y + chkAntialiasing.height + 5, null, null, "Dance on Idle", 0); chkDanceIdle.checked = _character.danceIdle; tabMENU.add(chkDanceIdle);
 
@@ -489,7 +488,7 @@ class CharacterEditorState extends MusicBeatState{
                 default:{trace('$wname WORKS!');}
                 case "CHARACTER_NAME":{_character.name = input.text; reloadCharacter();}
                 case "CHARACTER_SKIN":{_character.skin = input.text; reloadCharacter();}
-                case "CHARACTER_CATEGORY":{_character.aspect = input.text; reloadCharacter();}
+                case "CHARACTER_ASPECT":{_character.aspect = input.text; reloadCharacter();}
                 case "CHARACTER_ICON":{
                     _character.healthicon = input.text;
                     healthIcon.setIcon(_character.healthicon);
@@ -511,6 +510,7 @@ class CharacterEditorState extends MusicBeatState{
                 default:{trace('$wname WORKS!');}
                 case "CHARACTER_X":{_character.position[0] = nums.value; reloadCharacter();}
                 case "CHARACTER_Y":{_character.position[1] = nums.value; reloadCharacter();}
+                case "CHARACTER_Scale":{_character.scale = nums.value; reloadCharacter();}
                 case "CHARACTER_CameraX":{_character.camera[0] = nums.value;}
                 case "CHARACTER_CameraY":{_character.camera[1] = nums.value;}
             }

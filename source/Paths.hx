@@ -1,6 +1,8 @@
 package;
 
+import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
 import flixel.graphics.frames.FlxFramesCollection;
+import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.Assets as OpenFlAssets;
 import openfl.utils.AssetManifest;
@@ -9,12 +11,18 @@ import openfl.utils.AssetLibrary;
 import openfl.display.BitmapData;
 import openfl.utils.AssetType;
 import haxe.format.JsonParser;
+import flixel.math.FlxPoint;
+import flash.geom.Rectangle;
 import openfl.utils.Assets;
+import flixel.math.FlxRect;
 import flash.media.Sound;
+import haxe.xml.Access;
 import haxe.io.Bytes;
 import haxe.io.Path;
 import flixel.FlxG;
 import haxe.Json;
+
+import Character.Skins;
 
 #if sys
 import sys.FileSystem;
@@ -312,6 +320,14 @@ class Paths {
 
 		return path;
 	}
+	inline static public function dialogue(song:String, isPath:Bool = false, ?mod:String):String {
+		var language = PreSettings.getPreSetting("Language", "Game Settings");
+
+		var path = getPath('${song}/Data/${language}_dialog.json', TEXT, 'songs', mod);
+		if(!Paths.exists(path)){path = getPath('${song}/Data/Default_dialog.json', TEXT, 'songs', mod);}
+
+		return isPath ? path : Json.parse(getText(path)).dialogue;
+	}
 	inline static public function song_script(song:String, ?mod:String):String {
 		var path = getPath('${song}/Data/Song_Events.hx', TEXT, 'songs', mod);
 		
@@ -387,8 +403,10 @@ class Paths {
 		return noteJSON;
 	}
 
-	inline static public function getCharacterJSON(char:String, skin:String, cat:String, ?mod:String){
-		var path = getPath('${char}/Skins/${char}-${skin}-${cat}.json', TEXT, 'characters', mod);
+	inline static public function getCharacterJSON(char:String, asp:String, ?skin:String, ?mod:String){
+		if(skin == null){skin = Skins.getSkin(char);}
+
+		var path = getPath('${char}/Skins/${char}-${skin}-${asp}.json', TEXT, 'characters', mod);
 
 		if(!Paths.exists(path)){path = getPath('${char}/Skins/${char}-${skin}-Default.json', TEXT, 'characters', mod);}
 		if(!Paths.exists(path)){path = getPath('${char}/Skins/${char}-Default-Default.json', TEXT, 'characters', mod);}
@@ -408,7 +426,7 @@ class Paths {
 
 		if(bit == null|| xml == null){return null;}
 
-		var atlas = FlxAtlasFrames.fromSparrow(bit, xml);
+		var atlas = fromUncachedSparrow(bit, xml);
 
 		if(atlas == null){return null;}
 
@@ -446,4 +464,37 @@ class Paths {
 		else if(Paths.exists('${path}.txt')){return getPackerAtlas('$path.txt');}
 		return null;
 	}
+
+	static public function fromUncachedSparrow(Source:FlxGraphicAsset, Description:String):FlxAtlasFrames {
+        var graphic:FlxGraphic = FlxG.bitmap.add(Source);
+    
+        if(graphic == null || Description == null){return null;}
+    
+        var frames:FlxAtlasFrames = new FlxAtlasFrames(graphic);
+        
+        var data:Access = new Access(Xml.parse(Description).firstElement());
+    
+        for(texture in data.nodes.SubTexture){
+            var name = texture.att.name;
+            var trimmed = texture.has.frameX;
+            var rotated = (texture.has.rotated && texture.att.rotated == "true");
+            var flipX = (texture.has.flipX && texture.att.flipX == "true");
+            var flipY = (texture.has.flipY && texture.att.flipY == "true");
+    
+            var rect = FlxRect.get(Std.parseFloat(texture.att.x), Std.parseFloat(texture.att.y), Std.parseFloat(texture.att.width), Std.parseFloat(texture.att.height));
+
+            var size = if(trimmed){new Rectangle(Std.parseInt(texture.att.frameX), Std.parseInt(texture.att.frameY), Std.parseInt(texture.att.frameWidth), Std.parseInt(texture.att.frameHeight));}else{new Rectangle(0, 0, rect.width, rect.height);}
+    
+            var angle = rotated ? FlxFrameAngle.ANGLE_NEG_90 : FlxFrameAngle.ANGLE_0;
+    
+            var offset = FlxPoint.get(-size.left, -size.top);
+            var sourceSize = FlxPoint.get(size.width, size.height);
+    
+            if(rotated && !trimmed){sourceSize.set(size.height, size.width);}
+    
+            frames.addAtlasFrame(rect, sourceSize, offset, name, angle, flipX, flipY);
+        }
+    
+        return frames;
+    }
 }

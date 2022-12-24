@@ -1,1 +1,127 @@
-{"antialiasing": true,"aspect":"Default","position":[0,340],"anims":[{"indices":[],"symbol":"BF HEY!!","fps":24,"anim":"hey","loop":false},{"indices":[],"symbol":"BF NOTE DOWN","fps":24,"anim":"singDOWN","loop":false},{"indices":[],"symbol":"MISS BF NOTE DOWN","fps":24,"anim":"singDOWNmiss","loop":false},{"indices":[],"symbol":"BF NOTE LEFT","fps":24,"anim":"singLEFT","loop":false},{"indices":[],"symbol":"MISS BF NOTE LEFT","fps":24,"anim":"singLEFTmiss","loop":false},{"indices":[],"symbol":"BF NOTE RIGHT","fps":24,"anim":"singRIGHT","loop":false},{"indices":[],"symbol":"MISS BF NOTE RIGHT","fps":24,"anim":"singRIGHTmiss","loop":false},{"indices":[],"symbol":"BF NOTE UP","fps":24,"anim":"singUP","loop":false},{"indices":[],"symbol":"MISS BF NOTE UP","fps":24,"anim":"singUPmiss","loop":false},{"indices":[],"symbol":"BF hit","fps":24,"anim":"hit","loop":false},{"indices":[],"symbol":"BF idle dance","fps":24,"anim":"idle","loop":false},{"indices":[],"symbol":"BF idle shaking","fps":24,"anim":"shaking","loop":false},{"indices":[],"symbol":"bf pre attack","fps":24,"anim":"pre","loop":false},{"indices":[],"symbol":"boyfriend attack","fps":24,"anim":"attack","loop":false},{"indices":[],"symbol":"boyfriend dodge","fps":24,"anim":"dodge","loop":false}],"zoom":0.8,"image":"BOYFRIEND","name":"Boyfriend","camera":[0,0],"healthicon":"bf","onRight":false,"skin":"Default"}
+{
+	"aspect": "Default",
+	"position": [
+		0,
+		340
+	],
+	"scale": 1,
+	"anims": [
+		{
+			"loop": false,
+			"symbol": "BF HEY!!",
+			"anim": "hey",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "BF NOTE DOWN",
+			"anim": "singDOWN",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "MISS BF NOTE DOWN",
+			"anim": "singDOWNmiss",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "BF NOTE LEFT",
+			"anim": "singLEFT",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "MISS BF NOTE LEFT",
+			"anim": "singLEFTmiss",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "BF NOTE RIGHT",
+			"anim": "singRIGHT",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "MISS BF NOTE RIGHT",
+			"anim": "singRIGHTmiss",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "BF NOTE UP",
+			"anim": "singUP",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "MISS BF NOTE UP",
+			"anim": "singUPmiss",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "BF hit",
+			"anim": "hit",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "BF idle dance",
+			"anim": "idle",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "BF idle shaking",
+			"anim": "shaking",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "bf pre attack",
+			"anim": "pre",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "boyfriend attack",
+			"anim": "attack",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "boyfriend dodge",
+			"anim": "dodge",
+			"fps": 24,
+			"indices": []
+		}
+	],
+	"name": "Boyfriend",
+	"image": "BOYFRIEND",
+	"zoom": 0.8,
+	"antialiasing": true,
+	"deathCharacter": "Boyfriend_Death",
+	"skin": "Default",
+	"onRight": false,
+	"healthicon": "bf",
+	"camera": [
+		0,
+		0
+	]
+}

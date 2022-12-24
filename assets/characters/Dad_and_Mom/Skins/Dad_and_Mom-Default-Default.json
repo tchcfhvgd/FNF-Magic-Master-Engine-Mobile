@@ -1,83 +1,85 @@
 {
-	"antialiasing": true,
-	"aspect": "Christmas",
+	"aspect": "Default",
 	"position": [
 		-330,
 		-5
 	],
+	"scale": 1,
 	"anims": [
 		{
-			"indices": [],
 			"symbol": "Parent Christmas Idle",
+			"loop": false,
 			"fps": 24,
 			"anim": "idle",
-			"loop": false
+			"indices": []
 		},
 		{
-			"indices": [],
 			"symbol": "Parent Down Note Dad",
+			"loop": false,
 			"fps": 24,
 			"anim": "singDOWN",
-			"loop": false
+			"indices": []
 		},
 		{
-			"indices": [],
 			"symbol": "Parent Down Note Mom",
+			"loop": false,
 			"fps": 24,
 			"anim": "singDOWN-alt",
-			"loop": false
+			"indices": []
 		},
 		{
-			"indices": [],
 			"symbol": "Parent Left Note Dad",
+			"loop": false,
 			"fps": 24,
 			"anim": "singLEFT",
-			"loop": false
+			"indices": []
 		},
 		{
-			"indices": [],
 			"symbol": "Parent Left Note Mom",
+			"loop": false,
 			"fps": 24,
 			"anim": "singLEFT-alt",
-			"loop": false
+			"indices": []
 		},
 		{
-			"indices": [],
 			"symbol": "Parent Right Note Dad",
+			"loop": false,
 			"fps": 24,
 			"anim": "singRIGHT",
-			"loop": false
+			"indices": []
 		},
 		{
-			"indices": [],
 			"symbol": "Parent Right Note Mom",
+			"loop": false,
 			"fps": 24,
 			"anim": "singRIGHT-alt",
-			"loop": false
+			"indices": []
 		},
 		{
-			"indices": [],
 			"symbol": "Parent Up Note Dad",
+			"loop": false,
 			"fps": 24,
 			"anim": "singUP",
-			"loop": false
+			"indices": []
 		},
 		{
-			"indices": [],
 			"symbol": "Parent Up Note Mom",
+			"loop": false,
 			"fps": 24,
 			"anim": "singUP-alt",
-			"loop": false
+			"indices": []
 		}
 	],
 	"name": "Dad_and_Mom",
 	"image": "mom_dad_christmas_assets",
 	"zoom": 0.8,
+	"antialiasing": true,
 	"skin": "Default",
 	"onRight": true,
 	"camera": [
 		105,
 		-45
 	],
-	"healthicon": "bf"
+	"healthicon": "parents",
+	"deathCharacter": "Boyfriend_Death"
 }

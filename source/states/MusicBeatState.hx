@@ -87,6 +87,8 @@ class MusicBeatState extends FlxUIState {
 		state = this;
 		if(transIn != null){trace('reg ' + transIn.region);}
 
+		FlxG.game.setFilters([]);
+
 		camFGame.bgColor.alpha = 0;
 		camBHUD.bgColor.alpha = 0;
 		camHUD.bgColor.alpha = 0;

@@ -1,2 +1,57 @@
 {
-	"antialiasing": true,"aspect":"Default","position":[70,-65],"anims":[{"symbol":"MOM DOWN POSE","loop":false,"fps":24,"anim":"singDOWN","indices":[]},{"symbol":"Mom Idle","loop":false,"fps":24,"anim":"idle","indices":[]},{"symbol":"Mom Left Pose","loop":false,"fps":24,"anim":"singLEFT","indices":[]},{"symbol":"Mom Pose Left","loop":false,"fps":24,"anim":"singRIGHT","indices":[]},{"symbol":"Mom Up Pose","loop":false,"fps":24,"anim":"singUP","indices":[]}],"name":"Mom","image":"Mom_assets","zoom":0.8,"skin":"Default","onRight":true,"camera":[33,-100],"healthicon":"bf"}
+	"aspect": "Default",
+	"position": [
+		70,
+		-65
+	],
+	"scale": 1,
+	"anims": [
+		{
+			"loop": false,
+			"symbol": "MOM DOWN POSE",
+			"anim": "singDOWN",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "Mom Idle",
+			"anim": "idle",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "Mom Left Pose",
+			"anim": "singLEFT",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "Mom Pose Left",
+			"anim": "singRIGHT",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "Mom Up Pose",
+			"anim": "singUP",
+			"fps": 24,
+			"indices": []
+		}
+	],
+	"zoom": 0.8,
+	"image": "Mom_assets",
+	"name": "Mom",
+	"antialiasing": true,
+	"deathCharacter": "Boyfriend_Death",
+	"healthicon": "mom",
+	"camera": [
+		83,
+		120
+	],
+	"onRight": true,
+	"skin": "Default"
+}

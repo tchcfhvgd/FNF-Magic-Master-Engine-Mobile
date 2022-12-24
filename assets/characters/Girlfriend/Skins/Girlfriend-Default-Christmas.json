@@ -1,10 +1,10 @@
 {
-	"antialiasing": true,
 	"aspect": "Christmas",
 	"position": [
-		-80,
-		0
+		-140,
+		85
 	],
+	"scale": 1,
 	"anims": [
 		{
 			"symbol": "GF Cheer",
@@ -21,24 +21,10 @@
 			"indices": []
 		},
 		{
-			"symbol": "Hair Landing GF Dancing Beat",
-			"loop": false,
-			"fps": 24,
-			"anim": "hairFall",
-			"indices": []
-		},
-		{
-			"symbol": "GF Dancing Beat Hair blowing",
-			"loop": false,
-			"fps": 24,
-			"anim": "hairBlow",
-			"indices": []
-		},
-		{
 			"symbol": "GF Down Note",
 			"loop": false,
 			"fps": 24,
-			"anim": "singDown",
+			"anim": "singDOWN",
 			"indices": []
 		},
 		{
@@ -52,21 +38,21 @@
 			"symbol": "GF Right Note",
 			"loop": false,
 			"fps": 24,
-			"anim": "singRight",
+			"anim": "singRIGHT",
 			"indices": []
 		},
 		{
 			"symbol": "GF Up Note",
 			"loop": false,
 			"fps": 24,
-			"anim": "singUp",
+			"anim": "singUP",
 			"indices": []
 		},
 		{
 			"symbol": "GF left note",
 			"loop": false,
 			"fps": 24,
-			"anim": "singLeft",
+			"anim": "singLEFT",
 			"indices": []
 		},
 		{
@@ -125,12 +111,14 @@
 	"name": "Girlfriend",
 	"image": "gfChristmas",
 	"zoom": 0.8,
+	"antialiasing": true,
+	"deathCharacter": "Boyfriend_Death",
 	"onRight": false,
 	"camera": [
-		-50,
-		-190
+		-10,
+		-100
 	],
+	"healthicon": "gf",
 	"skin": "Default",
-	"healthicon": "bf",
 	"danceIdle": true
 }

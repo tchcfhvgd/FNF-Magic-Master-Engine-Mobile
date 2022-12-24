@@ -5,8 +5,8 @@
 			[
 				"Girlfriend",
 				[
-					400,
-					130
+					540,
+					50
 				],
 				1,
 				false,
@@ -396,7 +396,7 @@
 			}
 		],
 		"uiStyle": "Default",
-		"song": "Satin Panties",
+		"song": "Satin_Panties",
 		"playable": [
 			0
 		],

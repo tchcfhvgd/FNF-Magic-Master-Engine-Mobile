@@ -1,84 +1,86 @@
 {
-	"antialiasing": true,
 	"aspect": "Pixel",
 	"position": [
-		175,
-		645
+		185,
+		500
 	],
-	"nAntialiasing": true,
 	"anims": [
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "BF DOWN MISS instance 1",
-			"fps": 24,
 			"anim": "singDOWNmiss",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		},
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "BF DOWN NOTE instance 1",
-			"fps": 24,
 			"anim": "singDOWN",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		},
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "BF IDLE instance 1",
-			"fps": 24,
 			"anim": "idle",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		},
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "BF LEFT MISS instance 1",
-			"fps": 24,
 			"anim": "singLEFTmiss",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		},
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "BF LEFT NOTE instance 1",
-			"fps": 24,
 			"anim": "singLEFT",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		},
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "BF RIGHT MISS instance 1",
-			"fps": 24,
 			"anim": "singRIGHTmiss",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		},
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "BF RIGHT NOTE instance 1",
-			"fps": 24,
 			"anim": "singRIGHT",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		},
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "BF UP MISS instance 1",
-			"fps": 24,
 			"anim": "singUPmiss",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		},
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "BF UP NOTE instance 1",
-			"fps": 24,
 			"anim": "singUP",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		}
 	],
-	"name": "Boyfriend",
-	"image": "bfPixel",
+	"nAntialiasing": true,
+	"scale": 6,
 	"zoom": 0.8,
-	"skin": "Default",
-	"onRight": false,
+	"image": "bfPixel",
+	"name": "Boyfriend",
+	"antialiasing": false,
+	"deathCharacter": "Boyfriend_Death",
+	"healthicon": "bf-pixel",
 	"camera": [
 		-1,
 		7
 	],
-	"healthicon": "bf"
+	"onRight": false,
+	"skin": "Default"
 }

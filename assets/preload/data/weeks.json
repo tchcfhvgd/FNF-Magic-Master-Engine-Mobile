@@ -10,7 +10,8 @@
             "songs":["Tutorial"],
             "keyLock": null,
             "hiddenOnWeeks": false,
-            "hiddenOnFreeplay": false
+            "hiddenOnFreeplay": false,
+            "colorFreeplay": "#8164df"
         },
         {
             "name": "week1",
@@ -22,7 +23,8 @@
             "songs":["Bopeebo", "Fresh", "Dad_battle"],
             "keyLock": null,
             "hiddenOnWeeks": false,
-            "hiddenOnFreeplay": false
+            "hiddenOnFreeplay": false,
+            "colorFreeplay": "#8164df"
         },
         {
             "name": "week2",
@@ -34,7 +36,8 @@
             "songs":["Spookeez", "South", "Monster"],
             "keyLock": null,
             "hiddenOnWeeks": false,
-            "hiddenOnFreeplay": false
+            "hiddenOnFreeplay": false,
+            "colorFreeplay": "#1e2d3c"
         },
         {
             "name": "week3",
@@ -46,7 +49,8 @@
             "songs":["Pico", "Philly", "Blammed"],
             "keyLock": null,
             "hiddenOnWeeks": false,
-            "hiddenOnFreeplay": false
+            "hiddenOnFreeplay": false,
+            "colorFreeplay": "#6f133c"
         },
         {
             "name": "week4",
@@ -58,7 +62,8 @@
             "songs":["Satin_Panties", "High", "Milf"],
             "keyLock": null,
             "hiddenOnWeeks": false,
-            "hiddenOnFreeplay": false
+            "hiddenOnFreeplay": false,
+            "colorFreeplay": "#cb71aa"
         },
         {
             "name": "week5",
@@ -70,7 +75,8 @@
             "songs":["Cocoa", "Eggnog", "Winter_Horrorland"],
             "keyLock": null,
             "hiddenOnWeeks": false,
-            "hiddenOnFreeplay": false
+            "hiddenOnFreeplay": false,
+            "colorFreeplay": "#8da5ce"
         },
         {
             "name": "week6",
@@ -82,7 +88,8 @@
             "songs":["Senpai", "Roses", "Thorns"],
             "keyLock": null,
             "hiddenOnWeeks": false,
-            "hiddenOnFreeplay": false
+            "hiddenOnFreeplay": false,
+            "colorFreeplay": "#ce6aa8"
         },
         {
             "name": "week7",
@@ -94,7 +101,8 @@
             "songs":["Ugh", "Guns", "Stress"],
             "keyLock": null,
             "hiddenOnWeeks": false,
-            "hiddenOnFreeplay": false
+            "hiddenOnFreeplay": false,
+            "colorFreeplay": "#ce8d04"
         },
         {
             "name": "losttapes",
@@ -106,7 +114,8 @@
             "songs":["StereoFunk"],
             "keyLock": null,
             "hiddenOnWeeks": false,
-            "hiddenOnFreeplay": false
+            "hiddenOnFreeplay": false,
+            "colorFreeplay": "#883dd9"
         }
     ],
 

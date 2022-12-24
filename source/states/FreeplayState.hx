@@ -5,6 +5,8 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.addons.ui.FlxUIButton;
 import flixel.util.FlxGradient;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
 import flash.text.TextField;
 import flixel.util.FlxColor;
 import flixel.util.FlxSave;
@@ -37,6 +39,8 @@ using StringTools;
 class FreeplayState extends MusicBeatState {
 	var songList:Array<ItemSong> = [];
 
+	var background:FlxSprite;
+
 	var grpSongs:FlxTypedGroup<Alphabet>;
     var grpArrows:FlxTypedGroup<FlxSprite>;
 	
@@ -60,11 +64,12 @@ class FreeplayState extends MusicBeatState {
 
 		songList = SongStuffManager.getSongList();
 		
-        var bg = new FlxSprite().loadGraphic(Paths.image('menuBG'));
-		bg.setGraphicSize(FlxG.width, FlxG.height);
-        bg.color = 0xfffffd75;
-		bg.screenCenter();
-		add(bg);
+		background = new FlxSprite().loadGraphic(Paths.image('menuBG'));
+		background.setGraphicSize(FlxG.width, FlxG.height);
+		background.scrollFactor.set(0, 0);
+        background.color = 0xfffffd75;
+		background.screenCenter();
+		add(background);
 		
 		var back_1:FlxSprite = FlxGradient.createGradientFlxSprite(FlxG.width, 100, [FlxColor.BLACK, FlxColor.BLACK, 0x00000000]);
 		add(back_1);
@@ -177,6 +182,7 @@ class FreeplayState extends MusicBeatState {
         if(curOption < 0){curOption = 2;}
 	}
 	
+	var cur_tween_color:FlxTween;
 	public function changeSong(change:Int = 0, force:Bool = false):Void {
 		curSong += change; if(force){curSong = change;}
 
@@ -187,6 +193,9 @@ class FreeplayState extends MusicBeatState {
 			grpSongs.members[i].alpha = 0.5;
 			if(i == curSong){grpSongs.members[i].alpha = 1;}
 		}
+
+		if(cur_tween_color != null){cur_tween_color.cancel();}
+		cur_tween_color = FlxTween.color(background, 0.5, background.color, FlxColor.fromString(songList[curSong].color), {ease: FlxEase.quadInOut, onComplete: function(twn:FlxTween){cur_tween_color = null;}});
 
 		changeCateg();
 	}

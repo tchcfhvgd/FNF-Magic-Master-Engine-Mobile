@@ -1,10 +1,19 @@
-/* "Packages": {"Paths":"Paths","Type":"Type","FlxSprite":"flixel.FlxSprite","FlxTypedGroup":"flixel.group.FlxTypedGroup"} */
-/* "Variables": [{"isPresset":true,"type":"Int","id":"initChar","value":"6"},{"isPresset":true,"type":"Array","id":"camP_1","value":[230,330]},{"isPresset":true,"type":"Array","id":"camP_2","value":[1130,700]},{"type":"Float","isPresset":true,"value":0.9,"id":"zoom"}] */
+/* ||===================================================|| */
+/* || SCRIPTED STAGE - DON'T EXPORT IN THE STAGE EDITOR || */
+/* ||===================================================|| */
 
-import("Type", "Type");
-import("Paths", "Paths");
+/* "Packages": {"Paths":"Paths","Type":"Type","FlxSprite":"flixel.FlxSprite","FlxTypedGroup":"flixel.group.FlxTypedGroup"} */
+/* "Variables": [{"isPresset":true,"type":"Int","id":"initChar","value":"7"},{"isPresset":true,"type":"Array","id":"camP_1","value":[230,330]},{"isPresset":true,"type":"Array","id":"camP_2","value":[1130,700]},{"type":"Float","isPresset":true,"value":0.9,"id":"zoom"}] */
+
 import("flixel.group.FlxTypedGroup", "FlxTypedGroup");
+import("flixel.system.FlxSound", "FlxSound");
+import("flixel.util.FlxTimer", "FlxTimer");
 import("flixel.FlxSprite", "FlxSprite");
+import("PreSettings", "PreSettings");
+import("Character", "Character");
+import("flixel.FlxG", "FlxG");
+import("Paths", "Paths");
+import("Type", "Type");
 
 function addToLoad(temp){
 temp.push({type:"ATLAS",instance:Paths.image('limoSunset','stages/limo',true)});
@@ -15,12 +24,22 @@ temp.push({type:"ATLAS",instance:Paths.image('coldHeartKiller','stages/limo',tru
 temp.push({type:"ATLAS",instance:Paths.image('stage_light','stages/stage',true)});
 temp.push({type:"ATLAS",instance:Paths.image('limoDrive','stages/limo',true)});
 temp.push({type:"ATLAS",instance:Paths.image('fastCarLol','stages/limo',true)});
+temp.push({type:"SOUND",instance:Paths.sound('carPass0','stages/limo',true)});
+temp.push({type:"SOUND",instance:Paths.sound('carPass1','stages/limo',true)});
 }
 
-presset("initChar", 6);
+presset("initChar", 7);
 presset("camP_1", [230,330]);
 presset("camP_2", [1130,700]);
 presset("zoom", 0.9);
+
+var fastcar:FlxSprite;
+
+var dancers:FlxTypedGroup<FlxSprite>;
+var danceLeft:Bool = false;
+
+var fastCarCanDrive:Bool = true;
+var carTimer:FlxTimer;
 
 function create(){
 //-<Sprite_Object>-//
@@ -130,7 +149,7 @@ bglimo.antialiasing = true;
 
 var dancers_position:Array<Int> = [150,100];
 
-var dancers:FlxTypedGroup<FlxSprite> = Type.createInstance(FlxTypedGroup, []);
+dancers = Type.createInstance(FlxTypedGroup, []);
 
 for(i in 0...5){
 var dancer:FlxSprite = new FlxSprite(dancers_position[0] + (370 * i), dancers_position[1]);
@@ -177,6 +196,24 @@ limolight.loadGraphic(Paths.image('coldHeartKiller', 'stages/limo'));
 //-<Sprite_Object>-//
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
 /* "Variables": {"Position":[0,0],"Visible":false,"Scale":[1,1],"Angle":0,"Antialiasing":true,"Sprite_Name":"gfsprite","Scroll":[1,1],"Flip_X":false,"Alpha":1,"Flip_Y":false} */
+
+//-<Sprite_Object>-//
+/* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
+/* "Variables": {"Graphic_Library":"stages/limo","Sprite_Name":"fastcar","Position":[-2000,500],"Graphic_File":"fastCarLol"} */
+
+var fastcar_position:Array<Int> = [-300, 160];
+
+fastcar = new FlxSprite(fastcar_position[0], fastcar_position[1]);
+instance.add(fastcar);
+//-{Basic_Graphic}-//
+/* "Packages": {"Paths":"Paths"} */
+/* "Variables": {"Graphic_Library":"stages/limo","Graphic_File":"fastCarLol","Position":[-2000,500],"Sprite_Name":"fastcar"} */
+
+fastcar.loadGraphic(Paths.image('fastCarLol', 'stages/limo'));
+fastcar.active = true;
+
+//-[Basic_Graphic]-//
+//->Sprite_Object<-//
 
 var gfsprite_position:Array<Int> = [0,0];
 
@@ -228,19 +265,41 @@ limo_floor.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim
 limo_floor.animation.play('idle');
 //-[Animated_Graphic]-//
 //->Sprite_Object<-//
-//-<Sprite_Object>-//
-/* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Graphic_Library":"stages/limo","Sprite_Name":"fastcar","Position":[-2000,500],"Graphic_File":"fastCarLol"} */
 
-var fastcar_position:Array<Int> = [-2000,500];
+resetFastCar();
 
-var fastcar = new FlxSprite(fastcar_position[0], fastcar_position[1]);
-instance.add(fastcar);
-//-{Basic_Graphic}-//
-/* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Graphic_Library":"stages/limo","Graphic_File":"fastCarLol","Position":[-2000,500],"Sprite_Name":"fastcar"} */
+pushGlobal();
+}
 
-fastcar.loadGraphic(Paths.image('fastCarLol', 'stages/limo'));
-//-[Basic_Graphic]-//
-//->Sprite_Object<-//
+function beatHit(curBeat:Int):Void {
+    danceLeft = !danceLeft;
+
+    for(d in dancers.members){
+        if(danceLeft){
+            d.animation.play("danceLeft");
+        }else{
+            d.animation.play("danceRight");
+        }
+    }
+    
+    if(FlxG.random.bool(10) && fastCarCanDrive){fastCarDrive();}
+}
+
+function resetFastCar():Void {
+    fastcar.x = -12600;
+    fastcar.y = FlxG.random.int(140, 250);
+    fastcar.velocity.x = 0;
+    fastCarCanDrive = true;
+}
+
+function fastCarDrive():Void {
+    //trace('Car drive');
+    FlxG.sound.play(Paths.soundRandom('carPass', 0, 1, 'stages/limo'), 0.7);
+
+    fastcar.velocity.x = (FlxG.random.int(170, 220) / FlxG.elapsed) * 3;
+    fastCarCanDrive = false;
+    carTimer = new FlxTimer().start(2, function(tmr:FlxTimer){
+        resetFastCar();
+        carTimer = null;
+    });
 }

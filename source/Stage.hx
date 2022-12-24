@@ -150,7 +150,7 @@ class Stage extends FlxTypedGroup<Dynamic>{
         for(c in chars){
             var nChar = new Character(c[1][0], c[1][1], c[0], c[4], c[5]);
 
-            nChar.scale.set(c[2], c[2]);
+            nChar.scaleCharacter(c[2]);
             nChar.turnLook(c[3]);
 
             nChar.ID = i;

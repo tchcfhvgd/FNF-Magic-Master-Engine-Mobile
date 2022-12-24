@@ -1,8 +1,16 @@
+/* ||===================================================|| */
+/* || SCRIPTED STAGE - DON'T EXPORT IN THE STAGE EDITOR || */
+/* ||===================================================|| */
+
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
 /* "Variables": [{"isPresset":true,"type":"Int","id":"initChar","value":"5"},{"type":"Float","isPresset":true,"value":0.8,"id":"zoom"},{"type":"Array","isPresset":true,"value":[-15,-290],"id":"camP_1"},{"type":"Array","isPresset":true,"value":[1340,490],"id":"camP_2"}] */
 
-import("Paths", "Paths");
+import("flixel.system.FlxSound", "FlxSound");
 import("flixel.FlxSprite", "FlxSprite");
+import("PreSettings", "PreSettings");
+import("Character", "Character");
+import("flixel.FlxG", "FlxG");
+import("Paths", "Paths");
 
 function addToLoad(temp){
 temp.push({type:"ATLAS",instance:Paths.image('bgWalls','stages/mall',true)});
@@ -12,12 +20,17 @@ temp.push({type:"ATLAS",instance:Paths.image('christmasTree','stages/mall',true)
 temp.push({type:"ATLAS",instance:Paths.image('bottomBop','stages/mall',true)});
 temp.push({type:"ATLAS",instance:Paths.image('fgSnow','stages/mall',true)});
 temp.push({type:"ATLAS",instance:Paths.image('santa','stages/mall',true)});
+temp.push({type:"SOUND",instance:Paths.sound('Lights_Shut_off','stages/mall',true)});
 }
 
 presset("initChar", 5);
 presset("zoom", 0.8);
 presset("camP_1", [-15,-290]);
 presset("camP_2", [1340,490]);
+
+var upperBoopers:FlxSprite;
+var bottomBopers:FlxSprite;
+var santa:FlxSprite;
 
 function create(){
 //-<Sprite_Object>-//
@@ -57,7 +70,7 @@ bg.loadGraphic(Paths.image('bgWalls', 'stages/mall'));
 
 var upperBoopers_position:Array<Int> = [-330,0];
 
-var upperBoopers = new FlxSprite(upperBoopers_position[0], upperBoopers_position[1]);
+upperBoopers = new FlxSprite(upperBoopers_position[0], upperBoopers_position[1]);
 instance.add(upperBoopers);
 //-{Animated_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
@@ -158,7 +171,7 @@ tree.loadGraphic(Paths.image('christmasTree', 'stages/mall'));
 
 var bottomBopers_position:Array<Int> = [-470,140];
 
-var bottomBopers = new FlxSprite(bottomBopers_position[0], bottomBopers_position[1]);
+bottomBopers = new FlxSprite(bottomBopers_position[0], bottomBopers_position[1]);
 instance.add(bottomBopers);
 //-{Animated_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
@@ -212,7 +225,7 @@ fgSnow.loadGraphic(Paths.image('fgSnow', 'stages/mall'));
 
 var santa_position:Array<Int> = [-640,150];
 
-var santa = new FlxSprite(santa_position[0], santa_position[1]);
+santa = new FlxSprite(santa_position[0], santa_position[1]);
 instance.add(santa);
 //-{Animated_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
@@ -229,4 +242,12 @@ santa.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], 
 santa.animation.play('idle');
 //-[Animated_Graphic]-//
 //->Sprite_Object<-//
+
+pushGlobal();
+}
+
+function beatHit(curBeat:Int):Void {    
+    upperBoopers.animation.play("beat");
+    bottomBopers.animation.play("beat");
+    santa.animation.play("idle");
 }

@@ -4,53 +4,54 @@
 		-77,
 		33
 	],
+	"scale": 1,
 	"anims": [
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "down",
-			"fps": 24,
 			"anim": "singDOWN",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		},
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "idle",
-			"fps": 24,
 			"anim": "idle",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		},
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "left",
-			"fps": 24,
 			"anim": "singLEFT",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		},
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "right",
-			"fps": 24,
 			"anim": "singRIGHT",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		},
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "up",
-			"fps": 24,
 			"anim": "singUP",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		}
 	],
-	"name": "SugarMoon",
-	"image": "sugarmoon",
 	"zoom": 0.8,
+	"image": "sugarmoon",
+	"name": "SugarMoon",
 	"antialiasing": true,
-	"deathCharacter": "Boyfriend_Death",
-	"skin": "Default",
-	"onRight": true,
-	"healthicon": "moon",
 	"camera": [
-		0,
-		0
-	]
+		65,
+		-75
+	],
+	"healthicon": "moon",
+	"onRight": true,
+	"skin": "Default",
+	"deathCharacter": "Boyfriend_Death"
 }

@@ -36,12 +36,17 @@ typedef CharacterFile = {
 	var deathCharacter:String;
 	var image:String;
 	var healthicon:String;
+
 	var script_path:String;
-	var position:Array<Float>;
-	var camera:Array<Float>;
+
 	var onRight:Bool;
 	var antialiasing:Bool;
 	var danceIdle:Bool;
+
+	var scale:Float;
+
+	var position:Array<Float>;
+	var camera:Array<Float>;
 	var anims:Array<AnimArray>;
 }
 
@@ -194,12 +199,17 @@ class Character extends FlxSpriteGroup {
 		camMoveX += char.cameraPosition[0];
 		camMoveY += char.cameraPosition[1];
 
-		if(char.character_sprite.animation.curAnim != null){
-			switch(char.character_sprite.animation.curAnim.name){
-				case 'singUP':{camMoveY -= 100;}
-				case 'singRIGHT':{camMoveX += !char.onRight ? 100 : -100;}
-				case 'singDOWN':{camMoveY += 100;}
-				case 'singLEFT':{camMoveX -= !char.onRight ? 100 : -100;}
+		switch(PreSettings.getPreSetting("Type Camera", "Visual Settings")){
+			case "Static":{}
+			case "MoveToSing":{
+				if(char.character_sprite.animation.curAnim != null){
+					switch(char.character_sprite.animation.curAnim.name){
+						case 'singUP':{camMoveY -= 100;}
+						case 'singRIGHT':{camMoveX += (!char.character_sprite.flipX) ? 100 : -100;}
+						case 'singDOWN':{camMoveY += 100;}
+						case 'singLEFT':{camMoveX -= (!char.character_sprite.flipX) ? 100 : -100;}
+					}
+				}				
 			}
 		}
 
@@ -223,7 +233,7 @@ class Character extends FlxSpriteGroup {
 	public var dieCharacter:String = null;
 	public var curCharacter:String = DEFAULT_CHARACTER;
 	public var curSkin:String = "Default";
-	public var curCategory:String = "Default";
+	public var curAspect:String = "Default";
 	public var curType:String = "Normal";
 	public var curLayer:Int = 0;
 
@@ -245,13 +255,11 @@ class Character extends FlxSpriteGroup {
 
 	public var onDebug:Bool = false;
 
-	public function new(x:Float, y:Float, ?character:String = 'Boyfriend', ?category:String = 'Default', ?type:String = "NORMAL"):Void {
+	public function new(x:Float, y:Float, ?character:String = 'Boyfriend', ?aspect:String = 'Default', ?type:String = "NORMAL"):Void {
 		super(x, y);
 
 		curCharacter = character;
-
-		curSkin = Skins.getSkin(curCharacter);
-		curCategory = category;
+		curAspect = aspect;
 		curType = type;
 
 		switch(curCharacter){
@@ -259,8 +267,8 @@ class Character extends FlxSpriteGroup {
 		}
 	}
 
-	public static function addPreloadersToList(list:Array<Dynamic>, ?character:String = 'Boyfriend', ?category:String = 'Default', ?type:String = "NORMAL"):Void {
-		var char_path:String = Paths.getCharacterJSON(character, Skins.getSkin(character), category);
+	public static function addPreloadersToList(list:Array<Dynamic>, character:String = 'Boyfriend', aspect:String = 'Default'):Void {
+		var char_path:String = Paths.getCharacterJSON(character, aspect);
 		var char_file:CharacterFile = cast Json.parse(Paths.getText(char_path));
 
 		list.push({type: "ATLAS", instance: Paths.character(character, char_file.image)});
@@ -271,15 +279,15 @@ class Character extends FlxSpriteGroup {
 		Script.importScript(char_script_path).exFunction('addPreloadersToList', [list]);
 	}
 
-	public function setupByName(?_character:String, ?_category:String, ?_type:String):Void {
+	public function setupByName(?_character:String, ?_aspect:String, ?_type:String):Void {
 		if(_character != null){curCharacter = _character;}
-		if(_category != null){curSkin = _category;}
-		if(_type != null){curCategory = _type;}
+		if(_aspect != null){curAspect = _aspect;}
+		if(_type != null){curType = _type;}
 		setupByCharacterFile();
 	}
 
 	public function setupByCharacterFile(?jCharacter:CharacterFile):Void {
-		var char_path:String = Paths.getCharacterJSON(curCharacter, curSkin, curCategory);
+		var char_path:String = Paths.getCharacterJSON(curCharacter, curAspect);
 		if(jCharacter == null){jCharacter = cast Json.parse(Paths.getText(char_path));}
 
 		charFile = jCharacter;
@@ -288,7 +296,7 @@ class Character extends FlxSpriteGroup {
 
 		curCharacter = charFile.name;
 		curSkin = charFile.skin;
-		curCategory = charFile.aspect;
+		curAspect = charFile.aspect;
 
 		healthIcon = charFile.healthicon;
 
@@ -332,8 +340,7 @@ class Character extends FlxSpriteGroup {
 		if(charFile.image == null){charFile.image = "BOYFRIEND";}
 		if(charFile.anims == null){charFile.anims = [];}
 
-		if(charFile.position == null){charFile.position = [];}
-		
+		if(charFile.position == null){charFile.position = [];}		
 		if(charFile.camera == null){charFile.camera = [0, 0];}
 	}
 
@@ -345,6 +352,7 @@ class Character extends FlxSpriteGroup {
 		character_sprite = new FlxSprite(positionArray[0], positionArray[1]);
 
 		character_sprite.antialiasing = charFile.antialiasing;
+		scaleCharacter();
 
 		character_sprite.frames = Paths.getAtlas(Paths.character(curCharacter, imageFile));
 		if(animationsArray != null && animationsArray.length > 0){
@@ -370,7 +378,6 @@ class Character extends FlxSpriteGroup {
 	}
 
 	var oldBeat:Int = -1;
-
 	override function update(elapsed:Float){
 		if(character_sprite.animation.curAnim != null && !onDebug){
 			if(holdTimer > 0){holdTimer -= elapsed;}
@@ -431,5 +438,10 @@ class Character extends FlxSpriteGroup {
 		onRight = toRight;
 		character_sprite.flipX = onRight ? !charFile.onRight : charFile.onRight;
 		if(charScript != null){charScript.exFunction('turnLook', [toRight]);}
+	}
+
+	public function scaleCharacter(_scale:Float = 1):Void {
+		var new_scale = _scale * charFile.scale;
+		character_sprite.scale.set(new_scale, new_scale);
 	}
 }

@@ -46,6 +46,9 @@ using StringTools;
 
 class CreditsState extends MusicBeatState {
     var credits_stuff:Map<String, Array<Dynamic>> = [];
+	var credits_lists:Array<Dynamic> = [];
+
+	var background:FlxSprite;
 
 	var alphaGroup:FlxTypedGroup<Alphabet>;
 
@@ -67,15 +70,13 @@ class CreditsState extends MusicBeatState {
 			}
         }
 
-        trace(credits_stuff);
-
 		#if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the credits", null);
 		MagicStuff.setWindowTitle('In the credits');
 		#end
 		
-		var background = new FlxSprite().loadGraphic(Paths.image('menuBG'));
+		background = new FlxSprite().loadGraphic(Paths.image('menuBG'));
 		background.setGraphicSize(FlxG.width, FlxG.height);
 		background.scrollFactor.set(0, 0);
         background.color = 0xfffffd75;
@@ -90,14 +91,34 @@ class CreditsState extends MusicBeatState {
 			alpha_cat.screenCenter(X);
 			alphaGroup.add(alpha_cat);
 
+			credits_lists.push(
+				{
+					text: cat,
+					skip: true
+				}
+			);
+
 			cur_height += alpha_cat.height + 10;
 
 			for(credit in credits_stuff[cat]){
-				var cur_credit_alp:Alphabet = new Alphabet(0, cur_height, [{color: 0x000000, scale: 0.7, text: '${credit.Name} '}, {image: 'credits/${credit.Icon}'}]);
+				var path_icon:String = 'credits/${credit.Icon}';
+				if(!Paths.exists(path_icon)){path_icon = "credits/face";}
+
+				var cur_credit_alp:Alphabet = new Alphabet(0, cur_height, [{color: 0x000000, scale: 0.7, text: '${credit.Name} '}, {image: path_icon}]);
 				cur_credit_alp.screenCenter(X);
 				alphaGroup.add(cur_credit_alp);
 
 				cur_height += cur_credit_alp.height + 5;
+
+				credits_lists.push(
+					{
+						text: credit.Name,
+						color: credit.Color,
+						icon: credit.Icon,
+						desc: credit.Description,
+						rol: credit.Rol
+					}
+				);
 			}
 		}
 
@@ -105,6 +126,8 @@ class CreditsState extends MusicBeatState {
 		
         var shape_1:FlxSprite = new FlxSprite(0, FlxG.height - 60).makeGraphic(FlxG.width, 5, FlxColor.BLACK); add(shape_1);
         var shape_2:FlxSprite = new FlxSprite(0, FlxG.height - 50).makeGraphic(FlxG.width, 50, FlxColor.BLACK); add(shape_2);
+
+		changeCredit();
 
 		super.create();
 	}
@@ -120,10 +143,30 @@ class CreditsState extends MusicBeatState {
         super.update(elapsed);
 	}
 
+
+	var cur_tween_color:FlxTween;
 	function changeCredit(value:Int = 0, force:Bool = false):Void {
 		curCredit += value; if(force){curCredit = value;}
 
 		if(curCredit >= alphaGroup.length){curCredit = 0;}
 		if(curCredit < 0){curCredit = alphaGroup.length - 1;}
+
+		for(i in 0...alphaGroup.members.length){
+			alphaGroup.members[i].alpha = 0.5;
+			if(credits_lists[i].skip){alphaGroup.members[i].alpha = 1;}
+		}
+		alphaGroup.members[curCredit].alpha = 1;
+
+		var cur_data:Dynamic = credits_lists[curCredit];
+		if(cur_data == null){return;}
+
+		if(cur_data.skip){
+			if(value == 0){value = 1;}
+			changeCredit(value);
+			return;
+		}
+
+		if(cur_tween_color != null){cur_tween_color.cancel();}
+		cur_tween_color = FlxTween.color(background, 0.5, background.color, FlxColor.fromString(cur_data.color), {ease: FlxEase.quadInOut, onComplete: function(twn:FlxTween){cur_tween_color = null;}});
 	}
 }

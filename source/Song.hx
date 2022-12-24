@@ -91,12 +91,14 @@ typedef ItemWeek = {
 	var keyLock:String;
 	var hiddenOnWeeks:Bool;
 	var hiddenOnFreeplay:Bool;
+	var colorFreeplay:String;
 }
 typedef ItemSong = {
 	var song:String;
 	var categories:Array<SongCategoryData>;
 	var keyLock:String;
 	var hidden:Bool;
+	var color:String;
 }
 typedef SongCategoryData = {category:String,difficults:Array<String>};
 
@@ -142,12 +144,14 @@ class SongStuffManager {
 
 				var cats:Array<SongCategoryData> = week.categories;
 				var lock:String = week.keyLock;
+				var color:String = week.colorFreeplay;
 
 				for(song in week.songs){
 					var songItem:ItemSong = {
 						song: song,
 						categories: cats,
 						keyLock: lock,
+						color: color,
 						hidden: false
 					};
 					addSongToSongList(songItem, SongList);
@@ -159,11 +163,13 @@ class SongStuffManager {
 
 				var cats:Array<SongCategoryData> = song.categories;
 				var lock:String = song.keyLock;
+				var color:String = song.color;
 					
 				var songItem:ItemSong = {
 					song: song.song,
 					categories: cats,
 					keyLock: lock,
+					color: color,
 					hidden: false
 				};
 				addSongToSongList(songItem, SongList);
@@ -196,6 +202,7 @@ class SongStuffManager {
 						song: song,
 						categories: data,
 						keyLock: null,
+						color: "#fffd75",
 						hidden: false
 					};
 					addSongToSongList(songItem, SongList);

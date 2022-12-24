@@ -1,8 +1,16 @@
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
 /* "Variables": [{"type":"Int","isPresset":true,"value":"1","id":"initChar"},{"isPresset":true,"type":"Float","id":"zoom","value":1.1},{"isPresset":true,"type":"Array","id":"camP_1","value":[430,310]},{"isPresset":true,"type":"Array","id":"camP_2","value":[1080,600]}] */
 
-import("Paths", "Paths");
+import("openfl.filters.ShaderFilter", "ShaderFilter");
 import("flixel.FlxSprite", "FlxSprite");
+import("flixel.FlxGame", "FlxGame");
+import("flixel.FlxG", "FlxG");
+
+import("states.PlayState", "PlayState");
+import("FlxCustomShader");
+import("Paths");
+import("Std");
+
 
 function addToLoad(temp){
 temp.push({type:"ATLAS",instance:Paths.image('animatedEvilSchool','stages/schoolEvil',true)});
@@ -53,4 +61,9 @@ bgSky.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], 
 bgSky.animation.play('idle');
 //-[Animated_Graphic]-//
 //->Sprite_Object<-//
+
+if(!Std.isOfType(getState(), PlayState)){return;}
+
+var shFilter:ShaderFilter = new ShaderFilter(new FlxCustomShader({fragmentsrc: Paths.shader("Pixel_Perfect")}));
+FlxG.game.setFilters([shFilter]);
 }

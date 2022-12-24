@@ -1,4 +1,4 @@
-float c_textureSize = 256.0;
+float c_textureSize = 180.0;
 
 #define c_onePixel  (1.0 / c_textureSize)
 #define c_twoPixels  (2.0 / c_textureSize)

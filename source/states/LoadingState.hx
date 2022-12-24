@@ -65,6 +65,8 @@ class LoadingState extends MusicBeatState {
 
 	override function create(){
 		if(!WithMusic && FlxG.sound.music != null){FlxG.sound.music.stop();}
+		
+        Paths.savedTempMap.clear();
 				
 		preLoadStuff();
 		
@@ -92,8 +94,12 @@ class LoadingState extends MusicBeatState {
 
 	override function update(elapsed:Float){
 		super.update(elapsed);
+	}
 
-		loadingBar.value = totalCount - tempLoadingStuff.length;
+	function updateText():Void {
+		//var bar_value = totalCount - tempLoadingStuff.length;
+		//if(bar_value < 0){bar_value = 0;} if(bar_value > totalCount){bar_value = totalCount;}
+		//loadingBar.value = bar_value;
 
 		var percent:Int = Std.int((totalCount - tempLoadingStuff.length) * 100 / totalCount);
 		loadingText.cur_data = [{text:'${LangSupport.getText("loading_info_1")} ${percent}%'}];
@@ -143,7 +149,7 @@ class LoadingState extends MusicBeatState {
 							TARGET.tempScripts.set("ScriptSong", song_script);
 						}
 
-						for(char in _song.characters){Character.addPreloadersToList(tempLoadingStuff, char[0], char[3], char[4]);}
+						for(char in _song.characters){Character.addPreloadersToList(tempLoadingStuff, char[0], char[3]);}
 
 						for(gen in _song.generalSection){
 							for(ev in gen.events){
@@ -203,6 +209,8 @@ class LoadingState extends MusicBeatState {
 
 					case "FUNCTION":{_stuff.instance();}
 				}
+
+				updateText();
 			}
 		});
 	}

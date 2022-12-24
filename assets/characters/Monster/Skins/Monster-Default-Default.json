@@ -1,55 +1,57 @@
 {
-	"antialiasing": true,
 	"aspect": "Default",
 	"position": [
 		-135,
 		100
 	],
+	"scale": 1,
 	"anims": [
 		{
-			"loop": false,
 			"symbol": "Monster Right note",
-			"anim": "singLEFT",
-			"fps": 24,
-			"indices": []
-		},
-		{
 			"loop": false,
-			"symbol": "Monster left note",
+			"fps": 24,
 			"anim": "singRIGHT",
-			"fps": 24,
 			"indices": []
 		},
 		{
+			"symbol": "Monster left note",
 			"loop": false,
+			"fps": 24,
+			"anim": "singLEFT",
+			"indices": []
+		},
+		{
 			"symbol": "monster down",
+			"loop": false,
+			"fps": 24,
 			"anim": "singDOWN",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "monster idle",
-			"anim": "idle",
+			"loop": false,
 			"fps": 24,
+			"anim": "idle",
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "monster up note",
-			"anim": "singUP",
+			"loop": false,
 			"fps": 24,
+			"anim": "singUP",
 			"indices": []
 		}
 	],
-	"zoom": 0.8,
-	"image": "Monster_Assets",
 	"name": "Monster",
+	"image": "Monster_Assets",
+	"zoom": 0.8,
+	"antialiasing": true,
+	"deathCharacter": "Boyfriend_Death",
+	"skin": "Default",
+	"onRight": true,
+	"healthicon": "monster",
 	"camera": [
 		15,
 		20
-	],
-	"healthicon": "bf",
-	"onRight": true,
-	"skin": "Default"
+	]
 }

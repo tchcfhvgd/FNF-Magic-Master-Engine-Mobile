@@ -1,54 +1,56 @@
 {
 	"aspect": "Angry",
 	"position": [
-		155,
-		575
+		130,
+		275
 	],
+	"scale": 6,
 	"anims": [
 		{
-			"indices": [],
 			"symbol": "Angry Senpai DOWN NOTE instance 1",
+			"loop": false,
 			"fps": 24,
 			"anim": "singDOWN",
-			"loop": false
+			"indices": []
 		},
 		{
-			"indices": [],
 			"symbol": "Angry Senpai Idle instance 1",
+			"loop": false,
 			"fps": 24,
 			"anim": "idle",
-			"loop": false
+			"indices": []
 		},
 		{
-			"indices": [],
 			"symbol": "Angry Senpai LEFT NOTE instance 1",
+			"loop": false,
 			"fps": 24,
 			"anim": "singLEFT",
-			"loop": false
+			"indices": []
 		},
 		{
-			"indices": [],
 			"symbol": "Angry Senpai RIGHT NOTE instance 1",
+			"loop": false,
 			"fps": 24,
 			"anim": "singRIGHT",
-			"loop": false
+			"indices": []
 		},
 		{
-			"indices": [],
 			"symbol": "Angry Senpai UP NOTE instance 1",
+			"loop": false,
 			"fps": 24,
 			"anim": "singUP",
-			"loop": false
+			"indices": []
 		}
 	],
 	"name": "Senpai",
 	"image": "senpai",
 	"zoom": 0.8,
-	"skin": "Default",
 	"onRight": true,
+	"skin": "Default",
 	"camera": [
 		0,
 		0
 	],
-	"healthicon": "bf"
+	"healthicon": "senpai-pixel",
+	"deathCharacter": "Boyfriend_Death"
 }

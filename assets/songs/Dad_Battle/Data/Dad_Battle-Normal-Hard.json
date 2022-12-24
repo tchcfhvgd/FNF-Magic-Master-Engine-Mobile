@@ -5,8 +5,8 @@
 			[
 				"Girlfriend",
 				[
-					400,
-					130
+					540,
+					50
 				],
 				1,
 				false,
@@ -564,7 +564,7 @@
 			}
 		],
 		"uiStyle": "Default",
-		"song": "Dad Battle",
+		"song": "Dad_Battle",
 		"playable": [
 			0
 		],

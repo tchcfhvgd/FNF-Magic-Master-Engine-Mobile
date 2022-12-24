@@ -1,62 +1,97 @@
 {
-	"antialiasing": true,
 	"aspect": "Default",
 	"position": [
 		-120,
 		210
 	],
+	"scale": 1,
 	"anims": [
 		{
+			"loop": false,
 			"symbol": "note sing left",
-			"loop": false,
+			"anim": "singLEFT",
 			"fps": 24,
-			"anim": "singRIGHT",
 			"indices": []
 		},
 		{
+			"loop": false,
 			"symbol": "spooky DOWN note",
-			"loop": false,
-			"fps": 24,
 			"anim": "singDOWN",
+			"fps": 24,
 			"indices": []
 		},
 		{
-			"symbol": "spooky UP NOTE",
 			"loop": false,
-			"fps": 24,
+			"symbol": "spooky UP NOTE",
 			"anim": "singUP",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "spooky dance idle",
+			"anim": "idle",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "spooky kids YEAH!!",
+			"anim": "hey",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "spooky sing right",
+			"anim": "singRIGHT",
+			"fps": 24,
 			"indices": []
 		},
 		{
 			"symbol": "spooky dance idle",
 			"loop": false,
 			"fps": 24,
-			"anim": "idle",
-			"indices": []
+			"anim": "danceLeft",
+			"indices": [
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7
+			]
 		},
 		{
-			"symbol": "spooky kids YEAH!!",
+			"symbol": "spooky dance idle",
 			"loop": false,
 			"fps": 24,
-			"anim": "hey",
-			"indices": []
-		},
-		{
-			"symbol": "spooky sing right",
-			"loop": false,
-			"fps": 24,
-			"anim": "singLEFT",
-			"indices": []
+			"anim": "danceRight",
+			"indices": [
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14,
+				15
+			]
 		}
 	],
-	"name": "Spooky_Kids",
-	"image": "spooky_kids_assets",
 	"zoom": 0.8,
-	"onRight": true,
-	"skin": "Default",
-	"healthicon": "bf",
+	"image": "spooky_kids_assets",
+	"name": "Spooky_Kids",
+	"antialiasing": true,
+	"deathCharacter": "Boyfriend_Death",
 	"camera": [
-		155,
+		15,
 		0
-	]
+	],
+	"healthicon": "spooky",
+	"skin": "Default",
+	"onRight": true,
+	"danceIdle": true
 }

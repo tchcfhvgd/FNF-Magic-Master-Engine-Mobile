@@ -1,97 +1,99 @@
 {
-	"antialiasing": true,
 	"aspect": "Default",
 	"position": [
 		-40,
 		200
 	],
+	"scale": 1,
 	"anims": [
 		{
+			"loop": false,
 			"symbol": "PRETTY GOOD tankman 1",
-			"loop": false,
-			"fps": 24,
 			"anim": "good",
+			"fps": 24,
 			"indices": []
 		},
 		{
+			"loop": false,
 			"symbol": "TANKMAN UGH 1",
-			"loop": false,
-			"fps": 24,
 			"anim": "hey",
+			"fps": 24,
 			"indices": []
 		},
 		{
+			"loop": false,
 			"symbol": "Tankman DOWN note 1",
-			"loop": false,
-			"fps": 24,
 			"anim": "singDOWN",
+			"fps": 24,
 			"indices": []
 		},
 		{
+			"loop": false,
 			"symbol": "Tankman Idle Dance 1",
-			"loop": false,
-			"fps": 24,
 			"anim": "idle",
+			"fps": 24,
 			"indices": []
 		},
 		{
+			"loop": false,
 			"symbol": "Tankman Note Left 1",
-			"loop": false,
-			"fps": 24,
 			"anim": "singLEFT",
+			"fps": 24,
 			"indices": []
 		},
 		{
+			"loop": false,
 			"symbol": "Tankman Right Note 1",
-			"loop": false,
-			"fps": 24,
 			"anim": "singRIGHT",
+			"fps": 24,
 			"indices": []
 		},
 		{
+			"loop": false,
 			"symbol": "Tankman UP note 1",
-			"loop": false,
-			"fps": 24,
 			"anim": "singUP",
+			"fps": 24,
 			"indices": []
 		},
 		{
+			"loop": false,
 			"symbol": "Tankman DOWN note MISS",
-			"loop": false,
-			"fps": 24,
 			"anim": "singDOWNmiss",
+			"fps": 24,
 			"indices": []
 		},
 		{
+			"loop": false,
 			"symbol": "Tankman Note Left MISS",
-			"loop": false,
-			"fps": 24,
 			"anim": "singLEFTmiss",
+			"fps": 24,
 			"indices": []
 		},
 		{
+			"loop": false,
 			"symbol": "Tankman Right Note MISS",
-			"loop": false,
-			"fps": 24,
 			"anim": "singRIGHTmiss",
+			"fps": 24,
 			"indices": []
 		},
 		{
-			"symbol": "Tankman UP note MISS",
 			"loop": false,
-			"fps": 24,
+			"symbol": "Tankman UP note MISS",
 			"anim": "singUPmiss",
+			"fps": 24,
 			"indices": []
 		}
 	],
-	"name": "Tankman",
-	"image": "tankmanCaptain",
 	"zoom": 0.8,
-	"skin": "Default",
-	"onRight": false,
+	"image": "tankmanCaptain",
+	"name": "Tankman",
+	"antialiasing": true,
+	"deathCharacter": "Boyfriend_Death",
+	"healthicon": "tankman",
 	"camera": [
-		-2,
-		-94
+		18,
+		-19
 	],
-	"healthicon": "tankman"
+	"onRight": false,
+	"skin": "Default"
 }

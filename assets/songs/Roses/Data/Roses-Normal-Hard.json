@@ -1,1 +1,6070 @@
-{"song":{"song":"Roses","bpm":120.0,"needsVoices":true,"player1":"bf-pixel","player2":"senpai-angry","speed":1.5,"notes":[{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[500.0,3,0.0],[750.0,1,0.0],[1000.0,0,250.0],[1375.0,1,0.0],[1875.0,2,0.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[2125.0,2,0.0],[2375.0,2,0.0],[2500.0,0,0.0],[2625.0,1,0.0],[2750.0,0,0.0],[3000.0,3,250.0],[3375.0,3,0.0],[3625.0,0,0.0],[3875.0,1,0.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[4500.0,3,0.0],[4750.0,1,0.0],[5000.0,0,250.0],[5375.0,1,0.0],[5875.0,2,0.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[6125.0,2,0.0],[6375.0,2,0.0],[6500.0,0,0.0],[6625.0,1,0.0],[6750.0,0,0.0],[7000.0,3,250.0],[7375.0,3,0.0],[7625.0,0,0.0],[7875.0,1,0.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[8000.0,2,125.0],[8250.0,3,0.0],[8500.0,2,0.0],[8625.0,1,0.0],[8750.0,0,0.0],[8875.0,3,250.0],[9250.0,1,0.0],[9500.0,0,0.0],[9750.0,1,0.0],[9875.0,3,250.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[10250.0,1,0.0],[10500.0,3,0.0],[10750.0,2,0.0],[10875.0,3,250.0],[11250.0,1,0.0],[11500.0,0,0.0],[11750.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[12000.0,2,125.0],[12250.0,3,0.0],[12500.0,2,0.0],[12625.0,1,0.0],[12750.0,0,0.0],[12875.0,3,250.0],[13250.0,1,0.0],[13500.0,0,0.0],[13750.0,1,0.0],[13875.0,3,250.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[14250.0,1,0.0],[14500.0,3,0.0],[14750.0,2,0.0],[14875.0,3,250.0],[15250.0,1,0.0],[15500.0,0,0.0],[15750.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[16500.0,0,0.0],[16625.0,2,0.0],[16750.0,0,0.0],[16875.0,2,0.0],[17000.0,3,125.0],[17250.0,1,0.0],[17500.0,0,0.0],[17750.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[18000.0,0,0.0],[18250.0,3,0.0],[18500.0,0,0.0],[18750.0,2,0.0],[19000.0,3,0.0],[19250.0,1,0.0],[19500.0,0,0.0],[19750.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[20500.0,0,0.0],[20625.0,2,0.0],[20750.0,0,0.0],[20875.0,2,0.0],[21000.0,3,125.0],[21250.0,1,0.0],[21500.0,0,0.0],[21750.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[22000.0,0,0.0],[22250.0,3,0.0],[22500.0,0,0.0],[22750.0,2,0.0],[23000.0,3,0.0],[23250.0,1,0.0],[23500.0,0,0.0],[23750.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[24000.0,2,0.0],[24250.0,0,0.0],[24375.0,1,0.0],[24625.0,0,0.0],[24750.0,3,0.0],[25000.0,3,0.0],[25250.0,1,0.0],[25375.0,3,0.0],[25625.0,0,0.0],[25750.0,3,0.0],[25875.0,1,0.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[26000.0,2,0.0],[26250.0,0,0.0],[26375.0,1,0.0],[26625.0,0,0.0],[26750.0,3,0.0],[27000.0,3,0.0],[27250.0,1,0.0],[27375.0,3,0.0],[27625.0,0,0.0],[27750.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[28000.0,2,0.0],[28250.0,0,0.0],[28375.0,1,0.0],[28625.0,0,0.0],[28750.0,3,0.0],[29000.0,3,0.0],[29250.0,1,0.0],[29375.0,3,0.0],[29625.0,0,0.0],[29750.0,3,0.0],[29875.0,1,0.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[30000.0,2,0.0],[30250.0,0,0.0],[30375.0,1,0.0],[30625.0,0,0.0],[30750.0,3,0.0],[31000.0,3,0.0],[31250.0,1,0.0],[31375.0,3,0.0],[31625.0,0,0.0],[31750.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[32000.0,0,0.0],[32250.002,1,0.0],[32375.002,0,0.0],[32500.002,3,0.0],[32750.002,1,0.0],[33000.0,2,0.0],[33250.0,1,0.0],[33375.0,3,0.0],[33625.0,1,0.0],[33750.0,0,0.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[34000.0,1,0.0],[34250.0,1,0.0],[34375.0,0,0.0],[34500.0,3,0.0],[34750.0,1,0.0],[35000.0,2,0.0],[35250.0,1,0.0],[35375.0,3,0.0],[35625.0,1,0.0],[35750.0,0,0.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[36000.0,0,0.0],[36250.0,1,0.0],[36375.0,0,0.0],[36500.0,3,0.0],[36750.0,1,0.0],[37000.0,2,0.0],[37250.0,1,0.0],[37375.0,3,0.0],[37625.0,1,0.0],[37750.0,0,0.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[38000.0,1,0.0],[38250.0,1,0.0],[38375.0,0,0.0],[38500.0,3,0.0],[38750.0,1,0.0],[39000.0,2,0.0],[39250.0,1,0.0],[39375.0,3,0.0],[39625.0,1,0.0],[39750.0,0,0.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[40000.0,1,0.0],[40125.0,0,0.0],[40250.0,0,0.0],[40375.0,3,0.0],[40500.0,2,0.0],[40625.0,2,0.0],[40750.0,3,0.0],[41000.0,2,0.0],[41250.0,0,0.0],[41375.0,1,0.0],[41500.0,1,0.0],[41625.0,1,0.0],[41750.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[42000.0,1,0.0],[42250.0,0,0.0],[42375.0,3,0.0],[42500.0,2,0.0],[42625.0,2,0.0],[42750.0,3,0.0],[43000.0,2,0.0],[43250.0,0,0.0],[43375.0,3,0.0],[43625.0,1,0.0],[43750.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[44000.0,1,0.0],[44125.0,0,0.0],[44250.0,0,0.0],[44375.0,3,0.0],[44500.0,2,0.0],[44625.0,2,0.0],[44750.0,3,0.0],[45000.0,2,0.0],[45250.0,0,0.0],[45375.0,1,0.0],[45500.0,1,0.0],[45625.0,1,0.0],[45750.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[46000.0,1,0.0],[46250.0,0,0.0],[46375.0,3,0.0],[46500.0,2,0.0],[46625.0,2,0.0],[46750.0,3,0.0],[47000.0,2,0.0],[47250.0,0,0.0],[47375.0,3,0.0],[47625.0,1,0.0],[47750.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[48000.0,2,0.0],[48125.0,3,0.0],[48250.0,2,0.0],[48375.0,0,0.0],[48500.0,2,0.0],[48625.0,0,0.0],[48750.0,3,0.0],[48875.0,0,0.0],[49000.0,2,0.0],[49125.0,3,0.0],[49250.0,1,0.0],[49375.0,3,0.0],[49500.0,0,375.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[50000.0,2,0.0],[50125.0,3,0.0],[50250.0,2,0.0],[50375.0,0,0.0],[50500.0,3,0.0],[50625.0,0,0.0],[50750.0,2,0.0],[50875.0,0,0.0],[51000.0,2,0.0],[51125.0,0,0.0],[51250.0,3,0.0],[51375.0,0,0.0],[51500.0,1,375.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[52000.0,2,0.0],[52125.0,3,0.0],[52250.0,2,0.0],[52375.0,0,0.0],[52500.0,2,0.0],[52625.0,0,0.0],[52750.0,3,0.0],[52875.0,0,0.0],[53000.0,2,0.0],[53125.0,3,0.0],[53250.0,1,0.0],[53375.0,3,0.0],[53500.0,0,375.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[54000.0,2,0.0],[54125.0,3,0.0],[54250.0,2,0.0],[54375.0,0,0.0],[54500.0,3,0.0],[54625.0,0,0.0],[54750.0,2,0.0],[54875.0,0,0.0],[55000.0,2,0.0],[55125.0,0,0.0],[55250.0,3,0.0],[55375.0,0,0.0],[55500.0,1,375.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[56000.0,0,0.0],[56125.0,3,0.0],[56250.0,1,0.0],[56375.0,0,0.0],[56500.0,3,0.0],[56625.0,0,0.0],[56750.0,1,0.0],[56875.0,3,0.0],[57000.0,0,0.0],[57125.0,3,0.0],[57250.0,1,0.0],[57375.0,0,0.0],[57500.0,3,0.0],[57625.0,0,0.0],[57750.0,1,0.0],[57875.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[58000.0,0,0.0],[58125.0,3,0.0],[58250.0,1,0.0],[58375.0,0,0.0],[58500.0,3,0.0],[58625.0,0,0.0],[58750.0,1,0.0],[58875.0,3,0.0],[59000.0,0,0.0],[59125.0,3,0.0],[59250.0,1,0.0],[59375.0,0,0.0],[59500.0,3,0.0],[59625.0,0,0.0],[59750.0,1,0.0],[59875.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[60000.0,0,0.0],[60125.0,3,0.0],[60250.0,1,0.0],[60375.0,0,0.0],[60500.0,3,0.0],[60625.0,0,0.0],[60750.0,1,0.0],[60875.0,3,0.0],[61000.0,0,0.0],[61125.0,3,0.0],[61250.0,1,0.0],[61375.0,0,0.0],[61500.0,3,0.0],[61625.0,0,0.0],[61750.0,1,0.0],[61875.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[62000.0,0,0.0],[62125.0,3,0.0],[62250.0,1,0.0],[62375.0,0,0.0],[62500.0,3,0.0],[62625.0,0,0.0],[62750.0,1,0.0],[62875.0,3,0.0],[63000.0,0,0.0],[63125.0,3,0.0],[63250.0,1,0.0],[63375.0,0,0.0],[63500.0,3,0.0],[63625.0,0,0.0],[63750.0,1,0.0],[63875.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[64500.0039,3,0.0],[64750.0039,1,0.0],[65000.0039,0,250.0],[65375.0039,1,0.0],[65875.0,2,0.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[66125.0,2,0.0],[66375.0,2,0.0],[66500.0,0,0.0],[66625.0,1,0.0],[66750.0,0,0.0],[67000.0,3,250.0],[67375.0,3,0.0],[67625.0,0,0.0],[67875.0,1,0.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[68500.0,3,0.0],[68750.0,1,0.0],[69000.0,0,250.0],[69375.0,1,0.0],[69875.0,2,0.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[70125.0,2,0.0],[70375.0,2,0.0],[70500.0,0,0.0],[70625.0,1,0.0],[70750.0,0,0.0],[71000.0,3,250.0],[71375.0,3,0.0],[71625.0,0,0.0],[71875.0,1,0.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[72000.0,2,125.0],[72250.0,3,0.0],[72500.0,2,0.0],[72625.0,1,0.0],[72750.0,0,0.0],[72875.0,3,250.0],[73250.0,1,0.0],[73500.0,0,0.0],[73750.0,1,0.0],[73875.0,3,250.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[74250.0,1,0.0],[74500.0,3,0.0],[74750.0,2,0.0],[74875.0,3,250.0],[75250.0,1,0.0],[75500.0,0,0.0],[75750.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[76000.0,2,125.0],[76250.0,3,0.0],[76500.0,2,0.0],[76625.0,1,0.0],[76750.0,0,0.0],[76875.0,3,250.0],[77250.0,1,0.0],[77500.0,0,0.0],[77750.0,1,0.0],[77875.0,3,250.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[78250.0,1,0.0],[78500.0,3,0.0],[78750.0,2,0.0],[78875.0,3,250.0],[79250.0,1,0.0],[79500.0,0,0.0],[79750.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[80000.0,0,0.0],[80125.0,3,0.0],[80250.0,1,0.0],[80375.0,0,0.0],[80500.0,3,0.0],[80625.0,0,0.0],[80750.0,1,0.0],[80875.0,3,0.0],[81000.0,0,0.0],[81125.0,3,0.0],[81250.0,1,0.0],[81375.0,0,0.0],[81500.0,3,0.0],[81625.0,0,0.0],[81750.0,1,0.0],[81875.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":false,"sectionNotes":[[82000.0,0,0.0],[82125.0,3,0.0],[82250.0,1,0.0],[82375.0,0,0.0],[82500.0,3,0.0],[82625.0,0,0.0],[82750.0,1,0.0],[82875.0,3,0.0],[83000.0,0,0.0],[83125.0,3,0.0],[83250.0,1,0.0],[83375.0,0,0.0],[83500.0,3,0.0],[83625.0,0,0.0],[83750.0,1,0.0],[83875.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[84000.0,0,0.0],[84125.0,3,0.0],[84250.0,1,0.0],[84375.0,0,0.0],[84500.0,3,0.0],[84625.0,0,0.0],[84750.0,1,0.0],[84875.0,3,0.0],[85000.0,0,0.0],[85125.0,3,0.0],[85250.0,1,0.0],[85375.0,0,0.0],[85500.0,3,0.0],[85625.0,0,0.0],[85750.0,1,0.0],[85875.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[[86000.0,0,0.0],[86125.0,3,0.0],[86250.0,1,0.0],[86375.0,0,0.0],[86500.0,3,0.0],[86625.0,0,0.0],[86750.0,1,0.0],[86875.0,3,0.0],[87000.0,0,0.0],[87125.0,3,0.0],[87250.0,1,0.0],[87375.0,0,0.0],[87500.0,3,0.0],[87625.0,0,0.0],[87750.0,1,0.0],[87875.0,3,0.0]]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[]},{"lengthInSteps":16,"mustHitSection":true,"sectionNotes":[]}]},"generatedBy":"SNIFF ver.6"}
+{
+	"song": {
+		"strumToPlay": 1,
+		"characters": [
+			[
+				"Girlfriend",
+				[
+					540,
+					50
+				],
+				1,
+				false,
+				"Pixel",
+				"GF",
+				0
+			],
+			[
+				"Senpai",
+				[
+					100,
+					100
+				],
+				1,
+				true,
+				"Angry",
+				"NORMAL",
+				0
+			],
+			[
+				"Boyfriend",
+				[
+					770,
+					100
+				],
+				1,
+				false,
+				"Pixel",
+				"NORMAL",
+				0
+			]
+		],
+		"hasVoices": true,
+		"difficulty": "Hard",
+		"generalSection": [
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 0,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			},
+			{
+				"events": [],
+				"lengthInSteps": 16,
+				"strumToFocus": 1,
+				"charToFocus": 0,
+				"bpm": 120,
+				"changeBPM": false
+			}
+		],
+		"uiStyle": "Default",
+		"song": "Roses",
+		"playable": [
+			0
+		],
+		"stage": "School",
+		"category": "Normal",
+		"needsVoices": true,
+		"validScore": true,
+		"sectionStrums": [
+			{
+				"notes": [
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								1000,
+								0,
+								250,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								1375,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								1875,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								2125,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								2375,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								2500,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								2625,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								2750,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								3000,
+								3,
+								250,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								3375,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								3625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								3875,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								8000,
+								2,
+								125,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								8250,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								8500,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								8625,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								8750,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								8875,
+								3,
+								250,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								9250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								9500,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								9750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								9875,
+								3,
+								250,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								10250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								10500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								10750,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								10875,
+								3,
+								250,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								11250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								11500,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								11750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								16500,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								16625,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								16750,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								16875,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								17000,
+								3,
+								125,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								17250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								17500,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								17750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								18000,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								18250,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								18500,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								18750,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								19000,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								19250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								19500,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								19750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								24000,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								24250,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								24375,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								24625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								24750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								25000,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								25250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								25375,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								25625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								25750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								25875,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								26000,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								26250,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								26375,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								26625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								26750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								27000,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								27250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								27375,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								27625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								27750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								32000,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								32250.002,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								32375.002,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								32500.002,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								32750.002,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								33000,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								33250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								33375,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								33625,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								33750,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								34000,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								34250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								34375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								34500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								34750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								35000,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								35250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								35375,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								35625,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								35750,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								40000,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								40125,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								40250,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								40375,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								40500,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								40625,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								40750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								41000,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								41250,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								41375,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								41500,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								41625,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								41750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								42000,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								42250,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								42375,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								42500,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								42625,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								42750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								43000,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								43250,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								43375,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								43625,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								43750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								48000,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								48125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								48250,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								48375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								48500,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								48625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								48750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								48875,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								49000,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								49125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								49250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								49375,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								49500,
+								0,
+								375,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								50000,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								50125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								50250,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								50375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								50500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								50625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								50750,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								50875,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								51000,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								51125,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								51250,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								51375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								51500,
+								1,
+								375,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								56000,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								56125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								56250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								56375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								56500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								56625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								56750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								56875,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								57000,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								57125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								57250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								57375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								57500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								57625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								57750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								57875,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								58000,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								58125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								58250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								58375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								58500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								58625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								58750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								58875,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								59000,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								59125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								59250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								59375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								59500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								59625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								59750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								59875,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								64500.0039,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								64750.0039,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								65000.0039,
+								0,
+								250,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								65375.0039,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								65875,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								66125,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								66375,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								66500,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								66625,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								66750,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								67000,
+								3,
+								250,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								67375,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								67625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								67875,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								72000,
+								2,
+								125,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								72250,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								72500,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								72625,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								72750,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								72875,
+								3,
+								250,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								73250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								73500,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								73750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								73875,
+								3,
+								250,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								74250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								74500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								74750,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								74875,
+								3,
+								250,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								75250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								75500,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								75750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								80000,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								80125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								80250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								80375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								80500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								80625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								80750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								80875,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								81000,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								81125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								81250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								81375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								81500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								81625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								81750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								81875,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [
+							[
+								82000,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								82125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								82250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								82375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								82500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								82625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								82750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								82875,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								83000,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								83125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								83250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								83375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								83500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								83625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								83750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								83875,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							1
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					}
+				],
+				"noteStyle": "pxl-Default",
+				"charToSing": [
+					1
+				],
+				"keys": 4
+			},
+			{
+				"notes": [
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								4500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								4750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								5000,
+								0,
+								250,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								5375,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								5875,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								6125,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								6375,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								6500,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								6625,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								6750,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								7000,
+								3,
+								250,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								7375,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								7625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								7875,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								12000,
+								2,
+								125,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								12250,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								12500,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								12625,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								12750,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								12875,
+								3,
+								250,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								13250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								13500,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								13750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								13875,
+								3,
+								250,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								14250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								14500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								14750,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								14875,
+								3,
+								250,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								15250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								15500,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								15750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								20500,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								20625,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								20750,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								20875,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								21000,
+								3,
+								125,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								21250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								21500,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								21750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								22000,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								22250,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								22500,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								22750,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								23000,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								23250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								23500,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								23750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								28000,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								28250,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								28375,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								28625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								28750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								29000,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								29250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								29375,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								29625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								29750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								29875,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								30000,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								30250,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								30375,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								30625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								30750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								31000,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								31250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								31375,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								31625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								31750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								36000,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								36250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								36375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								36500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								36750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								37000,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								37250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								37375,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								37625,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								37750,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								38000,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								38250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								38375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								38500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								38750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								39000,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								39250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								39375,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								39625,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								39750,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								44000,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								44125,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								44250,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								44375,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								44500,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								44625,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								44750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								45000,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								45250,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								45375,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								45500,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								45625,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								45750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								46000,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								46250,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								46375,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								46500,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								46625,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								46750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								47000,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								47250,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								47375,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								47625,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								47750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								52000,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								52125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								52250,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								52375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								52500,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								52625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								52750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								52875,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								53000,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								53125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								53250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								53375,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								53500,
+								0,
+								375,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								54000,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								54125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								54250,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								54375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								54500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								54625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								54750,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								54875,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								55000,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								55125,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								55250,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								55375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								55500,
+								1,
+								375,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								60000,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								60125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								60250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								60375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								60500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								60625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								60750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								60875,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								61000,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								61125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								61250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								61375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								61500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								61625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								61750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								61875,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								62000,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								62125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								62250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								62375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								62500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								62625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								62750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								62875,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								63000,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								63125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								63250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								63375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								63500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								63625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								63750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								63875,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								68500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								68750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								69000,
+								0,
+								250,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								69375,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								69875,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								70125,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								70375,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								70500,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								70625,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								70750,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								71000,
+								3,
+								250,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								71375,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								71625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								71875,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								76000,
+								2,
+								125,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								76250,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								76500,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								76625,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								76750,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								76875,
+								3,
+								250,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								77250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								77500,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								77750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								77875,
+								3,
+								250,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								78250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								78500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								78750,
+								2,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								78875,
+								3,
+								250,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								79250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								79500,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								79750,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								84000,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								84125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								84250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								84375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								84500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								84625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								84750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								84875,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								85000,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								85125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								85250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								85375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								85500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								85625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								85750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								85875,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [
+							[
+								86000,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								86125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								86250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								86375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								86500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								86625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								86750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								86875,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								87000,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								87125,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								87250,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								87375,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								87500,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								87625,
+								0,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								87750,
+								1,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							],
+							[
+								87875,
+								3,
+								0,
+								0,
+								false,
+								"Default",
+								[],
+								[]
+							]
+						],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					},
+					{
+						"altAnim": false,
+						"charToSing": [
+							2
+						],
+						"sectionNotes": [],
+						"changeKeys": false,
+						"changeSing": false,
+						"keys": 4
+					}
+				],
+				"noteStyle": "pxl-Default",
+				"charToSing": [
+					2
+				],
+				"keys": 4
+			}
+		],
+		"bpm": 120,
+		"speed": 1.5
+	}
+}

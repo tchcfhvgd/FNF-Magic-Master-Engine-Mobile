@@ -1,2 +1,85 @@
 {
-	"antialiasing": true,"aspect":"Default","position":[-5,290],"anims":[{"loop":false,"symbol":"Pico Down Note","anim":"singDOWN","fps":24,"indices":[]},{"loop":false,"symbol":"MISS Pico Down Note","anim":"singDOWNmiss","fps":24,"indices":[]},{"loop":false,"symbol":"Pico Idle Dance","anim":"idle","fps":24,"indices":[]},{"loop":false,"symbol":"Pico NOTE LEFT","anim":"singRIGHT","fps":24,"indices":[]},{"loop":false,"symbol":"miss Pico NOTE LEFT","anim":"singRIGHTmiss","fps":24,"indices":[]},{"loop":false,"symbol":"Pico Note Right","anim":"singLEFT","fps":24,"indices":[]},{"loop":false,"symbol":"Miss Pico Note Right","anim":"singLEFTmiss","fps":24,"indices":[]},{"loop":false,"symbol":"pico Up note","anim":"singUP","fps":24,"indices":[]},{"loop":false,"symbol":"miss pico Up note","anim":"singUPmiss","fps":24,"indices":[]}],"zoom":0.8,"image":"Pico_FNF_Assetss","name":"Pico","camera":[11,-45],"healthicon":"bf","onRight":false,"skin":"Default"}
+	"aspect": "Default",
+	"position": [
+		-5,
+		290
+	],
+	"scale": 1,
+	"anims": [
+		{
+			"symbol": "Pico Down Note",
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWN",
+			"indices": []
+		},
+		{
+			"symbol": "MISS Pico Down Note",
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWNmiss",
+			"indices": []
+		},
+		{
+			"symbol": "Pico Idle Dance",
+			"loop": false,
+			"fps": 24,
+			"anim": "idle",
+			"indices": []
+		},
+		{
+			"symbol": "Pico NOTE LEFT",
+			"loop": false,
+			"fps": 24,
+			"anim": "singLEFT",
+			"indices": []
+		},
+		{
+			"symbol": "miss Pico NOTE LEFT",
+			"loop": false,
+			"fps": 24,
+			"anim": "singLEFTmiss",
+			"indices": []
+		},
+		{
+			"symbol": "Pico Note Right",
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHT",
+			"indices": []
+		},
+		{
+			"symbol": "Miss Pico Note Right",
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHTmiss",
+			"indices": []
+		},
+		{
+			"symbol": "pico Up note",
+			"loop": false,
+			"fps": 24,
+			"anim": "singUP",
+			"indices": []
+		},
+		{
+			"symbol": "miss pico Up note",
+			"loop": false,
+			"fps": 24,
+			"anim": "singUPmiss",
+			"indices": []
+		}
+	],
+	"name": "Pico",
+	"image": "Pico_FNF_Assetss",
+	"zoom": 0.8,
+	"antialiasing": true,
+	"deathCharacter": "Boyfriend_Death",
+	"skin": "Default",
+	"onRight": false,
+	"healthicon": "pico",
+	"camera": [
+		-29,
+		0
+	]
+}

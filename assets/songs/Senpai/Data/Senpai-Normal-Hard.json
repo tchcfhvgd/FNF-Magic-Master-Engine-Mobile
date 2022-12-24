@@ -5,10 +5,10 @@
 			[
 				"Girlfriend",
 				[
-					400,
-					-180
+					540,
+					50
 				],
-				6,
+				1,
 				false,
 				"Pixel",
 				"GF",
@@ -18,9 +18,9 @@
 				"Senpai",
 				[
 					100,
-					-250
+					100
 				],
-				6,
+				1,
 				true,
 				"Default",
 				"NORMAL",
@@ -30,9 +30,9 @@
 				"Boyfriend",
 				[
 					770,
-					-100
+					100
 				],
-				6,
+				1,
 				false,
 				"Pixel",
 				"NORMAL",

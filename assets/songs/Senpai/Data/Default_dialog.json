@@ -1,0 +1,28 @@
+{
+    "dialogue":[
+        [
+            {
+                "font": "Pixel",
+                "bold": true,
+                "time": 0.05,
+                "text": "Ah, a new fair maiden has come in search of true love!"
+            }
+        ],
+        [
+            {
+                "font": "Pixel",
+                "bold": true,
+                "time": 0.05,
+                "text": "A serenade between gentlemen shall decide where her beautiful heart shall reside."
+            }
+        ],
+        [
+            {
+                "font": "Pixel",
+                "bold": true,
+                "time": 0.05,
+                "text": "A serenade between gentlemen shall decide where her beautiful heart shall reside."
+            }
+        ]
+    ]
+}
