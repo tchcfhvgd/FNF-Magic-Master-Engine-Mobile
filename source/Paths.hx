@@ -79,12 +79,9 @@ class Paths {
 		var toReturn:Array<String> = [];
 
 		#if sys
-		var hideVan:Bool = false;
-		for(mod in ModSupport.MODS){if(mod.enabled && mod.hideVanilla){hideVan = true;}}
-
 		var _path:String = setPath(file);
 
-		if(!hideVan && FileSystem.exists(_path) && FileSystem.isDirectory(_path)){
+		if(FileSystem.exists(_path) && FileSystem.isDirectory(_path)){
 			for(i in FileSystem.readDirectory(_path)){
 				if(!toReturn.contains(i)){
 					toReturn.push('${isPath ? '$_path/' : ''}$i');
@@ -113,9 +110,7 @@ class Paths {
 		var toReturn:Array<Dynamic> = [];
 
 		#if sys
-		var hideVan:Bool = false;
-		for(mod in ModSupport.MODS){if(mod.enabled && mod.hideVanilla){hideVan = true;}}
-		if(!hideVan && FileSystem.exists(setPath(file))){toReturn.push(setPath(file));}
+		if(FileSystem.exists(setPath(file))){toReturn.push(setPath(file));}
 		for(mod in ModSupport.MODS){
 			var _path = setPath('${mod.path}/$file');
 			if(mod.enabled && FileSystem.exists(_path)){toReturn.push(_path);
@@ -251,7 +246,13 @@ class Paths {
 
 		return isPath ? path : getGraphic(path);
 	}
-	
+	inline static public function styleSound(key:String, style:String = "Default", ?library:String, isPath:Bool = false, ?mod:String):Any {
+		var path = getPath('sounds/style_UI/$style/$key.$SOUND_EXT', SOUND, library, mod);
+
+		if(!Paths.exists(path)){path = getPath('sounds/style_UI/Default/$key.$SOUND_EXT', SOUND, library, mod);}
+
+		return isPath ? path : getSound(path);
+	}
 
 	inline static public function font(key:String, ?mod:String){
 		return getPath('$key', TEXT, 'fonts', mod);
@@ -320,7 +321,7 @@ class Paths {
 
 		return path;
 	}
-	inline static public function dialogue(song:String, isPath:Bool = false, ?mod:String):String {
+	inline static public function dialogue(song:String, isPath:Bool = false, ?mod:String):Dynamic {
 		var language = PreSettings.getPreSetting("Language", "Game Settings");
 
 		var path = getPath('${song}/Data/${language}_dialog.json', TEXT, 'songs', mod);
@@ -408,7 +409,7 @@ class Paths {
 
 		var path = getPath('${char}/Skins/${char}-${skin}-${asp}.json', TEXT, 'characters', mod);
 
-		if(!Paths.exists(path)){path = getPath('${char}/Skins/${char}-${skin}-Default.json', TEXT, 'characters', mod);}
+		if(!Paths.exists(path)){path = getPath('${char}/Skins/${char}-Default-${asp}.json', TEXT, 'characters', mod);}
 		if(!Paths.exists(path)){path = getPath('${char}/Skins/${char}-Default-Default.json', TEXT, 'characters', mod);}
 		if(!Paths.exists(path)){path = getPath('Boyfriend/Skins/Boyfriend-Default-Default.json', TEXT, 'characters', mod);}
 
@@ -497,4 +498,32 @@ class Paths {
     
         return frames;
     }
+
+	static public function fromUncachedSpriteSheetPacker(Source:FlxGraphicAsset, Description:String):FlxAtlasFrames {
+		var graphic:FlxGraphic = FlxG.bitmap.add(Source);
+		
+		if(graphic == null){return null;}
+		if(graphic == null || Description == null){return null;}
+	
+		var frames:FlxAtlasFrames = new FlxAtlasFrames(graphic);
+	
+		if(Assets.exists(Description)){Description = Assets.getText(Description);}
+	
+		var pack = StringTools.trim(Description);
+		var lines:Array<String> = pack.split("\n");
+	
+		for(i in 0...lines.length){
+			var currImageData = lines[i].split("=");
+			var name = StringTools.trim(currImageData[0]);
+			var currImageRegion = StringTools.trim(currImageData[1]).split(" ");
+	
+			var rect = FlxRect.get(Std.parseInt(currImageRegion[0]), Std.parseInt(currImageRegion[1]), Std.parseInt(currImageRegion[2]), Std.parseInt(currImageRegion[3]));
+			var sourceSize = FlxPoint.get(rect.width, rect.height);
+			var offset = FlxPoint.get();
+	
+			frames.addAtlasFrame(rect, sourceSize, offset, name, FlxFrameAngle.ANGLE_0);
+		}
+	
+		return frames;
+	}
 }

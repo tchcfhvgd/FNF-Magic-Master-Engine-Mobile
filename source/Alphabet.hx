@@ -2,6 +2,7 @@ package;
 
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.addons.ui.FlxUIGroup;
 import flixel.group.FlxSpriteGroup;
 import flixel.system.FlxSound;
 import flixel.tweens.FlxTween;
@@ -17,10 +18,7 @@ import haxe.Timer;
 
 using StringTools;
 
-/**
- * Loosley based on FlxTypeText lolol
- */
-class Alphabet extends FlxSpriteGroup {
+class Alphabet extends FlxUIGroup {
     public static var DEFAULT_FONT:String = "alphabet";
 	public var cur_data:Array<Dynamic> = [];
 
@@ -28,10 +26,13 @@ class Alphabet extends FlxSpriteGroup {
         "-" => " "
     ];
 
+    public var textWidth:Float = 0;
+
     public var text:String = "";
 
     //------| Dialogue Stuff |------//
-    var onDialogue:Bool = false;
+    public dynamic function dialFunct(cur_character:String, item_data:Dynamic):Void {}
+    public var onDialogue:Bool = false;
     var charSound:FlxSound;
     //-----------------------------//
 
@@ -54,6 +55,8 @@ class Alphabet extends FlxSpriteGroup {
 
         if(cur_data.length <= 0){return;}
         loadText();
+
+		calcBounds();
 	}
 
     function doSplitWords(_text:String):Array<String> {
@@ -67,6 +70,11 @@ class Alphabet extends FlxSpriteGroup {
         curX = 0;
         curY = 0;
         clear();
+
+        if(timer != null){timer.cancel();}
+        onDialogue = false;
+
+        if(cur_data == null){return;}
 
         for(_dat in cur_data){
             var cur_split:Array<String> = null;
@@ -91,31 +99,37 @@ class Alphabet extends FlxSpriteGroup {
                         case '\t':{curX += 2 * spaceWidth;}
                         case ' ':{curX += spaceWidth;  text += " ";}
                         default:{
-                            if(AlphaCharacter.getChars().indexOf(char.toLowerCase()) != -1){
-                                var letter:AlphaCharacter = new AlphaCharacter(curX + xOffset, curY + yOffset, cur_font);
-                                letter.createChar(char, cur_bold, cur_color);
-                                if(!cur_animated){letter.animation.stop();}
-                                letter.scale.set(cur_scale.x, cur_scale.y); letter.updateHitbox();
-                                curX += letter.width * xMultiplier;
-                                        
-                                lastChar = letter;
-                                if(_i == 0){lastFirstChar = letter;}
-                    
-                                add(letter);
-        
-                                _i++;
-                            }
+                            if(AlphaCharacter.getChars().indexOf(char.toLowerCase()) == -1){continue;}
+
+                            if(textWidth > 0 && (curX + 10) >= textWidth){if(lastFirstChar != null){curY += lastFirstChar.height * yMultiplier; curX = 0;}}
+                            
+                            var letter:AlphaCharacter = new AlphaCharacter(curX + xOffset, curY + yOffset, cur_font);
+                            letter.createChar(char, cur_bold, cur_color);
+                            if(!cur_animated){letter.animation.stop();}
+                            letter.scale.set(cur_scale.x, cur_scale.y);
+                            letter.updateHitbox();
+                            curX += letter.width * xMultiplier;
+                                    
+                            lastChar = letter;
+                            if(_i == 0){lastFirstChar = letter;}
+                
+                            add(letter);
+    
+                            _i++;
                         }
                     }
                     text += char;
                 }
             }else if(cur_image != null){
                 var _image:FlxSprite = new FlxSprite(curX, curY).loadGraphic(Paths.image(cur_image));
-                _image.scale.set(cur_scale.x, cur_scale.y); _image.updateHitbox();
+                _image.scale.set(cur_scale.x, cur_scale.y);
+                _image.updateHitbox();
                 _image.color = cur_color;
                 add(_image);
             }
         }
+        
+		calcBounds();
     }
 
     var timer:FlxTimer;
@@ -142,18 +156,18 @@ class Alphabet extends FlxSpriteGroup {
 
         var _i:Int = 0;
 
-        timer.start(1,
+        timer.start(0.1,
             function(tmr:FlxTimer){
                 if(current_text.length <= 0){
                     if(cloned_data.length <= 0){
                         onDialogue = false;
+                        timer.cancel();
                         return;
                     }
 
-                    current_item = cloned_data.copy();
+                    current_item = cloned_data.shift();
                     current_text = doSplitWords(current_item.text);
 
-                    timer.loops = current_text.length + 1;
                     timer.time = current_item.time;
                     
                     cur_scale = current_item.scale != null ? FlxPoint.get(current_item.scale,current_item.scale) : FlxPoint.get(1,1);
@@ -165,8 +179,6 @@ class Alphabet extends FlxSpriteGroup {
                     if(current_item.rel_position != null){curX += current_item.rel_position[0]; curY += current_item.rel_position[1];}
 
                     if(current_item.sound != null && Paths.exists(Paths.sound(current_item.sound, null, true))){charSound = new FlxSound().loadEmbedded(Paths.sound(current_item.sound));}
-                    
-                    return;
                 }
 
                 var cur_character:String = current_text.shift();
@@ -177,10 +189,13 @@ class Alphabet extends FlxSpriteGroup {
                     case ' ':{curX += spaceWidth; text += " ";}
                     default:{
                         if(AlphaCharacter.getChars().indexOf(cur_character.toLowerCase()) != -1){
+                            if(textWidth > 0 && (curX + 10) >= textWidth){if(lastFirstChar != null){curY += lastFirstChar.height * yMultiplier; curX = 0;}}
+
                             var letter:AlphaCharacter = new AlphaCharacter(curX + xOffset, curY + yOffset, cur_font);
                             letter.createChar(cur_character, cur_bold, cur_color);
                             if(!cur_animated){letter.animation.stop();}
-                            letter.scale.set(cur_scale.x, cur_scale.y); letter.updateHitbox();
+                            letter.scale.set(cur_scale.x, cur_scale.y);
+                            letter.updateHitbox();
                             curX += letter.width * xMultiplier;
                                     
                             lastChar = letter;
@@ -188,14 +203,17 @@ class Alphabet extends FlxSpriteGroup {
                 
                             add(letter);
                             if(charSound != null){charSound.play();}
-    
+                            if(dialFunct != null){dialFunct(cur_character, current_item);}
+
                             _i++;
                         }
                     }
                 }
                 text += cur_character;
             }
-        , 1);
+        , 0);
+        
+		calcBounds();
     }
     
     override function update(elapsed:Float){    

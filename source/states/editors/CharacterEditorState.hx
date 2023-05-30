@@ -71,28 +71,30 @@ class CharacterEditorState extends MusicBeatState{
         [770, 100]
     ];
 	private var charPos(get, never):Array<Int>;
-	inline function get_charPos():Array<Int>{
+	inline function get_charPos():Array<Int> {
         if(chkGFPos.checked){return charPositions[1];}
         if(chrStage.onRight){return charPositions[0];}
         return charPositions[2];
     }
-    
+
     var camFollow:FlxObject;
 
-    public static function editCharacter(?onConfirm:Class<FlxState>, ?onBack:Class<FlxState>, ?character:CharacterFile){
+    public function new(?onConfirm:Class<FlxState>, ?onBack:Class<FlxState>, ?character:CharacterFile):Void {
         if(character == null){character = new Character(0, 0).charFile;}
         _character = character;
 
-        FlxG.sound.music.stop();
-        MusicBeatState.switchState(new CharacterEditorState(onConfirm, onBack));
+        super(onConfirm, onBack);
     }
 
     override function create(){
+        if(FlxG.sound.music != null){FlxG.sound.music.stop();}
+
         #if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence('[${_character.name}-${_character.skin}-${_character.aspect}]', '[Character Editor]');
 		MagicStuff.setWindowTitle('Editing [${_character.name}-${_character.skin}-${_character.aspect}]', 1);
 		#end
+
         FlxG.mouse.visible = true;
 
         var bgGrid:FlxSprite = FlxGridOverlay.create(10, 10, FlxG.width, FlxG.height, true, 0xff4d4d4d, 0xff333333);
@@ -258,8 +260,8 @@ class CharacterEditorState extends MusicBeatState{
             var newCharacter:Character = new Character(0, 0, Paths.getFileName(txtCharacter.text, true), Paths.getFileName(txtAspect.text, true));
             newCharacter.curSkin = Paths.getFileName(txtSkin.text, true);
             newCharacter.setupByCharacterFile();
-
-            CharacterEditorState.editCharacter(onConfirm, onBack, newCharacter.charFile);
+            
+            MusicBeatState.switchState(new states.editors.CharacterEditorState(null, MainMenuState, newCharacter.charFile));
         }); tabMENU.add(btnLoadCharacter);
 
         var btnSaveCharacter:FlxButton = new FlxCustomButton(btnLoadCharacter.x + btnLoadCharacter.width + 10, btnLoadCharacter.y, Std.int(MENU.width / 2) - 10, null, "Save Character", null, null, function(){saveCharacter('${txtCharacter.text}-${txtSkin.text}-${txtAspect.text}');}); tabMENU.add(btnSaveCharacter);
@@ -477,9 +479,9 @@ class CharacterEditorState extends MusicBeatState{
                 default:{trace('$label WORKS!');}
                 case "onRight?":{lblOriPos.text = 'Character Position: [${charPos[0]}, ${charPos[1]}]'; reloadCharacter();}
                 case "Girlfriend Position?":{lblOriPos.text = 'Character Position: [${charPos[0]}, ${charPos[1]}]'; reloadCharacter();}
-                case "Character Image is Looking Right":{_character.onRight = check.checked; reloadCharacter();}
                 case "With Antialiasing":{_character.antialiasing = check.checked; reloadCharacter();}
                 case "Dance on Idle":{_character.danceIdle = check.checked; reloadCharacter();}
+                case "Flip Image":{_character.onRight = check.checked; reloadCharacter();}
 			}
 		}else if(id == FlxUIInputText.CHANGE_EVENT && (sender is FlxUIInputText)){
             var input:FlxUIInputText = cast sender;

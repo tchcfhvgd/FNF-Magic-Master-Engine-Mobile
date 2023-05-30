@@ -62,20 +62,6 @@
             "Description": "",
             "Rol": "Charter",
             "Color": "#b8fffb"
-        },
-        {
-            "Name": "Farsy",
-            "Icon": "farsy",
-            "Description": "",
-            "Rol": "Charter",
-            "Color": "#92c4d1"
-        },
-        {
-            "Name": "Saruky",
-            "Icon": "saru",
-            "Description": "",
-            "Rol": "Cassette Girl [Chromatic]",
-            "Color": "#ff42e9"
         }
     ],
     "Funkin' Crew":[

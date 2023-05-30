@@ -1,10 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<TextureAtlas imagePath="dialogueBox-pixel.png">
+<TextureAtlas imagePath="Senpai_Box.png">
 	<!-- Created with Adobe Animate version 20.0.0.17400 -->
 	<!-- http://www.adobe.com/products/animate.html -->
-	<SubTexture name="Normal_Appear0000" x="0" y="0" width="249" height="144"/>
-	<SubTexture name="Normal_Appear0001" x="259" y="0" width="249" height="144"/>
-	<SubTexture name="Normal_Appear0002" x="0" y="154" width="249" height="144"/>
-	<SubTexture name="Normal_Appear0003" x="259" y="154" width="249" height="144"/>
-	<SubTexture name="Normal_Appear0004" x="259" y="154" width="249" height="144"/>
+	<SubTexture x="0" y="0" frameWidth="1170" name="Normal_Appear0000" frameX="30" frameHeight="276" frameY="30" width="1224" height="72"/>
+	<SubTexture x="0" y="330" frameWidth="1170" name="Normal_Appear0001" frameX="30" frameHeight="276" frameY="30" width="1224" height="162"/>
+	<SubTexture x="0" y="660" frameWidth="1170" name="Normal_Appear0002" frameX="30" frameHeight="276" frameY="30" width="1224" height="264"/>
+	<SubTexture x="0" y="990" frameWidth="1170" name="Normal_Appear0003" frameX="30" frameHeight="276" frameY="30" width="1224" height="330"/>
+	<SubTexture x="0" y="990" frameWidth="1170" name="Normal_Idle0000" frameX="30" frameHeight="276" frameY="30" width="1224" height="330"/>
 </TextureAtlas>

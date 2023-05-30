@@ -1,28 +1,39 @@
 {
-    "dialogue":[
-        [
-            {
-                "font": "Pixel",
-                "bold": true,
-                "time": 0.05,
-                "text": "Ah, a new fair maiden has come in search of true love!"
-            }
+    "dialogue":{
+        "dialogue_position": [36, 36],
+        "box": "Senpai_Box",
+        "portraits": [
+            "Senpai",
+            "Pixel_Boyfriend"
         ],
-        [
+        "dialogue": [
             {
-                "font": "Pixel",
-                "bold": true,
-                "time": 0.05,
-                "text": "A serenade between gentlemen shall decide where her beautiful heart shall reside."
-            }
-        ],
-        [
+                "appear_left": "Senpai",
+                "box_anim": "Normal",
+                "dialog":[
+                    {
+                        "portrait": "Senpai", "sound": "dialog_audios/senpai", "time": 0.033, "bold": true, "scale": 0.5,
+                        "text": "Ah, a new fair maiden has come in search of true love!"
+                    }
+                ]
+            },
             {
-                "font": "Pixel",
-                "bold": true,
-                "time": 0.05,
-                "text": "A serenade between gentlemen shall decide where her beautiful heart shall reside."
+                "dialog":[
+                    {
+                        "portrait": "Senpai", "sound": "dialog_audios/senpai", "time": 0.033, "bold": true, "scale": 0.5,
+                        "text": "A serenade between gentlemen shall decide where her beautiful heart shall reside."
+                    }
+                ]
+            },
+            {
+                "appear_right": "Pixel_Boyfriend",
+                "dialog":[
+                    {
+                        "portrait": "Pixel_Boyfriend", "sound": "dialog_audios/pixel_boyfriend", "time": 0.033, "bold": true, "scale": 0.5,
+                        "text": "Beep bo bop."
+                    }
+                ]
             }
         ]
-    ]
+    }
 }

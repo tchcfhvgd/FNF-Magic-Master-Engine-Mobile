@@ -35,7 +35,7 @@ class Controls extends FlxActionSet {
 
 	public static function init():Void {
 		controls_save = new FlxSave();
-		controls_save.bind('controls', 'ninjamuffin99');
+		controls_save.bind('controls', 'Yirius125');
 
 		STATIC_ACTIONS = DEFAULT_STATIC_ACTIONS.copy();
 		STATIC_STRUMCONTROLS = DEFAULT_STATIC_STRUMCONTROLS.copy();

@@ -220,7 +220,13 @@ class ItemMod extends FlxUITabMenu {
         mScript = new Script();
         mScript.setVariable("getInstance", function(){return this;});
         mScript.setVariable("mod", refMod);
-        mScript.exScript(Paths.getText('${refMod.path}/itemMod.hx'));
+
+        var script_path = '${refMod.path}/itemMod.hx';
+        if(Paths.exists(script_path)){
+            mScript.exScript(Paths.getText(script_path));
+        }else{
+            mScript.exScript(Paths.getText(Paths.getPath('data/item_mod_template.hx', TEXT, null, null)));
+        }
 
         var back_ = new FlxUI9SliceSprite(0, 0, Paths.image("custom_default_chrome_flat", null, false, refMod.name), new Rectangle(0, 0, 100, 100), [20, 20, 78, 78], FlxUI9SliceSprite.TILE_BOTH);
 

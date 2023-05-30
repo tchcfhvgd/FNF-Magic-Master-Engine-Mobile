@@ -23,9 +23,11 @@ import("flixel.FlxCamera", "FlxCamera");
 import("haxe.Timer", "Timer");
 import("flixel.FlxG", "FlxG");
 
+import("states.PlayState", "PlayState");
 import("FlxUICustomButton");
 import("FlxCustomShader");
 import("LangSupport");
+import("DialogueBox");
 import("PreSettings");
 import("MagicStuff");
 import("Character");
@@ -40,43 +42,31 @@ presset("startCountdown", true);
 var whiteScreen:FlxSprite;
 var dialogue:DialogueBox;
 
-var cur_portrait:FlxSprite;
-
 function preload():Void {
-    whiteScreen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, 0xFFFFFF);
+    whiteScreen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, 0xFFFFFFFF);
     whiteScreen.cameras = [getState().camBHUD];
     whiteScreen.screenCenter();
-    whiteScreen.alpha = 1;
+    whiteScreen.alpha = 0;
 
     getState().add(whiteScreen);
 }
 
 function startSong(startCountdown:Void->Void):Void {
-    if(!getState().isStoryMode){startCountdown(); return;}
+    if(!PlayState.isStoryMode){startCountdown(); return;}
 
-    FlxTween.tween(whiteScreen, {alpha: 0.5}, 3, {ease: FlxEase.linear});
- 
-    var dialogue_data:Array<Dynamic> = Paths.dialogue(getState().SONG.song);
-    dialogue = new DialogueBox(dialogue_data);
-    dialogue.loadDialogueBox("Senpai_Box");
-    dialogue.finishFunc = startCountdown;
-    dialogue.script = this;
+    FlxG.sound.playMusic(Paths.music("Lunchbox", "stages/school"));
+    FlxG.sound.music.fadeIn();
     
-    dialogue.dialogue_box.animation.play("Normal_Appear");
+    FlxTween.tween(whiteScreen, {alpha: 0.5}, 3, {ease: FlxEase.linear});
+    FlxTween.tween(getState().camHUD, {alpha: 0}, 1, {ease: FlxEase.linear, onComplete: function(twn){
+        dialogue = new DialogueBox(Paths.dialogue(PlayState.SONG.song), {onComplete: function(){onEndDialogue(startCountdown);}});
+        dialogue.cameras = [getState().camBHUD];
+        getState().add(dialogue);
+    }});
 }
 
-function toChangeDialogue(curDialogue:Int):Void {
-    switch(curDialogue){
-        case 0:{
-
-        }
-    }
-}
-
-function onDialogueChanged(curDialogue:Int):Void {
-    switch(curDialogue){
-        case 0:{
-
-        }
-    }
+function onEndDialogue(startCountdown:Void->Void):Void {
+    FlxG.sound.music.fadeOut();
+    FlxTween.tween(whiteScreen, {alpha: 0}, 1, {ease: FlxEase.linear});
+    FlxTween.tween(getState().camHUD, {alpha: 1}, 1, {ease: FlxEase.linear, onComplete: function(twn){startCountdown();}});
 }

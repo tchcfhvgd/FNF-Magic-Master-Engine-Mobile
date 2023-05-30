@@ -87,6 +87,7 @@ class StageEditorState extends MusicBeatState {
 
     override function create(){
         if(SCRIPT_SOURCE == null){SCRIPT_SOURCE = new StageScripManager();}
+        if(FlxG.sound.music != null){FlxG.sound.music.stop();}
 
         #if desktop
 		// Updating Discord Rich Presence
@@ -737,7 +738,7 @@ class StageObjectScript {
 
         for(i in Paths.readDirectory('assets/data/stage_editor_objects/${_name}')){
             var _i:String = i; _i = _i.replace("att-", "").replace(".txt", "");
-            if(_i == name){continue;}
+            if(_i == name || _i == "Preload"){continue;}
             possible_attributes.push(_i);
         }
 

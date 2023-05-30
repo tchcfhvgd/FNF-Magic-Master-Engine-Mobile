@@ -1,0 +1,7 @@
+<TextureAtlas imagePath="Senpai.png">
+	<!-- Created with Adobe Animate version 20.0.0.17400 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="0" y="342" frameWidth="306" name="Normal_Idle0000" frameX="0" frameHeight="342" frameY="0" width="306" height="342"/>
+	<SubTexture x="0" y="0" frameWidth="306" name="Normal_Talk0000" frameX="0" frameHeight="342" frameY="0" width="306" height="342"/>
+	<SubTexture x="0" y="342" frameWidth="306" name="Normal_Talk0001" frameX="0" frameHeight="342" frameY="0" width="306" height="342"/>
+</TextureAtlas>

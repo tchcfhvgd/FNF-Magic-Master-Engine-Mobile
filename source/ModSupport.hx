@@ -25,6 +25,17 @@ class ModSupport {
         "states.PreLoaderState"
     ];
 
+    public static var hideVanillaWeeks(get, null):Bool = false;
+    static function get_hideVanillaWeeks() {
+        for(mod in MODS){if(mod.hV_Weeks){return true;}}
+        return false;
+    };
+    public static var hideVanillaSongs(get, null):Bool = false;
+    static function get_hideVanillaSongs() {
+        for(mod in MODS){if(mod.hV_Songs){return true;}}
+        return false;
+    };
+
     public static function init():Void {
         //Loading Saved Mods
         if(FlxG.save.data.saved_mods != null){savedMODS = FlxG.save.data.saved_mods;}
@@ -34,7 +45,11 @@ class ModSupport {
         #if (desktop && sys)
         if(FileSystem.exists('mods')){
             for(modFolder in FileSystem.readDirectory('mods')){
-                var newMod = new Mod(FileSystem.absolutePath('mods/$modFolder'));  
+                var mod_path:String = FileSystem.absolutePath('mods/$modFolder');
+
+                if(!FileSystem.isDirectory(mod_path)){continue;}
+
+                var newMod = new Mod(mod_path);  
                 newMod.id = _i;  
                 MODS.push(newMod);
                 _i++;
@@ -56,7 +71,7 @@ class ModSupport {
         }
     }
 
-    public static function reload_mods():Void{
+    public static function reload_mods():Void {
         modDataScripts.clear();
         staticScripts.clear();
 
@@ -122,26 +137,32 @@ class Mod {
 
     public var id:Int = 0;
 
-    public var enabled:Bool = true;
+    public var enabled:Bool = false;
+
     public var onlyThis:Bool = false;
-    public var hideVanilla:Bool = false;
+
+    public var hV_Weeks:Bool = false;
+    public var hV_Songs:Bool = false;
 
     public var path:String;
 
-    public function new(folder:String, enabled:Bool = true) {
+    public function new(folder:String) {
         this.path = folder;
-        this.enabled = enabled;
 
-        var identifierJSON:DynamicAccess<Dynamic> = cast Json.parse(Paths.getText('$path/mod.json').trim());
-        if(identifierJSON != null){
-            savefix = identifierJSON.get('save_prefix');
+        var identifierJSON:DynamicAccess<Dynamic> = cast {};
 
-            name = identifierJSON.get('name');
-            prefix = identifierJSON.get('prefix');
-            description = identifierJSON.get('description');
+        var mod_info_path = '$path/mod.json';
+        if(Paths.exists(mod_info_path)){ identifierJSON = cast Json.parse(Paths.getText(mod_info_path).trim()); }
 
-            onlyThis = identifierJSON.get('onlyThis');
-            hideVanilla = identifierJSON.get('hideVanilla');
-        }
+        savefix = identifierJSON.exists('save_prefix') ? identifierJSON.get('save_prefix') : "plh-";
+
+        name = identifierJSON.exists('name') ? identifierJSON.get('name') : 'Magic Master PlaceHolder Mod - ${MagicStuff.version}';
+        prefix = identifierJSON.exists('prefix') ? identifierJSON.get('prefix') : "Mod";
+        description = identifierJSON.exists('description') ? identifierJSON.get('description') : folder;
+
+        onlyThis = identifierJSON.exists('onlyThis') ? identifierJSON.get('onlyThis') : false;
+        
+        hV_Weeks = identifierJSON.exists('hideVanilla_Weeks') ? identifierJSON.get('hideVanilla_Weeks') : false;
+        hV_Songs = identifierJSON.exists('hideVanilla_Songs') ? identifierJSON.get('hideVanilla_Songs') : false;
     }
 }

@@ -1,0 +1,25 @@
+<TextureAtlas imagePath="Idle_assets.png">
+	<!-- Created with Adobe Animate version 19.2.1.408 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="147" frameWidth="145" y="149" frameX="0" name="Idle0000" frameHeight="133" frameY="0" width="145" height="133"/>
+	<SubTexture x="0" frameWidth="145" y="0" frameX="8" name="Hit0000" frameHeight="133" frameY="7" width="160" height="148"/>
+	<SubTexture x="160" frameWidth="145" y="0" frameX="7" name="Hit0001" frameHeight="133" frameY="5" width="158" height="144"/>
+	<SubTexture x="318" frameWidth="145" y="0" frameX="3" name="Hit0002" frameHeight="133" frameY="2" width="150" height="138"/>
+	<SubTexture x="0" frameWidth="145" y="149" frameX="2" name="Hit0003" frameHeight="133" frameY="0" width="147" height="134"/>
+	<SubTexture x="147" frameWidth="145" y="149" frameX="1" name="Hit0004" frameHeight="133" frameY="-1" width="145" height="132"/>
+	<SubTexture x="147" frameWidth="145" y="149" frameX="1" name="Hit0005" frameHeight="133" frameY="-1" width="145" height="132"/>
+	<SubTexture x="147" frameWidth="145" y="149" frameX="1" name="Hit0006" frameHeight="133" frameY="-1" width="145" height="132"/>
+	<SubTexture x="147" frameWidth="145" y="149" frameX="1" name="Hit0007" frameHeight="133" frameY="-1" width="145" height="132"/>
+	<SubTexture x="147" frameWidth="145" y="149" frameX="1" name="Hit0008" frameHeight="133" frameY="-1" width="145" height="132"/>
+	<SubTexture x="147" frameWidth="145" y="149" frameX="1" name="Hit0009" frameHeight="133" frameY="-1" width="145" height="132"/>
+	<SubTexture x="0" frameWidth="145" y="149" frameX="1" name="Over0000" frameHeight="133" frameY="1" width="147" height="135"/>
+	<SubTexture x="292" frameWidth="145" y="149" frameX="2" name="Over0001" frameHeight="133" frameY="3" width="150" height="139"/>
+	<SubTexture x="160" frameWidth="145" y="0" frameX="6" name="Over0002" frameHeight="133" frameY="6" width="158" height="145"/>
+	<SubTexture x="0" frameWidth="145" y="288" frameX="7" name="Over0003" frameHeight="133" frameY="8" width="160" height="149"/>
+	<SubTexture x="160" frameWidth="145" y="288" frameX="8" name="Over0004" frameHeight="133" frameY="8" width="161" height="149"/>
+	<SubTexture x="160" frameWidth="145" y="288" frameX="8" name="Over0005" frameHeight="133" frameY="8" width="161" height="149"/>
+	<SubTexture x="160" frameWidth="145" y="288" frameX="8" name="Over0006" frameHeight="133" frameY="8" width="161" height="149"/>
+	<SubTexture x="160" frameWidth="145" y="288" frameX="8" name="Over0007" frameHeight="133" frameY="8" width="161" height="149"/>
+	<SubTexture x="160" frameWidth="145" y="288" frameX="8" name="Over0008" frameHeight="133" frameY="8" width="161" height="149"/>
+	<SubTexture x="160" frameWidth="145" y="288" frameX="8" name="Over0009" frameHeight="133" frameY="8" width="161" height="149"/>
+</TextureAtlas>

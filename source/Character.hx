@@ -205,8 +205,8 @@ class Character extends FlxSpriteGroup {
 				if(char.character_sprite.animation.curAnim != null){
 					switch(char.character_sprite.animation.curAnim.name){
 						case 'singUP':{camMoveY -= 100;}
-						case 'singRIGHT':{camMoveX += (!char.character_sprite.flipX) ? 100 : -100;}
 						case 'singDOWN':{camMoveY += 100;}
+						case 'singRIGHT':{camMoveX += (!char.character_sprite.flipX) ? 100 : -100;}
 						case 'singLEFT':{camMoveX -= (!char.character_sprite.flipX) ? 100 : -100;}
 					}
 				}				
@@ -267,7 +267,9 @@ class Character extends FlxSpriteGroup {
 		}
 	}
 
-	public static function addPreloadersToList(list:Array<Dynamic>, character:String = 'Boyfriend', aspect:String = 'Default'):Void {
+	public static function addToLoad(list:Array<Dynamic>, character:String = 'Boyfriend', aspect:String = 'Default'):Void {
+		trace('|| CHARACTER: ${character} | ASPECT: ${aspect} ||');
+
 		var char_path:String = Paths.getCharacterJSON(character, aspect);
 		var char_file:CharacterFile = cast Json.parse(Paths.getText(char_path));
 
@@ -276,7 +278,7 @@ class Character extends FlxSpriteGroup {
 
 		var char_script_path:String = char_path.replace('.json', '.hx');
 		if(!Paths.exists(char_script_path)){return;}
-		Script.importScript(char_script_path).exFunction('addPreloadersToList', [list]);
+		Script.importScript(char_script_path).exFunction('addToLoad', [list]);
 	}
 
 	public function setupByName(?_character:String, ?_aspect:String, ?_type:String):Void {
@@ -382,8 +384,6 @@ class Character extends FlxSpriteGroup {
 		if(character_sprite.animation.curAnim != null && !onDebug){
 			if(holdTimer > 0){holdTimer -= elapsed;}
 			else{
-				specialAnim = false;
-
 				if(MusicBeatState.state.curBeat != oldBeat){
 					oldBeat = MusicBeatState.state.curBeat;
 					dance();
@@ -401,14 +401,16 @@ class Character extends FlxSpriteGroup {
 	}
 
 	public function dance():Void {
+		var toContinue:Bool = true;
+		if(charScript != null){toContinue = charScript.exFunction('dance');}
+		if(specialAnim || !toContinue){return;}
+
 		if(dancedIdle){
 			if(character_sprite.animation.curAnim != null && character_sprite.animation.curAnim.name == 'danceRight'){playAnim('danceLeft');}
 			else{playAnim('danceRight');}
 
 			holdTimer = 0;
 		}else{playAnim('idle');}
-
-		if(charScript != null){charScript.exFunction('dance');}
 	}
 
 	public function playAnim(AnimName:String, Force:Bool = false, Special:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void {
@@ -417,8 +419,7 @@ class Character extends FlxSpriteGroup {
 			else{AnimName = AnimName.replace("RIGHT", "LEFT");}
 		}
 
-		if(specialAnim
-			|| character_sprite.animation.getByName(AnimName) == null
+		if((specialAnim && !Special)
 			|| (character_sprite.animation.curAnim != null
 				&& character_sprite.animation.curAnim.name == AnimName
 				&& character_sprite.animation.curAnim.name.contains("sing")
@@ -428,10 +429,12 @@ class Character extends FlxSpriteGroup {
 		}
 
 		specialAnim = Special;
+		
+		if(charScript != null){charScript.exFunction('playAnim', [AnimName, Force, Reversed, Frame]);}
+
+		if(character_sprite.animation.getByName(AnimName) == null){return;}
 		character_sprite.animation.play(AnimName, Force, Reversed, Frame);
 		holdTimer = ((character_sprite.animation.getByName(AnimName).frames.length - Frame) / character_sprite.animation.getByName(AnimName).frameRate);
-
-		if(charScript != null){charScript.exFunction('playAnim');}
 	}
 
 	public function turnLook(toRight:Bool = true):Void {

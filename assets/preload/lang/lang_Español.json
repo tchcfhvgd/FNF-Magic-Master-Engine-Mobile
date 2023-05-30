@@ -1,7 +1,7 @@
 {
 	"mod_advert":[
-		{"animated":true, "bold":true, "scale":0.5, "text":"\t  Parece que tienes Mods Instalados"},
-		{"scale":0.35, "animated":true, "bold":true, "text": "\n\nQuieres configurarlos antes de empezar el juego?"}
+		{"animated":true, "bold":true, "scale":0.5, "text":" Parece que tienes Mods Instalados\n\n"},
+		{"scale":0.35, "animated":true, "bold":true, "text": "Quieres configurarlos antes de empezar el juego?"}
 	],
 
 	"mod_list": [{"animated":true, "bold":true, "text":"Lista de Mods"}],

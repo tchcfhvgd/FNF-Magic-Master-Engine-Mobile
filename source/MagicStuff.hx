@@ -16,7 +16,7 @@ import Character.Skins;
 import openfl.Lib;
 
 class MagicStuff {
-	public static final version:String = "0.9";
+	public static final version:String = "0.9.1";
 
     public static function reload_data():Void {
         Paths.savedTempMap.clear();

@@ -132,7 +132,6 @@ class StrumNote extends FlxSprite{
     override public function setGraphicSize(Width:Int = 0, Height:Int = 0):Void {
         super.setGraphicSize(Width,Height);
         this.updateHitbox();
-        this.setSize(Width,Height);
     }
 }
 
@@ -219,7 +218,7 @@ class Note extends StrumNote {
     
     public static function getNoteData(?note:Array<Dynamic>):NoteData {
         var toReturn:NoteData = {
-            strumTime: 0,
+            strumTime: -100,
             keyData: 0,
             sustainLength: 0,
             multiHits: 0,
@@ -245,7 +244,7 @@ class Note extends StrumNote {
 
     public static function getEventData(?event:Array<Dynamic>):EventData {
         var toReturn:EventData = {
-            strumTime: 0,
+            strumTime: -1,
             eventData: [],
             condition: "OnHit",
             isExternal: false,

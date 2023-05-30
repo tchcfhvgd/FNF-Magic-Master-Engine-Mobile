@@ -61,6 +61,8 @@ class Script extends FlxBasic {
         setVariable('closeSubState', nFunc);
 
         setVariable("presset", function(name:String, func:Any){setVariable(name, func);});
+        setVariable("getsset", function(name:String){return getVariable(name);});
+
         setVariable('destroy', function(){this.program = null; this.destroy();});
 
         setVariable("pushGlobal", function(){states.MusicBeatState.state.tempScripts.set(this.Name, this);});

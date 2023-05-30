@@ -4,7 +4,7 @@
 		"validScore": true,
 		"speed": 1,
 		"sectionLengths": [],
-		"strumToPlay": 1,
+		"single_player": 1,
 		"characters": [
 			[
 				"Girlfriend",

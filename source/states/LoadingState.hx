@@ -147,9 +147,10 @@ class LoadingState extends MusicBeatState {
 							song_script.Name = "ScriptSong";
 							song_script.exScript(Paths.getText(song_path));
 							TARGET.tempScripts.set("ScriptSong", song_script);
+							song_script.exFunction("addToLoad", [tempLoadingStuff]);
 						}
 
-						for(char in _song.characters){Character.addPreloadersToList(tempLoadingStuff, char[0], char[3]);}
+						for(char in _song.characters){Character.addToLoad(tempLoadingStuff, char[0], char[4]);}
 
 						for(gen in _song.generalSection){
 							for(ev in gen.events){

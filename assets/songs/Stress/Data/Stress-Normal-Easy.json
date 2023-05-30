@@ -1,6 +1,6 @@
 {
 	"song": {
-		"strumToPlay": 1,
+		"single_player": 1,
 		"characters": [
 			[
 				"Pico",
@@ -10,7 +10,7 @@
 				],
 				1,
 				false,
-				"Default",
+				"Speaker",
 				"GF",
 				0
 			],

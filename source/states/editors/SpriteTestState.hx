@@ -45,6 +45,8 @@ class SpriteTestState extends MusicBeatState {
     var camFollow:FlxObject;
 
     override function create(){
+        if(FlxG.sound.music != null){FlxG.sound.music.stop();}
+        
         FlxG.mouse.visible = true;
 
         var bgGrid:FlxSprite = FlxGridOverlay.create(10, 10, FlxG.width, FlxG.height, true, 0xff4d4d4d, 0xff333333);

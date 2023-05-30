@@ -3,7 +3,7 @@
 		"song": "Fresh",
 		"validScore": true,
 		"speed": 1.8,
-		"strumToPlay": 1,
+		"single_player": 1,
 		"characters": [
 			[
 				"Girlfriend",

@@ -209,6 +209,7 @@ class ChartEditorState extends MusicBeatState {
             };
 
             _song.sectionStrums.push(nStrum);
+            _song.playable_players.push(true);
 
             for(i in 0...curSection){addSection(_song.sectionStrums.length - 1, _song.generalSection[i].lengthInSteps);}
 
@@ -226,6 +227,8 @@ class ChartEditorState extends MusicBeatState {
             
             for(section in _song.generalSection){if(section.strumToFocus >= _song.sectionStrums.length){section.strumToFocus = _song.sectionStrums.length - 1;}}
             updateSection();
+
+            _song.playable_players.pop();
         });
         btnDelStrum.cameras = [camHUD];
         btnDelStrum.scrollFactor.set(1, 0);
@@ -255,7 +258,7 @@ class ChartEditorState extends MusicBeatState {
 		conductor.mapBPMChanges(_song);
 
         var btn_infogen:FlxUIButton = new FlxUICustomButton(10,0,Std.int(KEYSIZE/1.5),Std.int(KEYSIZE/1.5),'',Paths.image("info", null, true),null,function(){
-            canControlle = false; openSubState(new substates.InformationSubState(LangSupport.getText("Charting_Adv_1"), function(){canControlle = true;}));
+            canControlle = false; openSubState(new substates.InformationSubState(LangSupport.getText("charting_adv_1"), function(){canControlle = true;}));
         }); btn_infogen.cameras = [camHUD];
         btn_infogen.antialiasing = true;
         btn_infogen.y = FlxG.height - btn_infogen.height - 10;
@@ -485,19 +488,29 @@ class ChartEditorState extends MusicBeatState {
                 curStatics.changeKeyNumber(daKeys, Std.int(KEYSIZE * daKeys), true, true);
                 for(c in curStatics.statics){c.autoStatic = true;}
                 curStatics.x = lastWidth;
-            }            
+            }
 
             if(_song.hasVoices && sVoicesArray.length > i){
-                var btnToggleVoice:FlxUIButton = new FlxUICustomButton(daGrid.x + (KEYSIZE*0.75), daGrid.y + daGrid.height + 5, Std.int(KEYSIZE / 2), Std.int(KEYSIZE / 2), "", null, !sVoicesArray[i] ? FlxColor.fromRGB(122, 255, 131) : FlxColor.fromRGB(255, 122, 122), function(){
+                var btnToggleVoice:FlxUIButton = new FlxUICustomButton(0, 0, Std.int(KEYSIZE / 2), Std.int(KEYSIZE / 2), "", Paths.image("editor_assets/"+(!sVoicesArray[i] ? "on_mic" : "off_mic"), null, true), null, function(){
                     if(sVoicesArray.length <= i){return;} sVoicesArray[i] = !sVoicesArray[i]; reloadChartGrid(true);
                 });
+                btnToggleVoice.setPosition(daGrid.x + (KEYSIZE*0.75), -(btnToggleVoice.height) - 5);
                 btnToggleVoice.scrollFactor.set(1, 1);
                 stuffGroup.add(btnToggleVoice);
             }
+
+            var btnPlayer:FlxUIButton = new FlxUICustomButton(0, 0, Std.int(KEYSIZE/2), Std.int(KEYSIZE/2), "", Paths.image("editor_assets/"+(_song.playable_players[i] ? "on_play" : "off_play"), null, true),  null, function(){
+                _song.playable_players[i] = !_song.playable_players[i];
+                reloadChartGrid(true);
+            });
+            btnPlayer.setPosition(daGrid.x + (daGrid.width/2) - (btnPlayer.width/2), -(btnPlayer.height) - 5);
+            btnPlayer.scrollFactor.set(1, 1);
+            stuffGroup.add(btnPlayer);
             
-            var btnToggleHitSound:FlxUIButton = new FlxUICustomButton(daGrid.x + (KEYSIZE*2.75), daGrid.y + daGrid.height + 5, Std.int(KEYSIZE / 2), Std.int(KEYSIZE / 2), "", null, sHitsArray[i] ? FlxColor.fromRGB(122, 255, 131) : FlxColor.fromRGB(255, 122, 122), function(){
+            var btnToggleHitSound:FlxUIButton = new FlxUICustomButton(0, -(KEYSIZE*1.75), Std.int(KEYSIZE / 2), Std.int(KEYSIZE / 2), "", Paths.image("editor_assets/"+(sHitsArray[i] ? "on_hit" : "off_hit"), null, true), null, function(){
                 if(sHitsArray.length <= i){return;} sHitsArray[i] = !sHitsArray[i]; reloadChartGrid(true);
             });
+            btnToggleHitSound.setPosition(daGrid.x + daGrid.width - (KEYSIZE*0.75) - btnToggleHitSound.width, -(btnToggleHitSound.height) - 5);
             btnToggleHitSound.scrollFactor.set(1, 1);
             stuffGroup.add(btnToggleHitSound);
 
@@ -810,7 +823,7 @@ class ChartEditorState extends MusicBeatState {
         if(note.typeNote == "Switch"){note.note_size.set(KEYSIZE,KEYSIZE/4);}
 
         note.onDebug = true;
-        note.y = Math.floor(getYfromStrum((note.strumTime - sectionStartTime()) % (conductor.stepCrochet * _song.generalSection[curSection].lengthInSteps)));
+        note.y = Math.floor(getYfromStrum((note.strumTime - sectionStartTime())));
         note.x = gridGroup.members[grid + 1].x;
         if(!(note is StrumEvent)){note.x += Math.floor(note.noteData * KEYSIZE);}
     }
@@ -840,11 +853,13 @@ class ChartEditorState extends MusicBeatState {
         inst = new FlxSound().loadEmbedded(Paths.inst(daSong, cat));
         FlxG.sound.list.add(inst);
 
+        sVoicesArray = [];
         voices.sounds = [];
         if(_song.hasVoices){
             for(i in 0..._song.characters.length){
                 var voice = new FlxSound().loadEmbedded(Paths.voice(i, _song.characters[i][0], daSong, cat));
                 FlxG.sound.list.add(voice);
+                sVoicesArray.push(false);
                 voices.add(voice);
             }
         }
@@ -1143,9 +1158,11 @@ class ChartEditorState extends MusicBeatState {
     var txtCat:FlxUIInputText;
     var txtDiff:FlxUIInputText;
     var txtStage:FlxUIInputText;
+    var txtStyle:FlxUIInputText;
     var txtAspect:FlxUIInputText;
     var txtCharacter:FlxUIInputText;
     var txtNoteStyle:FlxUIInputText;
+    var stpPlayer:FlxUINumericStepper;
     var stpBPM:FlxUINumericStepper;
     var stpSpeed:FlxUINumericStepper;
     var stpStrum:FlxUINumericStepper;
@@ -1273,15 +1290,27 @@ class ChartEditorState extends MusicBeatState {
         }); tabMENU.add(btnImportChart);
 
         var btnLoad:FlxButton = new FlxCustomButton(5, btnImport.y + btnImport.height + 5, Std.int((MENU.width) - 10), null, "Load Song", null, null, function(){loadSong(_song.song, _song.category, _song.difficulty);}); tabMENU.add(btnLoad);
-        
-        var line2 = new FlxSprite(5, btnLoad.y + btnLoad.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line2);
+               
+        var line0 = new FlxSprite(5, btnLoad.y + btnLoad.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line0);
+
+        var lblPlayer = new FlxText(5, line0.y + line0.height + 5, Std.int(MENU.width * 0.4), "Player: ", 8); tabMENU.add(lblPlayer);
+        stpPlayer = new FlxUINumericStepper(lblPlayer.x + lblPlayer.width, lblPlayer.y, 1, _song.single_player, 0, 999); tabMENU.add(stpPlayer);
+            @:privateAccess arrayFocus.push(cast stpPlayer.text_field);
+            stpPlayer.name = "SONG_Player";
+
+        var line2 = new FlxSprite(5, lblPlayer.y + lblPlayer.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line2);
 
         var lblStage = new FlxText(5, line2.y + 7, 0, "Stage: ", 8);  tabMENU.add(lblStage);
         txtStage = new FlxUIInputText(lblStage.x + lblStage.width + 5, lblStage.y, Std.int(MENU.width - lblStage.width - 15), _song.stage, 8); tabMENU.add(txtStage);
         arrayFocus.push(txtStage);
         txtStage.name = "SONG_STAGE";
 
-        var lblSpeed = new FlxText(lblStage.x, lblStage.y + lblStage.height + 5, Std.int(MENU.width * 0.4), "Scroll Speed: ", 8); tabMENU.add(lblSpeed);
+        var lblStyle = new FlxText(5, lblStage.y + lblStage.height + 5, 0, "Style: ", 8);  tabMENU.add(lblStyle);
+        txtStyle = new FlxUIInputText(lblStyle.x + lblStyle.width + 5, lblStyle.y, Std.int(MENU.width - lblStyle.width - 15), _song.uiStyle, 8); tabMENU.add(txtStyle);
+        arrayFocus.push(txtStyle);
+        txtStyle.name = "SONG_STYLE";
+
+        var lblSpeed = new FlxText(5, lblStyle.y + lblStyle.height + 5, Std.int(MENU.width * 0.4), "Scroll Speed: ", 8); tabMENU.add(lblSpeed);
         stpSpeed = new FlxUINumericStepper(lblSpeed.x + lblSpeed.width, lblSpeed.y, 0.1, _song.speed, 0.1, 10, 1); tabMENU.add(stpSpeed);
             @:privateAccess arrayFocus.push(cast stpSpeed.text_field);
         stpSpeed.name = "SONG_Speed";
@@ -1293,6 +1322,10 @@ class ChartEditorState extends MusicBeatState {
 
         chkHasVoices = new FlxUICheckBox(lblBPM.x, lblBPM.y + lblBPM.height + 5, null, null, "Song has Voices?", 100); tabMENU.add(chkHasVoices);
         chkHasVoices.checked = _song.hasVoices;
+
+        var btnReload = new FlxUICustomButton(chkHasVoices.x + chkHasVoices.width + 5, chkHasVoices.y, Std.int((MENU.width / 2) - 8), null, "Reload Audio", null, null, function(){
+            loadAudio(_song.song, _song.category);
+        }); tabMENU.add(btnReload);
 
         var line3 = new FlxSprite(5, chkHasVoices.y + chkHasVoices.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line3);
 
@@ -1907,6 +1940,7 @@ class ChartEditorState extends MusicBeatState {
                 case "SONG_NAME":{_song.song = Paths.getFileName(input.text, true);}
                 case "SONG_CATEGORY":{_song.category = input.text;}
                 case "SONG_DIFFICULTY":{_song.difficulty = input.text;}
+                case "SONG_STYLE":{_song.uiStyle = input.text;}
                 case "SONG_STAGE":{_song.stage = input.text; updateStage();}
                 case "CHARACTER_NAME":{if(_song.characters[selCharacter] != null){_song.characters[selCharacter][0] = input.text;} updateStage(); updateValues();}
                 case "CHARACTER_ASPECT":{if(_song.characters[selCharacter] != null){_song.characters[selCharacter][4] = input.text;} updateStage();}
@@ -1974,6 +2008,12 @@ class ChartEditorState extends MusicBeatState {
             }
 
             switch(wname){
+                case "SONG_Player":{
+                    if(nums.value < 0){nums.value = 0;}
+                    if(nums.value >= _song.sectionStrums.length){nums.value = _song.sectionStrums.length - 1;}
+
+                    _song.single_player = Std.int(nums.value);
+                }
                 case "CHARACTER_X":{
                     if(_song.characters[selCharacter] != null){_song.characters[selCharacter][1][0] = nums.value;}
                     updateStage();

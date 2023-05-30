@@ -1,0 +1,7 @@
+<TextureAtlas imagePath="Spirit.png">
+	<!-- Created with Adobe Animate version 20.0.0.17400 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="282" y="0" frameWidth="288" name="Normal_Idle0000" frameX="0" frameHeight="444" frameY="0" width="282" height="642"/>
+	<SubTexture x="0" y="0" frameWidth="288" name="Normal_Talk0000" frameX="0" frameHeight="444" frameY="0" width="282" height="642"/>
+	<SubTexture x="282" y="0" frameWidth="288" name="Normal_Talk0001" frameX="0" frameHeight="444" frameY="0" width="282" height="642"/>
+</TextureAtlas>

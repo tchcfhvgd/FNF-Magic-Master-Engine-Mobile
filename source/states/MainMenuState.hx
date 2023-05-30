@@ -43,6 +43,7 @@ class MainMenuState extends MusicBeatState {
 	public static var principal_options:Array<Dynamic> = [
 		{option:"StoryMode", icon:"storymode", display:"menu_storymode", func:function(){MusicBeatState.switchState(new StoryMenuState(null, MainMenuState));}},
 		{option:"Freeplay", icon:"freeplay", display:"menu_freeplay", func:function(){MusicBeatState.switchState(new FreeplayState(null, MainMenuState));}},
+		{option:"Duelo", icon:"freeplay", display:"menu_duelo", func:function(){MusicBeatState.switchState(new SongSelector(null, MainMenuState));}},
 		//{option:"Multiplayer", icon:"multiplayer", display:"menu_multiplayer", func:function(){MusicBeatState.switchState(new states.multiplayer.LobbyState());}},
 		{option:"Skins", icon:"skins", display:"menu_skins", func:function(){MusicBeatState.switchState(new SkinsMenuState(null, MainMenuState));}},
 		{option:"Options", icon:"options", display:"menu_options", func:function(){MusicBeatState.state.canControlle = false; MusicBeatState.state.openSubState(new substates.OptionsSubState(function(){MusicBeatState.state.canControlle = true;}));}},
@@ -51,9 +52,10 @@ class MainMenuState extends MusicBeatState {
 	];
 	public static var secondary_options:Array<Dynamic> = [
 		{option:"Chart", icon:"chart_editor", display:"menu_chart_editor", func:function(){MusicBeatState.switchState(new states.editors.ChartEditorState(null, MainMenuState));}},
-		{option:"Character", icon:"character_editor", display:"menu_character_editor", func:function(){states.editors.CharacterEditorState.editCharacter(null, MainMenuState);}},
-		//{option:"Stages", icon:"stage_editor", display:"menu_stage_editor", func:function(){MusicBeatState.switchState(new states.editors.StageEditorState(null, MainMenuState));}},
-		{option:"XML", icon:"xml_editor", display:"menu_xml_editor", func:function(){states.editors.XMLEditorState.editXML(null, MainMenuState);}}
+		{option:"Character", icon:"character_editor", display:"menu_character_editor", func:function(){MusicBeatState.switchState(new states.editors.CharacterEditorState(null, MainMenuState));}},
+		{option:"Stages", icon:"stage_editor", display:"menu_stage_editor", func:function(){MusicBeatState.switchState(new states.editors.StageEditorState(null, MainMenuState));}},
+		{option:"XML", icon:"xml_editor", display:"menu_xml_editor", func:function(){MusicBeatState.switchState(new states.editors.XMLEditorState(null, MainMenuState));}},
+		{option:"TXT", icon:"xml_editor", display:"menu_xml_editor", func:function(){MusicBeatState.switchState(new states.editors.PackerEditorState(null, MainMenuState));}}
 	];
 
 	public static var curSelected:Int = 0;
@@ -62,7 +64,7 @@ class MainMenuState extends MusicBeatState {
 	var curAlphabet:Alphabet;
     var grpArrows:FlxTypedGroup<FlxSprite>;
 
-	override function create(){		
+	override function create(){
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 		persistentUpdate = persistentDraw = true;
@@ -157,7 +159,7 @@ class MainMenuState extends MusicBeatState {
 		grpArrows.members[1].x = (FlxG.width / 2) + (optionGroup.members[curSelected].width / 2) + 50;
 
 		if(canControlle){
-			if(FlxG.keys.justPressed.ONE){MusicBeatState.switchState(new states.editors.StageEditorState(null, MainMenuState));}
+			if(FlxG.keys.justPressed.TWO){MusicBeatState.switchState(new states.editors.PackerEditorState(null, MainMenuState));}
 
 			if(principal_controls.checkAction("Menu_Left", JUST_PRESSED)){changeSelection(-1);}
 			if(principal_controls.checkAction("Menu_Right", JUST_PRESSED)){changeSelection(1);}

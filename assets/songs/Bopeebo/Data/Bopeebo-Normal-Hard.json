@@ -3,7 +3,8 @@
 		"song": "Bopeebo",
 		"validScore": true,
 		"speed": 1.3,
-		"strumToPlay": 1,
+		"single_player": 0,
+		"playable_players": [true],
 		"characters": [
 			[
 				"Girlfriend",

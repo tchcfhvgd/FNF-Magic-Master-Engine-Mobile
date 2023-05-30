@@ -2,55 +2,55 @@
 	"aspect": "Default",
 	"position": [
 		145,
-		305
+		335
 	],
 	"scale": 6,
 	"anims": [
 		{
+			"loop": false,
 			"symbol": "idle spirit",
-			"loop": false,
-			"fps": 24,
 			"anim": "idle",
+			"fps": 24,
 			"indices": []
 		},
 		{
+			"loop": false,
 			"symbol": "spirit down",
-			"loop": false,
-			"fps": 24,
 			"anim": "singDOWN",
+			"fps": 24,
 			"indices": []
 		},
 		{
+			"loop": false,
 			"symbol": "left",
-			"loop": false,
-			"fps": 24,
 			"anim": "singLEFT",
+			"fps": 24,
 			"indices": []
 		},
 		{
+			"loop": false,
 			"symbol": "right",
-			"loop": false,
-			"fps": 24,
 			"anim": "singRIGHT",
+			"fps": 24,
 			"indices": []
 		},
 		{
-			"symbol": "up",
 			"loop": false,
-			"fps": 24,
+			"symbol": "up",
 			"anim": "singUP",
+			"fps": 24,
 			"indices": []
 		}
 	],
-	"name": "Spirit",
-	"image": "spirit",
 	"zoom": 0.8,
-	"onRight": true,
-	"skin": "Default",
-	"camera": [
-		44,
-		42
-	],
+	"image": "spirit",
+	"name": "Spirit",
+	"deathCharacter": "Boyfriend_Death",
 	"healthicon": "spirit-pixel",
-	"deathCharacter": "Boyfriend_Death"
+	"camera": [
+		34,
+		67
+	],
+	"skin": "Default",
+	"onRight": true
 }

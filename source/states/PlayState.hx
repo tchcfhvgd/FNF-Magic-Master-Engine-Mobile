@@ -43,10 +43,12 @@ import haxe.Json;
 
 import StrumLine;
 import Note.Note;
+import DialogueBox;
 import Song.SwagSong;
 import Song.ItemWeek;
 import Note.StrumNote;
 import Note.EventData;
+import Song.SongPlayer;
 import Song.SwagSection;
 import Song.SongStuffManager;
 
@@ -59,7 +61,7 @@ using StringTools;
 class PlayState extends MusicBeatState {
 	public static var SONG:SwagSong = null;
 	public static var isStoryMode:Bool = false;
-	public static var playablesStrums:Array<Int> = [1];
+	public static var strum_players:Array<SongPlayer> = null;
 
     public var curSection(get, never):Int;
 	inline function get_curSection():Int{return Std.int(conductor.getCurStep() / 16);}
@@ -73,24 +75,26 @@ class PlayState extends MusicBeatState {
 	public var strumLeftPos:Float = 100;
 	public var strumMiddlePos:Float = FlxG.width / 2;
 	public var strumRightPos:Float = FlxG.width - 100;
-	public var moveStrums:Bool = true;
 
 	//Song Stats
-	var song_Length:Float = 0;
-	var song_Time:Float = 0;
+	public var song_Length:Float = 0;
+	public var song_Time:Float = 0;
 	
 	//PreSettings Variables
-	var pre_BotPlay:Bool = PreSettings.getPreSetting("BotPlay", "Cheating Settings");
-	var pre_OnlyNotes:Bool = PreSettings.getPreSetting("Only Notes", "Graphic Settings");
-	var pre_TypeMiddle:String = PreSettings.getPreSetting("Type Middle Scroll", "Visual Settings");
-	var pre_DefaultNonPos:String = PreSettings.getPreSetting("Default Strum Position", "Visual Settings");
-	var pre_TypeScroll:String = PreSettings.getPreSetting("Type Scroll", "Visual Settings");
+	public var pre_BotPlay:Bool = PreSettings.getPreSetting("BotPlay", "Cheating Settings");
+	public var pre_OnlyNotes:Bool = PreSettings.getPreSetting("Only Notes", "Graphic Settings");
+	public var pre_TypeMiddle:String = PreSettings.getPreSetting("Type Middle Scroll", "Visual Settings");
+	public var pre_DefaultNonPos:String = PreSettings.getPreSetting("Default Strum Position", "Visual Settings");
+	public var pre_TypeScroll:String = PreSettings.getPreSetting("Type Scroll", "Visual Settings");
 
 	//Gameplay Style
-	var uiStyleCheck:String = 'Default';
+	public var uiStyleCheck:String = 'Default';
 
 	private static var prevCamFollow:FlxObject;
+	
+	// Gameplay Bools
 	public var followChar:Bool = true;
+	public var moveStrums:Bool = true;
 
 	//Other
 	private var songGenerated:Bool = false;
@@ -104,7 +108,7 @@ class PlayState extends MusicBeatState {
 		var swagCounter:Int = 0;
 		timers.push(new FlxTimer().start(conductor.crochet / 1000, function(tmr:FlxTimer){
 			if(introAssets[swagCounter] != null){
-				if(introAssets[swagCounter].sound != null){FlxG.sound.play(Paths.sound(introAssets[swagCounter].sound), 0.6);}
+				if(introAssets[swagCounter].sound != null){FlxG.sound.play(Paths.styleSound(introAssets[swagCounter].sound, uiStyleCheck), 0.6);}
 			
 				if(introAssets[swagCounter].asset != null){
 					var iAssets:FlxSprite = new FlxSprite().loadGraphic(Paths.styleImage(introAssets[swagCounter].asset, uiStyleCheck));
@@ -162,13 +166,15 @@ class PlayState extends MusicBeatState {
 		FlxG.fixedTimestep = false;
 			
         camFollow = new FlxObject(0, 0, 1, 1);
-		camFollow.setPosition(0, 0);
+		camFollow.screenCenter();
 		if (prevCamFollow != null){
 			camFollow = prevCamFollow;
 			prevCamFollow = null;
 		}
 		FlxG.camera.follow(camFollow, LOCKON, 0.04);
 		add(camFollow);
+
+		if(strum_players == null){Song.setPlayersByChart(SONG);}
 
 		generateSong(function(){startCountdown(startSong);});
 	}
@@ -245,18 +251,7 @@ class PlayState extends MusicBeatState {
 				}
 			};
 
-			if(playablesStrums.contains(i)){
-				for(pi in 0...playablesStrums.length){
-					if(playablesStrums[pi] == i){strumLine.player = pi;}
-					break;
-				}
-
-				if(playablesStrums.length > 1){
-					strumLine.onGAME_OVER = function(){strumLine.changeTypeStrum("BotPlay");}
-				}else{
-					strumLine.onGAME_OVER = function(){doGameOver();}
-				}
-			}
+			strumLine.ui_style = uiStyleCheck;
 
 			strumLine.scrollSpeed = songData.speed;
 			strumLine.strumConductor = conductor;
@@ -269,17 +264,34 @@ class PlayState extends MusicBeatState {
 			strumLine.loadStrumNotes(songData.sectionStrums[i]);
 			strumLine.ID = i;
 
-			if(playablesStrums.contains(i)){
-				if(playablesStrums.length > 1){
-					strumLine.load_solo_ui();
-				}else{
-					strumLine.load_global_ui();
-				}
-			}
-
 			strumsGroup.add(strumLine);
 		}
-		
+
+
+		for(i in 0...strum_players.length){
+			var p:Int = strum_players[i].strum;
+			var cur_strum:StrumLine = strumsGroup.members[p];
+
+			if(cur_strum == null){continue;}
+
+			cur_strum.player = i;
+
+			if(strum_players.length > 1){
+				cur_strum.load_solo_ui();
+				cur_strum.onGAME_OVER = function(){
+					strum_players[i].alive = false;
+					cur_strum.changeTypeStrum("BotPlay");
+
+					var canGAMEOVER:Bool = true;
+					for(sp in strum_players){if(sp.alive){canGAMEOVER = false;}}
+					if(canGAMEOVER){doGameOver();}
+				}
+			}else{
+				cur_strum.load_global_ui();
+				cur_strum.onGAME_OVER = function(){doGameOver();}
+			}
+		}
+
 		for(s in scripts){s.exFunction('preload');}
 
 		songGenerated = true;
@@ -303,7 +315,7 @@ class PlayState extends MusicBeatState {
 		for(sound in voices.sounds){sound.play(true);}
 		songPlaying = true;
 		
-		for(i in playablesStrums){strumsGroup.members[i].changeTypeStrum("Playing");}
+		for(s_player in strum_players){strumsGroup.members[s_player.strum].changeTypeStrum("Playing");}
 		
 		#if desktop
 		// Song duration in a float, useful for the time left feature
@@ -356,7 +368,10 @@ class PlayState extends MusicBeatState {
 					true
 				);
 			}
-			if(FlxG.keys.justPressed.SEVEN){states.editors.ChartEditorState._song = SONG; MusicBeatState.switchState(new states.editors.ChartEditorState(null, PlayState));}
+			if(FlxG.keys.justPressed.SEVEN){
+				states.editors.ChartEditorState._song = SONG;
+				MusicBeatState.switchState(new states.editors.ChartEditorState(null, null));
+			}
 			
 			if(FlxG.keys.justPressed.R){doGameOver();}
 		}
@@ -380,22 +395,26 @@ class PlayState extends MusicBeatState {
 			// conductor.lastSongPos = inst.time;
 		}
 
-		if(!pre_OnlyNotes){
-			if(songGenerated && PlayState.SONG.generalSection[curSection] != null){
+		if(songGenerated && PlayState.SONG.generalSection[curSection] != null){
+			if(moveStrums){
 				var left_used:Bool = false;
 				var right_used:Bool = false;
 
 				for(i in 0...strumsGroup.length){
 					var curStrumLine = strumsGroup.members[i];
-					var strumPlayer:Character = stage.getCharacterById(Character.getFocusCharID(SONG, curSection, i));
+					var strum_character:Character = null;
+					if(!pre_OnlyNotes){strum_character = stage.getCharacterById(Character.getFocusCharID(SONG, curSection, i));}
 					var curStrumPosX:String = "";
 					
 					var newStrumLineX:Float = strumLeftPos;
 					var newStrumLineY:Float = 30; if(pre_TypeScroll == "DownScroll"){newStrumLineY = FlxG.height - curStrumLine.genHeight - 30;}
 					var newStrumLineAlpha:Float = 1;					
 
-					if(playablesStrums.contains(i)){
-						if(strumPlayer == null){
+					var isPlayer:Bool = false;
+					for(s_player in strum_players){if(s_player.strum == i){isPlayer = true;}}
+
+					if(isPlayer){
+						if(strum_character == null){
 							switch(pre_DefaultNonPos){
 								case "Left":{newStrumLineX = strumLeftPos; curStrumLinePos = "Left";}
 								case "Middle":{newStrumLineX = strumMiddlePos - (curStrumLine.genWidth/2); curStrumLinePos = "Middle";}
@@ -405,15 +424,15 @@ class PlayState extends MusicBeatState {
 							if(pre_TypeMiddle != "None"){
 								newStrumLineX = strumMiddlePos - (curStrumLine.genWidth/2); curStrumLinePos = "Middle";
 							}else{
-								newStrumLineX = strumPlayer.onRight ? (strumLeftPos) : (strumRightPos - curStrumLine.genWidth);
-								curStrumLinePos = strumPlayer.onRight ? "Left" : "Right";
+								newStrumLineX = strum_character.onRight ? (strumLeftPos) : (strumRightPos - curStrumLine.genWidth);
+								curStrumLinePos = strum_character.onRight ? "Left" : "Right";
 							}
 						}						
 					}else{
 						if(pre_TypeMiddle == "OnlyPlayer"){newStrumLineAlpha = 0;}
 						if(pre_TypeMiddle == "FadeOthers"){newStrumLineAlpha = 0.3;}
 
-						curStrumPosX = strumPlayer.onRight ? "Left" : "Right";
+						if(strum_character != null){curStrumPosX = strum_character.onRight ? "Left" : "Right";}
 
 						if(curStrumPosX == curStrumLinePos){
 							switch(curStrumLinePos){
@@ -446,9 +465,11 @@ class PlayState extends MusicBeatState {
 					curStrumLine.x = FlxMath.lerp(curStrumLine.x, newStrumLineX, 0.1);
 					curStrumLine.alpha = FlxMath.lerp(curStrumLine.alpha, newStrumLineAlpha, 0.1);
 				}
-				// CHARACTER CAMERA
-				if(followChar){Character.setCameraToCharacter(stage.getCharacterById(Character.getFocusCharID(SONG, curSection)), camFollow);}
 			}
+						
+			if(!pre_OnlyNotes){
+				if(followChar){Character.setCameraToCharacter(stage.getCharacterById(Character.getFocusCharID(SONG, curSection)), camFollow);}
+			}			
 		}
 
 		if(stage.camP_1 != null){
@@ -488,12 +509,13 @@ class PlayState extends MusicBeatState {
 		canPause = false;
 		isPaused = true;
 		songPlaying = false;
+		moveStrums = false;
 
 		inst.stop();
 		for(sound in voices.sounds){sound.stop();}
 
 		var song_score:Int = 0;
-		for(i in playablesStrums){song_score += strumsGroup.members[i].STATS.get("Score");}
+		for(s_player in strum_players){song_score += strumsGroup.members[s_player.strum].STATS.get("Score");}
 
 		if(SONG.validScore){Highscore.saveSongScore(SONG.song, song_score, SONG.difficulty, SONG.category);}
 
@@ -602,7 +624,7 @@ class PlayState extends MusicBeatState {
 			resyncVocals();
 		}
 
-		trace('${inst.time} / ${inst.length}');
+		//trace('${inst.time} / ${inst.length}');
 	}
 
 	override function beatHit(){
@@ -624,7 +646,6 @@ class SongListData {
 
 	public static var weekName:String = "PlaceHolderWeek";
 	public static var songPlaylist:Array<SwagSong> = [];
-	public static var isStoryMode:Bool = false;
 
 	public static var campScore:Int = 0;
 
@@ -644,12 +665,12 @@ class SongListData {
 	public static function addSong(song:SwagSong){songPlaylist.push(song);}
 
 	public static function playSong(_isStoryMode:Bool = true):Void {
-		isStoryMode = _isStoryMode;
+		PlayState.isStoryMode = _isStoryMode;
 		MusicBeatState.switchState(new states.LoadingState(new PlayState(), [{type:"SONG", instance:songPlaylist[0]}], false));
 	}
 
 	public static function loadAndPlaySong(SONG:SwagSong, _isStoryMode:Bool = false):Void {
-		isStoryMode = _isStoryMode;
+		PlayState.isStoryMode = _isStoryMode;
 
 		resetVariables();
 		songPlaylist.push(SONG);
@@ -657,11 +678,15 @@ class SongListData {
 	}
 	
 	public static function nextSong(score){
+		PlayState.strum_players = null;
+
 		campScore += score;
 		songPlaylist.shift();
 	}
 
 	public static function resetVariables(){
+		PlayState.strum_players = null;
+
 		songPlaylist = [];
 		campScore = 0;
 	}

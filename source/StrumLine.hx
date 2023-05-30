@@ -320,34 +320,6 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 		var cont:Array<Bool> = []; for(s in MusicBeatState.state.scripts){cont.push(s.exFunction('load_global_ui',[this]));}
 		if(cont.contains(true)){trace("RETURN"); return;}
 
-		if(healthBar == null){
-			healthBar = new FlxBar(330, 663, RIGHT_TO_LEFT, Std.int(FlxG.width / 2) - 20, 16, this, 'HEALTH', 0, MAXHEALTH);
-			healthBar.numDivisions = 500;
-			//healthBar.cameras = [camHUD];
-		}
-        add(healthBar);
-
-		if(sprite_healthBar == null){
-			sprite_healthBar = new FlxSprite(326, 655).loadGraphic(Paths.styleImage("healthbar", ui_style, "shared"));
-			sprite_healthBar.scale.set(0.7,0.7); sprite_healthBar.updateHitbox();
-			//sprite_healthBar.cameras = [camHUD];
-		}
-        add(sprite_healthBar);
-
-		if(leftIcon == null){
-			leftIcon = new HealthIcon('tankman');
-			leftIcon.setPosition(healthBar.x-(leftIcon.width/2),healthBar.y-(leftIcon.height/2));
-			//leftIcon.camera = camHUD;
-		}
-        add(leftIcon);
-		
-		if(rightIcon == null){
-			rightIcon = new HealthIcon('bf', true);
-			rightIcon.setPosition(healthBar.x+healthBar.width-(rightIcon.width/2),healthBar.y-(rightIcon.height/2));
-			//rightIcon.camera = camHUD;
-		}
-        add(rightIcon);
-
 		if(lblStats == null){
 			lblStats = new FlxText(0,0,0,"|| ...Starting Song... ||");
 			lblStats.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -355,7 +327,41 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 			lblStats.y = FlxG.height - lblStats.height - 5;
 			//lblStats.cameras = [camHUD];
 		}
+
+		if(healthBar == null){
+			healthBar = new FlxBar(330, 663, RIGHT_TO_LEFT, Std.int(FlxG.width / 2) - 20, 16, this, 'HEALTH', 0, MAXHEALTH);
+			healthBar.numDivisions = 500;
+            healthBar.screenCenter(X); healthBar.y = lblStats.y - healthBar.height - 18;
+			//healthBar.cameras = [camHUD];
+		}
+
+		if(sprite_healthBar == null){
+			sprite_healthBar = new FlxSprite(326, 655).loadGraphic(Paths.styleImage("healthbar", ui_style, "shared"));
+			sprite_healthBar.scale.set(0.7,0.7); sprite_healthBar.updateHitbox();
+            sprite_healthBar.setPosition(healthBar.x + (healthBar.width/2) - (sprite_healthBar.width/2), healthBar.y + (healthBar.height/2) - (sprite_healthBar.height/2));
+			//sprite_healthBar.cameras = [camHUD];
+		}
+        
+		if(leftIcon == null){
+			leftIcon = new HealthIcon('face');
+			leftIcon.setPosition(healthBar.x-(leftIcon.width/2),healthBar.y-(leftIcon.height/2));
+            leftIcon.visible = false;
+			//leftIcon.camera = camHUD;
+		}
+
+		if(rightIcon == null){
+			rightIcon = new HealthIcon('face', true);
+			rightIcon.setPosition(healthBar.x+healthBar.width-(rightIcon.width/2),healthBar.y-(rightIcon.height/2));
+            rightIcon.visible = false;
+			//rightIcon.camera = camHUD;
+		}
+
+        add(healthBar);
+        add(sprite_healthBar);
+        add(leftIcon);
+        add(rightIcon);
         add(lblStats);
+
 
         if(update_hud == null){
             update_hud = function(){
@@ -369,7 +375,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     
                         if(leftIcon != null){
                             var _char_left:Character = (_player.onRight ? GLOBAL_VARIABLES["Player"] : GLOBAL_VARIABLES["Enemy"]);
-                            if(_char_left != null && leftIcon.curIcon != _char_left.healthIcon){leftIcon.setIcon(_char_left.healthIcon);}
+                            if(_char_left != null && leftIcon.curIcon != _char_left.healthIcon){leftIcon.setIcon(_char_left.healthIcon); leftIcon.visible = true;}
             
                             if(_player.onRight){
                                 leftIcon.x = healthBar.x + (healthBar.width - (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01))) - leftIcon.width;
@@ -382,7 +388,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     
                         if(rightIcon != null){
                             var _char_right:Character = (_player.onRight ? GLOBAL_VARIABLES["Enemy"] : GLOBAL_VARIABLES["Player"]);
-                            if(_char_right != null && rightIcon.curIcon != _char_right.healthIcon){rightIcon.setIcon(_char_right.healthIcon);}
+                            if(_char_right != null && rightIcon.curIcon != _char_right.healthIcon){rightIcon.setIcon(_char_right.healthIcon); rightIcon.visible = true;}
         
                             if(_player.onRight){
                                 rightIcon.x = healthBar.x + (healthBar.width - (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)));
@@ -749,7 +755,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         
         var ppScore:PopUpScore = recycleGrp.recycle(PopUpScore);
         ppScore.setPosition(popRank.x, popRank.y + (popRank.height / 2));
-        ppScore.popup(STATS["Score"]);
+        ppScore.popup(STATS["Score"], ui_style);
         add(ppScore);
         new FlxTimer().start(0.5 + (0.2 * ('${STATS["Score"]}'.length - 1)), function(tmr){remove(ppScore);});
 
@@ -763,7 +769,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 
         var ppCombo:PopUpScore = recycleGrp.recycle(PopUpScore);
         ppCombo.setPosition(sprt_combo.x, sprt_combo.y + (sprt_combo.height / 2));
-        ppCombo.popup(STATS["Combo"]);
+        ppCombo.popup(STATS["Combo"], ui_style);
         add(ppCombo);
         new FlxTimer().start(0.5 + (0.2 * ('${STATS["Combo"]}'.length - 1)), function(tmr){remove(ppCombo);});
     }

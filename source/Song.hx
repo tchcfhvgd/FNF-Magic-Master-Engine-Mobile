@@ -34,7 +34,8 @@ typedef SwagSong = {
 
 	var validScore:Bool;
 
-	var playable:Array<Int>;
+	var single_player:Int;
+	var playable_players:Array<Bool>;
 
 	var uiStyle:String;
 
@@ -100,7 +101,16 @@ typedef ItemSong = {
 	var hidden:Bool;
 	var color:String;
 }
-typedef SongCategoryData = {category:String,difficults:Array<String>};
+
+typedef SongCategoryData = {
+	var category:String;
+	var difficults:Array<String>;
+}
+
+typedef SongPlayer = {
+	var alive:Bool;
+	var strum:Int;
+}
 
 class SongStuffManager {
 	public static function hasCatAndDiff(song:Dynamic, category:String, dificulty:String):Bool {
@@ -136,6 +146,8 @@ class SongStuffManager {
 		var SongList:Array<ItemSong> = [];
 
 		var modlist:Array<Dynamic> = Paths.readFile('assets/data/weeks.json');
+		if(ModSupport.hideVanillaSongs){modlist.shift();}
+
 		for(_mod in modlist){
 			var modData:SongsData = cast Json.parse(Paths.getText(_mod));
 
@@ -218,6 +230,7 @@ class SongStuffManager {
 		var WeekList:Array<ItemWeek> = [];
 
 		var modlist:Array<Dynamic> = Paths.readFile('assets/data/weeks.json');
+		if(ModSupport.hideVanillaWeeks){modlist.shift();}
 
 		for(_mod in modlist){
 			var modData:SongsData = cast Json.parse(Paths.getText(_mod));
@@ -231,7 +244,11 @@ class SongStuffManager {
 	}
 }
 
-class Song{
+class Song {
+	public static function setPlayersByChart(song:SwagSong):Void {
+		states.PlayState.strum_players = [{alive: true, strum: song.single_player}];
+	}
+
 	public static function getStrumKeys(strum:SwagStrum, section:Int):Int {
 		if(strum.notes[section].changeKeys){return strum.notes[section].keys;}
         return strum.keys;
@@ -250,37 +267,6 @@ class Song{
 		daSong += '-' + Paths.getFileName(diff, true);
 
 		return daSong;
-	}
-
-	public var song:String;
-	public var difficulty:String;
-	public var category:String;
-
-	public var bpm:Float;
-	public var speed:Float = 1;
-	
-	public var hasVoices:Bool = true;
-
-	public var playable:Array<Int> = [0];
-	
-	var uiStyle:String = "Default";
-
-	public var stage:String = '';
-	public var characters:Array<Dynamic> = [
-		["Daddy_Dearest", [100, 100], true, "Default", "NORMAL"],
-		["Boyfriend", [770, 100], false, "Default", "NORMAL"],
-		["Girlfriend", [540, 50], false, "Default", "GF"]
-	];
-
-	public var generalSection:Array<SwagGeneralSection>;
-	public var sectionStrums:Array<SwagStrum>;
-
-	public function new(song, generalSection, sectionStrums, bpm)
-	{
-		this.song = song;
-		this.generalSection = generalSection;
-		this.sectionStrums = sectionStrums;
-		this.bpm = bpm;
 	}
 
 	public static function loadFromJson(songFormat:String):SwagSong {
@@ -303,12 +289,13 @@ class Song{
 		if(swagShit.song == null){swagShit.song = "PlaceHolder";}
 		if(swagShit.difficulty == null){swagShit.difficulty = "Normal";}
 		if(swagShit.category == null){swagShit.category = "Normal";}
+
 		if(swagShit.bpm <= 0){swagShit.bpm = 100;}
 		if(swagShit.speed <= 0){swagShit.speed = 3.0;}
+		
 		if(swagShit.uiStyle == null){swagShit.uiStyle = "Default";}
 		if(swagShit.stage == null){swagShit.stage = "Stage";}
-		if(swagShit.playable == null){swagShit.playable = [0];}
-
+		
 		if(swagShit.characters == null){
 			swagShit.characters = [
 				["Daddy_Dearest", [100, 100], true, "Default", "NORMAL"],
@@ -345,6 +332,13 @@ class Song{
 			}
 
 			for(ev in swagShit.generalSection[i].events){Note.set_note(ev, Note.convEventData(Note.getEventData(ev)));}
+
+			
+			if(swagShit.single_player < 0){swagShit.single_player = swagShit.sectionStrums.length - 1;}
+			if(swagShit.playable_players == null){
+				swagShit.playable_players = [];
+				for(i in 0...swagShit.sectionStrums.length){swagShit.playable_players.push(true);}
+			}
 		}
 
 		if(swagShit.sectionStrums == null){
@@ -609,6 +603,12 @@ class Song{
 				if((events_data != null) && (events_data.length > 0)){File.saveContent(options.path.replace('$fileName','global_events'), events_data);}
 				if(options.onComplete != null){options.onComplete();}
 			#end
+		}
+
+		for(i in 0..._global_events.sections.length){
+			for(ev in _global_events.sections[i].events){
+				_song.generalSection[i].events.push(ev);
+			}
 		}
 	}
 }

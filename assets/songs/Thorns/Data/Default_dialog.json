@@ -1,0 +1,54 @@
+{
+    "dialogue":{
+        "dialogue_position": [36, 36],
+        "box": "Spirit_Box",
+        "portraits": [
+            "Spirit",
+            "Pixel_Boyfriend"
+        ],
+        "dialogue": [
+            {
+                "appear_left": "Spirit",
+                "box_anim": "Normal",
+                "dialog":[
+                    {
+                        "portrait": "Spirit", "sound": "dialog_audios/spirit", "time": 0.033, "bold": true, "scale": 0.5,
+                        "text": "Direct contact with real humans, after being trapped in here for so long..."
+                    }
+                ]
+            },
+            {
+                "dialog":[
+                    {
+                        "portrait": "Spirit", "sound": "dialog_audios/spirit", "time": 0.033, "bold": true, "scale": 0.5,
+                        "text": "and HER of all people."
+                    }
+                ]
+            },
+            {
+                "dialog":[
+                    {
+                        "portrait": "Spirit", "sound": "dialog_audios/spirit", "time": 0.033, "bold": true, "scale": 0.5,
+                        "text": "I'll make her father pay for what he's done to me and all the others,,,,"
+                    }
+                ]
+            },
+            {
+                "dialog":[
+                    {
+                        "portrait": "Spirit", "sound": "dialog_audios/spirit", "time": 0.033, "bold": true, "scale": 0.5,
+                        "text": "I'll beat you and make you take my place."
+                    }
+                ]
+            },
+            {
+                "dialog":[
+                    {
+                        "portrait": "Spirit", "sound": "dialog_audios/spirit", "time": 0.033, "bold": true, "scale": 0.5,
+                        "text": "You don't mind your bodies being borrowed right? It's only fair..."
+                    }
+                ]
+            }
+        ]
+    }
+}

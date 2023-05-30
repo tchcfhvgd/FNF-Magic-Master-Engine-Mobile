@@ -3,7 +3,7 @@
 		"song": "Blammed",
 		"validScore": true,
 		"speed": 2.3,
-		"strumToPlay": 1,
+		"single_player": 1,
 		"characters": [
 			[
 				"Girlfriend",

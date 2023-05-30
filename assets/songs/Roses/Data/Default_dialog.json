@@ -1,0 +1,39 @@
+{
+    "dialogue":{
+        "dialogue_position": [36, 36],
+        "box": "Senpai_Box",
+        "portraits": [
+            "Senpai_Angry",
+            "Pixel_Boyfriend"
+        ],
+        "dialogue": [
+            {
+                "appear_left": "Senpai_Angry",
+                "box_anim": "Normal",
+                "dialog":[
+                    {
+                        "portrait": "Senpai_Angry", "sound": "dialog_audios/senpai", "time": 0.033, "bold": true, "scale": 0.5,
+                        "text": "Not bad for an ugly worm."
+                    }
+                ]
+            },
+            {
+                "dialog":[
+                    {
+                        "portrait": "Senpai_Angry", "sound": "dialog_audios/senpai", "time": 0.033, "bold": true, "scale": 0.5,
+                        "text": "But this time I'll rip your nuts off right after your girlfriend finishes gargling mine."
+                    }
+                ]
+            },
+            {
+                "appear_right": "Pixel_Boyfriend",
+                "dialog":[
+                    {
+                        "portrait": "Pixel_Boyfriend", "sound": "dialog_audios/pixel_boyfriend", "time": 0.033, "bold": true, "scale": 0.5,
+                        "text": "Bop beep be be skdoo bep"
+                    }
+                ]
+            }
+        ]
+    }
+}

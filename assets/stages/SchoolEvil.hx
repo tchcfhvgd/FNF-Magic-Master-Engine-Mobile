@@ -65,5 +65,5 @@ bgSky.animation.play('idle');
 if(!Std.isOfType(getState(), PlayState)){return;}
 
 var shFilter:ShaderFilter = new ShaderFilter(new FlxCustomShader({fragmentsrc: Paths.shader("Pixel_Perfect")}));
-FlxG.game.setFilters([shFilter]);
+//FlxG.game.setFilters([shFilter]);
 }

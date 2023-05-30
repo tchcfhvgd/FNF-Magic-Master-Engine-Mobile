@@ -1,0 +1,110 @@
+{
+	"aspect": "Speaker",
+	"position": [
+		-140,
+		76
+	],
+	"scale": 1,
+	"anims": [
+		{
+			"loop": false,
+			"symbol": "Pico shoot 1",
+			"anim": "right1",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "Pico shoot 2",
+			"anim": "right2",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "Pico shoot 3",
+			"anim": "left2",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "Pico shoot 4",
+			"anim": "left1",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"indices": [
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10
+			],
+			"symbol": "Pico shoot 1",
+			"fps": 24,
+			"anim": "right1-loop",
+			"loop": true
+		},
+		{
+			"indices": [
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10
+			],
+			"symbol": "Pico shoot 2",
+			"fps": 24,
+			"anim": "right2-loop",
+			"loop": true
+		},
+		{
+			"indices": [
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10
+			],
+			"symbol": "Pico shoot 3",
+			"fps": 24,
+			"anim": "left1-loop",
+			"loop": true
+		},
+		{
+			"indices": [
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10
+			],
+			"symbol": "Pico shoot 4",
+			"fps": 24,
+			"anim": "left2-loop",
+			"loop": true
+		}
+	],
+	"name": "Pico",
+	"image": "Pico_Speakers",
+	"zoom": 0.8,
+	"antialiasing": true,
+	"deathCharacter": "Boyfriend_Death",
+	"skin": "Default",
+	"onRight": false,
+	"healthicon": "pico",
+	"camera": [
+		10,
+		-135
+	]
+}

@@ -70,17 +70,15 @@ class XMLEditorState extends MusicBeatState {
 
     var camFollow:FlxObject;
 
-    public static function editXML(?onConfirm:Class<FlxState>, ?onBack:Class<FlxState>){
-        FlxG.sound.music.stop();
-        MusicBeatState.switchState(new XMLEditorState(onConfirm, onBack));
-    }
-
     override function create(){
+        if(FlxG.sound.music != null){FlxG.sound.music.stop();}
+
         #if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence('Editing', '[XML Editor]');
 		MagicStuff.setWindowTitle('On XML Editor', 1);
 		#end
+        
         FlxG.mouse.visible = true;
 
         var bgGrid:FlxSprite = FlxGridOverlay.create(10, 10, FlxG.width, FlxG.height, true, 0xff4d4d4d, 0xff333333);
@@ -166,31 +164,31 @@ class XMLEditorState extends MusicBeatState {
         if(canControlle && arrayControlle){    
             if(FlxG.mouse.justPressedRight){pos = [[camFollow.x, camFollow.y],[pMouse.x, pMouse.y]];}
             if(FlxG.mouse.pressedRight){camFollow.setPosition(pos[0][0] + ((pos[1][0] - pMouse.x) * 1.0), pos[0][1] + ((pos[1][1] - pMouse.y) * 1.0));}
-
+            
             if(FlxG.keys.pressed.SHIFT){
                 if(FlxG.mouse.wheel != 0){camFGame.zoom += (FlxG.mouse.wheel * 0.1);} 
                 
-                if(FlxG.keys.justPressed.W){vchCurFrameHeight.change(true);}
-                if(FlxG.keys.justPressed.A){vchCurFrameWidth.change(true);}
-                if(FlxG.keys.justPressed.S){vchCurFrameHeight.change();}
-                if(FlxG.keys.justPressed.D){vchCurFrameWidth.change();}
+                if(FlxG.keys.justPressed.W || (FlxG.keys.pressed.CONTROL && FlxG.keys.pressed.W)){vchCurFrameHeight.change(true);}
+                if(FlxG.keys.justPressed.A || (FlxG.keys.pressed.CONTROL && FlxG.keys.pressed.A)){vchCurFrameWidth.change(true);}
+                if(FlxG.keys.justPressed.S || (FlxG.keys.pressed.CONTROL && FlxG.keys.pressed.S)){vchCurFrameHeight.change();}
+                if(FlxG.keys.justPressed.D || (FlxG.keys.pressed.CONTROL && FlxG.keys.pressed.D)){vchCurFrameWidth.change();}
                 
-                if(FlxG.keys.justPressed.I){vchCurHeight.change(true);}
-                if(FlxG.keys.justPressed.J){vchCurWidth.change(true);}
-                if(FlxG.keys.justPressed.K){vchCurHeight.change();}
-                if(FlxG.keys.justPressed.L){vchCurWidth.change();}
+                if(FlxG.keys.justPressed.I || (FlxG.keys.pressed.CONTROL && FlxG.keys.pressed.I)){vchCurHeight.change(true);}
+                if(FlxG.keys.justPressed.J || (FlxG.keys.pressed.CONTROL && FlxG.keys.pressed.J)){vchCurWidth.change(true);}
+                if(FlxG.keys.justPressed.K || (FlxG.keys.pressed.CONTROL && FlxG.keys.pressed.K)){vchCurHeight.change();}
+                if(FlxG.keys.justPressed.L || (FlxG.keys.pressed.CONTROL && FlxG.keys.pressed.L)){vchCurWidth.change();}
             }else{
                 if(FlxG.mouse.wheel != 0){camFGame.zoom += (FlxG.mouse.wheel * 0.01);}
 
-                if(FlxG.keys.justPressed.W){vchCurFrameY.change(true);}
-                if(FlxG.keys.justPressed.A){vchCurFrameX.change(true);}
-                if(FlxG.keys.justPressed.S){vchCurFrameY.change();}
-                if(FlxG.keys.justPressed.D){vchCurFrameX.change();}
+                if(FlxG.keys.justPressed.W || (FlxG.keys.pressed.CONTROL && FlxG.keys.pressed.W)){vchCurFrameY.change(true);}
+                if(FlxG.keys.justPressed.A || (FlxG.keys.pressed.CONTROL && FlxG.keys.pressed.A)){vchCurFrameX.change(true);}
+                if(FlxG.keys.justPressed.S || (FlxG.keys.pressed.CONTROL && FlxG.keys.pressed.S)){vchCurFrameY.change();}
+                if(FlxG.keys.justPressed.D || (FlxG.keys.pressed.CONTROL && FlxG.keys.pressed.D)){vchCurFrameX.change();}
                 
-                if(FlxG.keys.justPressed.I){vchCurY.change(true);}
-                if(FlxG.keys.justPressed.J){vchCurX.change(true);}
-                if(FlxG.keys.justPressed.K){vchCurY.change();}
-                if(FlxG.keys.justPressed.L){vchCurX.change();}
+                if(FlxG.keys.justPressed.I || (FlxG.keys.pressed.CONTROL && FlxG.keys.pressed.I)){vchCurY.change(true);}
+                if(FlxG.keys.justPressed.J || (FlxG.keys.pressed.CONTROL && FlxG.keys.pressed.J)){vchCurX.change(true);}
+                if(FlxG.keys.justPressed.K || (FlxG.keys.pressed.CONTROL && FlxG.keys.pressed.K)){vchCurY.change();}
+                if(FlxG.keys.justPressed.L || (FlxG.keys.pressed.CONTROL && FlxG.keys.pressed.L)){vchCurX.change();}
             }
 
             if(FlxG.mouse.justPressedMiddle){camFollow.setPosition(eSprite.getGraphicMidpoint().x, eSprite.getGraphicMidpoint().y);}
@@ -225,7 +223,7 @@ class XMLEditorState extends MusicBeatState {
     private function loadGhostSprites():Void {
         if(!txtIMAGE.text.contains(".png") || !txtXML.text.contains(".xml")){return;}
 
-        bSprite.frames = fromUncachedSparrow(BitmapData.fromFile(txtIMAGE.text), Paths.getText(txtXML.text));
+        bSprite.frames = Paths.fromUncachedSparrow(BitmapData.fromFile(txtIMAGE.text), Paths.getText(txtXML.text));
 
         var animArr = getNamesArray(new Access((Xml.parse(Paths.getText(txtXML.text))).firstElement()).elements);
         for(anim in animArr){bSprite.animation.addByPrefix(anim, anim);}
@@ -249,7 +247,7 @@ class XMLEditorState extends MusicBeatState {
         var values:Array<Dynamic> = null;
         if(eSprite != null && eSprite.animation.curAnim != null){values = [eSprite.animation.curAnim.name, eSprite.animation.curAnim.curFrame];}
         if(_XML != null && _IMG != null){
-            eSprite.frames = fromUncachedSparrow(_IMG, _XML.x.toString());
+            eSprite.frames = Paths.fromUncachedSparrow(_IMG, _XML.x.toString());
             
             var animArr = getNamesArray(_XML.elements);
             for(anim in animArr){eSprite.animation.addByPrefix(anim, anim); eSprite.animation.play(anim); eSprite.animation.stop();}
@@ -259,7 +257,7 @@ class XMLEditorState extends MusicBeatState {
     }
 
     public static function getNamesArray(arr:Iterator<Access>):Array<String>{
-        var toReturn:Array<String> = new Array<String>();
+        var toReturn:Array<String> = [];
 
         for(chr in arr){
             var arr_name:Array<String> = chr.att.name.split(""); arr_name.resize(chr.att.name.length - 4);
@@ -305,7 +303,11 @@ class XMLEditorState extends MusicBeatState {
         if(chkSetToAllSprite.checked){
             for(e in _XML.elements){
                 var dnm:DynamicAccess<Dynamic> = cast e; var _elm:Map<String, String> = dnm.get("attributeMap");
-                if(force){_elm.set(attribute, Std.string(value));}else{_elm.set(attribute, Std.string(Std.parseInt(_elm.get(attribute)) - value));}
+                if(force){
+                    _elm.set(attribute, Std.string(value));
+                }else{
+                    _elm.set(attribute, Std.string(Std.parseInt(_elm.get(attribute)) - value));
+                }
             }
             loadESprite(); playAnim();
             return;
@@ -633,38 +635,5 @@ class XMLEditorState extends MusicBeatState {
                 }
             }
         }
-    }
-
-    public static function fromUncachedSparrow(Source:FlxGraphicAsset, Description:String):FlxAtlasFrames {
-        var graphic:FlxGraphic = FlxG.bitmap.add(Source);
-    
-        if(graphic == null || Description == null){return null;}
-    
-        var frames:FlxAtlasFrames = new FlxAtlasFrames(graphic);
-        
-        var data:Access = new Access(Xml.parse(Description).firstElement());
-    
-        for(texture in data.nodes.SubTexture){
-            var name = texture.att.name;
-            var trimmed = texture.has.frameX;
-            var rotated = (texture.has.rotated && texture.att.rotated == "true");
-            var flipX = (texture.has.flipX && texture.att.flipX == "true");
-            var flipY = (texture.has.flipY && texture.att.flipY == "true");
-    
-            var rect = FlxRect.get(Std.parseFloat(texture.att.x), Std.parseFloat(texture.att.y), Std.parseFloat(texture.att.width), Std.parseFloat(texture.att.height));
-
-            var size = if(trimmed){new Rectangle(Std.parseInt(texture.att.frameX), Std.parseInt(texture.att.frameY), Std.parseInt(texture.att.frameWidth), Std.parseInt(texture.att.frameHeight));}else{new Rectangle(0, 0, rect.width, rect.height);}
-    
-            var angle = rotated ? FlxFrameAngle.ANGLE_NEG_90 : FlxFrameAngle.ANGLE_0;
-    
-            var offset = FlxPoint.get(-size.left, -size.top);
-            var sourceSize = FlxPoint.get(size.width, size.height);
-    
-            if(rotated && !trimmed){sourceSize.set(size.height, size.width);}
-    
-            frames.addAtlasFrame(rect, sourceSize, offset, name, angle, flipX, flipY);
-        }
-    
-        return frames;
     }
 }

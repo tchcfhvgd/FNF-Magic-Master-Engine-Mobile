@@ -1,8 +1,14 @@
+/* ||===================================================|| */
+/* || SCRIPTED STAGE - DON'T EXPORT IN THE STAGE EDITOR || */
+/* ||===================================================|| */
+
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
 /* "Variables": [{"type":"Int","isPresset":true,"value":"9","id":"initChar"},{"type":"Float","isPresset":true,"value":1.1,"id":"zoom"},{"type":"Array","isPresset":true,"value":[340,-3000],"id":"camP_1"},{"type":"Array","isPresset":true,"value":[1070,630],"id":"camP_2"}] */
 
-import("Paths", "Paths");
 import("flixel.FlxSprite", "FlxSprite");
+import("flixel.FlxG", "FlxG");
+import("Paths", "Paths");
+import("Math", "Math");
 
 function addToLoad(temp){
 temp.push({type:"ATLAS",instance:Paths.image('tankSky','stages/war',true)});
@@ -24,9 +30,22 @@ temp.push({type:"ATLAS",instance:Paths.image('tank3','stages/war',true)});
 }
 
 presset("initChar", 9);
-presset("zoom", 1.1);
-presset("camP_1", [340,-3000]);
-presset("camP_2", [1070,630]);
+presset("zoom", 0.9);
+presset("camP_1", [540,-3000]);
+presset("camP_2", [970,530]);
+
+var tankWatchTower:FlxSprite;
+var tankRolling:FlxSprite;
+
+var tank0:FlxSprite;
+var tank1:FlxSprite;
+var tank2:FlxSprite;
+var tank3:FlxSprite;
+var tank4:FlxSprite;
+var tank5:FlxSprite;
+
+var tankAngle:Float = FlxG.random.int(-90, 45);
+var tankSpeed:Float = FlxG.random.float(5, 7);
 
 function create(){
 //-<Sprite_Object>-//
@@ -268,7 +287,7 @@ smokeRight.antialiasing = true;
 
 var tankWatchTower_position:Array<Int> = [100,50];
 
-var tankWatchTower = new FlxSprite(tankWatchTower_position[0], tankWatchTower_position[1]);
+tankWatchTower = new FlxSprite(tankWatchTower_position[0], tankWatchTower_position[1]);
 instance.add(tankWatchTower);
 //-{Animated_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
@@ -305,9 +324,9 @@ tankWatchTower.antialiasing = true;
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
 /* "Variables": {"Position":[0,300],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"tankRolling","Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Sprite_Name":"tankRolling","Scroll":[0.5,0.5],"Alpha":1,"Flip_X":false,"Flip_Y":false,"Anims_Prefix":[["idle","BG tank w lighting instance 1"]]} */
 
-var tankRolling_position:Array<Int> = [0,300];
+var tankRolling_position:Array<Int> = [300, 300];
 
-var tankRolling = new FlxSprite(tankRolling_position[0], tankRolling_position[1]);
+tankRolling = new FlxSprite(tankRolling_position[0], tankRolling_position[1]);
 instance.add(tankRolling);
 //-{Animated_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
@@ -361,7 +380,7 @@ tankGround.loadGraphic(Paths.image('tankGround', 'stages/war'));
 
 var tank0_position:Array<Int> = [-500,700];
 
-var tank0 = new FlxSprite(tank0_position[0], tank0_position[1]);
+tank0 = new FlxSprite(tank0_position[0], tank0_position[1]);
 instance.add(tank0);
 //-{Animated_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
@@ -398,9 +417,9 @@ tank0.antialiasing = true;
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
 /* "Variables": {"Position":[-300,640],"Visible":true,"Scale":[1,1],"Angle":0,"Graphic_File":"tank1","Antialiasing":true,"Graphic_Library":"stages/war","Play_Anim":"idle","Sprite_Name":"tank1","Scroll":[2,0.2],"Alpha":1,"Flip_X":false,"Flip_Y":false,"Anims_Prefix":[["idle","fg",24,false]]} */
 
-var tank1_position:Array<Int> = [-300,640];
+var tank1_position:Array<Int> = [-300,740];
 
-var tank1 = new FlxSprite(tank1_position[0], tank1_position[1]);
+tank1 = new FlxSprite(tank1_position[0], tank1_position[1]);
 instance.add(tank1);
 //-{Animated_Graphic}-//
 /* "Packages": {"Paths":"Paths"} */
@@ -439,7 +458,7 @@ tank1.antialiasing = true;
 
 var tank2_position:Array<Int> = [450,940];
 
-var tank2 = new FlxSprite(tank2_position[0], tank2_position[1]);
+tank2 = new FlxSprite(tank2_position[0], tank2_position[1]);
 instance.add(tank2);
 //-{Advanced_Properties}-//
 /* "Packages": {} */
@@ -478,7 +497,7 @@ tank2.animation.play('idle');
 
 var tank4_position:Array<Int> = [1300,900];
 
-var tank4 = new FlxSprite(tank4_position[0], tank4_position[1]);
+tank4 = new FlxSprite(tank4_position[0], tank4_position[1]);
 instance.add(tank4);
 //-{Advanced_Properties}-//
 /* "Packages": {} */
@@ -517,7 +536,7 @@ tank4.animation.play('idle');
 
 var tank5_position:Array<Int> = [1620,700];
 
-var tank5 = new FlxSprite(tank5_position[0], tank5_position[1]);
+tank5 = new FlxSprite(tank5_position[0], tank5_position[1]);
 instance.add(tank5);
 //-{Advanced_Properties}-//
 /* "Packages": {} */
@@ -554,9 +573,9 @@ tank5.animation.play('idle');
 /* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
 /* "Variables": {"Position":[1000,640],"Scale":[1,1],"Visible":true,"Graphic_File":"tank3","Angle":0,"Graphic_Library":"stages/war","Antialiasing":true,"Play_Anim":"idle","Sprite_Name":"tank3","Scroll":[2,0.3],"Alpha":1,"Flip_X":false,"Anims_Prefix":[["idle","fg",24,false]],"Flip_Y":false} */
 
-var tank3_position:Array<Int> = [1000,640];
+var tank3_position:Array<Int> = [1000,740];
 
-var tank3 = new FlxSprite(tank3_position[0], tank3_position[1]);
+tank3 = new FlxSprite(tank3_position[0], tank3_position[1]);
 instance.add(tank3);
 //-{Advanced_Properties}-//
 /* "Packages": {} */
@@ -589,4 +608,23 @@ tank3.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], 
 tank3.animation.play('idle');
 //-[Animated_Graphic]-//
 //->Sprite_Object<-//
+
+pushGlobal();
+}
+
+function beatHit(curBeat:Int):Void {
+    tankWatchTower.animation.play('idle');
+    tank0.animation.play('idle');
+    tank1.animation.play('idle');
+    tank2.animation.play('idle');
+    tank3.animation.play('idle');
+    tank4.animation.play('idle');
+    tank5.animation.play('idle');
+}
+
+function update(elapsed) {
+    tankAngle += elapsed * tankSpeed;
+    tankRolling.angle = tankAngle - 90 + 15;
+    tankRolling.x = 400 + (1000 * Math.cos(Math.PI / 180 * (1 * tankAngle + 180)));
+    tankRolling.y = 700 + (500 * Math.sin(Math.PI / 180 * (1 * tankAngle + 180)));
 }

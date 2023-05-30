@@ -263,18 +263,19 @@ bgGirls.antialiasing = false;
 
 bgGirls.frames = Paths.getAtlas(Paths.image('bgFreaks', 'stages/school', true));
 
-var cur_prefixs:Array<Dynamic> = [["idle","BG girls group"]];
+var cur_prefixs:Array<Dynamic> = [["idle","BG girls group"], ["freak", "BG fangirls dissuaded"]];
 for(i in 0...cur_prefixs.length){
 var cur_anim:Array<Dynamic> = cur_prefixs[i];
 while(cur_anim.length < 6){cur_anim.push(null);}
 bgGirls.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
 }
 bgGirls.animation.play('idle');
+if(PlayState.SONG.song == "Roses"){bgGirls.animation.play('freak');}
 //-[Animated_Graphic]-//
 //->Sprite_Object<-//
 
 if(!Std.isOfType(getState(), PlayState)){return;}
 
 var shFilter:ShaderFilter = new ShaderFilter(new FlxCustomShader({fragmentsrc: Paths.shader("Pixel_Perfect")}));
-FlxG.game.setFilters([shFilter]);
+//FlxG.game.setFilters([shFilter]);
 }

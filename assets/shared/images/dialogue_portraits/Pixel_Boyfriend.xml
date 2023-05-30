@@ -1,0 +1,7 @@
+<TextureAtlas imagePath="Pixel_Boyfriend.png">
+	<!-- Created with Adobe Animate version 20.0.0.17400 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="0" frameWidth="348" y="270" frameX="-14" name="Normal_Idle0000" frameHeight="270" frameY="-6" width="348" height="270"/>
+	<SubTexture x="0" frameWidth="348" y="0" frameX="-14" name="Normal_Talk0000" frameHeight="270" frameY="-6" width="348" height="270"/>
+	<SubTexture x="0" frameWidth="348" y="270" frameX="-14" name="Normal_Talk0001" frameHeight="270" frameY="-6" width="348" height="270"/>
+</TextureAtlas>

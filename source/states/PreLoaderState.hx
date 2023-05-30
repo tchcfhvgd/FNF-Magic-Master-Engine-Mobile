@@ -53,7 +53,7 @@ class PreLoaderState extends FlxUIState {
 		trace('NEWGROUNDS LOL');
 		#end
 
-		FlxG.save.bind('funkin', 'ninjamuffin99');
+		FlxG.save.bind('funkin', 'Yirius125');
 
 		Controls.init();
 		PreSettings.init();
@@ -83,8 +83,8 @@ class PreLoaderState extends FlxUIState {
 		diamond.persist = true;
 		diamond.destroyOnNoUse = false;
 
-		MagicStuff.setGlobalTransition("Default", new TransitionData(FADE, FlxColor.BLACK, 1, new FlxPoint(0, -1), {asset: diamond, width: 32, height: 32}, new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4)), MagicStuff.TransitionType.transIn);
-		MagicStuff.setGlobalTransition("Default", new TransitionData(FADE, FlxColor.BLACK, 0.7, new FlxPoint(0, 1), {asset: diamond, width: 32, height: 32}, new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4)), MagicStuff.TransitionType.transOut);
+		MagicStuff.setGlobalTransition("Default", new TransitionData(FADE, FlxColor.BLACK, 1, new FlxPoint(0, -1), {asset: diamond, width: 32, height: 32}, new FlxRect(-(FlxG.width), -(FlxG.height), FlxG.width * 3, FlxG.height * 3)), MagicStuff.TransitionType.transIn);
+		MagicStuff.setGlobalTransition("Default", new TransitionData(FADE, FlxColor.BLACK, 0.7, new FlxPoint(0, 1), {asset: diamond, width: 32, height: 32}, new FlxRect(-(FlxG.width), -(FlxG.height), FlxG.width * 3, FlxG.height * 3)), MagicStuff.TransitionType.transOut);
 		MagicStuff.changeTransitionType("Default");
 
 		MusicBeatState.switchState(new states.TitleState());

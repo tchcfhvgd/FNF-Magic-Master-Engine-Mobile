@@ -1,0 +1,9 @@
+<TextureAtlas imagePath="Spirit_Box.png">
+	<!-- Created with Adobe Animate version 20.0.0.17400 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="0" frameWidth="1170" y="0" frameX="0" name="Normal_Appear0000" frameHeight="276" frameY="0" width="1170" height="18"/>
+	<SubTexture x="0" frameWidth="1170" y="276" frameX="0" name="Normal_Appear0001" frameHeight="276" frameY="0" width="1170" height="108"/>
+	<SubTexture x="0" frameWidth="1170" y="552" frameX="0" name="Normal_Appear0002" frameHeight="276" frameY="0" width="1170" height="210"/>
+	<SubTexture x="0" frameWidth="1170" y="828" frameX="0" name="Normal_Appear0003" frameHeight="276" frameY="0" width="1170" height="276"/>
+	<SubTexture x="0" frameWidth="1170" y="828" frameX="0" name="Normal_Idle0000" frameHeight="276" frameY="0" width="1170" height="276"/>
+</TextureAtlas>

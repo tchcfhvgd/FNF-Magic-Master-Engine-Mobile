@@ -1,0 +1,35 @@
+<TextureAtlas imagePath="GF_Trans1.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="2" frameWidth="731" y="2" frameX="107" name="GF STARTS TO TURN PART 10000" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="921" frameWidth="731" y="2" frameX="107" name="GF STARTS TO TURN PART 10001" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="1840" frameWidth="731" y="2" frameX="107" name="GF STARTS TO TURN PART 10002" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="2759" frameWidth="731" y="2" frameX="107" name="GF STARTS TO TURN PART 10003" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="3678" frameWidth="731" y="2" frameX="107" name="GF STARTS TO TURN PART 10004" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="4597" frameWidth="731" y="2" frameX="107" name="GF STARTS TO TURN PART 10005" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="5516" frameWidth="731" y="2" frameX="107" name="GF STARTS TO TURN PART 10006" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="6435" frameWidth="731" y="2" frameX="107" name="GF STARTS TO TURN PART 10007" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="2" frameWidth="731" y="684" frameX="107" name="GF STARTS TO TURN PART 10008" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="921" frameWidth="731" y="684" frameX="107" name="GF STARTS TO TURN PART 10009" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="1840" frameWidth="731" y="684" frameX="107" name="GF STARTS TO TURN PART 10010" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="2759" frameWidth="731" y="684" frameX="107" name="GF STARTS TO TURN PART 10011" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="3678" frameWidth="731" y="684" frameX="107" name="GF STARTS TO TURN PART 10012" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="4597" frameWidth="731" y="684" frameX="107" name="GF STARTS TO TURN PART 10013" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="5516" frameWidth="731" y="684" frameX="107" name="GF STARTS TO TURN PART 10014" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="6435" frameWidth="731" y="684" frameX="107" name="GF STARTS TO TURN PART 10015" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="2" frameWidth="731" y="1366" frameX="107" name="GF STARTS TO TURN PART 10016" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="921" frameWidth="731" y="1366" frameX="107" name="GF STARTS TO TURN PART 10017" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="1840" frameWidth="731" y="1366" frameX="107" name="GF STARTS TO TURN PART 10018" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="2759" frameWidth="731" y="1366" frameX="107" name="GF STARTS TO TURN PART 10019" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="3678" frameWidth="731" y="1366" frameX="107" name="GF STARTS TO TURN PART 10020" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="4597" frameWidth="731" y="1366" frameX="107" name="GF STARTS TO TURN PART 10021" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="5516" frameWidth="731" y="1366" frameX="107" name="GF STARTS TO TURN PART 10022" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="6435" frameWidth="731" y="1366" frameX="107" name="GF STARTS TO TURN PART 10023" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="2" frameWidth="731" y="2048" frameX="107" name="GF STARTS TO TURN PART 10024" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="921" frameWidth="731" y="2048" frameX="107" name="GF STARTS TO TURN PART 10025" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="1840" frameWidth="731" y="2048" frameX="107" name="GF STARTS TO TURN PART 10026" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="2759" frameWidth="731" y="2048" frameX="107" name="GF STARTS TO TURN PART 10027" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="3678" frameWidth="731" y="2048" frameX="107" name="GF STARTS TO TURN PART 10028" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="4597" frameWidth="731" y="2048" frameX="107" name="GF STARTS TO TURN PART 10029" frameHeight="651" frameY="9" width="917" height="680"/>
+	<SubTexture x="5516" frameWidth="731" y="2048" frameX="107" name="GF STARTS TO TURN PART 10030" frameHeight="651" frameY="9" width="917" height="680"/>
+</TextureAtlas>

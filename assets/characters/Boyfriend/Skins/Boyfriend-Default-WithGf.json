@@ -2,83 +2,111 @@
 	"aspect": "WithGf",
 	"position": [
 		0,
-		320
+		340
 	],
 	"scale": 1,
 	"anims": [
 		{
-			"loop": false,
+			"indices": [],
+			"symbol": "BF Dead with GF Loop",
+			"fps": 24,
+			"anim": "deadLoop",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "BF Dies with GF",
+			"fps": 24,
+			"anim": "firstDeath",
+			"loop": false
+		},
+		{
+			"indices": [],
 			"symbol": "BF NOTE DOWN",
+			"fps": 24,
 			"anim": "singDOWN",
-			"fps": 24,
-			"indices": []
+			"loop": false
 		},
 		{
-			"loop": false,
+			"indices": [],
 			"symbol": "MISS BF NOTE DOWN",
+			"fps": 24,
 			"anim": "singDOWNmiss",
-			"fps": 24,
-			"indices": []
+			"loop": false
 		},
 		{
-			"loop": false,
+			"indices": [],
 			"symbol": "BF NOTE LEFT",
+			"fps": 24,
 			"anim": "singLEFT",
-			"fps": 24,
-			"indices": []
+			"loop": false
 		},
 		{
-			"loop": false,
+			"indices": [],
 			"symbol": "MISS BF NOTE LEFT",
+			"fps": 24,
 			"anim": "singLEFTmiss",
-			"fps": 24,
-			"indices": []
+			"loop": false
 		},
 		{
-			"loop": false,
+			"indices": [],
 			"symbol": "BF NOTE RIGHT",
+			"fps": 24,
 			"anim": "singRIGHT",
-			"fps": 24,
-			"indices": []
+			"loop": false
 		},
 		{
-			"loop": false,
+			"indices": [],
 			"symbol": "MISS BF NOTE RIGHT",
+			"fps": 24,
 			"anim": "singRIGHTmiss",
-			"fps": 24,
-			"indices": []
+			"loop": false
 		},
 		{
-			"loop": false,
+			"indices": [],
 			"symbol": "BF NOTE UP",
+			"fps": 24,
 			"anim": "singUP",
-			"fps": 24,
-			"indices": []
+			"loop": false
 		},
 		{
-			"loop": false,
+			"indices": [],
 			"symbol": "MISS BF NOTE UP",
+			"fps": 24,
 			"anim": "singUPmiss",
-			"fps": 24,
-			"indices": []
+			"loop": false
 		},
 		{
-			"loop": false,
+			"indices": [],
 			"symbol": "BF catches GF",
-			"anim": "catch",
 			"fps": 24,
-			"indices": []
+			"anim": "catch",
+			"loop": false
 		},
 		{
-			"loop": false,
-			"symbol": "BF idle dance w gf",
-			"anim": "idle",
+			"indices": [],
+			"symbol": "BF idle dance",
 			"fps": 24,
-			"indices": []
+			"anim": "idle",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "Bf Single Idle",
+			"fps": 24,
+			"anim": "singleIdle",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "RETRY confirm holding gf",
+			"fps": 24,
+			"anim": "deathConfirm",
+			"loop": false
 		}
 	],
 	"zoom": 0.8,
-	"image": "bfAndGF",
+	"image": "BfHoldingGf",
 	"name": "Boyfriend",
 	"antialiasing": true,
 	"deathCharacter": "Boyfriend_Death",

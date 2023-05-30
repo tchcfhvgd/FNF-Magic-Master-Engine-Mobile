@@ -19,7 +19,6 @@ import flixel.FlxG;
 import haxe.Json;
 
 import FlxCustom.FlxUICustomNumericStepper;
-import states.PlayState.SongListData;
 import FlxCustom.FlxUICustomButton;
 import FlxCustom.FlxUICustomList;
 import Song.SongStuffManager;
@@ -27,6 +26,8 @@ import Song.SongsData;
 import Song.ItemSong;
 import Song.SwagSong;
 import MagicStuff;
+
+import states.PlayState.SongListData;
 
 #if desktop
 import Discord.DiscordClient;
@@ -240,6 +241,6 @@ class FreeplayState extends MusicBeatState {
 	public function chooseSong():Void {
 		var songInput:String = Song.fileSong(songList[curSong].song, curCat, curDiff);
 		var songdata:SwagSong = Song.loadFromJson(songInput);
-		SongListData.loadAndPlaySong(songdata);
+		SongListData.loadAndPlaySong(songdata, FlxG.keys.pressed.SHIFT);
 	}
 }

@@ -191,15 +191,36 @@ class MusicBeatState extends FlxUIState {
 		super.closeSubState();
 	}
 
+	public static function swtichStateByName(state:String, ?const:Array<Any>):Void {
+		var stage_script = ModSupport.staticScripts.get(state);
+		if(stage_script != null && stage_script.getVariable('CustomState')){
+			FlxG.switchState(new CustomScriptState(stage_script));
+		
+			return;
+		}
+
+		var stage_class:Class<FlxState> = cast Type.resolveClass(state);
+		if(stage_class == null){return;}
+
+		var new_stage:FlxState = Type.createInstance(stage_class, const);
+		if(new_stage == null){return;}
+
+		FlxG.switchState(new_stage);
+	}
+
 	public static function switchToCustomState(state:String):Void {
 		var nScript = ModSupport.staticScripts.get(state);
-		if(nScript != null && nScript.getVariable('CustomState')){FlxG.switchState(new CustomScriptState(nScript));}
+
+		if(nScript == null || !nScript.getVariable('CustomState')){return;}
+		
+		FlxG.switchState(new CustomScriptState(nScript));
 	}
 
 	public static function switchState(nextState:FlxState):Void {
 		var toSwitch:FlxState = nextState;
-		var nScript = ModSupport.staticScripts.get(Type.getClassName(Type.getClass(nextState))); trace(Type.getClassName(Type.getClass(nextState)));
-		if(nScript != null && nScript.getVariable('CustomState')){toSwitch = new CustomScriptState(nScript);}
+
+		var stage_script = ModSupport.staticScripts.get(Type.getClassName(Type.getClass(nextState)));
+		if(stage_script != null && stage_script.getVariable('CustomState')){toSwitch = new CustomScriptState(stage_script);}
 		
 		FlxG.switchState(toSwitch);
 	}

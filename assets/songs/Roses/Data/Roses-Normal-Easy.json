@@ -1,6 +1,6 @@
 {
 	"song": {
-		"strumToPlay": 1,
+		"single_player": 1,
 		"characters": [
 			[
 				"Girlfriend",
@@ -411,7 +411,7 @@
 				"changeBPM": false
 			}
 		],
-		"uiStyle": "Default",
+		"uiStyle": "Pixel",
 		"song": "Roses",
 		"playable": [
 			0

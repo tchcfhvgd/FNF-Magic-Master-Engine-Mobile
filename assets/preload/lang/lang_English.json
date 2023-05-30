@@ -7,14 +7,14 @@
 	"mod_list": [{"animated":true, "bold":true, "text":"Mod List"}],
 
     "menu_storymode": [{"bold":true, "animated":true, "text":"StoryMode"}],
-    "menu_freeplay": [{"bold":true, "animated":true, "text":"FreePlay"}],
+    "menu_freeplay": [{"bold":true, "animated":true, "text":"Freeplay"}],
 	"menu_multiplayer": [{"bold":true, "animated":true, "text":"Multiplayer"}],
 	"menu_skins": [{"bold":true, "animated":true, "text":"Skins"}],
 	"menu_options": [{"bold":true, "animated":true, "text":"Options"}],
 	"menu_mods": [{"bold":true, "animated":true, "text":"Mods"}],
 	"menu_credits": [{"bold":true, "animated":true, "text":"Credits"}],
 
-	"loading_info_1":"Loading",
+	"loading_info_1": "Loading",
 
 	"story_info_1":[
 		{"bold":true, "text":"       "},

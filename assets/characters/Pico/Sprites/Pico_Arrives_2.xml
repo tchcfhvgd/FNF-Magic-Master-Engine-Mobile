@@ -1,0 +1,37 @@
+<TextureAtlas imagePath="Pico_Arrives_2.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="2" y="2" frameWidth="941" name="PICO ARRIVES PART 20000" frameX="206" frameHeight="633" frameY="7" width="1936" height="805"/>
+	<SubTexture x="2" y="2" frameWidth="941" name="PICO ARRIVES PART 20001" frameX="206" frameHeight="633" frameY="7" width="1936" height="805"/>
+	<SubTexture x="1940" y="2" frameWidth="941" name="PICO ARRIVES PART 20002" frameX="216" frameHeight="633" frameY="7" width="1946" height="805"/>
+	<SubTexture x="3888" y="2" frameWidth="941" name="PICO ARRIVES PART 20003" frameX="216" frameHeight="633" frameY="7" width="1946" height="805"/>
+	<SubTexture x="5836" y="2" frameWidth="941" name="PICO ARRIVES PART 20004" frameX="214" frameHeight="633" frameY="7" width="1944" height="805"/>
+	<SubTexture x="2" y="809" frameWidth="941" name="PICO ARRIVES PART 20005" frameX="215" frameHeight="633" frameY="7" width="1945" height="805"/>
+	<SubTexture x="1949" y="809" frameWidth="941" name="PICO ARRIVES PART 20006" frameX="212" frameHeight="633" frameY="7" width="1942" height="805"/>
+	<SubTexture x="3893" y="809" frameWidth="941" name="PICO ARRIVES PART 20007" frameX="215" frameHeight="633" frameY="7" width="1945" height="805"/>
+	<SubTexture x="5836" y="2" frameWidth="941" name="PICO ARRIVES PART 20008" frameX="214" frameHeight="633" frameY="7" width="1944" height="805"/>
+	<SubTexture x="5840" y="809" frameWidth="941" name="PICO ARRIVES PART 20009" frameX="215" frameHeight="633" frameY="7" width="1945" height="805"/>
+	<SubTexture x="2" y="1616" frameWidth="941" name="PICO ARRIVES PART 20010" frameX="743" frameHeight="633" frameY="39" width="2473" height="837"/>
+	<SubTexture x="2477" y="1616" frameWidth="941" name="PICO ARRIVES PART 20011" frameX="743" frameHeight="633" frameY="156" width="2473" height="954"/>
+	<SubTexture x="4952" y="1616" frameWidth="941" name="PICO ARRIVES PART 20012" frameX="757" frameHeight="633" frameY="156" width="2487" height="954"/>
+	<SubTexture x="2" y="2572" frameWidth="941" name="PICO ARRIVES PART 20013" frameX="803" frameHeight="633" frameY="258" width="2533" height="1056"/>
+	<SubTexture x="2537" y="2572" frameWidth="941" name="PICO ARRIVES PART 20014" frameX="803" frameHeight="633" frameY="258" width="2533" height="1056"/>
+	<SubTexture x="5072" y="2572" frameWidth="941" name="PICO ARRIVES PART 20015" frameX="848" frameHeight="633" frameY="345" width="2578" height="1143"/>
+	<SubTexture x="2" y="3717" frameWidth="941" name="PICO ARRIVES PART 20016" frameX="753" frameHeight="633" frameY="345" width="2483" height="1192"/>
+	<SubTexture x="2487" y="3717" frameWidth="941" name="PICO ARRIVES PART 20017" frameX="808" frameHeight="633" frameY="313" width="2538" height="1163"/>
+	<SubTexture x="5027" y="3717" frameWidth="941" name="PICO ARRIVES PART 20018" frameX="815" frameHeight="633" frameY="313" width="2545" height="1166"/>
+	<SubTexture x="2" y="4911" frameWidth="941" name="PICO ARRIVES PART 20019" frameX="816" frameHeight="633" frameY="243" width="2546" height="1097"/>
+	<SubTexture x="2550" y="4911" frameWidth="941" name="PICO ARRIVES PART 20020" frameX="816" frameHeight="633" frameY="243" width="2546" height="1097"/>
+	<SubTexture x="5098" y="4911" frameWidth="941" name="PICO ARRIVES PART 20021" frameX="816" frameHeight="633" frameY="235" width="2546" height="1089"/>
+	<SubTexture x="5098" y="4911" frameWidth="941" name="PICO ARRIVES PART 20022" frameX="816" frameHeight="633" frameY="235" width="2546" height="1089"/>
+	<SubTexture x="2" y="6010" frameWidth="941" name="PICO ARRIVES PART 20023" frameX="816" frameHeight="633" frameY="217" width="2546" height="1071"/>
+	<SubTexture x="2" y="6010" frameWidth="941" name="PICO ARRIVES PART 20024" frameX="816" frameHeight="633" frameY="217" width="2546" height="1071"/>
+	<SubTexture x="2550" y="6010" frameWidth="941" name="PICO ARRIVES PART 20025" frameX="816" frameHeight="633" frameY="183" width="2546" height="1037"/>
+	<SubTexture x="2550" y="6010" frameWidth="941" name="PICO ARRIVES PART 20026" frameX="816" frameHeight="633" frameY="183" width="2546" height="1037"/>
+	<SubTexture x="5098" y="6010" frameWidth="941" name="PICO ARRIVES PART 20027" frameX="816" frameHeight="633" frameY="138" width="2546" height="992"/>
+	<SubTexture x="5098" y="6010" frameWidth="941" name="PICO ARRIVES PART 20028" frameX="816" frameHeight="633" frameY="138" width="2546" height="992"/>
+	<SubTexture x="2" y="7083" frameWidth="941" name="PICO ARRIVES PART 20029" frameX="816" frameHeight="633" frameY="138" width="2546" height="992"/>
+	<SubTexture x="2" y="7083" frameWidth="941" name="PICO ARRIVES PART 20030" frameX="816" frameHeight="633" frameY="138" width="2546" height="992"/>
+	<SubTexture x="2550" y="7083" frameWidth="941" name="PICO ARRIVES PART 20031" frameX="816" frameHeight="633" frameY="138" width="2546" height="992"/>
+	<SubTexture x="5098" y="7083" frameWidth="941" name="PICO ARRIVES PART 20032" frameX="816" frameHeight="633" frameY="138" width="2546" height="992"/>
+</TextureAtlas>
