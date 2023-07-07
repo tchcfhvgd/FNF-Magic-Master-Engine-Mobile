@@ -1,10 +1,11 @@
-import("Note");
-import("PreSettings");
-import("Reflect");
-import("Paths");
-import("StringTools");
-
 import("flixel.FlxG", "FlxG");
+
+import("Note");
+import("Paths");
+import("Reflect");
+import("StringTools");
+import("PreSettings");
+
 
 presset("defaultValues", 
     [

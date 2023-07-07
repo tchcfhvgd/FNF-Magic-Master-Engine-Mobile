@@ -1,28 +1,28 @@
-ConfirmDown0 = 0 0 17 17
-ConfirmDown1 = 17 0 17 17
-ConfirmLeft0 = 34 0 17 17
-ConfirmLeft1 = 0 17 17 17
-ConfirmMiddle0 = 17 17 17 17
-ConfirmMiddle1 = 0 34 17 17
-ConfirmRight0 = 17 34 17 17
-ConfirmRight1 = 34 17 17 17
-ConfirmUp0 = 34 34 17 17
-ConfirmUp1 = 51 0 17 17
-Down0 = 51 17 17 17
-HoldEnd0 = 68 0 17 17
-HoldPiece0 = 51 34 17 17
-Left0 = 68 17 17 17
-Middle0 = 85 0 17 17
-PressDown0 = 85 17 17 17
-PressLeft0 = 68 34 17 17
-PressMiddle0 = 85 34 17 17
-PressRight0 = 0 51 17 17
-PressUp0 = 17 51 17 17
-Right0 = 0 68 17 17
-StaticDown0 = 34 51 17 17
-StaticLeft0 = 17 68 17 17
-StaticMiddle0 = 51 51 17 17
-StaticRight0 = 34 68 17 17
-StaticUp0 = 51 68 17 17
-SwitchHold0 = 68 51 17 17
-Up0 = 85 51 17 17
+ConfirmDown_0:0,0,17,17
+ConfirmDown_1:17,0,17,17
+ConfirmLeft_0:34,0,17,17
+ConfirmLeft_1:0,17,17,17
+ConfirmMiddle_0:17,17,17,17
+ConfirmMiddle_1:0,34,17,17
+ConfirmRight_0:17,34,17,17
+ConfirmRight_1:34,17,17,17
+ConfirmUp_0:34,34,17,17
+ConfirmUp_1:51,0,17,17
+Down_0:51,17,17,17
+HoldEnd_0:68,0,17,17
+HoldPiece_0:51,34,17,17
+Left_0:68,17,17,17
+Middle_0:85,0,17,17
+PressDown_0:85,17,17,17
+PressLeft_0:68,34,17,17
+PressMiddle_0:85,34,17,17
+PressRight_0:0,51,17,17
+PressUp_0:17,51,17,17
+Right_0:0,68,17,17
+StaticDown_0:34,51,17,17
+StaticLeft_0:17,68,17,17
+StaticMiddle_0:51,51,17,17
+StaticRight_0:34,68,17,17
+StaticUp_0:51,68,17,17
+SwitchHold_0:68,51,17,17
+Up_0:85,51,17,17

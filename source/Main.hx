@@ -1,27 +1,26 @@
 package;
 
-import states.PreLoaderState;
-import flixel.FlxG;
-import flixel.FlxGame;
-import flixel.FlxState;
-import flixel.graphics.FlxGraphic;
-import flixel.tweens.FlxTween;
-import haxe.CallStack.StackItem;
-import haxe.CallStack;
-import haxe.io.Path;
-import lime.app.Application;
-import openfl.Assets;
-import openfl.Lib;
-import openfl.display.FPS;
-import openfl.display.Sprite;
-import openfl.display.StageScaleMode;
-import openfl.events.Event;
 import openfl.events.UncaughtErrorEvent;
-import sys.FileSystem;
-import sys.io.File;
-import sys.io.Process;
-import flixel.util.FlxTimer;
+import openfl.display.StageScaleMode;
 import flixel.input.keyboard.FlxKey;
+import flixel.graphics.FlxGraphic;
+import haxe.CallStack.StackItem;
+import flixel.tweens.FlxTween;
+import openfl.display.Sprite;
+import lime.app.Application;
+import flixel.util.FlxTimer;
+import openfl.events.Event;
+import openfl.display.FPS;
+import flixel.FlxState;
+import flixel.FlxGame;
+import haxe.CallStack;
+import sys.FileSystem;
+import sys.io.Process;
+import openfl.Assets;
+import haxe.io.Path;
+import sys.io.File;
+import flixel.FlxG;
+import openfl.Lib;
 
 class Main extends Sprite {
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).

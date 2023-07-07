@@ -17,6 +17,7 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
+using SavedFiles;
 using StringTools;
 
 typedef SwagEvent = {
@@ -35,7 +36,6 @@ typedef SwagSong = {
 	var validScore:Bool;
 
 	var single_player:Int;
-	var playable_players:Array<Bool>;
 
 	var uiStyle:String;
 
@@ -47,6 +47,7 @@ typedef SwagSong = {
 }
 
 typedef SwagStrum = {
+	var isPlayable:Bool;
 	var noteStyle:String;
 	var keys:Int;
 	var charToSing:Array<Int>;
@@ -145,11 +146,11 @@ class SongStuffManager {
 	public static function getSongList():Array<ItemSong> {
 		var SongList:Array<ItemSong> = [];
 
-		var modlist:Array<Dynamic> = Paths.readFile('assets/data/weeks.json');
+		var modlist:Array<String> = Paths.readFile('assets/data/weeks.json');
 		if(ModSupport.hideVanillaSongs){modlist.shift();}
 
 		for(_mod in modlist){
-			var modData:SongsData = cast Json.parse(Paths.getText(_mod));
+			var modData:SongsData = cast _mod.getJson();
 
 			for(week in modData.weekData){
 				if(week.hiddenOnFreeplay){continue;}
@@ -198,8 +199,11 @@ class SongStuffManager {
 					var data:Array<SongCategoryData> = [];
 					for(chart in FileSystem.readDirectory('${songsDirectory}/${song}/Data')){
 						var cStats:Array<String> = chart.replace(".json", "").split("-");
+						if(cStats.length < 3){continue;}
+
 						if(cStats[1] == null){cStats[1] = "Normal";}
 						if(cStats[2] == null){cStats[2] = "Normal";}
+						
 						var hasCat:Bool = false;
 						for(d in data){
 							if(d.category == cStats[1]){continue;}
@@ -229,11 +233,11 @@ class SongStuffManager {
 	public static function getWeekList(showLocked:Bool = false):Array<ItemWeek> {
 		var WeekList:Array<ItemWeek> = [];
 
-		var modlist:Array<Dynamic> = Paths.readFile('assets/data/weeks.json');
+		var modlist:Array<String> = Paths.readFile('assets/data/weeks.json');
 		if(ModSupport.hideVanillaWeeks){modlist.shift();}
 
 		for(_mod in modlist){
-			var modData:SongsData = cast Json.parse(Paths.getText(_mod));
+			var modData:SongsData = cast _mod.getJson();
 			for(week in modData.weekData){
 				if(showLocked && Highscore.checkLock(week.keyLock, true)){continue;}
 				WeekList.push(week);
@@ -272,8 +276,8 @@ class Song {
 	public static function loadFromJson(songFormat:String):SwagSong {
 		if(songFormat == null){songFormat = "Test-Normal-Normal";}
 
-		var rawJson:String = Paths.getText(Paths.chart(songFormat)).trim();
-		var rawEvents:String = Paths.getText(Paths.chart_events(songFormat)).trim();
+		var rawJson:String = Paths.chart(songFormat).getText().trim();
+		var rawEvents:String = Paths.chart_events(songFormat).getText().trim();
 
 		while(!rawJson.endsWith("}")){rawJson = rawJson.substr(0, rawJson.length - 1);}
 		while(!rawEvents.endsWith("}")){rawEvents = rawEvents.substr(0, rawEvents.length - 1);}
@@ -305,7 +309,7 @@ class Song {
 		}
 
 		if(swagShit.sectionStrums == null){swagShit.sectionStrums = [];}
-		if(swagShit.sectionStrums.length <= 0){swagShit.sectionStrums.push({noteStyle:"Default", keys:4, charToSing:[], notes:[]});}
+		if(swagShit.sectionStrums.length <= 0){swagShit.sectionStrums.push({isPlayable: true,noteStyle:"Default", keys:4, charToSing:[], notes:[]});}
 		if(swagShit.generalSection == null){swagShit.generalSection = [];}
 
 		while(swagShit.generalSection.length < swagShit.sectionStrums[0].notes.length){swagShit.generalSection.push({bpm: swagShit.bpm, changeBPM: false, lengthInSteps: 16, strumToFocus: 0, charToFocus: 0, events: []});}
@@ -335,14 +339,11 @@ class Song {
 
 			
 			if(swagShit.single_player < 0){swagShit.single_player = swagShit.sectionStrums.length - 1;}
-			if(swagShit.playable_players == null){
-				swagShit.playable_players = [];
-				for(i in 0...swagShit.sectionStrums.length){swagShit.playable_players.push(true);}
-			}
 		}
 
 		if(swagShit.sectionStrums == null){
 			swagShit.sectionStrums = [{
+				isPlayable: true,
 				noteStyle: swagShit.uiStyle,
 				keys: 4,
 				charToSing: [],
@@ -506,6 +507,7 @@ class Song {
 			}
 
 			var str1:SwagStrum = {
+				isPlayable: true,
 				noteStyle: aSong.get("uiStyle"),
 				keys: 4,
 				charToSing: [1],
@@ -513,6 +515,7 @@ class Song {
 			};
 
 			var str2:SwagStrum = {
+				isPlayable: true,
 				noteStyle: aSong.get("uiStyle"),
 				keys: 4,
 				charToSing: [2],
@@ -525,6 +528,7 @@ class Song {
 		}
 		if(!aSong.exists("sectionStrums")){
 			var nStrm:SwagStrum = {
+				isPlayable: true,
 				noteStyle: aSong.get("uiStyle"),
 				keys: 4,
 				charToSing: [0],

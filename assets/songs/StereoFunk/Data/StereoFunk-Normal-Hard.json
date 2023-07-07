@@ -1,18 +1,23 @@
 {
 	"song": {
+		"song": "StereoFunk",
+		"validScore": true,
+		"arrowSkin": "",
+		"speed": 3,
+		"strumToPlay": 1,
 		"single_player": 1,
 		"characters": [
 			[
 				"Girlfriend",
 				[
-					420,
-					-250
+					600,
+					-100
 				],
 				0.5,
 				false,
 				"Default",
-				"GF",
-				-1
+				"Girlfriend",
+				-2
 			],
 			[
 				"Cassette_Girl",
@@ -23,7 +28,7 @@
 				1,
 				true,
 				"Default",
-				"NORMAL",
+				"Dad",
 				0
 			],
 			[
@@ -35,12 +40,13 @@
 				1,
 				false,
 				"Default",
-				"NORMAL",
+				"Boyfriend",
 				0
 			]
 		],
-		"hasVoices": true,
 		"difficulty": "Hard",
+		"hasVoices": true,
+		"uiStyle": "Default",
 		"generalSection": [
 			{
 				"strumToFocus": 1,
@@ -1035,23 +1041,20 @@
 				"charToFocus": 0
 			}
 		],
-		"uiStyle": "Default",
-		"song": "StereoFunk",
 		"playable": [
 			0
 		],
 		"category": "Normal",
 		"stage": "Street",
 		"needsVoices": true,
-		"validScore": true,
-		"arrowSkin": "",
+		"bpm": 146,
 		"sectionStrums": [
 			{
 				"keys": 4,
 				"charToSing": [
 					1
 				],
-				"noteStyle": "Default",
+				"isPlayable": true,
 				"notes": [
 					{
 						"keys": 4,
@@ -4554,14 +4557,15 @@
 						"altAnim": false,
 						"changeSing": false
 					}
-				]
+				],
+				"noteStyle": "Default"
 			},
 			{
 				"keys": 4,
 				"charToSing": [
 					2
 				],
-				"noteStyle": "Default",
+				"isPlayable": true,
 				"notes": [
 					{
 						"keys": 4,
@@ -5873,28 +5877,8 @@
 							[
 								29589.0410958904,
 								2,
-								0,
-								0,
-								false,
-								"Default",
-								[],
-								[]
-							],
-							[
-								30000,
+								410.958904109589,
 								2,
-								0,
-								0,
-								false,
-								"Default",
-								[],
-								[]
-							],
-							[
-								30410.9589041096,
-								2,
-								0,
-								0,
 								false,
 								"Default",
 								[],
@@ -9494,10 +9478,9 @@
 						"altAnim": false,
 						"changeSing": false
 					}
-				]
+				],
+				"noteStyle": "Default"
 			}
-		],
-		"bpm": 146,
-		"speed": 3
+		]
 	}
 }

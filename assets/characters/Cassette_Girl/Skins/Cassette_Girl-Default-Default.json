@@ -1,44 +1,51 @@
 {
 	"aspect": "Default",
 	"position": [
-		-105,
-		40
+		-6,
+		95
 	],
 	"scale": 1,
 	"anims": [
 		{
-			"symbol": "cassettegirl down",
 			"loop": false,
-			"fps": 24,
+			"symbol": "DOWN",
 			"anim": "singDOWN",
+			"fps": 24,
 			"indices": []
 		},
 		{
-			"symbol": "cassettegirl idle",
 			"loop": false,
-			"fps": 24,
+			"symbol": "IDLE",
 			"anim": "idle",
+			"fps": 24,
 			"indices": []
 		},
 		{
-			"symbol": "cassettegirl left",
 			"loop": false,
-			"fps": 24,
+			"symbol": "LEFT",
 			"anim": "singLEFT",
+			"fps": 24,
 			"indices": []
 		},
 		{
-			"symbol": "cassettegirl right",
 			"loop": false,
-			"fps": 24,
+			"symbol": "RIGHT",
 			"anim": "singRIGHT",
+			"fps": 24,
 			"indices": []
 		},
 		{
-			"symbol": "cassettegirl up",
 			"loop": false,
+			"symbol": "SMOKIN'",
+			"anim": "shokin",
 			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "UP",
 			"anim": "singUP",
+			"fps": 24,
 			"indices": []
 		}
 	],
@@ -46,12 +53,12 @@
 	"image": "cassettegirl",
 	"zoom": 0.8,
 	"antialiasing": true,
-	"deathCharacter": "Boyfriend_Death",
+	"deathCharacter": "Boyfriend",
 	"onRight": true,
 	"skin": "Default",
 	"camera": [
-		20,
-		-15
+		-10,
+		-60
 	],
-	"healthicon": "bf"
+	"healthicon": "cassette"
 }

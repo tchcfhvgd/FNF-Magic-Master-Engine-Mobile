@@ -1,0 +1,164 @@
+{
+	"objects": [
+		{
+			"Values": {
+				"Position_X": -100,
+				"Position_Y": 0,
+				"Sprite_Name": "sky"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 0.1,
+						"Scroll_Y": 0.1
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/philly",
+						"Graphic_File": "sky"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -10,
+				"Position_Y": 0,
+				"Sprite_Name": "city"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 0.3,
+						"Scroll_Y": 0.3
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/philly",
+						"Graphic_File": "city"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": 0,
+				"Position_Y": 0,
+				"Sprite_Name": "lights"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 0.3,
+						"Scroll_Y": 0.3
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/philly",
+						"Graphic_File": "win"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -40,
+				"Position_Y": 50,
+				"Sprite_Name": "behindtrain"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/philly",
+						"Graphic_File": "behindTrain"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": 2000,
+				"Position_Y": 360,
+				"Sprite_Name": "train"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/philly",
+						"Graphic_File": "train"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -40,
+				"Position_Y": 50,
+				"Sprite_Name": "street"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/philly",
+						"Graphic_File": "street"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Graphic_Library": "stages/philly",
+				"Graphic_File": "train_passes",
+				"Sound_Name": "trainsound"
+			},
+			"Attributes": [],
+			"Name": "Sound"
+		}
+	],
+	"variables": [
+		{
+			"Type": "Int",
+			"Name": "initChar",
+			"Value": 5
+		},
+		{
+			"Type": "Array",
+			"Name": "camP_1",
+			"Value": [
+				585,
+				305
+			]
+		},
+		{
+			"Type": "Array",
+			"Name": "camP_2",
+			"Value": [
+				980,
+				610
+			]
+		},
+		{
+			"Type": "Float",
+			"Name": "zoom",
+			"Value": 1.1
+		}
+	]
+}

@@ -15,7 +15,9 @@ import flixel.util.FlxColor;
 
 import states.PlayState.SongListData;
 
-class PauseSubState extends MusicBeatSubstate{
+using SavedFiles;
+
+class PauseSubState extends MusicBeatSubstate {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
 	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Options', 'Exit to menu'];
@@ -27,13 +29,13 @@ class PauseSubState extends MusicBeatSubstate{
 		super(onClose);
 		curCamera.alpha = 0;
 
-		pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true); pauseMusic.volume = 0;
+		pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast').getSound(), true, true); pauseMusic.volume = 0;
 		pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
 		FlxG.sound.list.add(pauseMusic);
 
 		var levelInfo:FlxText = new FlxText(20, 15, 0, "", 32);
 		levelInfo.setFormat(Paths.font("vcr.ttf"), 32);
-		levelInfo.text += states.PlayState.SONG.song;
+		levelInfo.text += Paths.getFileName(states.PlayState.SONG.song);
 		levelInfo.cameras = [curCamera];
 		levelInfo.updateHitbox();
 		add(levelInfo);
@@ -82,11 +84,11 @@ class PauseSubState extends MusicBeatSubstate{
 	
 				switch(daSelected){
 					case "Resume":{doClose();}
-					case "Options":{openSubState(new OptionsSubState());}
-					case "Restart Song":{MusicBeatState.switchState(new states.LoadingState(new states.PlayState(), [{type:"SONG", instance:states.PlayState.SONG}], false));}
+					case "Options":{loadSubState("substates.OptionsSubState", []);}
+					case "Restart Song":{MusicBeatState.loadState("states.PlayState", [], [[{type:"SONG", instance:states.PlayState.SONG}], false]);}
 					case "Exit to menu":{
 						SongListData.resetVariables();
-						MusicBeatState.switchState(new states.MainMenuState());
+						MusicBeatState.switchState("states.MainMenuState", []);
 					}
 				}
 			}

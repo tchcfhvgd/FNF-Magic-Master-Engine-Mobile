@@ -85,7 +85,7 @@
 	"image": "spooky_kids_assets",
 	"name": "Spooky_Kids",
 	"antialiasing": true,
-	"deathCharacter": "Boyfriend_Death",
+	"deathCharacter": "Boyfriend",
 	"camera": [
 		15,
 		0

@@ -1,0 +1,15 @@
+<TextureAtlas imagePath="sound.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="0" frameWidth="249" y="0" frameX="-9" name="Hit0000" frameHeight="225" frameY="-3" width="237" height="218"/>
+	<SubTexture x="0" frameWidth="249" y="0" frameX="-9" name="Hit0001" frameHeight="225" frameY="-3" width="237" height="218"/>
+	<SubTexture x="237" frameWidth="249" y="0" frameX="110" name="Hit0002" frameHeight="225" frameY="96" width="477" height="417"/>
+	<SubTexture x="237" frameWidth="249" y="0" frameX="110" name="Hit0003" frameHeight="225" frameY="96" width="477" height="417"/>
+	<SubTexture x="0" frameWidth="249" y="417" frameX="28" name="Hit0004" frameHeight="225" frameY="33" width="312" height="290"/>
+	<SubTexture x="312" frameWidth="249" y="417" frameX="0" name="Idle0000" frameHeight="225" frameY="0" width="249" height="225"/>
+	<SubTexture x="312" frameWidth="249" y="417" frameX="0" name="Over0000" frameHeight="225" frameY="0" width="249" height="225"/>
+	<SubTexture x="312" frameWidth="249" y="417" frameX="0" name="Over0001" frameHeight="225" frameY="0" width="249" height="225"/>
+	<SubTexture x="561" frameWidth="249" y="417" frameX="55" name="Over0002" frameHeight="225" frameY="45" width="360" height="316"/>
+	<SubTexture x="561" frameWidth="249" y="417" frameX="55" name="Over0003" frameHeight="225" frameY="45" width="360" height="316"/>
+	<SubTexture x="0" frameWidth="249" y="417" frameX="31" name="Over0004" frameHeight="225" frameY="32" width="312" height="290"/>
+</TextureAtlas>

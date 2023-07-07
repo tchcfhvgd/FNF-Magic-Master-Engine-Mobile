@@ -5,13 +5,14 @@ import flixel.util.FlxSave;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
 
+using StringTools;
+
 class PreSettings {
     public static var CURRENT_SETTINGS:Map<String, Map<String, Dynamic>> = [];
     public static var PRESETTINGS:Map<String, Map<String, Dynamic>> = [];
     public static final DEFAULTSETTINGS:Map<String, Map<String, Dynamic>> = [
         "Game Settings" => [
-            "Language" => [0, ["English", "Español", "Portuguese"]],
-            "Ghost Tapping" => true,
+            "Language" => [0, ["English", "Español"]],
             "Note Offset" => 0,
             "Scroll Speed Type" => [0, ["Scale", "Force", "Disabled"]],
             "ScrollSpeed" => 1
@@ -24,14 +25,12 @@ class PreSettings {
             "Type Middle Scroll" => [0, ["None", "OnlyPlayer", "FadeOthers"]],
             "Type Camera" => [1, ["Static", "MoveToSing"]],
             "Type Light Strums" => [0, ["All", "OnlyMyStrum", "OnlyOtherStrums", "None"]],
-            "Type Splash" => [0, ["OnSick", "TransparencyOnRate", "None"]],
+            "Type Splash" => [0, ["OnSick", "None"]],
         ],
         "Graphic Settings" => [
             "FrameRate" => 60,
             "Antialiasing" => true,
             "Background Animated" => true,
-            "Ambient Effects" => true,
-            "HUD Effects" => true,
             "Only Notes" => false
         ],
         "Other Settings" => [
@@ -41,11 +40,9 @@ class PreSettings {
             "Allow NotSafeForWork" => true
         ],
         "Cheating Settings" => [
-            "BotPlay" => false,
-            "Practice Mode" => false,
             "Damage Multiplier" => 1,
             "Healing Multiplier" => 1,
-            "Type Notes" => [0, ["All", "OnlyNormal", "OnlySpecials", "DisableBads", "DisableGoods"]]
+            "Type Mode" => [0, ["Normal", "Practice", "BotPlay"]],
         ]
     ];
     public static function init():Void {
@@ -76,6 +73,18 @@ class PreSettings {
                 }
             }
         }
+
+        var toLang:Array<String> = [];
+        for(a in Paths.readDirectory('assets/lang')){toLang.push(a.split("/").pop().replace(".json", "").replace("lang_", ""));}
+        CURRENT_SETTINGS.get("Game Settings").get("Language")[1] = toLang;
+
+		if(PreSettings.getPreSetting("FrameRate", "Graphic Settings") > FlxG.drawFramerate){
+			FlxG.updateFramerate = PreSettings.getPreSetting("FrameRate", "Graphic Settings");
+			FlxG.drawFramerate = PreSettings.getPreSetting("FrameRate", "Graphic Settings");
+		}else{
+			FlxG.drawFramerate = PreSettings.getPreSetting("FrameRate", "Graphic Settings");
+			FlxG.updateFramerate = PreSettings.getPreSetting("FrameRate", "Graphic Settings");
+		}
         
         trace("PreSettings Loaded");
     }
@@ -83,6 +92,15 @@ class PreSettings {
     public static function saveSettings(){
         FlxG.save.data.PRESETTINGS = CURRENT_SETTINGS;
         FlxG.save.flush();
+        
+		if(PreSettings.getPreSetting("FrameRate", "Graphic Settings") > FlxG.drawFramerate){
+			FlxG.updateFramerate = PreSettings.getPreSetting("FrameRate", "Graphic Settings");
+			FlxG.drawFramerate = PreSettings.getPreSetting("FrameRate", "Graphic Settings");
+		}else{
+			FlxG.drawFramerate = PreSettings.getPreSetting("FrameRate", "Graphic Settings");
+			FlxG.updateFramerate = PreSettings.getPreSetting("FrameRate", "Graphic Settings");
+		}
+
 		trace("PreSettings Saved Successfully!");
     }
 

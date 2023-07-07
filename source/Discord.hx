@@ -45,6 +45,7 @@ class DiscordClient {
 	}
 
 	public static function changePresence(details:String, state:Null<String>, ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float){
+		#if desktop
 		var startTimestamp:Float = if(hasStartTimestamp) Date.now().getTime() else 0;
 
 		if(endTimestamp > 0){endTimestamp = startTimestamp + endTimestamp;}
@@ -61,5 +62,6 @@ class DiscordClient {
 		});
 
 		//trace('Discord RPC Updated. Arguments: $details, $state, $smallImageKey, $hasStartTimestamp, $endTimestamp');
+		#end
 	}
 }

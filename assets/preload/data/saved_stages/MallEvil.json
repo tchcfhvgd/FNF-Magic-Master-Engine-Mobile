@@ -1,0 +1,97 @@
+{
+	"objects": [
+		{
+			"Values": {
+				"Position_X": -615,
+				"Position_Y": -620,
+				"Sprite_Name": "background"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 0.2,
+						"Scroll_Y": 0.2
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/mallEvil",
+						"Graphic_File": "evilBG"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": 400,
+				"Position_Y": -250,
+				"Sprite_Name": "tree"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 0.4,
+						"Scroll_Y": 0.4
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/mallEvil",
+						"Graphic_File": "evilTree"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -620,
+				"Position_Y": 700,
+				"Sprite_Name": "floorSnow"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/mallEvil",
+						"Graphic_File": "evilSnow"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		}
+	],
+	"variables": [
+		{
+			"Type": "Int",
+			"Name": "initChar",
+			"Value": 2
+		},
+		{
+			"Type": "Array",
+			"Name": "camP_1",
+			"Value": [
+				-60,
+				-2210
+			]
+		},
+		{
+			"Type": "Array",
+			"Name": "camP_2",
+			"Value": [
+				1110,
+				490
+			]
+		},
+		{
+			"Type": "Float",
+			"Name": "zoom",
+			"Value": 1.1
+		}
+	]
+}

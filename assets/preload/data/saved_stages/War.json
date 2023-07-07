@@ -1,0 +1,426 @@
+{
+	"objects": [
+		{
+			"Values": {
+				"Position_X": -250,
+				"Position_Y": -250,
+				"Sprite_Name": "background"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/war",
+						"Graphic_File": "tankSky"
+					},
+					"Name": "Basic_Graphic"
+				},
+				{
+					"Values": {
+						"Scale_Y": 1,
+						"Scale_X": 1
+					},
+					"Name": "Scale"
+				},
+				{
+					"Values": {
+						"Scroll_X": 0,
+						"Scroll_Y": 0
+					},
+					"Name": "ScrollFactor"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -500,
+				"Position_Y": 150,
+				"Sprite_Name": "clouds"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 0.1,
+						"Scroll_Y": 0.1
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/war",
+						"Graphic_File": "tankClouds"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -90,
+				"Position_Y": 100,
+				"Sprite_Name": "mountains"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 0.2,
+						"Scroll_Y": 0.2
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/war",
+						"Graphic_File": "tankMountains"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -200,
+				"Position_Y": 130,
+				"Sprite_Name": "buildings"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 0.3,
+						"Scroll_Y": 0.3
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/war",
+						"Graphic_File": "tankBuildings"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -180,
+				"Position_Y": 150,
+				"Sprite_Name": "ruins"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 0.4,
+						"Scroll_Y": 0.4
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/war",
+						"Graphic_File": "tankRuins"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": 0,
+				"Position_Y": 0,
+				"Sprite_Name": "smokeLeft"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 0.4,
+						"Scroll_Y": 0.4
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Symbol_Name": "SmokeBlurLeft",
+						"Graphic_Library": "stages/war",
+						"Graphic_File": "smokeLeft"
+					},
+					"Name": "Animated_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": 900,
+				"Position_Y": 0,
+				"Sprite_Name": "smokeRight"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 0.4,
+						"Scroll_Y": 0.4
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Symbol_Name": "SmokeRight",
+						"Graphic_Library": "stages/war",
+						"Graphic_File": "smokeRight"
+					},
+					"Name": "Animated_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": 100,
+				"Position_Y": 50,
+				"Sprite_Name": "watchtower"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 0.5,
+						"Scroll_Y": 0.5
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Symbol_Name": "watchtower gradient color",
+						"Graphic_Library": "stages/war",
+						"Graphic_File": "tankWatchtower"
+					},
+					"Name": "Animated_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": 300,
+				"Position_Y": 300,
+				"Sprite_Name": "tankrolling"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 0.5,
+						"Scroll_Y": 0.5
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Symbol_Name": "BG tank w lighting instance 1",
+						"Graphic_Library": "stages/war",
+						"Graphic_File": "tankRolling"
+					},
+					"Name": "Animated_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -250,
+				"Position_Y": -50,
+				"Sprite_Name": "ground"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/war",
+						"Graphic_File": "tankGround"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -500,
+				"Position_Y": 700,
+				"Sprite_Name": "tank0"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Symbol_Name": "fg",
+						"Graphic_Library": "stages/war",
+						"Graphic_File": "tank0"
+					},
+					"Name": "Animated_Graphic"
+				},
+				{
+					"Values": {
+						"Scroll_X": 1.7,
+						"Scroll_Y": 1.5
+					},
+					"Name": "ScrollFactor"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -300,
+				"Position_Y": 740,
+				"Sprite_Name": "tank1"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Symbol_Name": "fg",
+						"Graphic_Library": "stages/war",
+						"Graphic_File": "tank1"
+					},
+					"Name": "Animated_Graphic"
+				},
+				{
+					"Values": {
+						"Scroll_X": 2,
+						"Scroll_Y": 0.2
+					},
+					"Name": "ScrollFactor"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": 450,
+				"Position_Y": 940,
+				"Sprite_Name": "tank2"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 1.5,
+						"Scroll_Y": 1.5
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Symbol_Name": "foreground",
+						"Graphic_Library": "stages/war",
+						"Graphic_File": "tank2"
+					},
+					"Name": "Animated_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": 1300,
+				"Position_Y": 900,
+				"Sprite_Name": "tank4"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 1.5,
+						"Scroll_Y": 1.5
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Symbol_Name": "fg",
+						"Graphic_Library": "stages/war",
+						"Graphic_File": "tank4"
+					},
+					"Name": "Animated_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": 1620,
+				"Position_Y": 700,
+				"Sprite_Name": "tank5"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 1.5,
+						"Scroll_Y": 1.5
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Symbol_Name": "fg",
+						"Graphic_Library": "stages/war",
+						"Graphic_File": "tank5"
+					},
+					"Name": "Animated_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": 1000,
+				"Position_Y": 740,
+				"Sprite_Name": "tank3"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 2,
+						"Scroll_Y": 0.3
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Symbol_Name": "fg",
+						"Graphic_Library": "stages/war",
+						"Graphic_File": "tank3"
+					},
+					"Name": "Animated_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		}
+	],
+	"variables": [
+		{
+			"Type": "Int",
+			"Name": "initChar",
+			"Value": 9
+		},
+		{
+			"Type": "Array",
+			"Name": "camP_1",
+			"Value": [
+				540,
+				-3000
+			]
+		},
+		{
+			"Type": "Array",
+			"Name": "camP_2",
+			"Value": [
+				970,
+				530
+			]
+		},
+		{
+			"Type": "Float",
+			"Name": "zoom",
+			"Value": 0.9
+		}
+	]
+}

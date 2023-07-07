@@ -1,9 +1,0 @@
-$flixel.FlxSprite,FlxSprite$
-
-%Sprite_Name:placeholder:string%
-%Position:[0,0]:array%
-
-var #Sprite_Name#_position:Array<Int> = #Position#;
-
-var #Sprite_Name# = new FlxSprite(#Sprite_Name#_position[0], #Sprite_Name#_position[1]);
-instance.add(#Sprite_Name#);

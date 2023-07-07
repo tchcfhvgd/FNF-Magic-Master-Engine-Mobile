@@ -6,6 +6,7 @@ import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.Assets as OpenFlAssets;
 
+using SavedFiles;
 using StringTools;
 
 class HealthIcon extends FlxSprite {
@@ -31,16 +32,16 @@ class HealthIcon extends FlxSprite {
 
 		switch(curIcon){
 			default:{
-				var path = Paths.image('icons/icon-${curIcon}', null, true);
-				if(!Paths.exists(path)){path = Paths.image('icons/icon-face', null, true);}
+				var path = Paths.image('icons/icon-${curIcon}');
+				if(!Paths.exists(path)){path = Paths.image('icons/icon-face');}
 
-				if(Paths.getAtlas(path) != null){
-					this.frames = Paths.getAtlas(path);
+				if(path.getAtlas() != null){
+					this.frames = path.getAtlas();
 
 					this.animation.addByPrefix('default', 'Default', 24, true, isPlayer);
 					this.animation.addByPrefix('losing', 'Losing', 24, true, isPlayer);
 				}else{
-					var _bitMap:FlxGraphic = Paths.getGraphic(path);
+					var _bitMap:FlxGraphic = path.getGraphic();
 					if(_bitMap == null){return;}
 
 					this.loadGraphic(_bitMap, true, Math.floor(_bitMap.width / 2), Math.floor(_bitMap.height));
@@ -48,9 +49,8 @@ class HealthIcon extends FlxSprite {
 					this.animation.add('default', [0], 0, false, isPlayer);
 					this.animation.add('losing', [1], 0, false, isPlayer);
 				}
-				updateHitbox();
-
 				playAnim("default");
+				updateHitbox();
 			}
 		}
 	}

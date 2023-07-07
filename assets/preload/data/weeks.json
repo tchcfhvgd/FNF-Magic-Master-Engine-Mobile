@@ -20,7 +20,7 @@
             "categories": [
                 {"category": "Normal", "difficults": ["Easy", "Normal", "Hard"]}
             ],
-            "songs":["Bopeebo", "Fresh", "Dad_battle"],
+            "songs":["Bopeebo", "Fresh", "Dad_Battle"],
             "keyLock": null,
             "hiddenOnWeeks": false,
             "hiddenOnFreeplay": false,
@@ -103,22 +103,24 @@
             "hiddenOnWeeks": false,
             "hiddenOnFreeplay": false,
             "colorFreeplay": "#ce8d04"
-        },
-        {
-            "name": "losttapes",
-            "display": "Lost Tapes",
-            "title": "And this Week?",
-            "categories": [
-                {"category": "Normal", "difficults": ["Easy", "Normal", "Hard"]}
-            ],
-            "songs":["StereoFunk"],
-            "keyLock": null,
-            "hiddenOnWeeks": false,
-            "hiddenOnFreeplay": false,
-            "colorFreeplay": "#883dd9"
         }
     ],
 
-    "freeplayData": [],
+    "freeplayData": [
+        {
+            "song": "Sassy_Magic",
+            "categories": [{"category": "Normal", "difficults": ["Easy", "Normal", "Hard"]}],
+            "keyLock": null,
+            "hidden": false,
+            "color": "#1a172b"
+        },
+        {
+            "song": "StereoFunk",
+            "categories": [{"category": "Normal", "difficults": ["Easy", "Normal", "Hard"]}],
+            "keyLock": null,
+            "hidden": false,
+            "color": "#883dd9"
+        }
+    ],
     "showArchiveSongs": false
 }

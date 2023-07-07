@@ -1,23 +1,23 @@
 {
 	"aspect": "Pixel",
 	"position": [
-		160,
-		375
+		-135,
+		110
 	],
 	"scale": 6,
 	"anims": [
 		{
-			"loop": false,
 			"symbol": "GF IDLE",
-			"anim": "idle",
+			"loop": false,
 			"fps": 24,
+			"anim": "idle",
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "GF IDLE",
-			"anim": "danceLeft",
+			"loop": false,
 			"fps": 24,
+			"anim": "danceLeft",
 			"indices": [
 				0,
 				1,
@@ -37,10 +37,10 @@
 			]
 		},
 		{
-			"loop": false,
 			"symbol": "GF IDLE",
-			"anim": "danceRight",
+			"loop": false,
 			"fps": 24,
+			"anim": "danceRight",
 			"indices": [
 				16,
 				17,
@@ -59,17 +59,17 @@
 			]
 		}
 	],
-	"zoom": 0.8,
-	"image": "gfPixel",
 	"name": "Girlfriend",
+	"image": "gfPixel",
+	"zoom": 0.8,
 	"antialiasing": false,
-	"skin": "Default",
-	"healthicon": "gf",
-	"camera": [
-		-10,
-		-100
-	],
+	"deathCharacter": "Boyfriend",
 	"onRight": false,
-	"deathCharacter": "Boyfriend_Death",
+	"camera": [
+		285,
+		250
+	],
+	"healthicon": "gf",
+	"skin": "Default",
 	"danceIdle": true
 }

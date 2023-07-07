@@ -1,0 +1,130 @@
+<TextureAtlas imagePath="Manolo.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="2427" y="646" frameWidth="412" name="DOWN0000" frameX="-29" frameHeight="617" frameY="-75" width="454" height="566"/>
+	<SubTexture x="2427" y="646" frameWidth="412" name="DOWN0001" frameX="-29" frameHeight="617" frameY="-75" width="454" height="566"/>
+	<SubTexture x="2881" y="646" frameWidth="412" name="DOWN0002" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="2881" y="646" frameWidth="412" name="DOWN0003" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="2881" y="646" frameWidth="412" name="DOWN0004" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="2881" y="646" frameWidth="412" name="DOWN0005" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="2881" y="646" frameWidth="412" name="DOWN0006" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="2881" y="646" frameWidth="412" name="DOWN0007" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="2881" y="646" frameWidth="412" name="DOWN0008" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="2881" y="646" frameWidth="412" name="DOWN0009" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="2881" y="646" frameWidth="412" name="DOWN0010" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="2881" y="646" frameWidth="412" name="DOWN0011" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="2881" y="646" frameWidth="412" name="DOWN0012" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="2881" y="646" frameWidth="412" name="DOWN0013" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="0" y="0" frameWidth="412" name="BEATBOX DOWN0000" frameX="-29" frameHeight="617" frameY="-75" width="454" height="566"/>
+	<SubTexture x="0" y="0" frameWidth="412" name="BEATBOX DOWN0001" frameX="-29" frameHeight="617" frameY="-75" width="454" height="566"/>
+	<SubTexture x="454" y="0" frameWidth="412" name="BEATBOX DOWN0002" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="454" y="0" frameWidth="412" name="BEATBOX DOWN0003" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="454" y="0" frameWidth="412" name="BEATBOX DOWN0004" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="454" y="0" frameWidth="412" name="BEATBOX DOWN0005" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="454" y="0" frameWidth="412" name="BEATBOX DOWN0006" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="454" y="0" frameWidth="412" name="BEATBOX DOWN0007" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="454" y="0" frameWidth="412" name="BEATBOX DOWN0008" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="454" y="0" frameWidth="412" name="BEATBOX DOWN0009" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="454" y="0" frameWidth="412" name="BEATBOX DOWN0010" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="454" y="0" frameWidth="412" name="BEATBOX DOWN0011" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="454" y="0" frameWidth="412" name="BEATBOX DOWN0012" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="454" y="0" frameWidth="412" name="BEATBOX DOWN0013" frameX="-32" frameHeight="617" frameY="-57" width="459" height="583"/>
+	<SubTexture x="3320" y="0" frameWidth="412" name="IDLE0000" frameX="56" frameHeight="617" frameY="-21" width="412" height="617"/>
+	<SubTexture x="3320" y="0" frameWidth="412" name="IDLE0001" frameX="56" frameHeight="617" frameY="-21" width="412" height="617"/>
+	<SubTexture x="0" y="646" frameWidth="412" name="IDLE0002" frameX="58" frameHeight="617" frameY="-6" width="411" height="631"/>
+	<SubTexture x="0" y="646" frameWidth="412" name="IDLE0003" frameX="58" frameHeight="617" frameY="-6" width="411" height="631"/>
+	<SubTexture x="411" y="646" frameWidth="412" name="IDLE0004" frameX="55" frameHeight="617" frameY="-4" width="403" height="633"/>
+	<SubTexture x="411" y="646" frameWidth="412" name="IDLE0005" frameX="55" frameHeight="617" frameY="-4" width="403" height="633"/>
+	<SubTexture x="814" y="646" frameWidth="412" name="IDLE0006" frameX="56" frameHeight="617" frameY="-2" width="404" height="635"/>
+	<SubTexture x="814" y="646" frameWidth="412" name="IDLE0007" frameX="56" frameHeight="617" frameY="-2" width="404" height="635"/>
+	<SubTexture x="1218" y="646" frameWidth="412" name="IDLE0008" frameX="56" frameHeight="617" frameY="-1" width="403" height="635"/>
+	<SubTexture x="1218" y="646" frameWidth="412" name="IDLE0009" frameX="56" frameHeight="617" frameY="-1" width="403" height="635"/>
+	<SubTexture x="1621" y="646" frameWidth="412" name="IDLE0010" frameX="56" frameHeight="617" frameY="0" width="403" height="636"/>
+	<SubTexture x="1621" y="646" frameWidth="412" name="IDLE0011" frameX="56" frameHeight="617" frameY="0" width="403" height="636"/>
+	<SubTexture x="2024" y="646" frameWidth="412" name="IDLE0012" frameX="56" frameHeight="617" frameY="0" width="403" height="636"/>
+	<SubTexture x="2024" y="646" frameWidth="412" name="IDLE0013" frameX="56" frameHeight="617" frameY="0" width="403" height="636"/>
+	<SubTexture x="3340" y="646" frameWidth="412" name="LEFT0000" frameX="39" frameHeight="617" frameY="-14" width="404" height="636"/>
+	<SubTexture x="3340" y="646" frameWidth="412" name="LEFT0001" frameX="39" frameHeight="617" frameY="-14" width="404" height="636"/>
+	<SubTexture x="0" y="1282" frameWidth="412" name="LEFT0002" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="0" y="1282" frameWidth="412" name="LEFT0003" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="0" y="1282" frameWidth="412" name="LEFT0004" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="0" y="1282" frameWidth="412" name="LEFT0005" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="0" y="1282" frameWidth="412" name="LEFT0006" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="0" y="1282" frameWidth="412" name="LEFT0007" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="0" y="1282" frameWidth="412" name="LEFT0008" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="0" y="1282" frameWidth="412" name="LEFT0009" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="0" y="1282" frameWidth="412" name="LEFT0010" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="0" y="1282" frameWidth="412" name="LEFT0011" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="0" y="1282" frameWidth="412" name="LEFT0012" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="0" y="1282" frameWidth="412" name="LEFT0013" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="913" y="0" frameWidth="412" name="BEATBOX LEFT0000" frameX="39" frameHeight="617" frameY="-14" width="404" height="636"/>
+	<SubTexture x="913" y="0" frameWidth="412" name="BEATBOX LEFT0001" frameX="39" frameHeight="617" frameY="-14" width="404" height="636"/>
+	<SubTexture x="1317" y="0" frameWidth="412" name="BEATBOX LEFT0002" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="1317" y="0" frameWidth="412" name="BEATBOX LEFT0003" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="1317" y="0" frameWidth="412" name="BEATBOX LEFT0004" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="1317" y="0" frameWidth="412" name="BEATBOX LEFT0005" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="1317" y="0" frameWidth="412" name="BEATBOX LEFT0006" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="1317" y="0" frameWidth="412" name="BEATBOX LEFT0007" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="1317" y="0" frameWidth="412" name="BEATBOX LEFT0008" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="1317" y="0" frameWidth="412" name="BEATBOX LEFT0009" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="1317" y="0" frameWidth="412" name="BEATBOX LEFT0010" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="1317" y="0" frameWidth="412" name="BEATBOX LEFT0011" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="1317" y="0" frameWidth="412" name="BEATBOX LEFT0012" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="1317" y="0" frameWidth="412" name="BEATBOX LEFT0013" frameX="29" frameHeight="617" frameY="-13" width="396" height="637"/>
+	<SubTexture x="396" y="1282" frameWidth="412" name="RIGHT0000" frameX="-66" frameHeight="617" frameY="-24" width="408" height="617"/>
+	<SubTexture x="396" y="1282" frameWidth="412" name="RIGHT0001" frameX="-66" frameHeight="617" frameY="-24" width="408" height="617"/>
+	<SubTexture x="804" y="1282" frameWidth="412" name="RIGHT0002" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="804" y="1282" frameWidth="412" name="RIGHT0003" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="804" y="1282" frameWidth="412" name="RIGHT0004" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="804" y="1282" frameWidth="412" name="RIGHT0005" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="804" y="1282" frameWidth="412" name="RIGHT0006" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="804" y="1282" frameWidth="412" name="RIGHT0007" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="804" y="1282" frameWidth="412" name="RIGHT0008" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="804" y="1282" frameWidth="412" name="RIGHT0009" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="804" y="1282" frameWidth="412" name="RIGHT0010" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="804" y="1282" frameWidth="412" name="RIGHT0011" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="804" y="1282" frameWidth="412" name="RIGHT0012" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="804" y="1282" frameWidth="412" name="RIGHT0013" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="1713" y="0" frameWidth="412" name="BEATBOX RIGHT0000" frameX="-66" frameHeight="617" frameY="-24" width="408" height="617"/>
+	<SubTexture x="1713" y="0" frameWidth="412" name="BEATBOX RIGHT0001" frameX="-66" frameHeight="617" frameY="-24" width="408" height="617"/>
+	<SubTexture x="2121" y="0" frameWidth="412" name="BEATBOX RIGHT0002" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="2121" y="0" frameWidth="412" name="BEATBOX RIGHT0003" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="2121" y="0" frameWidth="412" name="BEATBOX RIGHT0004" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="2121" y="0" frameWidth="412" name="BEATBOX RIGHT0005" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="2121" y="0" frameWidth="412" name="BEATBOX RIGHT0006" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="2121" y="0" frameWidth="412" name="BEATBOX RIGHT0007" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="2121" y="0" frameWidth="412" name="BEATBOX RIGHT0008" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="2121" y="0" frameWidth="412" name="BEATBOX RIGHT0009" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="2121" y="0" frameWidth="412" name="BEATBOX RIGHT0010" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="2121" y="0" frameWidth="412" name="BEATBOX RIGHT0011" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="2121" y="0" frameWidth="412" name="BEATBOX RIGHT0012" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="2121" y="0" frameWidth="412" name="BEATBOX RIGHT0013" frameX="-67" frameHeight="617" frameY="-22" width="407" height="619"/>
+	<SubTexture x="1211" y="1282" frameWidth="412" name="UP0000" frameX="0" frameHeight="617" frameY="7" width="353" height="646"/>
+	<SubTexture x="1211" y="1282" frameWidth="412" name="UP0001" frameX="0" frameHeight="617" frameY="7" width="353" height="646"/>
+	<SubTexture x="1564" y="1282" frameWidth="412" name="UP0002" frameX="-2" frameHeight="617" frameY="7" width="353" height="646"/>
+	<SubTexture x="1564" y="1282" frameWidth="412" name="UP0003" frameX="-2" frameHeight="617" frameY="7" width="353" height="646"/>
+	<SubTexture x="1564" y="1282" frameWidth="412" name="UP0004" frameX="-2" frameHeight="617" frameY="7" width="353" height="646"/>
+	<SubTexture x="1564" y="1282" frameWidth="412" name="UP0005" frameX="-2" frameHeight="617" frameY="7" width="353" height="646"/>
+	<SubTexture x="1564" y="1282" frameWidth="412" name="UP0006" frameX="-2" frameHeight="617" frameY="7" width="353" height="646"/>
+	<SubTexture x="1564" y="1282" frameWidth="412" name="UP0007" frameX="-2" frameHeight="617" frameY="7" width="353" height="646"/>
+	<SubTexture x="1564" y="1282" frameWidth="412" name="UP0008" frameX="-2" frameHeight="617" frameY="7" width="353" height="646"/>
+	<SubTexture x="1564" y="1282" frameWidth="412" name="UP0009" frameX="-2" frameHeight="617" frameY="7" width="353" height="646"/>
+	<SubTexture x="1564" y="1282" frameWidth="412" name="UP0010" frameX="-2" frameHeight="617" frameY="7" width="353" height="646"/>
+	<SubTexture x="1564" y="1282" frameWidth="412" name="UP0011" frameX="-2" frameHeight="617" frameY="7" width="353" height="646"/>
+	<SubTexture x="1564" y="1282" frameWidth="412" name="UP0012" frameX="-2" frameHeight="617" frameY="7" width="353" height="646"/>
+	<SubTexture x="1564" y="1282" frameWidth="412" name="UP0013" frameX="-2" frameHeight="617" frameY="7" width="353" height="646"/>
+	<SubTexture x="2528" y="0" frameWidth="412" name="BEATBOX UP0000" frameX="0" frameHeight="617" frameY="7" width="403" height="646"/>
+	<SubTexture x="2528" y="0" frameWidth="412" name="BEATBOX UP0001" frameX="0" frameHeight="617" frameY="7" width="403" height="646"/>
+	<SubTexture x="2931" y="0" frameWidth="412" name="BEATBOX UP0002" frameX="-2" frameHeight="617" frameY="7" width="389" height="646"/>
+	<SubTexture x="2931" y="0" frameWidth="412" name="BEATBOX UP0003" frameX="-2" frameHeight="617" frameY="7" width="389" height="646"/>
+	<SubTexture x="2931" y="0" frameWidth="412" name="BEATBOX UP0004" frameX="-2" frameHeight="617" frameY="7" width="389" height="646"/>
+	<SubTexture x="2931" y="0" frameWidth="412" name="BEATBOX UP0005" frameX="-2" frameHeight="617" frameY="7" width="389" height="646"/>
+	<SubTexture x="2931" y="0" frameWidth="412" name="BEATBOX UP0006" frameX="-2" frameHeight="617" frameY="7" width="389" height="646"/>
+	<SubTexture x="2931" y="0" frameWidth="412" name="BEATBOX UP0007" frameX="-2" frameHeight="617" frameY="7" width="389" height="646"/>
+	<SubTexture x="2931" y="0" frameWidth="412" name="BEATBOX UP0008" frameX="-2" frameHeight="617" frameY="7" width="389" height="646"/>
+	<SubTexture x="2931" y="0" frameWidth="412" name="BEATBOX UP0009" frameX="-2" frameHeight="617" frameY="7" width="389" height="646"/>
+	<SubTexture x="2931" y="0" frameWidth="412" name="BEATBOX UP0010" frameX="-2" frameHeight="617" frameY="7" width="389" height="646"/>
+	<SubTexture x="2931" y="0" frameWidth="412" name="BEATBOX UP0011" frameX="-2" frameHeight="617" frameY="7" width="389" height="646"/>
+	<SubTexture x="2931" y="0" frameWidth="412" name="BEATBOX UP0012" frameX="-2" frameHeight="617" frameY="7" width="389" height="646"/>
+	<SubTexture x="2931" y="0" frameWidth="412" name="BEATBOX UP0013" frameX="-2" frameHeight="617" frameY="7" width="389" height="646"/>
+</TextureAtlas>

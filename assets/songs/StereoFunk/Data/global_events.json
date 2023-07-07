@@ -195,7 +195,27 @@
 				"events": []
 			},
 			{
-				"events": []
+				"events": [
+					[
+						48082.1917808219,
+						[
+							[
+								"Play_Animation",
+								[
+									1,
+									"shokin"
+								]
+							],
+							[
+								"Run_Car",
+								[]
+							]
+						],
+						"OnHit",
+						true,
+						false
+					]
+				]
 			},
 			{
 				"events": []
@@ -273,7 +293,20 @@
 				"events": []
 			},
 			{
-				"events": []
+				"events": [
+					[
+						91438.3561643836,
+						[
+							[
+								"Run_Car",
+								[]
+							]
+						],
+						"OnHit",
+						true,
+						false
+					]
+				]
 			},
 			{
 				"events": []
@@ -282,7 +315,20 @@
 				"events": []
 			},
 			{
-				"events": []
+				"events": [
+					[
+						95342.4657534247,
+						[
+							[
+								"Run_Car",
+								[]
+							]
+						],
+						"OnHit",
+						true,
+						false
+					]
+				]
 			},
 			{
 				"events": []
@@ -291,7 +337,20 @@
 				"events": []
 			},
 			{
-				"events": []
+				"events": [
+					[
+						100890.410958904,
+						[
+							[
+								"Run_Car",
+								[]
+							]
+						],
+						"OnHit",
+						true,
+						false
+					]
+				]
 			},
 			{
 				"events": []

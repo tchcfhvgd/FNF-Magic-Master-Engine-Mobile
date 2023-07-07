@@ -1,0 +1,10 @@
+{
+    "imports":{},
+    "load":[],
+    "variables":[
+        {"Name": "Volume", "PlaceHolder": 1, "Type": "Float"}
+
+    ],
+    "variable": "",
+    "source": "#Sound_Name#.volume = #Volume#;"
+}

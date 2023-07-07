@@ -3,25 +3,25 @@ package;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.TransitionData;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.system.FlxAssets.FlxShader;
 import flixel.input.keyboard.FlxKey;
+import openfl.filters.ShaderFilter;
 import flixel.graphics.FlxGraphic;
+import FlxCustom.FlxCustomShader;
 import flixel.util.FlxSave;
 import flixel.math.FlxMath;
 import flixel.FlxObject;
 import flixel.FlxSprite;
-import flixel.FlxG;
-
 import Character.Skins;
-
+import flixel.FlxG;
 import openfl.Lib;
+
+using SavedFiles;
 
 class MagicStuff {
 	public static final version:String = "0.9.1";
 
-    public static function reload_data():Void {
-        Paths.savedTempMap.clear();
-        Paths.savedGlobMap.clear();
-        
+    public static function reload_data():Void {        
         PreSettings.init();
         Controls.init();
         ModSupport.reload_mods();
@@ -37,34 +37,15 @@ class MagicStuff {
     }
     
     inline public static function setWindowTitle(title:String, type:Int = 0){
+		#if desktop
         switch(type){
             default:{Lib.application.window.title = '[FNF] Magic Master Engine (${version}): ${title}';}
             case 1:{Lib.application.window.title = '[MME ${version}]: ${title}';}
             case 2:{Lib.application.window.title = '${title}';}
         }
+		#end
     }
     
-    public static var transitionTypes:Map<String, TransitionData> = [];
-    inline public static function setGlobalTransition(key:String, transition:TransitionData, type:TransitionType = null){
-        if(type == transIn){transitionTypes.set('$key-In', transition);}
-        else if(type == transOut){transitionTypes.set('$key-Out', transition);}
-        else{
-            transitionTypes.set('$key-In', transition);
-            transitionTypes.set('$key-Out', transition);
-        }
-    }
-
-    inline public static function changeTransitionType(key:String, type:TransitionType = null){
-		if(type == transIn){
-			if(transitionTypes.exists('$key-In')){FlxTransitionableState.defaultTransIn = transitionTypes.get('$key-In');}
-		}else if(type == transOut){
-			if(transitionTypes.exists('$key-Out')){FlxTransitionableState.defaultTransOut = transitionTypes.get('$key-Out');}
-		}else{
-			if(transitionTypes.exists('$key-In')){FlxTransitionableState.defaultTransIn = transitionTypes.get('$key-In');}
-			if(transitionTypes.exists('$key-Out')){FlxTransitionableState.defaultTransOut = transitionTypes.get('$key-Out');}
-        }
-    }
-
     public static function sortMembersByX(group:FlxTypedGroup<FlxObject>, selectedX:Float, selected:Int = 0, offset:Int = 10, delay:Float = 0.3):Void {
         if(group == null || group.members.length <= 0 || group.members[selected] == null){return;}
 
@@ -126,13 +107,25 @@ class MagicStuff {
         }
     }
 
+    public static var shaders:Map<String, FlxShader> = [];
+    public static function getShaderFilter(_shader:String):ShaderFilter {
+        return new ShaderFilter(getShader(_shader));
+    }
+    public static function getShader(_shader):FlxShader {
+        if(shaders.exists(_shader)){
+			if(shaders.get(_shader) == null){
+                shaders.remove(_shader);
+            }else{
+                return shaders.get(_shader);
+            }
+        }
+        var new_shader:FlxCustomShader = new FlxCustomShader({fragmentsrc: SavedFiles.getText(Paths.shader(_shader))});
+        shaders.set(_shader, new_shader);
+        return new_shader;
+    }
+
     public static function lerpX(obj:Dynamic, dest:Float, ?radio:Float = 0.1):Void {obj.x = FlxMath.lerp(obj.x, dest, radio);}
     public static function lerpY(obj:Dynamic, dest:Float, ?radio:Float = 0.1):Void {obj.y = FlxMath.lerp(obj.y, dest, radio);}
 
     public static function browserLoad(site:String){#if linux Sys.command('/usr/bin/xdg-open', [site, "&"]); #else FlxG.openURL(site); #end}
-}
-
-enum TransitionType {
-    transIn;
-    transOut;
 }

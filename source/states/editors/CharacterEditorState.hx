@@ -51,6 +51,7 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
+using SavedFiles;
 using StringTools;
 
 class CharacterEditorState extends MusicBeatState{
@@ -79,7 +80,7 @@ class CharacterEditorState extends MusicBeatState{
 
     var camFollow:FlxObject;
 
-    public function new(?onConfirm:Class<FlxState>, ?onBack:Class<FlxState>, ?character:CharacterFile):Void {
+    public function new(?onConfirm:String, ?onBack:String, ?character:CharacterFile):Void {
         if(character == null){character = new Character(0, 0).charFile;}
         _character = character;
 
@@ -111,6 +112,7 @@ class CharacterEditorState extends MusicBeatState{
             ]
         );
         backStage.cameras = [camFGame];
+        backStage.is_debug = true;
         add(backStage);
 
         for(char in backStage.characterData){char.alpha = 0.5;}
@@ -135,11 +137,11 @@ class CharacterEditorState extends MusicBeatState{
         healthIcon.camera = camHUD;
         add(healthIcon);
 
-        cameraPointer = new FlxSprite(chrStage.character_sprite.getGraphicMidpoint().x + _character.camera[0], chrStage.character_sprite.getGraphicMidpoint().y + _character.camera[1]).makeGraphic(5, 5);
+        cameraPointer = new FlxSprite(chrStage.c.getGraphicMidpoint().x + _character.camera[0], chrStage.c.getGraphicMidpoint().y + _character.camera[1]).makeGraphic(5, 5);
         cameraPointer.camera = camFGame;
         add(cameraPointer);
 
-		camFollow = new FlxObject(chrStage.character_sprite.getGraphicMidpoint().x, chrStage.character_sprite.getGraphicMidpoint().y, 1, 1);
+		camFollow = new FlxObject(chrStage.c.getGraphicMidpoint().x, chrStage.c.getGraphicMidpoint().y, 1, 1);
         camFGame.follow(camFollow, LOCKON);
 		add(camFollow);
 
@@ -193,7 +195,7 @@ class CharacterEditorState extends MusicBeatState{
         
         super.update(elapsed);
     
-        cameraPointer.setPosition(chrStage.character_sprite.getGraphicMidpoint().x + _character.camera[0], chrStage.character_sprite.getGraphicMidpoint().y + _character.camera[1]);
+        cameraPointer.setPosition(chrStage.c.getGraphicMidpoint().x + _character.camera[0], chrStage.c.getGraphicMidpoint().y + _character.camera[1]);
     }
 
     public function reloadCharacter():Void{
@@ -261,7 +263,7 @@ class CharacterEditorState extends MusicBeatState{
             newCharacter.curSkin = Paths.getFileName(txtSkin.text, true);
             newCharacter.setupByCharacterFile();
             
-            MusicBeatState.switchState(new states.editors.CharacterEditorState(null, MainMenuState, newCharacter.charFile));
+            MusicBeatState.switchState("states.editors.CharacterEditorState", [null, "states.MainMenuState", newCharacter.charFile]);
         }); tabMENU.add(btnLoadCharacter);
 
         var btnSaveCharacter:FlxButton = new FlxCustomButton(btnLoadCharacter.x + btnLoadCharacter.width + 10, btnLoadCharacter.y, Std.int(MENU.width / 2) - 10, null, "Save Character", null, null, function(){saveCharacter('${txtCharacter.text}-${txtSkin.text}-${txtAspect.text}');}); tabMENU.add(btnSaveCharacter);
@@ -426,9 +428,8 @@ class CharacterEditorState extends MusicBeatState{
         chkAnimLoop = new FlxUICheckBox(lblAnimFrame.x, lblAnimFrame.y + lblAnimFrame.height + 5, null, null, "Animation Loop", 100); tabMENU.add(chkAnimLoop);
         
         var btnSetXMLAnims:FlxButton = new FlxCustomButton(chkAnimLoop.x, chkAnimLoop.y + chkAnimLoop.height + 10, Std.int(MENU.width - 10), null, "SET ANIMATIONS FROM XML", null, null, function(){
-            trace(Paths.getPath('${chrStage.curCharacter}/Sprites/${_character.image}.xml', TEXT, 'characters'));
             if(Paths.exists(Paths.getPath('${chrStage.curCharacter}/Sprites/${_character.image}.xml', TEXT, 'characters'))){
-                var xml =  Xml.parse(Paths.getText(Paths.getPath('${chrStage.curCharacter}/Sprites/${_character.image}.xml', TEXT, 'characters')));
+                var xml =  Xml.parse(Paths.getPath('${chrStage.curCharacter}/Sprites/${_character.image}.xml', TEXT, 'characters').getText());
                 var animSymbols:Array<String> = XMLEditorState.getNamesArray(new Access(xml.firstElement()).elements);
 
                 _character.anims = [];

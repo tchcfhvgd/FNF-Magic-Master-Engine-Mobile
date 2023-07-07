@@ -12,6 +12,7 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
+using SavedFiles;
 using StringTools;
 
 class ModSupport {
@@ -27,12 +28,12 @@ class ModSupport {
 
     public static var hideVanillaWeeks(get, null):Bool = false;
     static function get_hideVanillaWeeks() {
-        for(mod in MODS){if(mod.hV_Weeks){return true;}}
+        for(mod in MODS){if(!mod.enabled){continue;} if(mod.hV_Weeks){return true;} if(mod.onlyThis){break;}}
         return false;
     };
     public static var hideVanillaSongs(get, null):Bool = false;
     static function get_hideVanillaSongs() {
-        for(mod in MODS){if(mod.hV_Songs){return true;}}
+        for(mod in MODS){if(!mod.enabled){continue;} if(mod.hV_Songs){return true;} if(mod.onlyThis){break;}}
         return false;
     };
 
@@ -71,6 +72,13 @@ class ModSupport {
         }
     }
 
+    public static function is_same():Bool {
+        if(MODS.length <= 0){return true;}
+        if(savedMODS.length != MODS.length){return false;}
+        for(i in 0...MODS.length){if(MODS[i].name == savedMODS[i].name){continue;} return false;}
+        return true;
+    }
+
     public static function reload_mods():Void {
         modDataScripts.clear();
         staticScripts.clear();
@@ -99,18 +107,18 @@ class ModSupport {
         if(first){toRemove = file.replace("/", ".");}
         for(i in FileSystem.readDirectory(aFile)){
             if(FileSystem.isDirectory('$aFile/$i')){checkToScript('${file}/${i}', false, name);}else{
-                var id:String = '${file}/${i.replace(".hx", "")}'; var id = id.replace("/", ".").replace('$toRemove.', "");
+                var id:String = '${file}/${i.replace(".hx", "")}'; id = id.replace("/", ".").replace('$toRemove.', "");
 
                 if(id == 'ModData'){
                     var nScript = new Script(); nScript.Name = name; nScript.Mod = name;
-                    nScript.exScript(Paths.getText('$file/$i'));
+                    nScript.exScript('$file/$i'.getText());
                     modDataScripts.set(name, nScript);
                     continue;
                 }
 
                 if(!staticScripts.exists(id) && !exScripts.contains(id)){
                     var nScript = new Script(); nScript.Name = id; nScript.Mod = name;
-                    nScript.exScript(Paths.getText('$file/$i'));
+                    nScript.exScript('$file/$i'.getText());
                     staticScripts.set(id, nScript);
                 }
             }
@@ -152,7 +160,7 @@ class Mod {
         var identifierJSON:DynamicAccess<Dynamic> = cast {};
 
         var mod_info_path = '$path/mod.json';
-        if(Paths.exists(mod_info_path)){ identifierJSON = cast Json.parse(Paths.getText(mod_info_path).trim()); }
+        if(Paths.exists(mod_info_path)){ identifierJSON = cast mod_info_path.getJson(); }
 
         savefix = identifierJSON.exists('save_prefix') ? identifierJSON.get('save_prefix') : "plh-";
 

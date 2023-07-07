@@ -21,6 +21,7 @@ class PlayerSettings {
         var player1:PlayerSettings = new PlayerSettings(0, Solo);
         PLAYERS.push(player1);
         
+        //Adding Controller Players
         var gamepadsDetected:Int = FlxG.gamepads.numActiveGamepads;
         for(i in 0...gamepadsDetected){
             if(i == 0 && FlxG.gamepads.getByID(0) != null){player1.controls.addGamepad(0); continue;}

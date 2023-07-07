@@ -1,0 +1,43 @@
+{
+	"aspect": "Default",
+	"position": [
+		0,
+		340
+	],
+	"scale": 1,
+	"anims": [
+		{
+			"loop": false,
+			"symbol": "BF Dead Loop",
+			"anim": "deathLoop",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "BF Dead confirm",
+			"anim": "deathConfirm",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "BF dies",
+			"anim": "firstDeath",
+			"fps": 24,
+			"indices": []
+		}
+	],
+	"name": "Boyfriend",
+	"image": "BOYFRIEND",
+	"zoom": 0.8,
+	"antialiasing": true,
+	"deathCharacter": "Boyfriend",
+	"skin": "Default",
+	"onRight": false,
+	"healthicon": "bf",
+	"camera": [
+		0,
+		0
+	]
+}

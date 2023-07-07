@@ -1,0 +1,10 @@
+{
+    "imports":{},
+    "load":[],
+    "variables":[
+        {"Name": "Visible", "PlaceHolder": true, "Type": "Bool"}
+
+    ],
+    "variable": "",
+    "source": "#Sprite_Name#.visible = #Visible#;"
+}

@@ -9,10 +9,11 @@
         "dialogue": [
             {
                 "appear_left": "Senpai",
+                "text_type": "Flixel",
                 "box_anim": "Normal",
                 "dialog":[
                     {
-                        "portrait": "Senpai", "sound": "dialog_audios/senpai", "time": 0.033, "bold": true, "scale": 0.5,
+                        "portrait": "Senpai", "font": "pixel", "sound": "dialog_audios/senpai", "time": 0.033, "bold": true, "scale": 0.5,
                         "text": "Ah, a new fair maiden has come in search of true love!"
                     }
                 ]

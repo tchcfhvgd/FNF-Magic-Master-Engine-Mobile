@@ -1,11 +1,14 @@
 package states;
 
 import flixel.addons.transition.FlxTransitionableState;
+import substates.CustomScriptSubState;
 import flixel.addons.ui.FlxUIState;
 import haxe.rtti.CType.Abstractdef;
 import substates.MusicBeatSubstate;
+import FlxCustom.FlxCustomShader;
 import Conductor.BPMChangeEvent;
 import flixel.tweens.FlxTween;
+import substates.FadeSubState;
 import flixel.util.FlxTimer;
 import flixel.math.FlxRect;
 import flixel.FlxSubState;
@@ -14,8 +17,7 @@ import flixel.FlxCamera;
 import flixel.FlxState;
 import flixel.FlxG;
 
-import FlxCustom.FlxCustomShader;
-
+using SavedFiles;
 using StringTools;
 
 class MusicBeatState extends FlxUIState {
@@ -23,8 +25,8 @@ class MusicBeatState extends FlxUIState {
 
 	public var conductor:Conductor = new Conductor();
 
-	public var onBack:Class<FlxState>;
-	public var onConfirm:Class<FlxState>;
+	public var onBack:String;
+	public var onConfirm:String;
 	
 	private var lastBeat:Float = 0;
 	private var lastStep:Float = 0;
@@ -42,7 +44,7 @@ class MusicBeatState extends FlxUIState {
 	public function pushTempScript(key:String):Void {
 		if(tempScripts.exists(key) || ModSupport.staticScripts.exists(key)){return;}
 		var nScript = new Script(); nScript.Name = key;
-		nScript.exScript(Paths.getText(Paths.event(key)));
+		nScript.exScript(Paths.event(key).getText());
 		tempScripts.set(key, nScript);
 	}
 	public function removeTempScript(key:String):Void {
@@ -76,7 +78,7 @@ class MusicBeatState extends FlxUIState {
 	public var camHUD:FlxCamera = new FlxCamera();
 	public var camFHUD:FlxCamera = new FlxCamera();
 	
-	public function new(?onConfirm:Class<FlxState>, ?onBack:Class<FlxState>){
+	public function new(?onConfirm:String, ?onBack:String){
 		this.onBack = onBack;
 		this.onConfirm = onConfirm;
 
@@ -85,7 +87,7 @@ class MusicBeatState extends FlxUIState {
 
 	override function create(){
 		state = this;
-		if(transIn != null){trace('reg ' + transIn.region);}
+		persistentUpdate = false;
 
 		FlxG.game.setFilters([]);
 
@@ -105,10 +107,8 @@ class MusicBeatState extends FlxUIState {
 		for(s in scripts){s.exFunction('create');}
 		super.create();
 
-		FlxTween.tween(camFGame, {alpha: 1}, 0.5);
-		FlxTween.tween(camBHUD, {alpha: 1}, 0.5);
-		FlxTween.tween(camHUD, {alpha: 1}, 0.5);
-		FlxTween.tween(camFHUD, {alpha: 1}, 0.5);
+		SavedFiles.clearUnusedAssets();
+		openSubState(new FadeSubState());
 
 		canControlle = true;
 	}
@@ -122,14 +122,18 @@ class MusicBeatState extends FlxUIState {
 
 		if(oldStep != curStep && curStep > 0){stepHit();}
 
-		if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED) && onConfirm != null){MusicBeatState.switchState(Type.createInstance(onConfirm, []));}
-		if(principal_controls.checkAction("Menu_Back", JUST_PRESSED) && onBack != null){MusicBeatState.switchState(Type.createInstance(onBack, []));}
-
-		if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.P){trace("Assets Reset"); Paths.savedTempMap.clear();}
-		if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.L){trace("Static Scripts Reset"); ModSupport.reload_mods();}
-		if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.M){trace("[Scripts]"); for(s in scripts){trace(s.Name);} trace("[End]");}
+		if(canControlle){
+			if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED) && onConfirm != null){MusicBeatState.switchState(onConfirm, []);}
+			if(principal_controls.checkAction("Menu_Back", JUST_PRESSED) && onBack != null){MusicBeatState.switchState(onBack, []);}
+	
+			if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.P){trace('State Name: ${Type.getClassName(Type.getClass(state))}');}
+			if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.O){if(script == null){trace('Null Script'); return;} trace('Script Name: ${script.Name}');}
+			if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.L){trace("Static Scripts Reset"); ModSupport.reload_mods();}
+			if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.M){trace("[Scripts]"); for(s in scripts){trace(s.Name);} trace("[End]");}
+		}
 
 		for(s in scripts){s.exFunction('update', [elapsed]);}
+
 		for(shader in FlxCustomShader.shaders){
 			if(shader == null){FlxCustomShader.shaders.remove(shader); continue;}
 			shader.update(elapsed);
@@ -179,49 +183,76 @@ class MusicBeatState extends FlxUIState {
 		for(s in scripts){s.exFunction('onFocusLost');}
 	}
 
-	override function openSubState(SubState:FlxSubState){
-		for(s in scripts){s.exFunction('openSubState');}
-
-		super.openSubState(SubState);
+	public static function getSubState(state:String, args:Array<Any>):FlxSubState {
+		var to_create:Class<FlxSubState> = null;
+		
+		var stage_script = ModSupport.staticScripts.get(state);
+		if(stage_script != null && stage_script.getVariable('CustomSubState')){
+			to_create = CustomScriptSubState;
+			args.insert(0, stage_script);
+		}else if(Type.resolveClass(state) != null){
+			to_create = cast Type.resolveClass(state);
+		}else{
+			return null;
+		}
+		
+		var new_state = Type.createInstance(to_create, args);
+		
+		return new_state;
 	}
 
-	override function closeSubState(){
-		for(s in scripts){s.exFunction('closeSubState');}
-
-		super.closeSubState();
+	public function loadSubState(substate:String, args:Array<Any>):Void {
+		var new_substate:FlxSubState = getSubState(substate, args);
+		if(new_substate == null){trace('Null SubState: ${substate}'); return;}
+		openSubState(new_substate);
 	}
 
-	public static function swtichStateByName(state:String, ?const:Array<Any>):Void {
+	override function openSubState(SubState:FlxSubState){super.openSubState(SubState);}
+	override function closeSubState(){super.closeSubState();}
+
+	public static function getState(state:String, args:Array<Any>):FlxState {
+		var to_create:Class<FlxState> = null;
+		
 		var stage_script = ModSupport.staticScripts.get(state);
 		if(stage_script != null && stage_script.getVariable('CustomState')){
-			FlxG.switchState(new CustomScriptState(stage_script));
-		
-			return;
+			to_create = CustomScriptState;
+			args.insert(0, stage_script);
+		}else if(Type.resolveClass(state) != null){
+			to_create = cast Type.resolveClass(state);
+		}else{
+			return null;
 		}
-
-		var stage_class:Class<FlxState> = cast Type.resolveClass(state);
-		if(stage_class == null){return;}
-
-		var new_stage:FlxState = Type.createInstance(stage_class, const);
-		if(new_stage == null){return;}
-
-		FlxG.switchState(new_stage);
+		
+		var new_state = Type.createInstance(to_create, args);
+		if((new_state is FlxUIState)){
+			cast(new_state,FlxUIState).transIn = FlxTransitionableState.defaultTransIn;
+			cast(new_state,FlxUIState).transOut = FlxTransitionableState.defaultTransOut;
+		}
+		new_state.persistentUpdate = true;
+		new_state.persistentDraw = true;
+		
+		return new_state;
 	}
 
-	public static function switchToCustomState(state:String):Void {
-		var nScript = ModSupport.staticScripts.get(state);
-
-		if(nScript == null || !nScript.getVariable('CustomState')){return;}
-		
-		FlxG.switchState(new CustomScriptState(nScript));
+	public static function loadState(state:String, state_args:Array<Any>, load_args:Array<Any>):Void {
+		var new_stage:FlxState = getState(state, state_args);
+		if(new_stage == null){trace('Null State: ${state}'); return;}
+		load_args.insert(0, new_stage);
+		_switchState(Type.createInstance(LoadingState, load_args));
 	}
 
-	public static function switchState(nextState:FlxState):Void {
-		var toSwitch:FlxState = nextState;
+	public static function switchState(state:String, args:Array<Any>):Void {
+		var new_stage:FlxState = getState(state, args);
+		if(new_stage == null){trace('Null State: ${state}'); return;}
+		_switchState(new_stage);
+	}
 
-		var stage_script = ModSupport.staticScripts.get(Type.getClassName(Type.getClass(nextState)));
-		if(stage_script != null && stage_script.getVariable('CustomState')){toSwitch = new CustomScriptState(stage_script);}
-		
-		FlxG.switchState(toSwitch);
+	public static function _switchState(nextState:FlxState):Void {
+		if(state == null){
+			FlxG.switchState(new VoidState(nextState));
+		}else{
+			state.canControlle = false;
+			state.openSubState(new FadeSubState(nextState));
+		}
 	}
 }

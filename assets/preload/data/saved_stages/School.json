@@ -1,0 +1,259 @@
+{
+	"objects": [
+		{
+			"Values": {
+				"Position_X": 500,
+				"Position_Y": 350,
+				"Sprite_Name": "sky"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scale_Y": 6,
+						"Scale_X": 6
+					},
+					"Name": "Scale"
+				},
+				{
+					"Values": {
+						"Scroll_X": 0.1,
+						"Scroll_Y": 0.1
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/school",
+						"Graphic_File": "weebSky"
+					},
+					"Name": "Basic_Graphic"
+				},
+				{
+					"Values": {
+						"Antialiasing": false
+					},
+					"Name": "Antialiasing"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -277,
+				"Position_Y": 0,
+				"Sprite_Name": "school"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Antialiasing": false
+					},
+					"Name": "Antialiasing"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/school",
+						"Graphic_File": "weebSchool"
+					},
+					"Name": "Basic_Graphic"
+				},
+				{
+					"Values": {
+						"Scale_Y": 6,
+						"Scale_X": 6
+					},
+					"Name": "Scale"
+				},
+				{
+					"Values": {
+						"Scroll_X": 0.3,
+						"Scroll_Y": 1
+					},
+					"Name": "ScrollFactor"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -277,
+				"Position_Y": 0,
+				"Sprite_Name": "street"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Antialiasing": false
+					},
+					"Name": "Antialiasing"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/school",
+						"Graphic_File": "weebStreet"
+					},
+					"Name": "Basic_Graphic"
+				},
+				{
+					"Values": {
+						"Scale_Y": 6,
+						"Scale_X": 6
+					},
+					"Name": "Scale"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -277,
+				"Position_Y": 0,
+				"Sprite_Name": "backtrees"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/school",
+						"Graphic_File": "weebTreesBack"
+					},
+					"Name": "Basic_Graphic"
+				},
+				{
+					"Values": {
+						"Scale_Y": 6,
+						"Scale_X": 6
+					},
+					"Name": "Scale"
+				},
+				{
+					"Values": {
+						"Antialiasing": false
+					},
+					"Name": "Antialiasing"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -890,
+				"Position_Y": -1110,
+				"Sprite_Name": "fronttrees"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Antialiasing": false
+					},
+					"Name": "Antialiasing"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/school",
+						"Symbol_Name": "trees",
+						"Graphic_File": "weebTrees"
+					},
+					"Name": "Animated_Graphic"
+				},
+				{
+					"Values": {
+						"Scale_Y": 6,
+						"Scale_X": 6
+					},
+					"Name": "Scale"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": 500,
+				"Sprite_Name": "petals",
+				"Position_Y": 450
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Antialiasing": false
+					},
+					"Name": "Antialiasing"
+				},
+				{
+					"Values": {
+						"Scale_Y": 6,
+						"Scale_X": 6
+					},
+					"Name": "Scale"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/school",
+						"Symbol_Name": "PETALS ALL",
+						"Graphic_File": "petals"
+					},
+					"Name": "Animated_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": 502,
+				"Position_Y": 351,
+				"Sprite_Name": "girls"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Antialiasing": false
+					},
+					"Name": "Antialiasing"
+				},
+				{
+					"Values": {
+						"Scale_Y": 6,
+						"Scale_X": 6
+					},
+					"Name": "Scale"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/school",
+						"Symbol_Name": "BG girls group",
+						"Graphic_File": "bgFreaks"
+					},
+					"Name": "Animated_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		}
+	],
+	"variables": [
+		{
+			"Type": "Int",
+			"Name": "initChar",
+			"Value": 6
+		},
+		{
+			"Type": "Array",
+			"Name": "camP_1",
+			"Value": [
+				380,
+				310
+			]
+		},
+		{
+			"Type": "Array",
+			"Name": "camP_2",
+			"Value": [
+				930,
+				530
+			]
+		},
+		{
+			"Type": "Float",
+			"Name": "zoom",
+			"Value": 1
+		}
+	]
+}

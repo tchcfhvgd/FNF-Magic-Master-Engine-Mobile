@@ -1,0 +1,63 @@
+{
+	"objects": [
+		{
+			"Values": {
+				"Position_X": 500,
+				"Position_Y": 200,
+				"Sprite_Name": "sky"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scale_Y": 6,
+						"Scale_X": 6
+					},
+					"Name": "Scale"
+				},
+				{
+					"Values": {
+						"Antialiasing": false
+					},
+					"Name": "Antialiasing"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/schoolEvil",
+						"Symbol_Name": "background 2 instance 1",
+						"Graphic_File": "animatedEvilSchool"
+					},
+					"Name": "Animated_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		}
+	],
+	"variables": [
+		{
+			"Type": "Int",
+			"Name": "initChar",
+			"Value": 1
+		},
+		{
+			"Type": "Array",
+			"Name": "camP_1",
+			"Value": [
+				430,
+				310
+			]
+		},
+		{
+			"Type": "Array",
+			"Name": "camP_2",
+			"Value": [
+				1080,
+				600
+			]
+		},
+		{
+			"Type": "Float",
+			"Name": "zoom",
+			"Value": 1.1
+		}
+	]
+}

@@ -36,11 +36,10 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
+using SavedFiles;
 using StringTools;
 
 class TitleState extends MusicBeatState {
-	public static var loadedMods:Bool = false;
-
 	private var inIntro:Bool = true;
 	private var toStart:Bool = true;
 
@@ -55,33 +54,26 @@ class TitleState extends MusicBeatState {
 		this.toStart = started;
 	}
 
-	override public function create():Void {		
-		if(!FlxG.save.data.inLang){MusicBeatState.switchState(new LangSupport.PopLangState()); return;}
-
-		#if (desktop && sys)
-		var modsDirectory:String = FileSystem.absolutePath("mods");
-		if(FileSystem.exists(modsDirectory) && FileSystem.readDirectory(modsDirectory).length > 0 && !loadedMods){MusicBeatState.switchState(new states.ModListState.PopModState()); return;}
-		#end
-		
+	override public function create():Void {						
 		otherStuff.add(new FlxSprite());
 
-		gradient = new FlxSprite().loadGraphic(Paths.image('Gradient'));
+		gradient = new FlxSprite().loadGraphic(Paths.image('Gradient').getGraphic());
 		gradient.color = FlxColor.fromRGB(0, 255, 195);
 		gradient.y = FlxG.height;
 		gradient.setGraphicSize(FlxG.width);
 		gradient.screenCenter(X);
 		add(gradient);
 
-		logo = new FlxSprite().loadGraphic(Paths.image('LOGO'));
+		logo = new FlxSprite().loadGraphic(Paths.image('LOGO').getGraphic());
 		logo.y = (FlxG.height / 2) - (logo.height / 2);
 		logo.cameras = [camFGame];
 		logo.screenCenter(X);
 		logo.visible = false;
 		add(logo);
 
-		if(toStart){new FlxTimer().start(1, function(tmr:FlxTimer){if(inIntro){startIntro();}});}
-
 		super.create();
+
+		if(toStart){new FlxTimer().start(1, function(tmr:FlxTimer){if(inIntro){startIntro();}});}
 	}
 
 	override function update(elapsed:Float){
@@ -97,7 +89,7 @@ class TitleState extends MusicBeatState {
 					skipIntro(true);
 				}else{
 					FlxTween.tween(gradient, {y: FlxG.height}, 1, {ease: FlxEase.quadIn});
-					FlxTween.tween(logo, {y: FlxG.height}, 1, {ease: FlxEase.quadIn, onComplete: function(twn){MusicBeatState.switchState(new MainMenuState());}});
+					FlxTween.tween(logo, {y: FlxG.height}, 1, {ease: FlxEase.quadIn, onComplete: function(twn){MusicBeatState.switchState("states.MainMenuState", []);}});
 				}
 			}
 	
@@ -110,11 +102,12 @@ class TitleState extends MusicBeatState {
 	}
 
 	private function startIntro():Void {
-		FlxG.sound.playMusic(Paths.music('freakyMenu'));
+		FlxG.sound.playMusic(Paths.music('freakyMenu').getSound());
 		conductor.changeBPM(122);
 	}
 	
 	private function skipIntro(forced:Bool = false):Void {
+		if(FlxG.sound.music == null){return;}
 		inIntro = false;
 
 		if(forced){FlxG.sound.music.time = 47000;}

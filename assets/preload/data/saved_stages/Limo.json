@@ -1,0 +1,125 @@
+{
+	"objects": [
+		{
+			"Values": {
+				"Position_X": -350,
+				"Sprite_Name": "sunset",
+				"Position_Y": -300
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 0.1,
+						"Scroll_Y": 0.1
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/limo",
+						"Graphic_File": "limoSunset"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -380,
+				"Sprite_Name": "backlimo",
+				"Position_Y": 400
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/limo",
+						"Symbol_Name": "background limo pink",
+						"Graphic_File": "bgLimo"
+					},
+					"Name": "Animated_Graphic"
+				},
+				{
+					"Values": {
+						"Scroll_X": 0.4,
+						"Scroll_Y": 0.4
+					},
+					"Name": "ScrollFactor"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": 140,
+				"Dancer_Name": "dancers",
+				"Position_Y": 0
+			},
+			"Attributes": [],
+			"Name": "Dancers_Group"
+		},
+		{
+			"Values": {
+				"Position_X": -530,
+				"Position_Y": -30,
+				"Sprite_Name": "fastcar"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/limo",
+						"Graphic_File": "fastCarLol"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -350,
+				"Position_Y": 300,
+				"Sprite_Name": "frontlimo"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/limo",
+						"Symbol_Name": "Limo stage",
+						"Graphic_File": "limoDrive"
+					},
+					"Name": "Animated_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		}
+	],
+	"variables": [
+		{
+			"Type": "Int",
+			"Value": 4,
+			"Name": "initChar"
+		},
+		{
+			"Type": "Array",
+			"Value": [
+				250,
+				-1000
+			],
+			"Name": "camP_1"
+		},
+		{
+			"Type": "Array",
+			"Value": [
+				900,
+				450
+			],
+			"Name": "camP_2"
+		},
+		{
+			"Type": "Float",
+			"Value": 0.9,
+			"Name": "zoom"
+		}
+	]
+}

@@ -16,6 +16,7 @@ import haxe.io.Bytes;
 import flixel.FlxG;
 import haxe.Timer;
 
+using SavedFiles;
 using StringTools;
 
 class Alphabet extends FlxUIGroup {
@@ -30,10 +31,10 @@ class Alphabet extends FlxUIGroup {
 
     public var text:String = "";
 
-    //------| Dialogue Stuff |------//
-    public dynamic function dialFunct(cur_character:String, item_data:Dynamic):Void {}
-    public var onDialogue:Bool = false;
-    var charSound:FlxSound;
+    //------| Typing Stuff |------//
+    public dynamic function onType(cur_character:String, item_data:Dynamic):Void {}
+    public var isTyping:Bool = false;
+    var typeSound:FlxSound;
     //-----------------------------//
 
     var spaceWidth:Float = 25;
@@ -72,7 +73,7 @@ class Alphabet extends FlxUIGroup {
         clear();
 
         if(timer != null){timer.cancel();}
-        onDialogue = false;
+        isTyping = false;
 
         if(cur_data == null){return;}
 
@@ -80,7 +81,8 @@ class Alphabet extends FlxUIGroup {
             var cur_split:Array<String> = null;
             var cur_image:String = null;
 
-            var cur_scale:FlxPoint = _dat.scale != null ? FlxPoint.get(_dat.scale,_dat.scale) : FlxPoint.get(1,1);
+            var cur_size:FlxPoint = _dat.size != null ? FlxPoint.get(_dat.size[0],_dat.size[1]) : null;
+            var cur_scale:FlxPoint = _dat.scale != null ? FlxPoint.get(_dat.scale,_dat.scale) : null;
             var cur_font:String = _dat.font != null ? _dat.font : DEFAULT_FONT;
             var cur_animated:Bool = _dat.animated;
             var cur_bold:Bool = _dat.bold;
@@ -106,7 +108,7 @@ class Alphabet extends FlxUIGroup {
                             var letter:AlphaCharacter = new AlphaCharacter(curX + xOffset, curY + yOffset, cur_font);
                             letter.createChar(char, cur_bold, cur_color);
                             if(!cur_animated){letter.animation.stop();}
-                            letter.scale.set(cur_scale.x, cur_scale.y);
+                            if(cur_scale != null){letter.scale.set(cur_scale.x, cur_scale.y);}
                             letter.updateHitbox();
                             curX += letter.width * xMultiplier;
                                     
@@ -121,10 +123,12 @@ class Alphabet extends FlxUIGroup {
                     text += char;
                 }
             }else if(cur_image != null){
-                var _image:FlxSprite = new FlxSprite(curX, curY).loadGraphic(Paths.image(cur_image));
-                _image.scale.set(cur_scale.x, cur_scale.y);
+                var _image:FlxSprite = new FlxSprite(curX, curY).loadGraphic(Paths.image(cur_image).getGraphic());
+                if(cur_scale != null){_image.scale.set(cur_scale.x, cur_scale.y);}
+                if(cur_size != null){_image.setGraphicSize(Std.int(cur_size.x), Std.int(cur_size.y));}
                 _image.updateHitbox();
                 _image.color = cur_color;
+                curX += _image.width * xMultiplier;
                 add(_image);
             }
         }
@@ -140,7 +144,7 @@ class Alphabet extends FlxUIGroup {
         curY = 0;
         clear();
 
-        onDialogue = true;
+        isTyping = true;
 
         if(timer != null){timer.cancel();}
         timer = new FlxTimer();
@@ -160,7 +164,7 @@ class Alphabet extends FlxUIGroup {
             function(tmr:FlxTimer){
                 if(current_text.length <= 0){
                     if(cloned_data.length <= 0){
-                        onDialogue = false;
+                        isTyping = false;
                         timer.cancel();
                         return;
                     }
@@ -178,7 +182,7 @@ class Alphabet extends FlxUIGroup {
                     if(current_item.position != null){curX = current_item.position[0]; curY = current_item.position[1];}
                     if(current_item.rel_position != null){curX += current_item.rel_position[0]; curY += current_item.rel_position[1];}
 
-                    if(current_item.sound != null && Paths.exists(Paths.sound(current_item.sound, null, true))){charSound = new FlxSound().loadEmbedded(Paths.sound(current_item.sound));}
+                    if(current_item.sound != null && Paths.exists(Paths.sound(current_item.sound))){typeSound = new FlxSound().loadEmbedded(Paths.sound(current_item.sound).getSound());}
                 }
 
                 var cur_character:String = current_text.shift();
@@ -202,8 +206,8 @@ class Alphabet extends FlxUIGroup {
                             if(_i == 0){lastFirstChar = letter;}
                 
                             add(letter);
-                            if(charSound != null){charSound.play();}
-                            if(dialFunct != null){dialFunct(cur_character, current_item);}
+                            if(typeSound != null){typeSound.play();}
+                            if(onType != null){onType(cur_character, current_item);}
 
                             _i++;
                         }
@@ -230,7 +234,7 @@ class AlphaCharacter extends FlxSprite {
     public function new(x:Float, y:Float, image:String){
         super(x, y);
         
-        var tex = Paths.getSparrowAtlas(Paths.image(image, null, true));
+        var tex = Paths.image(image).getSparrowAtlas();
         frames = tex;
     }
     
@@ -260,12 +264,8 @@ class AlphaCharacter extends FlxSprite {
 }
 
 class PopUpScore extends FlxSpriteGroup {
-    var recyclePop:FlxTypedGroup<FlxSprite> = new FlxTypedGroup<FlxSprite>();
-
     public function new(?score:Int):Void {
         super();
-
-        if(recyclePop.length <= 0){recyclePop.add(new FlxSprite());}
     
         if(score != null){popup(score);}
     }
@@ -275,8 +275,8 @@ class PopUpScore extends FlxSpriteGroup {
 
         var lastWidth:Float = 0;
         for(i in 0...'$score'.length){
-            var _n:FlxSprite = recyclePop.recycle(FlxSprite);
-            _n.loadGraphic(Paths.styleImage('num${'$score'.split("")[i]}', style));
+            var _n:FlxSprite = new FlxSprite();
+            _n.loadGraphic(Paths.styleImage('num${'$score'.split("")[i]}', style).getGraphic());
             _n.setPosition(lastWidth,0);
             _n.scale.set(0.5,0.5);
             _n.updateHitbox();
@@ -284,7 +284,7 @@ class PopUpScore extends FlxSpriteGroup {
 
             lastWidth += _n.width - 5;
 
-            FlxTween.tween(_n, {y: _n.y - 35, alpha: 0}, 0.5 + (i * 0.2), {ease:FlxEase.quadOut});
+            FlxTween.tween(_n, {y: _n.y - 35, alpha: 0}, 0.5 + (i * 0.2), {ease:FlxEase.quadOut, onComplete: function(twn){_n.destroy();}});
         }
     }
 }

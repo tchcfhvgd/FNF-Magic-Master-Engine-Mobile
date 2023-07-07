@@ -1,8 +1,8 @@
 {
 	"aspect": "Angry",
 	"position": [
-		130,
-		275
+		-195,
+		-130
 	],
 	"scale": 6,
 	"anims": [
@@ -48,9 +48,9 @@
 	"onRight": true,
 	"skin": "Default",
 	"camera": [
-		0,
-		0
+		280,
+		410
 	],
 	"healthicon": "senpai-pixel",
-	"deathCharacter": "Boyfriend_Death"
+	"deathCharacter": "Boyfriend"
 }

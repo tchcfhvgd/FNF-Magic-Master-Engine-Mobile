@@ -1,73 +1,39 @@
-/* ||===================================================|| */
-/* || SCRIPTED STAGE - DON'T EXPORT IN THE STAGE EDITOR || */
-/* ||===================================================|| */
-
-/* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": [{"type":"Int","isPresset":true,"value":"0","id":"initChar"},{"type":"Array","isPresset":true,"value":[400,230],"id":"camP_1"},{"type":"Array","isPresset":true,"value":[1300,570],"id":"camP_2"},{"type":"Float","isPresset":true,"value":1.1,"id":"zoom"}] */
-
-import("flixel.FlxSprite", "FlxSprite");
-import("PreSettings", "PreSettings");
-import("Character", "Character");
-import("flixel.FlxG", "FlxG");
+import("SavedFiles", "SavedFiles");
 import("Paths", "Paths");
-
-function addToLoad(temp){
-temp.push({type:"ATLAS",instance:Paths.image('halloween_bg','stages/spooky',true)});
-temp.push({type:"SOUND",instance:Paths.sound('thunder_1','stages/spooky',true)});
-temp.push({type:"SOUND",instance:Paths.sound('thunder_2','stages/spooky',true)});
-}
+import("flixel.FlxSprite", "FlxSprite");
 
 presset("initChar", 0);
 presset("camP_1", [400,230]);
 presset("camP_2", [1300,570]);
 presset("zoom", 1.1);
 
-var background:FlxSprite;
+var background:FlxSprite = null;
 
-function create(){
-//-<Sprite_Object>-//
-/* "Packages": {"Paths":"Paths","FlxSprite":"flixel.FlxSprite"} */
-/* "Variables": {"Play_Anim":"idle","Graphic_Library":"stages/spooky","Sprite_Name":"background","Position":[-200,-110],"Graphic_File":"halloween_bg","Anims_Prefix":[["idle","halloweem bg lightning strike",30,false]]} */
-
-var background_position:Array<Int> = [-200,-110];
-
-background = new FlxSprite(background_position[0], background_position[1]);
-instance.add(background);
-//-{Animated_Graphic}-//
-/* "Packages": {"Paths":"Paths"} */
-/* "Variables": {"Graphic_Library":"stages/spooky","Play_Anim":"idle","Position":[-200,-110],"Sprite_Name":"background","Anims_Prefix":[["idle","halloweem bg lightning strike",30,false]],"Graphic_File":"halloween_bg"} */
-
-background.frames = Paths.getAtlas(Paths.image('halloween_bg', 'stages/spooky', true));
-
-var cur_prefixs:Array<Dynamic> = [["idle","halloweem bg lightning strike",30,false]];
-for(i in 0...cur_prefixs.length){
-var cur_anim:Array<Dynamic> = cur_prefixs[i];
-while(cur_anim.length < 6){cur_anim.push(null);}
-background.animation.addByPrefix(cur_anim[0], cur_anim[1], cur_anim[2], cur_anim[3], cur_anim[4], cur_anim[5]);
+function addToLoad(temp):Void {
+	temp.push({type: "IMAGE", instance: Paths.image('halloween_bg','stages/spooky')});
 }
-background.animation.play('idle');
-//-[Animated_Graphic]-//
-//->Sprite_Object<-//
 
-pushGlobal();
+function create():Void {
+	background = new FlxSprite(-200, -110);
+	background.frames = SavedFiles.getAtlas(Paths.image('halloween_bg', 'stages/spooky'));
+	background.animation.addByPrefix('idle', 'halloweem bg lightning strike', 30, false);
+	background.animation.play('idle');
+	instance.add(background);
+
+	pushGlobal();
 }
 
 var lightningStrikeBeat:Int = 0;
 var lightningOffset:Int = 8;
 function beatHit(curBeat:Int):Void {
+	if(!PreSettings.getPreSetting("Background Animated", "Graphic Settings")){return;}
     if(FlxG.random.bool(10) && curBeat > lightningStrikeBeat + lightningOffset){lightningStrikeShit(curBeat);}
 }
 
 function lightningStrikeShit(curBeat:Int):Void {
-		FlxG.sound.play(Paths.soundRandom('thunder_', 1, 2, 'stages/spooky'));
-		if(PreSettings.getPreSetting("Background Animated", "Graphic Settings")){background.animation.play('idle');}
-
-		lightningStrikeBeat = curBeat;
-		lightningOffset = FlxG.random.int(8, 24);
-
-        var stage = getState().stage;
-        for(i in 0...stage.character_Length){
-            var cur_char:Character = stage.getCharacterById(i);
-            cur_char.playAnim('scared', true, true);
-        }
-	}
+	FlxG.sound.play(SavedFiles.getSound(Paths.soundRandom('thunder_', 1, 2, 'stages/spooky')));
+	if(PreSettings.getPreSetting("Background Animated", "Graphic Settings")){background.animation.play('idle');}
+	lightningStrikeBeat = curBeat;
+	lightningOffset = FlxG.random.int(8, 24);
+    for(i in 0...getState().stage.character_Length){stage.getCharacterById(i).playAnim('scared', true, true);}
+}

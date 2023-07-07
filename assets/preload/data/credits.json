@@ -2,95 +2,104 @@
     "Magic Master Engine [Dev Team]":[
         {
             "Name": "Yirius125",
-            "Icon": "yirius125",
-            "Description": "",
-            "Rol": "Coder",
+            "Icon": "yirius",
+            "Description": "Plushie Yirius is now available (jk)",
+            "Rol": "coder",
             "Color": "#47ffc2"
         },
         {
             "Name": "SugarMoon",
-            "Icon": "sugarmoon",
+            "Icon": "sugar",
             "Description": "",
-            "Rol": "Composer",
+            "Rol": "musician",
             "Color": "#ff87f7"
         },
         {
             "Name": "Massacre",
-            "Icon": "massacre",
+            "Icon": "massan",
             "Description": "",
-            "Rol": "Artist / Animator",
+            "Rol": "animator",
             "Color": "#ff8585"
         },
         {
             "Name": "ElSniper",
             "Icon": "sniper",
             "Description": "",
-            "Rol": "Artist / Animator",
+            "Rol": "animator",
             "Color": "#5f9662"
         },
         {
             "Name": "Manolo Dev",
             "Icon": "manolo",
-            "Description": "",
-            "Rol": "Artist / Animator",
+            "Description": "Odio Bolivia",
+            "Rol": "animator",
             "Color": "#dfe37b"
         },
         {
             "Name": "Doggy",
             "Icon": "doggy",
-            "Description": "",
-            "Rol": "Artist",
+            "Description": "Kirby dando vueltas",
+            "Rol": "artist",
             "Color": "#8ad1ed"
         },
         {
             "Name": "AceDavid",
-            "Icon": "acedavid",
-            "Description": "",
-            "Rol": "Artist",
+            "Icon": "ace",
+            "Description": "puedo animarlo xDDXdxD",
+            "Rol": "artist",
             "Color": "#e6c28c"
         },
         {
             "Name": "CaptainCheddar",
             "Icon": "cheddar",
             "Description": "",
-            "Rol": "Artist",
+            "Rol": "artist",
             "Color": "#f7ff59"
         },
         {
             "Name": "Ricky",
             "Icon": "ricky",
-            "Description": "",
-            "Rol": "Charter",
+            "Description": "el que madruga dios le ayuda, a mi nunca me ayudo xd",
+            "Rol": "charter",
             "Color": "#b8fffb"
+        }
+    ],
+    "Magic Master Engine [Special Thanks]":[
+        {
+            "Name": "Saruky",
+            "Icon": "",
+            "Description": "Cassette Girl Voice",
+            "Rol": "",
+            "Color": "#842ec9"
         }
     ],
     "Funkin' Crew":[
         {
             "Name": "ninjamuffin99",
-            "Icon": "ninja",
+            "Icon": "ninja_muffin",
             "Description": "",
-            "Rol": "Coder",
+            "Rol": "coder",
             "Color": "#ff8282"
         },
         {
             "Name": "kawaisprite",
-            "Icon": "kawai",
+            "Icon": "kawai_sprite",
             "Description": "",
-            "Rol": "Composer",
+            "Rol": "musician",
             "Color": "#82b2ff"
         },
         {
             "Name": "PhantomArcade",
-            "Icon": "phantom",
+            "Icon": "phantomarcade",
             "Description": "",
-            "Rol": "Animator",
+            "Rol": "animator",
             "Color": "#fffd82"
         },
         {
             "Name": "evilsk8r",
-            "Icon": "evils",
+            "Icon": "evilsk8r",
             "Description": "",
-            "Rol": "Artist",
+            "Rol": "artist",
             "Color": "#9effb3"
         }
     ]

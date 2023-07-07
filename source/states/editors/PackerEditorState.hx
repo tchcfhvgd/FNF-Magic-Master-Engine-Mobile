@@ -48,14 +48,19 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
+using SavedFiles;
 using StringTools;
 
 typedef PackerData = {
-    var symbol:String;
     var x:Int;
     var y:Int;
     var width:Int;
     var height:Int;
+    var frame_x:Int;
+    var frame_y:Int;
+    var symbol:String;
+    var frame_width:Int;
+    var frame_height:Int;
 }
 
 class PackerEditorState extends MusicBeatState {
@@ -205,15 +210,15 @@ class PackerEditorState extends MusicBeatState {
         if(!txtIMAGE.text.contains(".png") || !txtPACKER.text.contains(".txt")){return;}
         
         _IMG = FlxGraphic.fromBitmapData(BitmapData.fromFile(txtIMAGE.text));
-        _PACKER = parseData(Paths.getText(txtPACKER.text));
+        _PACKER = parseData(txtPACKER.text.getText());
     }
 
     private function loadGhostSprites():Void {
         if(!txtIMAGE.text.contains(".png") || !txtPACKER.text.contains(".txt")){return;}
 
-        bSprite.frames = Paths.fromUncachedSpriteSheetPacker(BitmapData.fromFile(txtIMAGE.text), Paths.getText(txtPACKER.text));
+        bSprite.frames = SavedFiles.fromUncachedSpriteSheetPacker(BitmapData.fromFile(txtIMAGE.text), txtPACKER.text.getText());
 
-        var animArr = getNamesArray(parseData(Paths.getText(txtPACKER.text)));
+        var animArr = getNamesArray(parseData(txtPACKER.text.getText()));
         for(anim in animArr){bSprite.animation.addByPrefix(anim, anim);}
         clGCurAnim.setData(animArr);
 
@@ -235,7 +240,7 @@ class PackerEditorState extends MusicBeatState {
         var values:Array<Dynamic> = null;
         if(eSprite != null && eSprite.animation.curAnim != null){values = [eSprite.animation.curAnim.name, eSprite.animation.curAnim.curFrame];}
         if(_PACKER != null && _IMG != null){
-            eSprite.frames = Paths.fromUncachedSpriteSheetPacker(_IMG, convertData(_PACKER));
+            eSprite.frames = SavedFiles.fromUncachedSpriteSheetPacker(_IMG, convertData(_PACKER));
             
             var animArr = getNamesArray(_PACKER);
             for(anim in animArr){eSprite.animation.addByPrefix(anim, anim); eSprite.animation.play(anim); eSprite.animation.stop();}
@@ -249,7 +254,9 @@ class PackerEditorState extends MusicBeatState {
         for(chr in arr){
             var line_data:Array<String> = chr.symbol.split("_");
             var name:String = line_data[0];
-            if(!toReturn.contains(name)){toReturn.push(name);}
+            if(!toReturn.contains(name)){
+                toReturn.push(name);
+            }
         }
 
         return toReturn;
@@ -263,7 +270,7 @@ class PackerEditorState extends MusicBeatState {
         for(data in _PACKER){if(data.symbol == Name){return data;}}
 
         if(hasNull){return null;}
-        return {symbol: "PlaceHolder", x: 0, y: 0, width: 0, height: 0};
+        return {symbol: "PlaceHolder", x: 0, y: 0, width: 0, height: 0, frame_x: 0, frame_y: 0, frame_width: 0, frame_height: 0};
     }
     
     private function getMapFromDat(data:PackerData):Map<String, Dynamic> {
@@ -274,6 +281,10 @@ class PackerEditorState extends MusicBeatState {
         toReturn.set("y", data.y);
         toReturn.set("width", data.width);
         toReturn.set("height", data.height);
+        toReturn.set("frame_y", data.frame_y);
+        toReturn.set("frame_y", data.frame_y);
+        toReturn.set("frame_width", data.frame_width);
+        toReturn.set("frame_height", data.frame_height);
 
         return toReturn;
     }
@@ -283,6 +294,10 @@ class PackerEditorState extends MusicBeatState {
         data.y = map.get("y");
         data.width = map.get("width");
         data.height = map.get("height");
+        data.frame_x = map.get("frame_x");
+        data.frame_y = map.get("frame_y");
+        data.frame_width = map.get("frame_width");
+        data.frame_height = map.get("frame_height");
     }
 
     private function editAttribute(attribute:String, value:Int, force:Bool = false):Void {
@@ -357,7 +372,7 @@ class PackerEditorState extends MusicBeatState {
     private function convertData(_data:Array<PackerData>):String {
         var toReturn:String = "";
 
-        for(line in _data){toReturn += '${line.symbol} = ${line.x} ${line.y} ${line.width} ${line.height}\n';}
+        for(line in _data){toReturn += '${line.symbol}:${line.x},${line.y},${line.width},${line.height}:${line.frame_x},${line.frame_y},${line.frame_width},${line.frame_height}\n';}
 
         return toReturn;
     }
@@ -368,11 +383,24 @@ class PackerEditorState extends MusicBeatState {
 		var lines:Array<String> = pack.split("\n");
 
         for(i in 0...lines.length){
-			var currImageData = lines[i].split("=");
+			var currImageData = lines[i].split(":");
 			var name = StringTools.trim(currImageData[0]);
-			var currImageRegion = StringTools.trim(currImageData[1]).split(" ");
+			var currImageRegion = StringTools.trim(currImageData[1]).split(",");
+			var currRectRegion = StringTools.trim(currImageData[2]).split(",");
 
-            toReturn.push({symbol: name, x: Std.parseInt(currImageRegion[0]), y: Std.parseInt(currImageRegion[1]), width: Std.parseInt(currImageRegion[2]), height: Std.parseInt(currImageRegion[3])});
+            toReturn.push(
+                {
+                    symbol: name,
+                    x: Std.parseInt(currImageRegion[0]),
+                    y: Std.parseInt(currImageRegion[1]),
+                    width: Std.parseInt(currImageRegion[2]),
+                    height: Std.parseInt(currImageRegion[3]),
+                    frame_x: Std.parseInt(currRectRegion[0]),
+                    frame_y: Std.parseInt(currRectRegion[1]),
+                    frame_width: Std.parseInt(currRectRegion[2]),
+                    frame_height: Std.parseInt(currRectRegion[3])
+                }
+            );
 		}
 
         return toReturn;
@@ -475,10 +503,8 @@ class PackerEditorState extends MusicBeatState {
     var stpCurFrame:FlxUINumericStepper = new FlxUINumericStepper();
     var chkFlipX:FlxUICheckBox;
     var chkFlipY:FlxUICheckBox;
-
     var chkSetToAllFrames:FlxUICheckBox;
     var chkSetToAllSprite:FlxUICheckBox;
-
     var lblCurX:FlxText;
     var vchCurX:FlxUIValueChanger;
     var lblCurY:FlxText;
@@ -487,6 +513,14 @@ class PackerEditorState extends MusicBeatState {
     var vchCurWidth:FlxUIValueChanger;
     var lblCurHeight:FlxText;
     var vchCurHeight:FlxUIValueChanger;
+    var lblCurFrameX:FlxText;
+    var vchCurFrameX:FlxUIValueChanger;
+    var lblCurFrameY:FlxText;
+    var vchCurFrameY:FlxUIValueChanger;
+    var lblCurFrameWidth:FlxText;
+    var vchCurFrameWidth:FlxUIValueChanger;
+    var lblCurFrameHeight:FlxText;
+    var vchCurFrameHeight:FlxUIValueChanger;
     private function addFRAMESTABS():Void{
         var uiBase = new FlxUI(null, tabSPRITE);
         uiBase.name = "General";
@@ -516,6 +550,16 @@ class PackerEditorState extends MusicBeatState {
         vchCurWidth = new FlxUIValueChanger(tabSPRITE.width - 105, lblCurWidth.y - 1, 100, function(value:Float){}); uiBase.add(vchCurWidth); vchCurWidth.name = "SPRITE_WIDTH";
         lblCurHeight = new FlxText(lblCurWidth.x, lblCurWidth.y + lblCurWidth.height + 3, 0, "Height: [0]"); uiBase.add(lblCurHeight);
         vchCurHeight = new FlxUIValueChanger(tabSPRITE.width - 105, lblCurHeight.y - 1, 100, function(value:Float){}); uiBase.add(vchCurHeight); vchCurHeight.name = "SPRITE_HEIGHT";
+        
+        lblCurFrameX = new FlxText(lblCurHeight.x, lblCurHeight.y + lblCurHeight.height + 7, 0, "Frame X: [0]"); uiBase.add(lblCurFrameX);
+        vchCurFrameX = new FlxUIValueChanger(tabSPRITE.width - 105, lblCurFrameX.y - 1, 100, function(value:Float){}); uiBase.add(vchCurFrameX); vchCurFrameX.name = "SPRITE_FRAME_X";
+        lblCurFrameY = new FlxText(lblCurFrameX.x, lblCurFrameX.y + lblCurFrameX.height + 3, 0, "Frame Y: [0]"); uiBase.add(lblCurFrameY);
+        vchCurFrameY = new FlxUIValueChanger(tabSPRITE.width - 105, lblCurFrameY.y - 1, 100, function(value:Float){}); uiBase.add(vchCurFrameY); vchCurFrameY.name = "SPRITE_FRAME_Y";
+        
+        lblCurFrameWidth = new FlxText(lblCurFrameY.x, lblCurFrameY.y + lblCurFrameY.height + 7, 0, "Frame Width: [0]"); uiBase.add(lblCurFrameWidth);
+        vchCurFrameWidth = new FlxUIValueChanger(tabSPRITE.width - 105, lblCurFrameWidth.y - 1, 100, function(value:Float){}); uiBase.add(vchCurFrameWidth); vchCurFrameWidth.name = "SPRITE_FRAME_WIDTH";
+        lblCurFrameHeight = new FlxText(lblCurFrameWidth.x, lblCurFrameWidth.y + lblCurFrameWidth.height + 3, 0, "Frame Height: [0]"); uiBase.add(lblCurFrameHeight);
+        vchCurFrameHeight = new FlxUIValueChanger(tabSPRITE.width - 105, lblCurFrameHeight.y - 1, 100, function(value:Float){}); uiBase.add(vchCurFrameHeight); vchCurFrameHeight.name = "SPRITE_FRAME_HEIGHT";
         
         tabSPRITE.addGroup(uiBase);
         tabSPRITE.scrollFactor.set();
@@ -601,6 +645,10 @@ class PackerEditorState extends MusicBeatState {
                         case "SPRITE_Y":{editAttribute("y", chValue);}
                         case "SPRITE_WIDTH":{editAttribute("width", chValue);}
                         case "SPRITE_HEIGHT":{editAttribute("height", chValue);}
+                        case "SPRITE_FRAME_X":{editAttribute("frame_x", chValue);}
+                        case "SPRITE_FRAME_Y":{editAttribute("frame_y", chValue);}
+                        case "SPRITE_FRAME_WIDTH":{editAttribute("frame_width", chValue);}
+                        case "SPRITE_FRAME_HEIGHT":{editAttribute("frame_height", chValue);}
                     }
                 }
             }

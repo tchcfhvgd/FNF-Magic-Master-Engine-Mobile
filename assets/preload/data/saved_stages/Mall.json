@@ -1,0 +1,189 @@
+{
+	"objects": [
+		{
+			"Values": {
+				"Position_X": -1300,
+				"Sprite_Name": "background",
+				"Position_Y": -500
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 0.2,
+						"Scroll_Y": 0.2
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/mall",
+						"Graphic_File": "bgWalls"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -330,
+				"Sprite_Name": "upperBoopers",
+				"Position_Y": 0
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/mall",
+						"Symbol_Name": "Upper Crowd Bob",
+						"Graphic_File": "upperBop"
+					},
+					"Name": "Animated_Graphic"
+				},
+				{
+					"Values": {
+						"Scroll_X": 0.3,
+						"Scroll_Y": 0.3
+					},
+					"Name": "ScrollFactor"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -1350,
+				"Sprite_Name": "backstairs",
+				"Position_Y": -550
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/mall",
+						"Graphic_File": "bgEscalator"
+					},
+					"Name": "Basic_Graphic"
+				},
+				{
+					"Values": {
+						"Scroll_X": 0.3,
+						"Scroll_Y": 0.3
+					},
+					"Name": "ScrollFactor"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": 400,
+				"Sprite_Name": "tree",
+				"Position_Y": -250
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 0.4,
+						"Scroll_Y": 0.4
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/mall",
+						"Graphic_File": "christmasTree"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -470,
+				"Sprite_Name": "bottomBoopers",
+				"Position_Y": 140
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/mall",
+						"Symbol_Name": "Bottom Level Boppers Idle",
+						"Graphic_File": "bottomBop"
+					},
+					"Name": "Animated_Graphic"
+				},
+				{
+					"Values": {
+						"Scroll_X": 0.9,
+						"Scroll_Y": 0.9
+					},
+					"Name": "ScrollFactor"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -820,
+				"Sprite_Name": "floorSnow",
+				"Position_Y": 700
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/mall",
+						"Graphic_File": "fgSnow"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -640,
+				"Sprite_Name": "santa",
+				"Position_Y": 150
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/mall",
+						"Symbol_Name": "santa idle in fear",
+						"Graphic_File": "santa"
+					},
+					"Name": "Animated_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		}
+	],
+	"variables": [
+		{
+			"Type": "Int",
+			"Value": 5,
+			"Name": "initChar"
+		},
+		{
+			"Type": "Array",
+			"Value": [
+				-15,
+				-290
+			],
+			"Name": "camP_1"
+		},
+		{
+			"Type": "Array",
+			"Value": [
+				1340,
+				490
+			],
+			"Name": "camP_2"
+		},
+		{
+			"Type": "Float",
+			"Value": 0.8,
+			"Name": "zoom"
+		}
+	]
+}

@@ -14,6 +14,7 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxBasic;
 import flixel.FlxG;
+import ModSupport;
 import haxe.Json;
 
 #if windows
@@ -21,25 +22,19 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-import ModSupport;
-
+using SavedFiles;
 using StringTools;
 
 class Stage extends FlxTypedGroup<Dynamic>{
     public static function getStageScript(name:String):Script {
         var toReturn:Script = new Script();
-        toReturn.exScript(Paths.getText(Paths.stage(name)));
+        toReturn.exScript(Paths.stage(name).getText());
         return toReturn;
     }
     
     public static function getStages():Array<String>{
         var stageArray:Array<String> = [];
-
-        for(i in Paths.readDirectory('assets/stages')){
-            var aStage:String = i;
-            if(aStage.contains(".hx")){stageArray.push(aStage.replace(".hx",""));}
-        }
-
+        for(i in Paths.readDirectory('assets/stages')){if(i.contains(".hx")){stageArray.push(i.replace(".hx",""));}}
         return stageArray;
     }
 
@@ -55,6 +50,7 @@ class Stage extends FlxTypedGroup<Dynamic>{
 
     private var initChar:Int = 0;
 
+    public var is_debug:Bool = false;
     public var showCamPoints:Bool = false;
 
     public var character_Length(get, never):Int;
@@ -87,7 +83,7 @@ class Stage extends FlxTypedGroup<Dynamic>{
         script.setVariable("instance", stageData);
         script.setVariable("stage", this);
 
-        script.exScript(Paths.getText(Paths.stage(name)));
+        script.exScript(Paths.stage(name).getText());
         reload();
     }
 
@@ -111,7 +107,12 @@ class Stage extends FlxTypedGroup<Dynamic>{
 
         initChar = script.getVariable("initChar");
 
-        clear();
+        if(members != null && members.length > 0){
+            for(m in members){
+                remove(m);
+                if(Reflect.hasField(m, "destroy")){m.destroy();}
+            }
+        }
         stageData.clear();
 
         script.exFunction("create");

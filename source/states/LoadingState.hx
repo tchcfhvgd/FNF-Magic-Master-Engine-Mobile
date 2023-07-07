@@ -31,16 +31,22 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
+using SavedFiles;
 using StringTools;
 
 class LoadingState extends MusicBeatState {
-	public static var isGlobal:Bool = true;
-
 	public static var toGlobalLoadStuff:Array<Dynamic> = [
-		{type:MUSIC,instance:Paths.music("breakfast","shared",true)},
-		{type:SOUND,instance:Paths.sound("missnote1","shared",true)},
-		{type:SOUND,instance:Paths.sound("missnote2","shared",true)},
-		{type:SOUND,instance:Paths.sound("missnote3","shared",true)}
+		{type:MUSIC,instance:Paths.music("breakfast","shared")},
+		{type:SOUND,instance:Paths.sound("fnf_loss_sfx","shared")},
+		{type:SOUND,instance:Paths.sound("missnote1","shared")},
+		{type:SOUND,instance:Paths.sound("missnote2","shared")},
+		{type:SOUND,instance:Paths.sound("missnote3","shared")},
+		{type:IMAGE,instance:Paths.image("alphabet")},
+		{type:IMAGE,instance:Paths.image("icons/icon-face")},
+		{type:MUSIC,instance:Paths.music("freakyMenu")},
+		{type:SOUND,instance:Paths.sound("cancelMenu")},
+		{type:SOUND,instance:Paths.sound("confirmMenu")},
+		{type:SOUND,instance:Paths.sound("scrollMenu")},
 	];
 	public var toLoadStuff:Array<Dynamic> = [];
 
@@ -54,25 +60,21 @@ class LoadingState extends MusicBeatState {
 	
 	private var thdLoading:Thread;
 
-	public var loadingBar:FlxBar;
-
-	public function new(target:MusicBeatState, _toLoadStuff:Array<Dynamic>, withMusic:Bool = false){
+	public function new(_target:MusicBeatState, _toLoadStuff:Array<Dynamic>, withMusic:Bool = false){
+		if(_toLoadStuff == null){_toLoadStuff = [];}
 		this.WithMusic = withMusic;
 		this.toLoadStuff = _toLoadStuff;
-		this.TARGET = target;
+		this.TARGET = _target;
 		super();
 	}
 
 	override function create(){
 		if(!WithMusic && FlxG.sound.music != null){FlxG.sound.music.stop();}
-		
-        Paths.savedTempMap.clear();
-				
 		preLoadStuff();
 		
 		totalCount = tempLoadingStuff.length;
-
-		var bg = new FlxSprite().loadGraphic(Paths.image('menuBG'));
+		
+		var bg = new FlxSprite().loadGraphic(Paths.image('menuBG').getGraphic());
 		bg.setGraphicSize(FlxG.width, FlxG.height);
         bg.color = 0xffff8cf7;
 		bg.screenCenter();
@@ -83,9 +85,7 @@ class LoadingState extends MusicBeatState {
         var shape_3:FlxSprite = new FlxSprite(0, FlxG.height - 110).makeGraphic(FlxG.width, 5, FlxColor.BLACK); add(shape_3);
         var shape_4:FlxSprite = new FlxSprite(0, FlxG.height - 100).makeGraphic(FlxG.width, 100, FlxColor.BLACK); add(shape_4);
 
-		loadingText = new Alphabet(20,500,[{text:'${LangSupport.getText("loading_info_1")} 0%'}]); add(loadingText);
-
-		loadingBar = new FlxBar(loadingText.x, loadingText.y + loadingText.height + 30, LEFT_TO_RIGHT, Std.int(FlxG.width / 3), 10, null, null, 0, totalCount); add(loadingBar);
+		loadingText = new Alphabet(20,525,[{text:'${LangSupport.getText("loading_info_1")} 0%'}]); add(loadingText);
 
 		loadStuff();
 				
@@ -97,10 +97,6 @@ class LoadingState extends MusicBeatState {
 	}
 
 	function updateText():Void {
-		//var bar_value = totalCount - tempLoadingStuff.length;
-		//if(bar_value < 0){bar_value = 0;} if(bar_value > totalCount){bar_value = totalCount;}
-		//loadingBar.value = bar_value;
-
 		var percent:Int = Std.int((totalCount - tempLoadingStuff.length) * 100 / totalCount);
 		loadingText.cur_data = [{text:'${LangSupport.getText("loading_info_1")} ${percent}%'}];
 		loadingText.loadText();
@@ -109,15 +105,8 @@ class LoadingState extends MusicBeatState {
 	private function preLoadStuff():Void {
 		for(stuff in toGlobalLoadStuff){tempLoadingStuff.push(stuff);}
 
-		for(i in Paths.readDirectory('assets/notes/Default/Default', true)){
-			var _i:String = cast i; 
-			tempLoadingStuff.push({type:"ATLAS",instance:_i});
-		}
-
-		for(i in Paths.readDirectory('assets/notes/${PreSettings.getPreSetting("Note Skin", "Visual Settings")}', true)){
-			var _i:String = cast i; 
-			if(_i.contains('.json')){tempLoadingStuff.push({type:TEXT,instance:_i});}
-		}
+		for(i in Paths.readDirectory('assets/notes/Default/Default')){tempLoadingStuff.push({type:IMAGE,instance:i});}
+		for(i in Paths.readDirectory('assets/notes/${PreSettings.getPreSetting("Note Skin", "Visual Settings")}')){if(i.contains('.json')){tempLoadingStuff.push({type:TEXT,instance:i});}}
 		
 		for(stuff in toLoadStuff){
 			if(stuff.type != IMAGE && stuff.type != SOUND && stuff.type != MUSIC && stuff.type != TEXT){
@@ -127,17 +116,11 @@ class LoadingState extends MusicBeatState {
 		
 						trace("SONG");
 						
-						tempLoadingStuff.push({type:SOUND,instance:Paths.inst(_song.song, _song.category, true)});
-						if(_song.hasVoices){for(i in 0..._song.characters.length){tempLoadingStuff.push({type:SOUND,instance:Paths.voice(i, _song.characters[i][0], _song.song, _song.category, true)});}}
+						tempLoadingStuff.push({type:SOUND,instance:Paths.inst(_song.song, _song.category)});
+						if(_song.hasVoices){for(i in 0..._song.characters.length){tempLoadingStuff.push({type:SOUND,instance:Paths.voice(i, _song.characters[i][0], _song.song, _song.category)});}}
 						
-						for(i in Paths.readDirectory('assets/shared/images/style_UI/${_song.uiStyle}', true)){
-							var _i:String = cast i; 
-							if(_i.contains(".png")){tempLoadingStuff.push({type:IMAGE,instance:_i});}
-						}
-						for(i in Paths.readDirectory('assets/shared/sounds/style_UI/${_song.uiStyle}', true)){
-							var _i:String = cast i; 
-							if(_i.contains(".ogg")){tempLoadingStuff.push({type:SOUND,instance:_i});}
-						}
+						for(i in Paths.readDirectory('assets/shared/images/style_UI/${_song.uiStyle}')){if(i.contains(".png")){tempLoadingStuff.push({type:IMAGE,instance:i});}}
+						for(i in Paths.readDirectory('assets/shared/sounds/style_UI/${_song.uiStyle}')){if(i.contains(".ogg")){tempLoadingStuff.push({type:SOUND,instance:i});}}
 						
 						Stage.getStageScript(_song.stage).exFunction("addToLoad", [tempLoadingStuff]);
 
@@ -145,7 +128,7 @@ class LoadingState extends MusicBeatState {
 						if(Paths.exists(song_path)){
 							var song_script:Script = new Script();
 							song_script.Name = "ScriptSong";
-							song_script.exScript(Paths.getText(song_path));
+							song_script.exScript(song_path.getText());
 							TARGET.tempScripts.set("ScriptSong", song_script);
 							song_script.exFunction("addToLoad", [tempLoadingStuff]);
 						}
@@ -165,10 +148,7 @@ class LoadingState extends MusicBeatState {
 						}
 
 						for(strum in _song.sectionStrums){
-							for(i in Paths.readDirectory('assets/notes/${PreSettings.getPreSetting("Note Skin", "Visual Settings")}/${strum.noteStyle}', true)){
-								var _i:String = cast i; 
-								tempLoadingStuff.push({type:"ATLAS",instance:_i});
-							}
+							for(i in Paths.readDirectory('assets/notes/${PreSettings.getPreSetting("Note Skin", "Visual Settings")}/${strum.noteStyle}')){tempLoadingStuff.push({type:IMAGE,instance:i});}
 
 							for(s in strum.notes){
 								for(ss in s.sectionNotes){
@@ -184,7 +164,6 @@ class LoadingState extends MusicBeatState {
 					}
 					case "PRELOAD":{if(stuff.instance != null){stuff.instance();}}
 				}
-
 				continue;
 			}
 
@@ -203,11 +182,9 @@ class LoadingState extends MusicBeatState {
 
 				switch(_stuff.type){
 					default:{trace(_stuff);}
-					case IMAGE: Paths.getGraphic(_stuff.instance);
-					case SOUND, MUSIC: Paths.getSound(_stuff.instance);
-					case TEXT: Paths.getText(_stuff.instance);
-					case "ATLAS": Paths.getAtlas(_stuff.instance);
-
+					case IMAGE: SavedFiles.saveGraphic(_stuff.instance);
+					case SOUND, MUSIC: SavedFiles.saveSound(_stuff.instance);
+					case TEXT: SavedFiles.saveText(_stuff.instance);
 					case "FUNCTION":{_stuff.instance();}
 				}
 
@@ -217,10 +194,7 @@ class LoadingState extends MusicBeatState {
 	}
 
 	private function onLoad():Void {
-		trace("Loaded All");
-
-		if(isGlobal){trace("Setting to Global"); isGlobal = false; Paths.setTempToGlobal();}
-
-		MusicBeatState.switchState(TARGET);
+		trace('Loaded All -> $TARGET');
+		MusicBeatState._switchState(TARGET);
 	}
 }

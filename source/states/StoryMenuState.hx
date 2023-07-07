@@ -37,6 +37,7 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
+using SavedFiles;
 using StringTools;
 
 class StoryMenuState extends MusicBeatState {
@@ -68,7 +69,7 @@ class StoryMenuState extends MusicBeatState {
 
         weeks = SongStuffManager.getWeekList();
 
-        var bg = new FlxSprite().loadGraphic(Paths.image('menuBG'));
+        var bg = new FlxSprite().loadGraphic(Paths.image('menuBG').getGraphic());
 		bg.setGraphicSize(FlxG.width, FlxG.height);
         bg.color = FlxColor.GRAY;
 		bg.screenCenter();
@@ -101,7 +102,7 @@ class StoryMenuState extends MusicBeatState {
 
         grpWeeks = new FlxTypedGroup<FlxSprite>();
         for(week in weeks){
-            var spr_week:FlxSprite = new FlxSprite().loadGraphic(Paths.image('weeks/${week.name}'));
+            var spr_week:FlxSprite = new FlxSprite().loadGraphic(Paths.image('weeks/${week.name}').getGraphic());
             spr_week.screenCenter(X);
             grpWeeks.add(spr_week);
         }
@@ -130,7 +131,7 @@ class StoryMenuState extends MusicBeatState {
         grpArrows = new FlxTypedGroup<FlxSprite>();
         for(i in 0...2){
             var arrow_1:FlxSprite = new FlxSprite();
-            arrow_1.frames = Paths.getAtlas(Paths.image('arrows', null, true));
+            arrow_1.frames = Paths.image('arrows').getAtlas();
             arrow_1.animation.addByPrefix('idle', 'Arrow Idle');
             arrow_1.animation.addByPrefix('over', 'Arrow Over', false);
             arrow_1.animation.addByPrefix('hit', 'Arrow Hit', false);
@@ -230,7 +231,7 @@ class StoryMenuState extends MusicBeatState {
 
         curCat = cat_arr[cur_categ].category;
 
-        category.loadGraphic(Paths.image('categories/${Paths.getFileName(curCat.toLowerCase(), true)}'));
+        category.loadGraphic(Paths.image('categories/${Paths.getFileName(curCat.toLowerCase(), true)}').getGraphic());
         category.setPosition(250 - (category.width / 2), (FlxG.height - 110) - (category.height / 2));
         
         changeDiff();
@@ -248,7 +249,7 @@ class StoryMenuState extends MusicBeatState {
 
         curDiff = cat_diffs[cur_diff];
 
-        difficulty.loadGraphic(Paths.image('difficulties/${Paths.getFileName(curDiff.toLowerCase(), true)}'));
+        difficulty.loadGraphic(Paths.image('difficulties/${Paths.getFileName(curDiff.toLowerCase(), true)}').getGraphic());
         difficulty.setPosition((FlxG.width - 250) - (difficulty.width / 2), (FlxG.height - 110) - (difficulty.height / 2));
         
         scoreAlpha.cur_data = [{scale:0.4, bold:true, text:'${LangSupport.getText('gmp_score')}: ${Highscore.getWeekScore(weeks[curWeek].name, curDiff, curCat)}'}];

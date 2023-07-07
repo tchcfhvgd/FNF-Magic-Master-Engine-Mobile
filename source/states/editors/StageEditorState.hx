@@ -60,7 +60,20 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
+using SavedFiles;
 using StringTools;
+
+typedef StageJson = {
+	var variables:Array<{Name:String, Value:Dynamic, Type:String}>;
+    var objects:Array<{Name:String, Attributes:Array<{Name:String, Values:Dynamic}>, Values:Dynamic}>;
+}
+typedef StageObjectJson = {
+    var variables:Array<{Name:String, PlaceHolder:Dynamic, Type:String}>;
+    var load:Array<{type:String, instance:String}>;
+	var imports:Dynamic;
+    var variable:String;
+    var source:String;
+}
 
 class StageEditorState extends MusicBeatState {
     public static var SCRIPT_SOURCE:StageScripManager;
@@ -73,7 +86,7 @@ class StageEditorState extends MusicBeatState {
     var stage_objects_list:FlxUIGroup;
     var global_variable_gp:FlxUIGroup;
     var object_settings_gp:FlxUI;
-    var current_object:StageObjectScript;
+    var current_object:StageObject;
 
     var OBJECTS:FlxUITabMenu;
     var MENU:FlxUITabMenu;
@@ -106,8 +119,9 @@ class StageEditorState extends MusicBeatState {
             ["Daddy_Dearest", [100, 100], 1, true, "Default", "NORMAL", 0],
             ["Boyfriend", [770, 100], 1, false, "Default", "NORMAL", 0]
         ]);
-        stage.loadStageByScriptSource(SCRIPT_SOURCE.buildSource());
+        stage.loadStageByScriptSource(SCRIPT_SOURCE.export_source());
         stage.showCamPoints = true;
+        stage.is_debug = true;
         stage.cameras = [camFGame];
         add(stage);
         
@@ -137,7 +151,7 @@ class StageEditorState extends MusicBeatState {
         addMENUTABS();
         add(MENU);
 
-        camera_sprite = new FlxSprite().loadGraphic(Paths.image("camera_border"));
+        camera_sprite = new FlxSprite().loadGraphic(Paths.image("camera_border").getGraphic());
         camera_sprite.scrollFactor.set(0,0);
         camera_sprite.cameras = [camFGame];
         camera_sprite.antialiasing = false;
@@ -154,7 +168,7 @@ class StageEditorState extends MusicBeatState {
 		camFollow = new FlxObject(0, 0, 1, 1);
         camFollow.screenCenter();
         camFGame.follow(camFollow, LOCKON);
-		add(camFollow);        
+		add(camFollow);
     }
 
     var pos = [[], []];
@@ -203,7 +217,7 @@ class StageEditorState extends MusicBeatState {
     }
 
     public function reloadStage():Void {
-        stage.loadStageByScriptSource(SCRIPT_SOURCE.buildSource());
+        stage.loadStageByScriptSource(SCRIPT_SOURCE.export_source());
         canReload = false;
         reload.alpha = 0;
 
@@ -216,10 +230,10 @@ class StageEditorState extends MusicBeatState {
 
         var last_height:Float = 0;
         for(i in Paths.readDirectory('assets/data/stage_editor_objects')){
-            if('$i'.contains(".")){continue;}
-            var object_name:String = '$i';
-            var template_obj:FlxUIButton = new FlxUICustomButton(0, last_height,Std.int(OBJECTS.width - 10), Std.int(OBJECTS.width - 10), "", Paths.image('stage_editor_objects/${object_name}', null, true), null, function(){
-                SCRIPT_SOURCE.addTemplate(new StageObjectScript(object_name));
+            if(i.contains(".")){continue;}
+            var object_name:String = i.split("/").pop();
+            var template_obj:FlxUIButton = new FlxUICustomButton(0, last_height,Std.int(OBJECTS.width - 10), Std.int(OBJECTS.width - 10), "", Paths.image('stage_editor_objects/${object_name}'), null, function(){
+                SCRIPT_SOURCE.add_object(object_name);
                 reload_stage_objects();
                 canReload = true;
             });
@@ -231,12 +245,12 @@ class StageEditorState extends MusicBeatState {
 
     public function reload_stage_objects():Void {
         stage_objects_list.clear();
-
+        
         SCRIPT_SOURCE.objects.sort((a, b) -> (a.ID - b.ID));
 
         var last_height:Float = 0;
-        for(tmp in SCRIPT_SOURCE.objects){
-            var template_obj:FlxUIButton = new FlxUICustomButton(0,last_height, Std.int(LAYERS.width - 10), Std.int(LAYERS.width - 10), "", Paths.image('stage_editor_objects/${tmp.name}', null, true), null, function(){loadObjectSettings(tmp);});
+        for(_object in SCRIPT_SOURCE.objects){
+            var template_obj:FlxUIButton = new FlxUICustomButton(0,last_height, Std.int(LAYERS.width - 10), Std.int(LAYERS.width - 10), "", Paths.image('stage_editor_objects/${_object.name}'), null, function(){loadObjectSettings(_object);});
             stage_objects_list.add(template_obj);
 
             last_height += template_obj.height + 5;
@@ -248,9 +262,9 @@ class StageEditorState extends MusicBeatState {
 
         var last_height:Float = 0;
         for(i in 0...SCRIPT_SOURCE.variables.length){
-            var vari:Dynamic = SCRIPT_SOURCE.variables[i];
+            var cur_var:Dynamic = SCRIPT_SOURCE.variables[i];
 
-            var txtVariableName = new FlxUIInputText(0, last_height, Std.int(MENU.width - 30), vari.id, 8, 0x000000);
+            var txtVariableName = new FlxUIInputText(0, last_height, Std.int(MENU.width - 30), cur_var.Name, 8, 0x000000);
             txtVariableName.name = 'global_variable:${i}:id';
             arrayFocus.push(txtVariableName);
             global_variable_gp.add(txtVariableName);
@@ -263,38 +277,37 @@ class StageEditorState extends MusicBeatState {
 
             last_height += txtVariableName.height;
 
-            switch(vari.type){
+            switch(cur_var.Type){
                 default:{
-                    var chkCurrent_Variable = new FlxUICheckBox(0, last_height, null, null, vari.id);
-                    chkCurrent_Variable.checked = vari.value == "true";
+                    var chkCurrent_Variable = new FlxUICheckBox(0, last_height, null, null, cur_var.Name);
+                    chkCurrent_Variable.checked = cur_var.Value;
                     chkCurrent_Variable.name = 'global_variable:${i}';
                     global_variable_gp.add(chkCurrent_Variable);
                     last_height += chkCurrent_Variable.height + 5;
                 }
                 case 'Float':{
-                    var stpCurrent_Variable = new FlxUICustomNumericStepper(0, last_height, Std.int(MENU.width - 10), 0.1, Std.parseFloat(vari.value), -999, 999, 3);
+                    var stpCurrent_Variable = new FlxUICustomNumericStepper(0, last_height, Std.int(MENU.width - 10), 0.1, cur_var.Value, -99999, 99999, 3);
                     stpCurrent_Variable.name = 'global_variable:${i}';
                     @:privateAccess arrayFocus.push(cast stpCurrent_Variable.text_field);
                     global_variable_gp.add(stpCurrent_Variable);
                     last_height += stpCurrent_Variable.height + 5;
                 }
                 case 'Int':{
-                    var stpCurrent_Variable = new FlxUICustomNumericStepper(0, last_height, Std.int(MENU.width - 10), 1, Std.parseInt(vari.value));
+                    var stpCurrent_Variable = new FlxUICustomNumericStepper(0, last_height, Std.int(MENU.width - 10), 1, cur_var.Value);
                     stpCurrent_Variable.name = 'global_variable:${i}';
                     @:privateAccess arrayFocus.push(cast stpCurrent_Variable.text_field);
                     global_variable_gp.add(stpCurrent_Variable);
                     last_height += stpCurrent_Variable.height + 5;
                 }
                 case 'String':{
-                    var data:String = ''; try{data = Json.stringify(vari.value);}catch(e){trace(e); data = '""';}
-                    var txtCurrent_Variable = new FlxUIInputText(0, last_height, Std.int(MENU.width - 10), Std.string(vari.value), 8);
+                    var txtCurrent_Variable = new FlxUIInputText(0, last_height, Std.int(MENU.width - 10), cur_var.Value.replace('"', ''), 8);
                     txtCurrent_Variable.name = 'global_variable:${i}:string';
                     arrayFocus.push(txtCurrent_Variable);
                     global_variable_gp.add(txtCurrent_Variable); 
                     last_height += txtCurrent_Variable.height + 5;
                 }
                 case 'Array':{
-                    var data:String = ""; try{data = Json.stringify(Json.parse('{ "Events": ${vari.value}}').Events);}catch(e){trace(e); data = "[]";}
+                    var data:String = ""; try{data = Json.stringify(cur_var.Value);}catch(e){trace(e); data = "[]";}
                     var txtCurrent_Variable = new FlxUIInputText(0, last_height, Std.int(MENU.width - 10), data, 8);
                     txtCurrent_Variable.name = 'global_variable:${i}:array';
                     arrayFocus.push(txtCurrent_Variable);
@@ -305,24 +318,24 @@ class StageEditorState extends MusicBeatState {
         }
     }
 
-    function loadObjectSettings(tmp:StageObjectScript):Void {
-        current_object = tmp;
+    function loadObjectSettings(_object:StageObject):Void {
+        current_object = _object;
         object_settings_gp.clear();
         var last_menu_height:Float = 10;
 
-        var lblTtlObject = new FlxText(5, last_menu_height, Std.int(MENU.width - 10), Paths.getFileName(tmp.name), 16); object_settings_gp.add(lblTtlObject); lblTtlObject.alignment = CENTER; last_menu_height += lblTtlObject.height + 10;
+        var lblTtlObject = new FlxText(5, last_menu_height, Std.int(MENU.width - 10), Paths.getFileName(_object.name), 16); object_settings_gp.add(lblTtlObject); lblTtlObject.alignment = CENTER; last_menu_height += lblTtlObject.height + 10;
 
         var btnDeleteObject = new FlxUICustomButton(5, last_menu_height, Std.int(MENU.width - 10), null, "Delete Object", 0xf0ff4a4a, function(){
-            SCRIPT_SOURCE.objects.remove(tmp);
+            SCRIPT_SOURCE.objects.remove(_object);
             reload_stage_objects();
             canReload = true;
         }); object_settings_gp.add(btnDeleteObject); last_menu_height += btnDeleteObject.height + 10;
 
         var btnMoveUp = new FlxUICustomButton(5, last_menu_height, Std.int((MENU.width - 10) / 2), null, "Move up", null, function(){
-            var new_id:Int = tmp.ID - 1; if(new_id < 0){new_id = SCRIPT_SOURCE.objects.length - 1;}
+            var new_id:Int = _object.ID - 1; if(new_id < 0){new_id = SCRIPT_SOURCE.objects.length - 1;}
             
-            SCRIPT_SOURCE.objects[new_id].ID = tmp.ID;
-            tmp.ID = new_id;
+            SCRIPT_SOURCE.objects[new_id].ID = _object.ID;
+            _object.ID = new_id;
             
             reload_stage_objects();
 
@@ -330,55 +343,54 @@ class StageEditorState extends MusicBeatState {
         }); object_settings_gp.add(btnMoveUp);
 
         var btnMoveDown = new FlxUICustomButton(5 + btnMoveUp.width + 3, last_menu_height, Std.int((MENU.width - 10) / 2), null, "Move Down", null, function(){
-            var new_id:Int = tmp.ID + 1; if(new_id >= SCRIPT_SOURCE.objects.length){new_id = 0;}
+            var new_id:Int = _object.ID + 1; if(new_id >= SCRIPT_SOURCE.objects.length){new_id = 0;}
             
-            SCRIPT_SOURCE.objects[new_id].ID = tmp.ID;
-            tmp.ID = new_id;
+            SCRIPT_SOURCE.objects[new_id].ID = _object.ID;
+            _object.ID = new_id;
             
             reload_stage_objects();
             
             canReload = true;
         }); object_settings_gp.add(btnMoveDown); last_menu_height += btnMoveUp.height + 10;
 
-        var clAttList = new FlxUICustomList(5, last_menu_height, Std.int(MENU.width - 55), tmp.possible_attributes); object_settings_gp.add(clAttList);
-        var btnAddAtt = new FlxUICustomButton(5 + clAttList.width + 5, last_menu_height, 20, null, "+", null, 0x93ff79, function(){tmp.addAttribute(clAttList.getSelectedLabel()); loadObjectSettings(tmp); canReload = true;}); object_settings_gp.add(btnAddAtt);
-        var btnDelAtt = new FlxUICustomButton(10 + clAttList.width + btnAddAtt.width, last_menu_height, 20, null, "-", null, 0xff4747, function(){tmp.removeAttribute(clAttList.getSelectedLabel()); loadObjectSettings(tmp); canReload = true;}); object_settings_gp.add(btnDelAtt);
+        var clAttList = new FlxUICustomList(5, last_menu_height, Std.int(MENU.width - 55), _object.get_attributes()); object_settings_gp.add(clAttList);
+        var btnAddAtt = new FlxUICustomButton(5 + clAttList.width + 5, last_menu_height, 20, null, "+", null, 0x93ff79, function(){_object.add_attribute(clAttList.getSelectedLabel()); loadObjectSettings(_object); canReload = true;}); object_settings_gp.add(btnAddAtt);
+        var btnDelAtt = new FlxUICustomButton(10 + clAttList.width + btnAddAtt.width, last_menu_height, 20, null, "-", null, 0xff4747, function(){_object.del_attribute(clAttList.getSelectedLabel()); loadObjectSettings(_object); canReload = true;}); object_settings_gp.add(btnDelAtt);
         last_menu_height += clAttList.height + 10;
 
-        for(vari in tmp.getValueTypeList()){                    
-            switch(tmp.getValueType(vari)){
+        for(cur_var in _object.get_variables()){                    
+            switch(cur_var.Type){
                 default:{
-                    var check_bool:Bool = tmp.getVariableValue(vari);
-                    var chkCurrent_Variable = new FlxUICheckBox(5, last_menu_height, null, null, Paths.getFileName(vari));
-                    chkCurrent_Variable.checked = tmp.getVariableValue(vari);
-                    chkCurrent_Variable.name = 'current_variable:${vari}';
+                    var chkCurrent_Variable = new FlxUICheckBox(5, last_menu_height, null, null, Paths.getFileName(cur_var.Name));
+                    chkCurrent_Variable.checked = _object.get_value(cur_var.Name);
+                    chkCurrent_Variable.name = 'current_variable:${cur_var.Name}';
                     object_settings_gp.add(chkCurrent_Variable); last_menu_height += chkCurrent_Variable.height + 5;
                 }
-                case 'float':{
-                    var lblName_Object = new FlxText(5, last_menu_height, Std.int(MENU.width - 10), '${Paths.getFileName(vari)}: ', 10); lblName_Object.alignment = CENTER; object_settings_gp.add(lblName_Object); last_menu_height += lblName_Object.height + 5;
-                    var stpCurrent_Variable = new FlxUICustomNumericStepper(5, last_menu_height, Std.int(MENU.width - 10), 0.1, tmp.getVariableValue(vari), -999, 999, 3);
-                    stpCurrent_Variable.name = 'current_variable:${vari}';
+                case 'Float':{
+                    var lblName_Object = new FlxText(5, last_menu_height, Std.int(MENU.width - 10), '${Paths.getFileName(cur_var.Name)}: ', 10); lblName_Object.alignment = CENTER; object_settings_gp.add(lblName_Object); last_menu_height += lblName_Object.height + 5;
+                    var stpCurrent_Variable = new FlxUICustomNumericStepper(5, last_menu_height, Std.int(MENU.width - 10), 0.1, _object.get_value(cur_var.Name), -99999, 99999, 3);
+                    stpCurrent_Variable.name = 'current_variable:${cur_var.Name}';
                     @:privateAccess arrayFocus.push(cast stpCurrent_Variable.text_field);
                     object_settings_gp.add(stpCurrent_Variable); last_menu_height += stpCurrent_Variable.height + 5;
                 }
-                case 'int':{
-                    var lblName_Object = new FlxText(5, last_menu_height, Std.int(MENU.width - 10), '${Paths.getFileName(vari)}: ', 10); lblName_Object.alignment = CENTER; object_settings_gp.add(lblName_Object); last_menu_height += lblName_Object.height + 5;
-                    var stpCurrent_Variable = new FlxUICustomNumericStepper(5, last_menu_height, Std.int(MENU.width - 10), 1, tmp.getVariableValue(vari));
-                    stpCurrent_Variable.name = 'current_variable:${vari}';
+                case 'Int':{
+                    var lblName_Object = new FlxText(5, last_menu_height, Std.int(MENU.width - 10), '${Paths.getFileName(cur_var.Name)}: ', 10); lblName_Object.alignment = CENTER; object_settings_gp.add(lblName_Object); last_menu_height += lblName_Object.height + 5;
+                    var stpCurrent_Variable = new FlxUICustomNumericStepper(5, last_menu_height, Std.int(MENU.width - 10), 1, _object.get_value(cur_var.Name));
+                    stpCurrent_Variable.name = 'current_variable:${cur_var.Name}';
                     @:privateAccess arrayFocus.push(cast stpCurrent_Variable.text_field);
                     object_settings_gp.add(stpCurrent_Variable); last_menu_height += stpCurrent_Variable.height + 5;
                 }
-                case 'string':{
-                    var lblName_Object = new FlxText(5, last_menu_height, Std.int(MENU.width - 10), '${Paths.getFileName(vari)}: ', 10); lblName_Object.alignment = CENTER; object_settings_gp.add(lblName_Object); last_menu_height += lblName_Object.height + 5;
-                    var txtCurrent_Variable = new FlxUIInputText(5, last_menu_height, Std.int(MENU.width - 10), tmp.getVariableValue(vari), 10);
-                    txtCurrent_Variable.name = 'current_variable:${vari}:string';
+                case 'String':{
+                    var lblName_Object = new FlxText(5, last_menu_height, Std.int(MENU.width - 10), '${Paths.getFileName(cur_var.Name)}: ', 10); lblName_Object.alignment = CENTER; object_settings_gp.add(lblName_Object); last_menu_height += lblName_Object.height + 5;
+                    var txtCurrent_Variable = new FlxUIInputText(5, last_menu_height, Std.int(MENU.width - 10), _object.get_value(cur_var.Name), 10);
+                    txtCurrent_Variable.name = 'current_variable:${cur_var.Name}:string';
                     arrayFocus.push(txtCurrent_Variable);
                     object_settings_gp.add(txtCurrent_Variable); last_menu_height += txtCurrent_Variable.height + 5;
                 }
-                case 'array':{
-                    var lblName_Object = new FlxText(5, last_menu_height, Std.int(MENU.width - 10), '${Paths.getFileName(vari)}: ', 10); lblName_Object.alignment = CENTER; object_settings_gp.add(lblName_Object); last_menu_height += lblName_Object.height + 5;
-                    var txtCurrent_Variable = new FlxUIInputText(5, last_menu_height, Std.int(MENU.width - 10), Json.stringify(tmp.getVariableValue(vari)), 10);
-                    txtCurrent_Variable.name = 'current_variable:${vari}:array';
+                case 'Array':{
+                    var lblName_Object = new FlxText(5, last_menu_height, Std.int(MENU.width - 10), '${Paths.getFileName(cur_var.Name)}: ', 10); lblName_Object.alignment = CENTER; object_settings_gp.add(lblName_Object); last_menu_height += lblName_Object.height + 5;
+                    var txtCurrent_Variable = new FlxUIInputText(5, last_menu_height, Std.int(MENU.width - 10), Json.stringify(_object.get_value(cur_var.Name)), 10);
+                    txtCurrent_Variable.name = 'current_variable:${cur_var.Name}:array';
                     arrayFocus.push(txtCurrent_Variable);
                     object_settings_gp.add(txtCurrent_Variable); last_menu_height += txtCurrent_Variable.height + 5;
                 }
@@ -400,8 +412,6 @@ class StageEditorState extends MusicBeatState {
         OBJECTS.addGroup(tabStage);
         ////////////////////////////////////////////////////////////
 
-
-
         OBJECTS.showTabId("1Objects");
     }
 
@@ -416,22 +426,26 @@ class StageEditorState extends MusicBeatState {
         arrayFocus.push(txtStage);
         txtStage.name = "STAGE_NAME";
 
-        var btnExportStage:FlxButton = new FlxCustomButton(5, txtStage.y + txtStage.height + 5, Std.int((MENU.width) - 10), null, "Export Stage (.hx)", null, null, function(){
-            if(!canControlle){return;}
-            canControlle = false;
-            var stage_file = new SaverMaster([{name:'${txtStage.text}.hx', data: SCRIPT_SOURCE.buildSource()}], {destroyOnComplete: true, onComplete: function(){canControlle = true;}});
+        var btnExportStage:FlxButton = new FlxCustomButton(5, txtStage.y + txtStage.height + 5, Std.int((MENU.width / 2) - 10), null, "Export Stage (.hx)", null, null, function(){
+            if(!canControlle){return;} canControlle = false;
+            var stage_file = new SaverMaster([{name:'${txtStage.text}.hx', data: SCRIPT_SOURCE.export_source()}], {destroyOnComplete: true, onComplete: function(){canControlle = true;}});
             stage_file.saveFile();
         }); tabMENU.add(btnExportStage);
+        var btnSaveStage:FlxButton = new FlxCustomButton(btnExportStage.x + btnExportStage.width + 10, btnExportStage.y, Std.int((MENU.width / 2) - 10), null, "Save Stage (.json)", null, null, function(){
+            if(!canControlle){return;} canControlle = false;
+            var stage_file = new SaverMaster([{name:'${txtStage.text}.json', data: SCRIPT_SOURCE.save_source()}], {destroyOnComplete: true, onComplete: function(){canControlle = true;}});
+            stage_file.saveFile();
+        }); tabMENU.add(btnSaveStage);
 
         var btnLoad:FlxButton = new FlxCustomButton(btnExportStage.x, btnExportStage.y + btnExportStage.height + 5, Std.int((MENU.width / 2) - 10), null, "Load Stage", null, null, function(){
-            SCRIPT_SOURCE = new StageScripManager(Paths.getText(Paths.stage(txtStage.text)));
+            SCRIPT_SOURCE.setup_by_source(Paths.getPath('data/saved_stages/${txtStage.text}.json', TEXT, null, null).getJson());
             reload_stage_objects();
             loadVariableSettings();
             reloadStage();
         }); tabMENU.add(btnLoad);
         var btnImport:FlxButton = new FlxCustomButton(btnLoad.x + btnLoad.width + 10, btnLoad.y, Std.int((MENU.width / 2) - 10), null, "Import Stage", null, null, function(){
                 getFile(function(str){
-                    SCRIPT_SOURCE = new StageScripManager(Paths.getText(str));
+                    SCRIPT_SOURCE.setup_by_source(str.getJson());
                     reload_stage_objects();
                     loadVariableSettings();
                     reloadStage();
@@ -442,31 +456,18 @@ class StageEditorState extends MusicBeatState {
 
         var ttlGeneralVariables:FlxText = new FlxText(0, line0.y + 5, MENU.width, "GLOBAL STAGE VALUES", 16); ttlGeneralVariables.alignment = CENTER; tabMENU.add(ttlGeneralVariables);
 
-        var btnPressetVariable = new FlxCustomButton(5, ttlGeneralVariables.y + ttlGeneralVariables.height + 5, Std.int((MENU.width / 2) - 10), null, "Presset Variable", null, null, function(){
-            var vari_value:String = 'false';
+        var btnPressetVariable = new FlxCustomButton(5, ttlGeneralVariables.y + ttlGeneralVariables.height + 5, Std.int((MENU.width) - 10), null, "Presset Variable", null, null, function(){
+            var vari_value:Dynamic = false;
             switch(clTypeValue.getSelectedLabel()){
-                case 'Float', 'Int':{vari_value = "0";}
-                case 'String':{vari_value = '""';}
-                case 'Array':{vari_value = "[]";}
+                case 'Float', 'Int':{vari_value = 0;}
+                case 'String':{vari_value = "";}
+                case 'Array':{vari_value = [];}
             }
             
-            SCRIPT_SOURCE.variables.push({id:"PlaceHolder", value:vari_value, type: clTypeValue.getSelectedLabel(), isPresset:true});
+            SCRIPT_SOURCE.variables.push({Name:"PlaceHolder", Value:vari_value, Type: clTypeValue.getSelectedLabel()});
             loadVariableSettings();
             canReload = true;
         }); tabMENU.add(btnPressetVariable);
-
-        var btnAddVariable = new FlxCustomButton(5 + btnPressetVariable.width + 10, btnPressetVariable.y, Std.int((MENU.width / 2) - 10), null, "Add Variable", null, null, function(){
-            var vari_value:String = 'false';
-            switch(clTypeValue.getSelectedLabel()){
-                case 'Float', 'Int':{vari_value = "0";}
-                case 'String':{vari_value = '""';}
-                case 'Array':{vari_value = "[]";}
-            }
-            
-            SCRIPT_SOURCE.variables.push({id:"PlaceHolder", value:vari_value, type: clTypeValue.getSelectedLabel(), isPresset:false});
-            loadVariableSettings();
-            canReload = true;
-        }); tabMENU.add(btnAddVariable);
 
         clTypeValue = new FlxUICustomList(5, btnPressetVariable.y + btnPressetVariable.height, Std.int(MENU.width - 10), ["Bool", "String", "Int", "Float", "Array"]);
         clTypeValue.setPrefix("Type: ");
@@ -518,13 +519,13 @@ class StageEditorState extends MusicBeatState {
 
                 switch(type_variable){
                     default:{
-                        current_object.setValueToVariable(object_variable, input.text);
+                        current_object.set_value(object_variable, input.text);
                     }
                     case "array":{
                         var data:Array<Dynamic> = [];
                         try{data = (cast Json.parse('{ "Events": ${input.text} }')).Events; input.color = FlxColor.BLACK;}catch(e){trace(e); input.color = FlxColor.RED;}
                         
-                        current_object.setValueToVariable(object_variable, data);
+                        current_object.set_value(object_variable, data);
                     }
                 }
 
@@ -534,14 +535,14 @@ class StageEditorState extends MusicBeatState {
                 var type_variable:String = wname.split(":")[2];
 
                 switch(type_variable){
-                    default:{SCRIPT_SOURCE.variables[object_variable].value = input.text;}
+                    default:{SCRIPT_SOURCE.variables[object_variable].Value = '"${input.text}"';}
                     case "array":{
                         var data:Array<Dynamic> = [];
                         try{data = (cast Json.parse('{ "Events": ${input.text} }')).Events; input.color = FlxColor.BLACK;}catch(e){trace(e); input.color = FlxColor.RED;}
                         
-                        SCRIPT_SOURCE.variables[object_variable].value = data;
+                        SCRIPT_SOURCE.variables[object_variable].Value = data;
                     }
-                    case "id":{SCRIPT_SOURCE.variables[object_variable].id = input.text;}
+                    case "id":{SCRIPT_SOURCE.variables[object_variable].Name = input.text;}
                 }
 
                 canReload = true;
@@ -551,13 +552,13 @@ class StageEditorState extends MusicBeatState {
             var wname = nums.name;
             if(wname.contains("current_variable")){
                 var object_variable:String = wname.split(":")[1];
-                current_object.setValueToVariable(object_variable, nums.value);
+                current_object.set_value(object_variable, nums.value);
                 
                 canReload = true;
             }else if(wname.contains("global_variable")){
                 var object_variable:Int = Std.parseInt(wname.split(":")[1]);
 
-                SCRIPT_SOURCE.variables[object_variable].value = nums.value;
+                SCRIPT_SOURCE.variables[object_variable].Value = nums.value;
 
                 canReload = true;
             }
@@ -566,13 +567,13 @@ class StageEditorState extends MusicBeatState {
             var wname = check.name;
             if(wname.contains("current_variable")){
                 var object_variable:String = wname.split(":")[1];
-                current_object.setValueToVariable(object_variable, check.checked);
+                current_object.set_value(object_variable, check.checked);
 
                 canReload = true;
             }else if(wname.contains("global_variable")){
                 var object_variable:Int = Std.parseInt(wname.split(":")[1]);
                                 
-                SCRIPT_SOURCE.variables[object_variable].value = check.checked;
+                SCRIPT_SOURCE.variables[object_variable].Value = check.checked;
 
                 canReload = true;
             }
@@ -590,340 +591,249 @@ class StageEditorState extends MusicBeatState {
 }
 
 class StageScripManager {
-    public var packages:Map<String, Dynamic> = [];
-    public var variables:Array<{id:String, value:Dynamic, type:String, isPresset:Bool}> = [];
-    public var objects:Array<StageObjectScript> = [];
+    public var objects:Array<StageObject> = [];
+    public var variables:Array<Dynamic> = [];
 
-    public function new(?src:String):Void {
-        
+    public function new(?src:StageJson):Void {
         if(src == null){return;}
+        setup_by_source(src);
+    }
 
-        var current_object:StageObjectScript = null;
-        var current_attribute:StageObjectScript = null;
+    public function setup_by_source(new_source:StageJson):Void {
+        objects = []; variables = [];        
+        if(new_source == null){return;}
+
+        variables = new_source.variables;
+
+        for(obj in new_source.objects){
+            var new_object:StageObject = new StageObject(obj.Name);
+            new_object.values = obj.Values;
+
+            for(att in obj.Attributes){
+                new_object.add_attribute(att.Name);
+                new_object.get_attribute(att.Name).values = att.Values;
+            }
+
+            objects.push(new_object);
+            new_object.ID = objects.length - 1;
+        }        
+    }
+
+    public function add_object(name:String){
+        var new_object:StageObject = new StageObject(name);
+        objects.push(new_object);
+        new_object.ID = objects.length - 1;
+    }
         
-        for(line in src.split("\n")){
-            //trace(line);
+    public function export_source():String {
+        var to_return:String = "";
 
-            if(line.contains("//-<") && line.contains(">-//")){
-                var object_name:String = line.split("//-<")[1].split(">-//")[0];
-                //trace('Created: ${object_name}');
-                current_object = new StageObjectScript(object_name);
+        var total_imports:Dynamic = {};
+        var total_load:Array<String> = [];
+        var total_variables:Array<String> = [];
+        
+        for(obj in objects){
+            total_variables.push(obj.get_variable());
+
+            for(lod in obj.load){
+                total_load.push('temp.push({type: "${lod.type}", instance: ${obj.parse_string(lod.instance)}});');
             }
-            if(line.contains("//->") && line.contains("<-//")){
-                //trace('Pushed: ${current_object.name}');
-                objects.push(current_object);
-                current_object = null;
-            }
-            if(line.contains("//-{") && line.contains("}-//")){
-                if(current_object == null){trace("Parsing Error [Null Object]");}
-                var att_name:String = line.split("//-{")[1].split("}-//")[0];
-                current_object.addAttribute(att_name);
-                current_attribute = current_object.attributes.get(att_name);
-                //trace('Created Attribute: ${att_name}');
-            }
-            if(line.contains("//-[") && line.contains("]-//")){
-                if(current_attribute == null){trace("Parsing Error [Null Attribute]");}
-                current_object.attributes.set(current_attribute.name, current_attribute);
-                //trace('Pushed Attribute: ${current_object.name}');
-                current_attribute = null;
+            for(imp in Reflect.fields(obj.imports)){
+                Reflect.setProperty(total_imports, imp, Reflect.getProperty(obj.imports, imp));
             }
 
-            if(line.contains("/*") && line.contains("*/")){
-                var parsed_line:String = '{ ${line.split("/*")[1].split("*/")[0]} }';
-                var cur_value:Dynamic = cast Json.parse(parsed_line);
-
-                if(current_attribute != null){
-                    if(cur_value.Packages != null){
-                        var cur_packs:DynamicAccess<Dynamic> = cur_value.Packages;
-                        for(key in cur_packs.keys()){current_object.packages.set(key, cur_packs[key]);}
-                    }
-                    if(cur_value.Variables != null){
-                        var cur_vars:DynamicAccess<Dynamic> = cur_value.Variables;
-                        for(key in cur_vars.keys()){current_object.variables.set(key, cur_vars[key]);}
-                    }
-                    //trace("Added Variables to Attribute");
-                }else if(current_object != null){
-                    if(cur_value.Packages != null){
-                        var cur_packs:DynamicAccess<Dynamic> = cur_value.Packages;
-                        for(key in cur_packs.keys()){current_object.packages.set(key, cur_packs[key]);}
-                    }
-                    if(cur_value.Variables != null){
-                        var cur_vars:DynamicAccess<Dynamic> = cur_value.Variables;
-                        for(key in cur_vars.keys()){current_object.variables.set(key, cur_vars[key]);}
-                    }
-                    //trace("Added Variables to Object");
-                }else{
-                    if(cur_value.Packages != null){
-                        var cur_packs:DynamicAccess<Dynamic> = cur_value.Packages;
-                        for(key in cur_packs.keys()){this.packages.set(key, cur_packs[key]);}
-                    }
-                    if(cur_value.Variables != null){
-                        this.variables = cur_value.Variables;
-                    }
-                    //trace("Added Variables to Global");
+            for(att in obj.attributes){
+                for(lod in att.load){
+                    total_load.push('temp.push({type: "${lod.type}", instance: ${obj.parse_string(lod.instance)}});');
+                }
+                for(att_imp in Reflect.fields(att.imports)){
+                    Reflect.setProperty(total_imports, att_imp, Reflect.getProperty(att.imports, att_imp));
                 }
             }
         }
-    }
-    
-    public function buildSource():String {
-        reloadObjectVariables();
-
-        var toReturn:String = "";
-
-        toReturn += '/* "Packages": ${Json.stringify(packages)} */\n';
-        toReturn += '/* "Variables": ${Json.stringify(variables)} */\n';
-        toReturn += "\n";
-
-        for(key in packages.keys()){toReturn += 'import("${packages[key]}", "${key}");\n';}
-        toReturn += '\n';
-        
-        toReturn += 'function addToLoad(temp){\n';
-        for(obj in objects){toReturn += 'temp.push(${obj.buildPreload()});\n';}
-        toReturn += '}\n\n';
-
-        for(v in variables){
-            if(v.type == "Array"){
-                var data:String = "[]";
-                try{data = Json.stringify(v.value);}catch(e){trace(e); data = "[]";}
-
-                toReturn += '${v.isPresset ? ('presset("${v.id}", ${data});') : ('var ${v.id}${v.type != null ? ':${v.type}' : ''} = ${data};')}\n';
-            }else{
-                toReturn += '${v.isPresset ? ('presset("${v.id}", ${v.value});') : ('var ${v.id}${v.type != null ? ':${v.type}' : ''} = ${v.value};')}\n';
-            }
+        for(imp in Reflect.fields(total_imports)){
+            to_return += 'import("${imp}", "${Reflect.getProperty(total_imports, imp)}");\n';
         }
-        toReturn += '\n';
-        toReturn += 'function create(){\n';
-        for(obj in objects){toReturn += '${obj.buildSource()}';}
-        toReturn += '}';
 
-        return toReturn;
-    }
+        to_return += '\n';
 
-    public function addTemplate(tmp:StageObjectScript){
-        objects.push(tmp);
-        tmp.ID = objects.length - 1;
-    }
+        for(pre in variables){
+            to_return += 'presset("${pre.Name}", ${pre.Value});\n';
+        }
 
-    public function reloadObjectVariables():Void {
-        this.packages.clear();
+        to_return += '\n';
+
+        for(v in total_variables){
+            to_return += '${v}\n';
+        }
+
+        to_return += '\nfunction addToLoad(temp):Void {\n';
+        
+        for(v in total_load){
+            to_return += '\t${v}\n';
+        }
+
+        to_return += '}\n';
+        
+        to_return += '\nfunction create():Void {\n';
 
         for(obj in objects){
-            obj.reloadVariables();            
-            for(key in obj.packages.keys()){this.packages.set(key, obj.packages[key]);}
+            to_return += '${obj.build(1)}\n\n';
         }
 
+        to_return += '}';
+
+        return to_return;
+    }
+
+    public function save_source():String {
+        var to_save:Dynamic = {
+            variables: variables,
+            objects: []
+        };
+
+        for(obj in objects){
+            var to_add:Dynamic = {
+                Name: obj.name,
+                Attributes: [],
+                Values: obj.values
+            };
+
+            for(att in obj.attributes){
+                var to_att:Dynamic = {
+                    Name: att.name,
+                    Values: att.values
+                };
+
+                to_add.Attributes.push(to_att);
+            }
+
+            to_save.objects.push(to_add);
+        }
+
+        return Json.stringify(to_save,"\t");
     }
 }
 
-class StageObjectScript {
-    public var value_types:Map<String, String> = [];
-
-    public var possible_attributes:Array<String> = [];
-
-    public var packages:Map<String, Dynamic> = [];
-    public var variables:Map<String, Dynamic> = [];
-    public var attributes:Map<String, StageObjectScript> = [];
-    private var source:String = '';
-    private var preload:String = '';
-
+class StageObject {
+    public var load:Array<{type:String, instance:String}> = [];
+    public var attributes:Array<StageObject> = [];
+    public var variables:Array<Dynamic> = [];
+    public var variable:String = "";
+    public var imports:Dynamic = {};
+    public var values:Dynamic = {};
+    public var source:String = "";
     public var name:String = "";
+
     public var ID:Int = 0;
 
-    public function new(_name:String, ?_source:String){
+    public function new(_name:String, ?_att:String):Void {
+        set_object(_name, _att);
+    }
+
+    public function set_object(_name:String, ?_att:String):Void {
         this.name = _name;
-        if(_source == null){_source = Paths.txt('stage_editor_objects/${_name}/${_name}');}
 
-        parseTemplate(_source);
+        var obj_path:String = Paths.getPath('data/stage_editor_objects/${name}/${_att != null ? 'att-${_att}' : name}.json', TEXT, null, null);
+        if(!Paths.exists(obj_path)){return;}
+        var template_object:StageObjectJson = obj_path.getJson();
 
-        for(i in Paths.readDirectory('assets/data/stage_editor_objects/${_name}')){
-            var _i:String = i; _i = _i.replace("att-", "").replace(".txt", "");
-            if(_i == name || _i == "Preload"){continue;}
-            possible_attributes.push(_i);
-        }
+        this.variables = template_object.variables;
+        this.variable = template_object.variable;
+        this.imports = template_object.imports;
+        this.source = template_object.source;
+        this.load = template_object.load;
 
-        var preload_path:String = Paths.setPath('assets/data/stage_editor_objects/${_name}/Preload.txt');
-        if(Paths.exists(preload_path)){preload = Paths.getText(preload_path);}
+        for(v in this.variables){Reflect.setProperty(this.values, v.Name, v.PlaceHolder);}
     }
 
-    public function parseTemplate(_src:String):Void {
-        variables.clear();
-        source = '';
-
-        var src:String = Std.string(_src);
-
-        var tag_data:String = '';
-        var current_tag:String = '';
-
-        for(c in src.split("")){
-            switch(c){
-                default:{
-                    if(current_tag == '' || current_tag == '#'){source += c;}
-                    if(current_tag != ''){tag_data += c;}
-                }
-                case "$":{
-                    if(current_tag == ''){current_tag = '$'; continue;}
-                    if(current_tag != '$'){trace('Parsing Error [Unexpected $c on $]'); return;}
-                    current_tag = '';
-                    var package_data:Array<String> = tag_data.split(",");
-                    packages.set(package_data[1], package_data[0]);
-                    tag_data = '';
-                }
-                case "%":{
-                    if(current_tag == ''){current_tag = '%'; continue;}
-                    if(current_tag != '%'){trace('Parsing Error [Unexpected $c on %]'); return;}
-                    current_tag = '';
-                    var variable_data:Array<String> = tag_data.split(":");
-                    value_types.set(variable_data[0], variable_data[2]);
-
-                    switch(variable_data[2]){
-                        default:{variables.set(variable_data[0], variable_data[1] == 'true');}
-                        case 'float':{variables.set(variable_data[0], Std.parseFloat(variable_data[1]));}
-                        case 'int':{variables.set(variable_data[0], Std.parseInt(variable_data[1]));}
-                        case 'string':{variables.set(variable_data[0], variable_data[1]);}
-                        case 'array':{
-                            var data:Array<Dynamic> = [];
-                            try{data = (cast Json.parse('{ "Events": ${variable_data[1]} }')).Events;}catch(e){trace('Parsing Error [Can\'t parse Array value] ($e)'); return;}
-                            variables.set(variable_data[0], data);
-                        }
-                    }
-
-                    tag_data = '';
-                }
-            }
-        }
-
-        var source_spaces:Array<String> = source.split('\n');
-        var ignore_lines:Int = 0;
-        while(ignore_lines < source_spaces.length){
-            var remove_line:Bool = true;
-            for(c in source_spaces[0].split("")){if(c != "\n" && c != " " && c != "\t" && c != "\r"){remove_line = false; break;}}
-            if(remove_line){source_spaces.shift();}else{ignore_lines++;}
-        }
-
-        source = '';
-        for(line in source_spaces){source += '${line}\n';}
-    }
-
-    public function reloadVariables():Void {
-        for(att_object in this.attributes){
-            for(key in this.variables.keys()){att_object.variables.set(key, this.variables[key]);}
-            att_object.reloadVariables();
-            for(key in att_object.packages.keys()){this.packages.set(key, att_object.packages[key]);}
-        }
-    }
-
-    public function addAttribute(att_name:String):Void {
-        var att_path:String = Paths.getPath('data/stage_editor_objects/${this.name}/att-${att_name}.txt', TEXT, null);
-        if(!Paths.exists(att_path)){trace('Atribute Null'); return;}
-        var att_object:StageObjectScript = new StageObjectScript(att_name, Paths.getText(att_path));
-        attributes.set(att_name, att_object);
-    }
-
-    public function removeAttribute(att_name:String):Void {
-        attributes.remove(att_name);
-    }
-
-    public function buildSource(isAttribute:Bool = false):String {
-        var toReturn:String = '';
-
-        if(!isAttribute){toReturn += '//-<${name}>-//\n';}else{toReturn += '//-{${name}}-//\n';}
-        toReturn += '/* "Packages": ${Json.stringify(packages)} */\n';
-        toReturn += '/* "Variables": ${Json.stringify(variables)} */\n';
-        toReturn += "\n";
-
-        var current_tag:String = '';
-        var current_variable:String = '';
-
-        for(c in source.split("")){
-            switch(c){
-                default:{
-                    if(current_tag == ''){toReturn += c; continue;}
-                    current_variable += c;
-                }
-                case "#":{
-                    if(current_tag == ''){current_tag = '#'; continue;}
-                    if(current_tag != '#'){trace('Building Error [Unexpected $c on #]'); return '';}
-                    if(!variables.exists(current_variable)){trace('Building Error [UnLoaded Variable ${current_variable}]'); return '';}
-                    if(value_types.get(current_variable) == "array"){
-                        toReturn += Json.stringify(variables.get(current_variable));
-                    }else{
-                        toReturn += variables.get(current_variable);
-                    }
-                    current_variable = '';
-                    current_tag = '';
-                }
-            }
-        }
-
-        for(att in attributes){toReturn += att.buildSource(true);}
-        
-        if(!isAttribute){toReturn += '//->${name}<-//\n';}else{toReturn += '//-[${name}]-//\n';}
-
-        return toReturn;
-    }
-
-    public function buildPreload():String {
-        var toReturn:String = '';
-
-        var current_tag:String = '';
-        var current_variable:String = '';
-
-        for(c in preload.split("")){
-            switch(c){
-                default:{
-                    if(current_tag == ''){toReturn += c; continue;}
-                    current_variable += c;
-                }
-                case "#":{
-                    if(current_tag == ''){current_tag = '#'; continue;}
-                    if(current_tag != '#'){trace('Building Error [Unexpected $c on #]'); return '';}
-                    if(!variables.exists(current_variable)){trace('Building Error [UnLoaded Variable ${current_variable}]'); return '';}
-                    if(value_types.get(current_variable) == "array"){
-                        toReturn += Json.stringify(variables.get(current_variable));
-                    }else{
-                        toReturn += variables.get(current_variable);
-                    }
-                    current_variable = '';
-                    current_tag = '';
-                }
-            }
-        }
-        
-        return toReturn;
-    }
-
-    public function getValueTypeList():Array<String> {
-        var toReturn:Array<String> = [];
-        for(key in this.value_types.keys()){toReturn.push(key);}
-        for(att in this.attributes){for(key in att.getValueTypeList()){toReturn.push(key);}}
-        return toReturn;
-    }
-
-    public function getVariableList():Array<String> {
-        var toReturn:Array<String> = [];
-        for(key in this.variables.keys()){toReturn.push(key);}
-        for(att in this.attributes){for(key in att.getVariableList()){toReturn.push(key);}}
-        return toReturn;
-    }
-
-    public function getVariableValue(key:String):Dynamic {
-        if(key == null){return null;}
-        if(this.variables.exists(key)){return this.variables[key];}
-        for(att in this.attributes){if(att.variables.exists(key)){return att.variables[key];}}
-        trace('($key) Variable not Parsed');
+    public function get_value(value_name:String):Dynamic {
+        if(Reflect.hasField(values, value_name)){return Reflect.getProperty(values, value_name);}
+        for(att in attributes){if(!Reflect.hasField(att.values, value_name)){continue;} return Reflect.getProperty(att.values, value_name);}
         return null;
-    };
-    public function setValueToVariable(key:String, value:Dynamic):Void {
-        if(variables.exists(key)){variables[key] = value; return;}
-        for(att in this.attributes){if(att.variables.exists(key)){att.variables[key] = value; return;}}
-        trace('($key) Variable not Parsed');
-    };
+    }
+    public function set_value(value_name:String, value_value:Dynamic):Void {
+        if(Reflect.hasField(values, value_name)){Reflect.setProperty(values, value_name, value_value); return;}
+        for(att in attributes){if(!Reflect.hasField(att.values, value_name)){continue;} Reflect.setProperty(att.values, value_name, value_value); return;}
+    }
 
-    public function getValueType(key:String){
-        if(value_types.exists(key)){return value_types[key];}
-        for(att in this.attributes){if(att.value_types.exists(key)){return att.value_types[key];}}
-        trace('($key) Type not Parsed');
+    public function get_variables():Array<Dynamic> {
+        var to_return:Array<Dynamic> = [];
+        for(v in variables){to_return.push(v);}
+        for(a in attributes){for(va in a.variables){to_return.push(va);}}
+        return to_return;
+    }
+
+    public function get_variable():String {
+        var to_return:String = variable;
+        var total_values:Dynamic = get_values();
+        for(v in Reflect.fields(total_values)){to_return = to_return.replace('#${v}#', Reflect.getProperty(total_values, v));}
+        
+        return to_return;
+    }
+
+    public function get_attributes():Array<String> {
+        var to_return:Array<String> = [];
+
+        for(pos_att in Paths.readDirectory('assets/data/stage_editor_objects/${name}')){
+            pos_att = pos_att.split("/").pop().replace(".json", "").replace("att-", "");
+            if(pos_att == name){continue;}
+            to_return.push(pos_att);
+        }
+
+        return to_return;
+    }
+    
+    public function get_tild(cur_tild:Int):String {
+        var to_return:String = '';
+        for(i in 0...cur_tild){to_return += '\t';}
+        return to_return;
+    }
+
+    public function build(cur_tild:Int = 0):String {
+        var to_return:String = '${get_tild(cur_tild)}${source}', att_source:String = "";
+        for(a in attributes){att_source += '${a.source}\n';}
+        to_return = to_return.replace('@Attributes@', att_source);
+        
+        var total_values:Dynamic = get_values();
+        for(v in Reflect.fields(total_values)){to_return = to_return.replace('#${v}#', Reflect.getProperty(total_values, v));}
+
+        to_return = to_return.replace('\n', '\n${get_tild(cur_tild)}');
+
+        return to_return;
+    }
+
+    public function parse_string(to_parse:String):String {
+        var to_return:String = to_parse;
+        var total_values:Dynamic = get_values();
+        for(v in Reflect.fields(total_values)){to_return = to_return.replace('#${v}#', Reflect.getProperty(total_values, v));}
+        return to_return;
+    }
+    public function get_values():Dynamic {
+        var total_values:Dynamic = {};
+        for(v in Reflect.fields(values)){Reflect.setProperty(total_values, v, Reflect.getProperty(values, v));}
+        for(a in attributes){for(v in Reflect.fields(a.values)){Reflect.setProperty(total_values, v, Reflect.getProperty(a.values, v));}}
+        return total_values;
+    }
+
+    public function add_attribute(att_name:String):Void {
+        var new_att:StageObject = new StageObject(name, att_name);
+        new_att.name = att_name;
+        attributes.push(new_att);
+    }
+    
+    public function del_attribute(att_name:String):Void {
+        for(cur_att in attributes){
+            if(cur_att.name != att_name){continue;}
+            attributes.remove(cur_att); break;
+        }
+    }
+
+    public function get_attribute(att_name:String):Dynamic {
+        for(att in attributes){
+            if(att.name != att_name){continue;}
+            return att;
+        }
         return null;
     }
 }

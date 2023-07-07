@@ -1,1 +1,0 @@
-{type:"ATLAS",instance:Paths.image('#Graphic_File#','#Graphic_Library#',true)}

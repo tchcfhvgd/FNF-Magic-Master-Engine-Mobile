@@ -46,7 +46,7 @@
 	"image": "Mom_assets",
 	"name": "Mom",
 	"antialiasing": true,
-	"deathCharacter": "Boyfriend_Death",
+	"deathCharacter": "Boyfriend",
 	"healthicon": "mom",
 	"camera": [
 		83,

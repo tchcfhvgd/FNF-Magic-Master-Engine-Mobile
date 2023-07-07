@@ -32,12 +32,12 @@ import sys.io.File;
 using StringTools;
 
 class CustomScriptState extends MusicBeatState {
-    public var SCRIPT:Script = null;
+    public var custom_script:Script;
 
-	override function get_script():Script {return SCRIPT;}
+	override function get_script():Script {return custom_script;}
 
-    public function new(nScript:Script = null, ?onConfirm:Class<FlxState>, ?onBack:Class<FlxState>):Void {
-        if(nScript != null){SCRIPT = nScript;}
+    public function new(new_script:Script, ?onConfirm:String, ?onBack:String):Void {
+        custom_script = new_script;
         super(onConfirm, onBack);
     }
 }

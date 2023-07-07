@@ -14,14 +14,15 @@ class Script extends FlxBasic {
     }
     public static function importScript(file:String):Script {
         var new_sript = new Script();
-        new_sript.exScript(Paths.getText(file));
+        new_sript.exScript(SavedFiles.getText(file));
         if(new_sript == null){return null;}
         return new_sript;
     }
 
-    public static var parser = new hscript.Parser();
-    var interp = new hscript.Interp();
-    var program = null;
+    public var parser = new hscript.Parser();
+    public var interp = new hscript.Interp();
+    public var program = null;
+    public var source:String = "";
 
     public var Name:String;
     public var Mod:String;
@@ -35,6 +36,7 @@ class Script extends FlxBasic {
 
     public function loadScript(script:String):Void{
         try{
+            source = script;
             this.program = parser.parseString(script);
         }catch(e){
             trace('[Script Error]: ${e.message}');
@@ -49,16 +51,22 @@ class Script extends FlxBasic {
 
         setVariable('create', nFunc);
         setVariable('preload', nFunc);
-
-        setVariable('update', function(elapsed:Float) {});
-        setVariable('beatHit', function(curBeat:Int) {});
-        setVariable('stepHit', function(curStep:Int) {});
+        
+        setVariable('song_started', nFunc);
+        setVariable('song_ended', nFunc);
         
         setVariable('onFocus', nFunc);
         setVariable('onFocusLost', nFunc);
         
-        setVariable('openSubState', nFunc);
-        setVariable('closeSubState', nFunc);
+        setVariable('load_global_ui', nFunc);
+
+        setVariable('startSong', function(toEndFun:Void->Void){});
+        setVariable('endSong', function(toEndFun:Void->Void){});
+
+        setVariable('update', function(elapsed:Float) {});
+
+        setVariable('beatHit', function(curBeat:Int) {});
+        setVariable('stepHit', function(curStep:Int) {});
 
         setVariable("presset", function(name:String, func:Any){setVariable(name, func);});
         setVariable("getsset", function(name:String){return getVariable(name);});
@@ -87,7 +95,7 @@ class Script extends FlxBasic {
         );
     }
     
-    public function execute():Void{if(program != null){interp.execute(program);}}
+    public function execute():Void{if(program == null){trace('Null Program'); return;}interp.execute(program);}
     public function getFunction(name:String){
         if(program == null){trace('{${Name}}: Null Script'); return null;}
         if(!interp.variables.exists(name)){trace('{${Name}}: Null Function [${name}]'); return null;}

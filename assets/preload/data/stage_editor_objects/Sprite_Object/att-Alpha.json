@@ -1,0 +1,10 @@
+{
+    "imports":{},
+    "load":[],
+    "variables":[
+        {"Name": "Alpha", "PlaceHolder": 1, "Type": "Float"}
+
+    ],
+    "variable": "",
+    "source": "#Sprite_Name#.alpha = #Alpha#;"
+}

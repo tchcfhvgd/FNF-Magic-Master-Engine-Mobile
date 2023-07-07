@@ -48,6 +48,7 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
+using SavedFiles;
 using StringTools;
 
 class XMLEditorState extends MusicBeatState {
@@ -207,7 +208,7 @@ class XMLEditorState extends MusicBeatState {
         if(!txtIMAGE.text.contains(".png") || !txtXML.text.contains(".xml")){return;}
         
         _IMG = FlxGraphic.fromBitmapData(BitmapData.fromFile(txtIMAGE.text));
-        _XML = new Access((Xml.parse(Paths.getText(txtXML.text))).firstElement());
+        _XML = new Access((Xml.parse(txtXML.text.getText())).firstElement());
         for(elm in _XML.elements){
             if(!elm.has.x){elm.att.x = "0";}
             if(!elm.has.y){elm.att.y = "0";}
@@ -223,9 +224,9 @@ class XMLEditorState extends MusicBeatState {
     private function loadGhostSprites():Void {
         if(!txtIMAGE.text.contains(".png") || !txtXML.text.contains(".xml")){return;}
 
-        bSprite.frames = Paths.fromUncachedSparrow(BitmapData.fromFile(txtIMAGE.text), Paths.getText(txtXML.text));
+        bSprite.frames = SavedFiles.fromUncachedSparrow(BitmapData.fromFile(txtIMAGE.text), txtXML.text.getText());
 
-        var animArr = getNamesArray(new Access((Xml.parse(Paths.getText(txtXML.text))).firstElement()).elements);
+        var animArr = getNamesArray(new Access((Xml.parse(txtXML.text.getText())).firstElement()).elements);
         for(anim in animArr){bSprite.animation.addByPrefix(anim, anim);}
         clGCurAnim.setData(animArr);
 
@@ -247,7 +248,7 @@ class XMLEditorState extends MusicBeatState {
         var values:Array<Dynamic> = null;
         if(eSprite != null && eSprite.animation.curAnim != null){values = [eSprite.animation.curAnim.name, eSprite.animation.curAnim.curFrame];}
         if(_XML != null && _IMG != null){
-            eSprite.frames = Paths.fromUncachedSparrow(_IMG, _XML.x.toString());
+            eSprite.frames = SavedFiles.fromUncachedSparrow(_IMG, _XML.x.toString());
             
             var animArr = getNamesArray(_XML.elements);
             for(anim in animArr){eSprite.animation.addByPrefix(anim, anim); eSprite.animation.play(anim); eSprite.animation.stop();}

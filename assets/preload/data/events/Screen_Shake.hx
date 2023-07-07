@@ -1,8 +1,9 @@
+import("flixel.FlxG", "FlxG");
+
+import("Std");
 import("Note");
 import("Paths");
-import("Std");
 
-import("flixel.FlxG", "FlxG");
 
 presset("defaultValues", 
     [

@@ -21,7 +21,6 @@ enum Device {
 
 enum KeyboardScheme {
 	Solo;
-	Duo(first:Bool);
 	None;
 	Custom;
 }
@@ -523,7 +522,34 @@ class Controls extends FlxActionSet {
 	}
 
 	public function setKeyboardScheme(scheme:KeyboardScheme, reset = true){
+		keyboardScheme = scheme;
 		loadBinds();
+
+		switch(scheme){
+			case Solo:{
+				var KEY_ACTIONS:Map<String, Array<FlxKey>> = [];
+		
+				for(key in CURRENT_ACTIONS.keys()){
+					KEY_ACTIONS[key] = CURRENT_ACTIONS[key][0];
+				}
+		
+				for(key in CURRENT_STRUMCONTROLS.keys()){
+					for(i in 0...CURRENT_STRUMCONTROLS[key].length){
+						KEY_ACTIONS['${key}keys_${i}'] = CURRENT_STRUMCONTROLS[key][i][0];
+					}
+				}
+		
+				for(key in CURRENT_ACTIONS.keys()){bindKeys(key, KEY_ACTIONS[key]);}
+				for(key in CURRENT_STRUMCONTROLS.keys()){
+					for(i in 0...CURRENT_STRUMCONTROLS[key].length){
+						bindKeys('${key}keys_${i}', KEY_ACTIONS['${key}keys_${i}']);
+					}
+				}
+			}
+			case Custom:{}
+			case None:{}
+		}
+		
 	}
 
 	public function loadBinds(){
@@ -544,33 +570,6 @@ class Controls extends FlxActionSet {
 		for(key in CURRENT_STRUMCONTROLS.keys()){if(!STATIC_STRUMCONTROLS.exists(key)){CURRENT_STRUMCONTROLS.remove(key);}}
 
 		removeActions();
-
-		var KEY_ACTIONS:Map<String, Array<FlxKey>> = [];
-		var GAMEPAD_ACTIONS:Map<String, Array<FlxGamepadInputID>> = [];
-
-		for(key in CURRENT_ACTIONS.keys()){
-			KEY_ACTIONS[key] = CURRENT_ACTIONS[key][0];
-			GAMEPAD_ACTIONS[key] = CURRENT_ACTIONS[key][1];
-		}
-
-		for(key in CURRENT_STRUMCONTROLS.keys()){
-			for(i in 0...CURRENT_STRUMCONTROLS[key].length){
-				KEY_ACTIONS['${key}keys_${i}'] = CURRENT_STRUMCONTROLS[key][i][0];
-				GAMEPAD_ACTIONS['${key}keys_${i}'] = CURRENT_STRUMCONTROLS[key][i][1];
-			}
-		}
-
-		for(key in CURRENT_ACTIONS.keys()){
-			bindKeys(key, KEY_ACTIONS[key]);
-			for(gamepad in gamepadsAdded){bindButtons(gamepad, key, GAMEPAD_ACTIONS[key]);}
-		}
-
-		for(key in CURRENT_STRUMCONTROLS.keys()){
-			for(i in 0...CURRENT_STRUMCONTROLS[key].length){
-				bindKeys('${key}keys_${i}', KEY_ACTIONS['${key}keys_${i}']);
-				for(gamepad in gamepadsAdded){bindButtons(gamepad, '${key}keys_${i}', GAMEPAD_ACTIONS['${key}keys_${i}']);}
-			}
-		}
 	}
 
 	public static function saveControls(){
@@ -586,7 +585,21 @@ class Controls extends FlxActionSet {
 
 	public function addGamepad(id:Int):Void{
 		gamepadsAdded.push(id);
-		loadBinds();
+
+		var GAMEPAD_ACTIONS:Map<String, Array<FlxGamepadInputID>> = [];
+		for(key in CURRENT_ACTIONS.keys()){GAMEPAD_ACTIONS[key] = CURRENT_ACTIONS[key][1];}
+		for(key in CURRENT_STRUMCONTROLS.keys()){
+			for(i in 0...CURRENT_STRUMCONTROLS[key].length){
+				GAMEPAD_ACTIONS['${key}keys_${i}'] = CURRENT_STRUMCONTROLS[key][i][1];
+			}
+		}
+
+		for(key in CURRENT_ACTIONS.keys()){bindButtons(id, key, GAMEPAD_ACTIONS[key]);}
+		for(key in CURRENT_STRUMCONTROLS.keys()){
+			for(i in 0...CURRENT_STRUMCONTROLS[key].length){
+				bindButtons(id, '${key}keys_${i}', GAMEPAD_ACTIONS['${key}keys_${i}']);
+			}
+		}
 	}
 
 	public function removeGamepad(deviceID:Int = FlxInputDeviceID.ALL):Void {

@@ -1,6 +1,5 @@
 package;
 
-import states.MusicBeatState;
 import flixel.util.*;
 import flixel.addons.ui.*;
 import flixel.addons.ui.interfaces.*;
@@ -10,29 +9,28 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.system.FlxAssets.FlxShader;
 import haxe.format.JsonParser;
 import flixel.tweens.FlxTween;
+import states.MusicBeatState;
 import flixel.tweens.FlxEase;
+import flixel.group.FlxGroup;
 import flixel.util.FlxColor;
 import flixel.math.FlxPoint;
 import openfl.utils.Assets;
+import flixel.math.FlxMath;
 import haxe.DynamicAccess;
 import flixel.FlxSprite;
 import haxe.Json;
+
+import Song.SwagSection;
+import Song.SwagStrum;
+import Script;
 
 #if windows
 import sys.FileSystem;
 import sys.io.File;
 #end
 
-import flixel.math.FlxMath;
-
-import flixel.group.FlxGroup;
-
-import Song.SwagSection;
-import Song.SwagStrum;
-
-import Script;
-
 using StringTools;
+using SavedFiles;
 
 typedef Note_Graphic_Data = {
     var animations:Array<Note_Animation_Data>;
@@ -96,9 +94,9 @@ class StrumNote extends FlxSprite{
         var sAnim:String = this.animation != null && this.animation.curAnim != null ? this.animation.curAnim.name : "static";
         if(_image != null){image = _image;} if(_style != null){style = _style;} if(_type != null){type = _type;}
 
-        frames = Paths.getAtlas(Paths.note(image, style, type));
-        var getJSON:Note_Graphic_Data = Paths.strum_json(noteData, noteKeys, type);
-        if((this is Note)){getJSON = Paths.note_json(noteData, noteKeys, type);}
+        frames = Paths.note(image, style, type).getAtlas();
+        var getJSON:Note_Graphic_Data = SavedFiles.getDataStaticNote(noteData, noteKeys, type);
+        if((this is Note)){getJSON = SavedFiles.getDataNote(noteData, noteKeys, type);}
         
         if(!lockColor){playColor = getJSON.color != null ? getJSON.color : "0xffffff";}        
         antialiasing = getJSON.antialiasing && !style.contains("pxl-");
@@ -111,7 +109,7 @@ class StrumNote extends FlxSprite{
             else{animation.addByPrefix(anim.anim, anim.symbol, anim.fps, anim.loop);}
         }
 
-        shader = new ColorFilterShader(Paths.colorNote(Paths.note(image, style, type)), FlxColor.fromString(playColor));
+        shader = ColorFilterShader.getColorShader(Paths.note(image, style, type).getColorNote(), FlxColor.fromString(playColor));
         
         playAnim(sAnim);
     }
@@ -165,8 +163,8 @@ class Note extends StrumNote {
 
         var toReturn:Array<String> = [];
         for(i in Paths.readDirectory('assets/notes/$type')){
-            var curFile:String = i;
-            if(!curFile.contains(".")){toReturn.push(curFile);}
+            if(i.contains(".")){continue;}
+            toReturn.push(i.split("/").pop());
         }
 
         return toReturn;
@@ -174,8 +172,8 @@ class Note extends StrumNote {
     public static function getNotePressets():Array<String> {
         var toReturn:Array<String> = ["Default"];
         for(i in Paths.readDirectory('assets/notes')){
-            var curFile:String = i;
-            if(curFile.endsWith(".json")){toReturn.push(curFile.replace(".json", ""));}
+            if(!i.endsWith(".json")){continue;}
+            toReturn.push(i.split("/").pop().replace(".json", ""));
         }
 
         return toReturn;
@@ -183,14 +181,23 @@ class Note extends StrumNote {
     public static function getNoteEvents(isNote:Bool = false, ?stage:String):Array<String> {
         var toReturn:Array<String> = [];
 
-        for(i in Paths.readDirectory('assets/data/events')){var curEvent:String = i; if(curEvent.endsWith(".hx")){toReturn.push(curEvent.replace(".hx",""));}}
+        for(i in Paths.readDirectory('assets/data/events')){
+            if(!i.endsWith(".hx")){continue;}
+            toReturn.push(i.split("/").pop().replace(".hx",""));
+        }
         
         if(isNote){
-            for(i in Paths.readDirectory('assets/data/note_events')){var curEvent:String = i; if(curEvent.endsWith(".hx")){toReturn.push(curEvent.replace(".hx",""));}}
+            for(i in Paths.readDirectory('assets/data/note_events')){
+                if(!i.endsWith(".hx")){continue;}
+                toReturn.push(i.split("/").pop().replace(".hx",""));
+            }
         }
 
         if(stage != null){
-            for(i in Paths.readDirectory('assets/stages/${stage}/events')){var curEvent:String = i; if(curEvent.endsWith(".hx")){toReturn.push(curEvent.replace(".hx", ""));}}
+            for(i in Paths.readDirectory('assets/stages/${stage}/events')){
+                if(!i.endsWith(".hx")){continue;}
+                toReturn.push(i.split("/").pop().replace(".hx", ""));
+            }
         }        
 
         return toReturn;
@@ -262,9 +269,13 @@ class Note extends StrumNote {
         return toReturn;
     }
     
+    public static var defaultHitHealth:Float = 0.023;
+    public static var defaultMissHealth:Float = 0.0475;
+
     //General Variables
     public var nextNote:Note = null;
 
+    public var prevStrumTime:Float = 0;
     public var strumTime:Float = 0;
     //public var noteData:Int = 0; //Now on StrumNote
     public var noteLength:Float = 0;
@@ -298,14 +309,22 @@ class Note extends StrumNote {
     public function loadPresset(presset:String, onCreate:Bool = true):Void {
         if(!onCreate && presset == "Default"){otherData = []; loadNote(StrumNote.IMAGE_DEFAULT); return;}
 
-        if(presset != "" && Paths.exists(Paths.json(presset, 'notes', true))){
-            var eventList:DynamicAccess<Dynamic> = cast Paths.json(presset, 'notes');
-            otherData = eventList.get("Events");
+        var json_path:String = Paths.getPath('${presset}.json', TEXT, 'notes');
+        if(presset != "" && Paths.exists(json_path)){
+            var eventList:Dynamic = json_path.getJson();
+            otherData = eventList.Events;
         }
         
         for(event in otherData){
-            if(event[2] != "OnCreate"){continue;} var curScript:Script = Script.getScript(event[0]);
-            curScript.setVariable("_note", this); curScript.exFunction("execute", event[1]);
+            if(event[2] != "OnCreate"){continue;}
+            
+            var curScript:Script = Script.getScript(event[0]);
+            if(curScript == null){MusicBeatState.state.pushTempScript(event[0]);}
+            curScript = Script.getScript(event[0]);
+            if(curScript == null){return;}
+
+            curScript.setVariable("_note", this);
+            curScript.exFunction("execute", event[1]);
         }
     }
 
@@ -323,10 +342,18 @@ class Note extends StrumNote {
         }
 	}
 
-    override public function setGraphicSize(Width:Int = 0, Height:Int = 0):Void {
-        if(typeNote == "Sustain"){Height = Std.int(Height / 4);}
-        super.setGraphicSize(Width,Height);
-    }
+    override public function playAnim(anim:String, force:Bool = false){
+		animation.play(anim, force);
+        if(typeNote == "Sustain"){
+            if(nextNote != null){
+                setGraphicSize(Std.int(note_size.x), Std.int(nextNote.y - this.y));
+            }else{
+                setGraphicSize(Std.int(note_size.x), Std.int(note_size.y / 4));
+            }
+        }else{
+            setGraphicSize(Std.int(note_size.x), Std.int(note_size.y));
+        }
+	}
 }
 
 class StrumEvent extends StrumNote {
@@ -348,7 +375,7 @@ class StrumEvent extends StrumNote {
         var sAnim:String = this.animation != null && this.animation.curAnim != null ? this.animation.curAnim.name : "static";
         if(_image != null){image = _image;} if(_style != null){style = _style;} if(_type != null){type = _type;}
 
-        frames = Paths.getAtlas(Paths.note(image, style, type));
+        frames = Paths.note(image, style, type).getAtlas();
             
         antialiasing = !style.contains("pxl-");
         if(frames == null){return;}
@@ -381,10 +408,7 @@ class NoteSplash extends FlxSprite {
 
     public var playColor:String = "0xffffff";
 
-    public function new(){
-        super();
-        setup();
-    }
+    public function new(){super();}
 
     override function update(elapsed:Float){
 		super.update(elapsed);
@@ -399,7 +423,7 @@ class NoteSplash extends FlxSprite {
 
         this.setPosition(X, Y);
 
-        frames = Paths.getAtlas(Paths.note(image, style, type));
+        frames = Paths.note(image, style, type).getAtlas();
         animation.addByPrefix("Splash", "Splash", 30, false);
 
         playAnim("Splash");
@@ -408,12 +432,12 @@ class NoteSplash extends FlxSprite {
     public function setupByNote(daNote:Note, strumNote:StrumNote):Void {
         this.setPosition(strumNote.x, strumNote.y);
 
-        frames = Paths.getAtlas(Paths.note(IMAGE_DEFAULT, daNote.style, daNote.type));
+        frames = Paths.note(IMAGE_DEFAULT, daNote.style, daNote.type).getAtlas();
         animation.addByPrefix("Splash", "Splash", 30, false);
 
         playColor = daNote.playColor;
 
-        shader = new ColorFilterShader(Paths.colorNote(Paths.note(daNote.image, daNote.style, daNote.type)), FlxColor.fromString(playColor));
+        shader = ColorFilterShader.getColorShader(Paths.note(IMAGE_DEFAULT, daNote.style, daNote.type).getColorNote(), FlxColor.fromString(playColor));
 
         playAnim("Splash");
     }
@@ -462,6 +486,19 @@ class ColorFilterShader extends FlxShader {
 		    }
     ')
 
+    public static var shader_list:Array<ColorFilterShader> = [];
+
+    public var _toCheck:String;
+    public var _toReplace:FlxColor;
+    public static function getColorShader(checkColor:String = "None", replaceColor:FlxColor = FlxColor.GREEN) {
+        for(sh in shader_list){
+            if(sh._toCheck != checkColor){continue;}
+            if(sh._toReplace != replaceColor){continue;}
+            return sh;
+        }
+        return new ColorFilterShader(checkColor, replaceColor);
+    }
+
     public function new(checkColor:String = "None", replaceColor:FlxColor = FlxColor.GREEN){
         super();
 
@@ -470,6 +507,8 @@ class ColorFilterShader extends FlxShader {
 
         this.isEnabled.value = [true];
         this.cjk_alpha.value = [1];
+
+        shader_list.push(this);
     }
 
     public function setReplaceColor(color:FlxColor):Void {this.replaceColor.value = [color.red, color.green, color.blue];}

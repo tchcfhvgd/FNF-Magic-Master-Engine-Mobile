@@ -1,0 +1,10 @@
+{
+    "imports":{},
+    "load":[],
+    "variables":[
+        {"Name": "Antialiasing", "PlaceHolder": true, "Type": "Bool"}
+
+    ],
+    "variable": "",
+    "source": "#Sprite_Name#.antialiasing = #Antialiasing#;"
+}

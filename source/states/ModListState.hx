@@ -32,7 +32,6 @@ import flixel.FlxG;
 import haxe.Json;
 
 import flixel.addons.ui.*;
-import states.LoadingState;
 
 #if desktop
 import Discord.DiscordClient;
@@ -44,33 +43,12 @@ import FlxCustom.FlxCustomShader;
 import FlxCustom.FlxUICustomButton;
 import ModSupport.Mod;
 
+using SavedFiles;
 using StringTools;
 
-class PopModState extends MusicBeatState {
-    override public function create():Void{
-        TitleState.loadedMods = true;
-
-        var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBG'));
-        bg.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height)); bg.screenCenter();
-        bg.color = 0xff7dffd8;
-        add(bg);
-        
-        var lblAdvice_1:Alphabet = new Alphabet(0,0,LangSupport.getText('mod_advert')); add(lblAdvice_1);
-        lblAdvice_1.screenCenter(); lblAdvice_1.y -= 120;
-        
-        var btnNo = new FlxUICustomButton(0, 0, 80, 80, "", Paths.image("tach", null, true), null, function(){MagicStuff.reload_data(); MusicBeatState.switchState(new LoadingState(new TitleState(), []));});
-        btnNo.antialiasing = true;
-        btnNo.screenCenter(); btnNo.y += 25; btnNo.x -= btnNo.width; add(btnNo);
-
-        var btnYes = new FlxUICustomButton(0, 0, 100, 100, "", Paths.image("like", null, true), null, function(){MusicBeatState.switchState(new states.ModListState(TitleState));});
-        btnYes.antialiasing = true;
-        btnYes.screenCenter(); btnYes.y += 25; btnYes.x += btnYes.width; add(btnYes);
-
-        super.create();
-    }
-}
-
 class ModListState extends MusicBeatState {
+    public static var isFirst:Bool = true;
+
     private var ModsList:FlxTypedGroup<ItemMod>;
     private var index:Int = 0;
 
@@ -79,15 +57,18 @@ class ModListState extends MusicBeatState {
     private var btnDisableAll:FlxUIButton;
     private var btnReady:FlxUIButton;
 
-    private var toNext:Class<FlxState>;
+    private var toNext:String;
 
 	override public function create():Void{
+        if(!isFirst){for(s in ModSupport.modDataScripts){s.exFunction("onExit");}}
+        isFirst = false;
+
         if(FlxG.sound.music != null){FlxG.sound.music.stop();}
         FlxG.mouse.visible = true;
 
         if(onConfirm != null){toNext = onConfirm; onConfirm = null;}
 
-        var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBG'));
+        var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBG').getGraphic());
         bg.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height)); bg.screenCenter();
         bg.color = 0xff77ffd6;
         add(bg);
@@ -106,23 +87,19 @@ class ModListState extends MusicBeatState {
 
         changeIndex();
         
-        var hud_up:FlxSprite = new FlxSprite(0,-5).loadGraphic(Paths.image("upBar")); add(hud_up);
-        var hud_down:FlxSprite = new FlxSprite().loadGraphic(Paths.image("downBar")); hud_down.y = FlxG.height - hud_down.height; add(hud_down);
+        var hud_up:FlxSprite = new FlxSprite(0,-5).loadGraphic(Paths.image("upBar").getGraphic()); add(hud_up);
+        var hud_down:FlxSprite = new FlxSprite().loadGraphic(Paths.image("downBar").getGraphic()); hud_down.y = FlxG.height - hud_down.height; add(hud_down);
 
-        btnToggleAll = new FlxUICustomButton(100, 620, 100, 100, '', Paths.image("toggle_button", null, true), null, function(){for(i in ModsList.members){i.setToggleEnableMod();}}); 
-        btnToggleAll.antialiasing = true;
+        btnToggleAll = new FlxUICustomButton(100, 620, 100, 100, '', Paths.image("toggle_button"), null, function(){for(i in ModsList.members){i.setToggleEnableMod();}}); 
         add(btnToggleAll);
 
-        btnEnableAll = new FlxUICustomButton(400, 620, 100, 100, '', Paths.image("on_button", null, true), null, function(){for(i in ModsList.members){i.setToggleEnableMod(true);}}); 
-        btnEnableAll.antialiasing = true;
+        btnEnableAll = new FlxUICustomButton(400, 620, 100, 100, '', Paths.image("on_button"), null, function(){for(i in ModsList.members){i.setToggleEnableMod(true);}}); 
         add(btnEnableAll);
 
-        btnDisableAll = new FlxUICustomButton(700, 620, 100, 100, '', Paths.image("off_button", null, true), null, function(){for(i in ModsList.members){i.setToggleEnableMod(false);}});
-        btnDisableAll.antialiasing = true;
+        btnDisableAll = new FlxUICustomButton(700, 620, 100, 100, '', Paths.image("off_button"), null, function(){for(i in ModsList.members){i.setToggleEnableMod(false);}});
         add(btnDisableAll);
         
-        btnReady = new FlxUICustomButton(1050, 560, 170, 170, '', Paths.image("accept_button", null, true), null, ready);
-        btnReady.antialiasing = true;
+        btnReady = new FlxUICustomButton(1050, 560, 170, 170, '', Paths.image("accept_button"), null, onReady);
         add(btnReady);
         
         var lblModList = new Alphabet(10,20,LangSupport.getText("mod_list")); add(lblModList);
@@ -181,20 +158,9 @@ class ModListState extends MusicBeatState {
         ModsList.members.sort((a, b) -> Std.int(a.ID - b.ID));
     }
 
-    public function ready():Void {
+    public function onReady():Void {
         MagicStuff.reload_data();
-
-        LoadingState.isGlobal = true;
-        var toLoad:Array<Dynamic> = [
-            {type:IMAGE,instance:Paths.image("alphabet",null,true)},
-            {type:IMAGE,instance:Paths.image("icons/icon-face",null,true)},
-            {type:MUSIC,instance:Paths.music("freakyMenu",null,true)},
-            {type:SOUND,instance:Paths.sound("cancelMenu",null,true)},
-            {type:SOUND,instance:Paths.sound("confirmMenu",null,true)},
-            {type:SOUND,instance:Paths.sound("scrollMenu",null,true)},
-        ];
-
-        MusicBeatState.switchState(new LoadingState(cast Type.createInstance(toNext, []), toLoad));
+        MusicBeatState.loadState(toNext, [], []);
     }
 }
 
@@ -223,12 +189,12 @@ class ItemMod extends FlxUITabMenu {
 
         var script_path = '${refMod.path}/itemMod.hx';
         if(Paths.exists(script_path)){
-            mScript.exScript(Paths.getText(script_path));
+            mScript.exScript(script_path.getText());
         }else{
-            mScript.exScript(Paths.getText(Paths.getPath('data/item_mod_template.hx', TEXT, null, null)));
+            mScript.exScript(Paths.getPath('data/item_mod_template.hx', TEXT, null, null).getText());
         }
 
-        var back_ = new FlxUI9SliceSprite(0, 0, Paths.image("custom_default_chrome_flat", null, false, refMod.name), new Rectangle(0, 0, 100, 100), [20, 20, 78, 78], FlxUI9SliceSprite.TILE_BOTH);
+        var back_ = new FlxUI9SliceSprite(0, 0, Paths.image("custom_default_chrome_flat", null, refMod.name).getGraphic(), new Rectangle(0, 0, 100, 100), [20, 20, 78, 78], FlxUI9SliceSprite.TILE_BOTH);
 
         super(back_, null, []);
         resize(Std.int(FlxG.width - 20), 300);
@@ -238,17 +204,17 @@ class ItemMod extends FlxUITabMenu {
               
         mScript.exFunction("create");
 
-        _btnToggle = new FlxUICustomButton(0,0,80,20,"", Paths.image(!refMod.enabled ? "disable_button" : "enabled_button", null, true, refMod.name), null, function(){setToggleEnableMod(); onButton();});
+        _btnToggle = new FlxUICustomButton(0,0,80,20,"", Paths.image(!refMod.enabled ? "disable_button" : "enabled_button", null, refMod.name), null, function(){setToggleEnableMod(); onButton();});
         _btnToggle.setPosition(this.width - _btnToggle.width - 5, -(_btnToggle.height));
         _btnToggle.antialiasing = true;
         add(_btnToggle);
         
-        _btnMoveUp = new FlxUICustomButton(0,5,30,15,"", Paths.image("up_button", null, true, refMod.name), null, function(){ModSupport.moveMod(this.ID, true); onButton();});
+        _btnMoveUp = new FlxUICustomButton(0,5,30,15,"", Paths.image("up_button", null, refMod.name), null, function(){ModSupport.moveMod(this.ID, true); onButton();});
         _btnMoveUp.setPosition(_btnToggle.x - _btnMoveUp.width, -(_btnMoveUp.height));
         _btnMoveUp.antialiasing = true;
         add(_btnMoveUp);
         
-        _btnMoveDown = new FlxUICustomButton(0,5,30,15,"", Paths.image("down_button", null, true, refMod.name), null, function(){ModSupport.moveMod(this.ID, false); onButton();});
+        _btnMoveDown = new FlxUICustomButton(0,5,30,15,"", Paths.image("down_button", null, refMod.name), null, function(){ModSupport.moveMod(this.ID, false); onButton();});
         _btnMoveDown.setPosition(_btnMoveUp.x - _btnMoveDown.width, -(_btnMoveDown.height));
         _btnMoveDown.antialiasing = true;
         add(_btnMoveDown);
@@ -263,7 +229,7 @@ class ItemMod extends FlxUITabMenu {
 
         refMod.enabled = set;
 
-        _btnToggle.setCustomFrames([Paths.getAtlas(Paths.image(!refMod.enabled ? "disable_button" : "enabled_button", null, true, refMod.name)), [["normal", "Idle"], ["pressed", "Hit"]]]);
+        _btnToggle.setButtonFrames(Paths.image(!refMod.enabled ? "disable_button" : "enabled_button", null, refMod.name));
     }
 
     override function update(elapsed:Float){

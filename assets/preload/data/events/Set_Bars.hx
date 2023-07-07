@@ -4,9 +4,9 @@ import("flixel.util.FlxTimer", "FlxTimer");
 import("flixel.FlxSprite", "FlxSprite");
 import("flixel.FlxG", "FlxG");
 
+import("Std");
 import("Note");
 import("Paths");
-import("Std");
 
 presset("defaultValues", 
     [

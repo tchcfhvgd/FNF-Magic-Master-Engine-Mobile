@@ -40,6 +40,7 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
+using SavedFiles;
 using StringTools;
 
 class SkinsMenuState extends MusicBeatState {
@@ -69,7 +70,7 @@ class SkinsMenuState extends MusicBeatState {
 
 		character_list = Character.getCharacters();
 		
-		var background = new FlxSprite().loadGraphic(Paths.image('menuBG'));
+		var background = new FlxSprite().loadGraphic(Paths.image('menuBG').getGraphic());
 		background.setGraphicSize(FlxG.width, FlxG.height);
 		background.scrollFactor.set(0, 0);
         background.color = 0xffffd98c;
@@ -123,7 +124,7 @@ class SkinsMenuState extends MusicBeatState {
 		
 		for(i in 0...4){
             var arrow_1:FlxSprite = new FlxSprite();
-            arrow_1.frames = Paths.getAtlas(Paths.image('arrows', null, true));
+            arrow_1.frames = Paths.image('arrows').getAtlas();
             arrow_1.animation.addByPrefix('idle', 'Arrow Idle');
             arrow_1.animation.addByPrefix('over', 'Arrow Over', false);
             arrow_1.animation.addByPrefix('hit', 'Arrow Hit', false);
@@ -173,7 +174,7 @@ class SkinsMenuState extends MusicBeatState {
 			if(principal_controls.checkAction("Menu_Left", JUST_PRESSED)){changeSkin(-1);}
 			if(principal_controls.checkAction("Menu_Right", JUST_PRESSED)){changeSkin(1);}
 			
-			if(FlxG.keys.justPressed.SPACE && canChange){updateCharacter();}
+			if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED) && canChange){updateCharacter();}
 		}
 	}
 

@@ -1,39 +1,69 @@
 package states;
 
-import substates.PauseSubState;
-#if desktop
-import Discord.DiscordClient;
-import sys.thread.Thread;
-#end
-import flixel.addons.ui.FlxUIState;
-import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.FlxState;
-import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.TransitionData;
-import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.group.FlxGroup;
+import flixel.addons.display.FlxGridOverlay;
 import flixel.input.gamepad.FlxGamepad;
-import flixel.math.FlxPoint;
-import flixel.math.FlxRect;
-import flixel.system.FlxSound;
 import flixel.system.ui.FlxSoundTray;
-import flixel.text.FlxText;
-import flixel.tweens.FlxEase;
+import flixel.addons.ui.FlxUIState;
+import flixel.graphics.FlxGraphic;
+import flixel.system.FlxSound;
 import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+import flixel.group.FlxGroup;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import io.newgrounds.NG;
 import lime.app.Application;
+import flixel.math.FlxPoint;
+import flixel.math.FlxRect;
+import flixel.text.FlxText;
+import io.newgrounds.NG;
+import flixel.FlxSprite;
+import flixel.FlxState;
 import openfl.Assets;
+import flixel.FlxG;
+import haxe.Timer;
 
 #if desktop
+import Discord.DiscordClient;
+import sys.thread.Thread;
 import sys.FileSystem;
 import sys.io.File;
 #end
+
+import substates.CustomScriptSubState;
+import substates.InformationSubState;
+import substates.MusicBeatSubstate;
+import substates.GameOverSubstate;
+import substates.OptionsSubState;
+import substates.PauseSubState;
+import substates.FadeSubState;
+
+import states.editors.CharacterEditorState;
+import states.editors.PackerEditorState;
+import states.editors.StageEditorState;
+import states.editors.StageTesterState;
+import states.editors.ChartEditorState;
+import states.editors.SpriteTestState;
+import states.editors.XMLEditorState;
+import states.PlayerSelectorState;
+import states.CustomScriptState;
+import states.MusicBeatState;
+import states.SkinsMenuState;
+import states.StoryMenuState;
+import states.FreeplayState;
+import states.MainMenuState;
+import states.GitarooPause;
+import states.LoadingState;
+import states.ModListState;
+import states.PopLangState;
+import states.CreditsState;
+import states.PopModState;
+import states.TitleState;
+import states.PlayState;
+import states.VoidState;
 
 import Note.NoteSplash;
 import Character.Skins;
@@ -41,8 +71,9 @@ import Character.Skins;
 using StringTools;
 
 class PreLoaderState extends FlxUIState {
-	override public function create():Void{
-		super.create();
+	override public function create():Void {
+		SavedFiles.clearMemoryAssets();
+		SavedFiles.clearUnusedAssets();
 		
 		FlxG.autoPause = false;
 
@@ -52,6 +83,8 @@ class PreLoaderState extends FlxUIState {
 		var ng:NGio = new NGio(APIStuff.API, APIStuff.EncKey);
 		trace('NEWGROUNDS LOL');
 		#end
+
+		super.create();
 
 		FlxG.save.bind('funkin', 'Yirius125');
 
@@ -79,14 +112,16 @@ class PreLoaderState extends FlxUIState {
 			#end
 		#end
 
-		var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
-		diamond.persist = true;
-		diamond.destroyOnNoUse = false;
-
-		MagicStuff.setGlobalTransition("Default", new TransitionData(FADE, FlxColor.BLACK, 1, new FlxPoint(0, -1), {asset: diamond, width: 32, height: 32}, new FlxRect(-(FlxG.width), -(FlxG.height), FlxG.width * 3, FlxG.height * 3)), MagicStuff.TransitionType.transIn);
-		MagicStuff.setGlobalTransition("Default", new TransitionData(FADE, FlxColor.BLACK, 0.7, new FlxPoint(0, 1), {asset: diamond, width: 32, height: 32}, new FlxRect(-(FlxG.width), -(FlxG.height), FlxG.width * 3, FlxG.height * 3)), MagicStuff.TransitionType.transOut);
-		MagicStuff.changeTransitionType("Default");
-
-		MusicBeatState.switchState(new states.TitleState());
+		if(!FlxG.save.data.inLang){
+			MusicBeatState.switchState("states.PopLangState", [ModSupport.is_same() ? "states.TitleState" : "states.PopModState"]);
+			return;
+		}
+		if(!ModSupport.is_same()){
+			MusicBeatState.switchState("states.PopModState", ["states.TitleState"]);
+			return;
+		}
+		
+		MagicStuff.reload_data();
+		MusicBeatState.loadState("states.TitleState", [], []);
 	}
 }

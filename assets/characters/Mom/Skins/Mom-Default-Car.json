@@ -46,7 +46,7 @@
 	"image": "momCar",
 	"zoom": 0.8,
 	"antialiasing": true,
-	"deathCharacter": "Boyfriend_Death",
+	"deathCharacter": "Boyfriend",
 	"skin": "Default",
 	"onRight": true,
 	"healthicon": "mom",

@@ -1,0 +1,50 @@
+{
+	"objects": [
+		{
+			"Values": {
+				"Position_X": -200,
+				"Sprite_Name": "background",
+				"Position_Y": -110
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Symbol_Name": "halloweem bg lightning strike",
+						"Graphic_Library": "stages/spooky",
+						"Graphic_File": "halloween_bg"
+					},
+					"Name": "Animated_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		}
+	],
+	"variables": [
+		{
+			"Type": "Int",
+			"Value": 0,
+			"Name": "initChar"
+		},
+		{
+			"Type": "Array",
+			"Value": [
+				400,
+				230
+			],
+			"Name": "camP_1"
+		},
+		{
+			"Type": "Array",
+			"Value": [
+				1300,
+				570
+			],
+			"Name": "camP_2"
+		},
+		{
+			"Type": "Float",
+			"Value": 1.1,
+			"Name": "zoom"
+		}
+	]
+}

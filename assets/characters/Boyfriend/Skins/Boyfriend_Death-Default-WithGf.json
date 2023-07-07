@@ -1,0 +1,43 @@
+{
+	"aspect": "WithGf",
+	"position": [
+		0,
+		340
+	],
+	"scale": 1,
+	"anims": [
+		{
+			"loop": false,
+			"symbol": "BF Dead with GF Loop",
+			"anim": "deathLoop",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "BF Dies with GF",
+			"anim": "firstDeath",
+			"fps": 24,
+			"indices": []
+		},
+		{
+			"loop": false,
+			"symbol": "RETRY confirm holding gf",
+			"anim": "deathConfirm",
+			"fps": 24,
+			"indices": []
+		}
+	],
+	"name": "Boyfriend",
+	"image": "BfHoldingGf",
+	"zoom": 0.8,
+	"antialiasing": true,
+	"skin": "Default",
+	"onRight": false,
+	"camera": [
+		0,
+		0
+	],
+	"healthicon": "bf",
+	"deathCharacter": "Boyfriend"
+}

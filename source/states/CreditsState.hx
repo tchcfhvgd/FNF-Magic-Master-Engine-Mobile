@@ -42,6 +42,7 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
+using SavedFiles;
 using StringTools;
 
 class CreditsState extends MusicBeatState {
@@ -51,6 +52,7 @@ class CreditsState extends MusicBeatState {
 	var background:FlxSprite;
 
 	var alphaGroup:FlxTypedGroup<Alphabet>;
+	var descalpha:Alphabet;
 
 	var curCredit:Int = 0;
 
@@ -58,7 +60,7 @@ class CreditsState extends MusicBeatState {
 		FlxG.mouse.visible = false;
 
         for(file in Paths.readFile('assets/data/credits.json')){
-            var file_content:DynamicAccess<Dynamic> = Json.parse(Paths.getText(file));
+            var file_content:DynamicAccess<Dynamic> = file.getJson();
             for(key in file_content.keys()){
 				if(credits_stuff.exists(key)){
 					for(i in cast(file_content.get(key), Array<Dynamic>)){
@@ -76,7 +78,7 @@ class CreditsState extends MusicBeatState {
 		MagicStuff.setWindowTitle('In the credits');
 		#end
 		
-		background = new FlxSprite().loadGraphic(Paths.image('menuBG'));
+		background = new FlxSprite().loadGraphic(Paths.image('menuBG').getGraphic());
 		background.setGraphicSize(FlxG.width, FlxG.height);
 		background.scrollFactor.set(0, 0);
         background.color = 0xfffffd75;
@@ -102,9 +104,13 @@ class CreditsState extends MusicBeatState {
 
 			for(credit in credits_stuff[cat]){
 				var path_icon:String = 'credits/${credit.Icon}';
-				if(!Paths.exists(path_icon)){path_icon = "credits/face";}
+				if(!Paths.exists(Paths.image(path_icon))){path_icon = "credits/face";}
+				var path_rol_icon:String = 'credits/${credit.Rol}';
 
-				var cur_credit_alp:Alphabet = new Alphabet(0, cur_height, [{color: 0x000000, scale: 0.7, text: '${credit.Name} '}, {image: path_icon}]);
+				var list_credit:Array<Dynamic> = [{color: 0x000000, scale: 0.7, text: ' ${credit.Name} '}, {image: path_icon, size: [0, 70]}];
+				if(Paths.exists(Paths.image(path_rol_icon))){list_credit.unshift({image: path_rol_icon, size: [0, 70]});}
+
+				var cur_credit_alp:Alphabet = new Alphabet(0, cur_height, list_credit);
 				cur_credit_alp.screenCenter(X);
 				alphaGroup.add(cur_credit_alp);
 
@@ -126,6 +132,8 @@ class CreditsState extends MusicBeatState {
 		
         var shape_1:FlxSprite = new FlxSprite(0, FlxG.height - 60).makeGraphic(FlxG.width, 5, FlxColor.BLACK); add(shape_1);
         var shape_2:FlxSprite = new FlxSprite(0, FlxG.height - 50).makeGraphic(FlxG.width, 50, FlxColor.BLACK); add(shape_2);
+
+		descalpha = new Alphabet(0, 0, []); add(descalpha);
 
 		changeCredit();
 
@@ -165,6 +173,9 @@ class CreditsState extends MusicBeatState {
 			changeCredit(value);
 			return;
 		}
+
+		descalpha.cur_data = [{text: cur_data.desc, scale: 0.5, bold: false, animated: true}]; descalpha.loadText();
+		descalpha.y = FlxG.height - descalpha.height - 10; descalpha.screenCenter(X);
 
 		if(cur_tween_color != null){cur_tween_color.cancel();}
 		cur_tween_color = FlxTween.color(background, 0.5, background.color, FlxColor.fromString(cur_data.color), {ease: FlxEase.quadInOut, onComplete: function(twn:FlxTween){cur_tween_color = null;}});

@@ -1,56 +1,56 @@
 {
 	"aspect": "Default",
 	"position": [
-		105,
-		275
+		-195,
+		-130
 	],
 	"scale": 6,
 	"anims": [
 		{
+			"loop": false,
 			"symbol": "SENPAI DOWN NOTE instance 1",
-			"loop": false,
-			"fps": 24,
 			"anim": "singDOWN",
+			"fps": 24,
 			"indices": []
 		},
 		{
+			"loop": false,
 			"symbol": "SENPAI LEFT NOTE instance 1",
-			"loop": false,
-			"fps": 24,
 			"anim": "singLEFT",
+			"fps": 24,
 			"indices": []
 		},
 		{
+			"loop": false,
 			"symbol": "SENPAI RIGHT NOTE instance 1",
-			"loop": false,
-			"fps": 24,
 			"anim": "singRIGHT",
+			"fps": 24,
 			"indices": []
 		},
 		{
+			"loop": false,
 			"symbol": "SENPAI UP NOTE instance 1",
-			"loop": false,
-			"fps": 24,
 			"anim": "singUP",
+			"fps": 24,
 			"indices": []
 		},
 		{
-			"symbol": "Senpai Idle instance 1",
 			"loop": false,
-			"fps": 24,
+			"symbol": "Senpai Idle instance 1",
 			"anim": "idle",
+			"fps": 24,
 			"indices": []
 		}
 	],
-	"name": "Senpai",
-	"image": "senpai",
 	"zoom": 0.8,
-	"onRight": true,
-	"skin": "Default",
-	"camera": [
-		0,
-		0
-	],
+	"image": "senpai",
+	"name": "Senpai",
+	"deathCharacter": "Boyfriend",
 	"healthicon": "senpai-pixel",
-	"deathCharacter": "Boyfriend_Death"
+	"camera": [
+		280,
+		410
+	],
+	"skin": "Default",
+	"onRight": true
 }

@@ -1,0 +1,15 @@
+<TextureAtlas imagePath="shaders.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="0" frameWidth="296" y="0" frameX="-11" name="Hit0000" frameHeight="259" frameY="-16" width="274" height="224"/>
+	<SubTexture x="0" frameWidth="296" y="0" frameX="-11" name="Hit0001" frameHeight="259" frameY="-16" width="274" height="224"/>
+	<SubTexture x="274" frameWidth="296" y="0" frameX="84" name="Hit0002" frameHeight="259" frameY="70" width="464" height="397"/>
+	<SubTexture x="274" frameWidth="296" y="0" frameX="84" name="Hit0003" frameHeight="259" frameY="70" width="464" height="397"/>
+	<SubTexture x="0" frameWidth="296" y="397" frameX="24" name="Hit0004" frameHeight="259" frameY="18" width="343" height="292"/>
+	<SubTexture x="343" frameWidth="296" y="397" frameX="0" name="Idle0000" frameHeight="259" frameY="0" width="296" height="259"/>
+	<SubTexture x="343" frameWidth="296" y="397" frameX="0" name="Over0000" frameHeight="259" frameY="0" width="296" height="259"/>
+	<SubTexture x="343" frameWidth="296" y="397" frameX="0" name="Over0001" frameHeight="259" frameY="0" width="296" height="259"/>
+	<SubTexture x="639" frameWidth="296" y="397" frameX="40" name="Over0002" frameHeight="259" frameY="33" width="376" height="326"/>
+	<SubTexture x="639" frameWidth="296" y="397" frameX="40" name="Over0003" frameHeight="259" frameY="33" width="376" height="326"/>
+	<SubTexture x="0" frameWidth="296" y="397" frameX="23" name="Over0004" frameHeight="259" frameY="16" width="343" height="292"/>
+</TextureAtlas>

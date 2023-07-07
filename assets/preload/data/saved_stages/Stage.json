@@ -1,0 +1,152 @@
+{
+	"objects": [
+		{
+			"Values": {
+				"Position_X": -600,
+				"Position_Y": -300,
+				"Sprite_Name": "stageback"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/stage",
+						"Graphic_File": "stageback"
+					},
+					"Name": "Basic_Graphic"
+				},
+				{
+					"Values": {
+						"Scroll_X": 0.5,
+						"Scroll_Y": 0.5
+					},
+					"Name": "ScrollFactor"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -600,
+				"Sprite_Name": "stagefront",
+				"Position_Y": 650
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/stage",
+						"Graphic_File": "stagefront"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -125,
+				"Sprite_Name": "stagelight1",
+				"Position_Y": -100
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/stage",
+						"Graphic_File": "stage_light"
+					},
+					"Name": "Basic_Graphic"
+				},
+				{
+					"Values": {
+						"Scroll_X": 0.9,
+						"Scroll_Y": 0.9
+					},
+					"Name": "ScrollFactor"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": 1225,
+				"Sprite_Name": "stagelight2",
+				"Position_Y": -100
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Flip_X": true,
+						"Flip_Y": false
+					},
+					"Name": "Flip"
+				},
+				{
+					"Values": {
+						"Scroll_X": 0.9,
+						"Scroll_Y": 0.9
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/stage",
+						"Graphic_File": "stage_light"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -600,
+				"Position_Y": -300,
+				"Sprite_Name": "stagecurtains"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Scroll_X": 1.3,
+						"Scroll_Y": 1.3
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Graphic_Library": "stages/stage",
+						"Graphic_File": "stagecurtains"
+					},
+					"Name": "Basic_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		}
+	],
+	"variables": [
+		{
+			"Type": "Int",
+			"Value": 1,
+			"Name": "initChar"
+		},
+		{
+			"Type": "Array",
+			"Value": [
+				250,
+				180
+			],
+			"Name": "camP_1"
+		},
+		{
+			"Type": "Array",
+			"Value": [
+				1095,
+				800
+			],
+			"Name": "camP_2"
+		},
+		{
+			"Type": "Float",
+			"Value": 0.9,
+			"Name": "zoom"
+		}
+	]
+}

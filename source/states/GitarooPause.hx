@@ -4,6 +4,8 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 
+using SavedFiles;
+
 class GitarooPause extends MusicBeatState
 {
 	var replayButton:FlxSprite;
@@ -21,25 +23,25 @@ class GitarooPause extends MusicBeatState
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('pauseAlt/pauseBG'));
+		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('pauseAlt/pauseBG').getGraphic());
 		add(bg);
 
 		var bf:FlxSprite = new FlxSprite(0, 30);
-		bf.frames = Paths.getSparrowAtlas(Paths.image('pauseAlt/bfLol', null, true));
+		bf.frames = Paths.image('pauseAlt/bfLol').getSparrowAtlas();
 		bf.animation.addByPrefix('lol', "funnyThing", 13);
 		bf.animation.play('lol');
 		add(bf);
 		bf.screenCenter(X);
 
 		replayButton = new FlxSprite(FlxG.width * 0.28, FlxG.height * 0.7);
-		replayButton.frames = Paths.getSparrowAtlas(Paths.image('pauseAlt/pauseUI', null, true));
+		replayButton.frames = Paths.image('pauseAlt/pauseUI').getSparrowAtlas();
 		replayButton.animation.addByPrefix('selected', 'bluereplay', 0, false);
 		replayButton.animation.appendByPrefix('selected', 'yellowreplay');
 		replayButton.animation.play('selected');
 		add(replayButton);
 
 		cancelButton = new FlxSprite(FlxG.width * 0.58, replayButton.y);
-		cancelButton.frames = Paths.getSparrowAtlas(Paths.image('pauseAlt/pauseUI', null, true));
+		cancelButton.frames = Paths.image('pauseAlt/pauseUI').getSparrowAtlas();
 		cancelButton.animation.addByPrefix('selected', 'bluecancel', 0, false);
 		cancelButton.animation.appendByPrefix('selected', 'cancelyellow');
 		cancelButton.animation.play('selected');
@@ -59,11 +61,11 @@ class GitarooPause extends MusicBeatState
 		{
 			if (replaySelect)
 			{
-				MusicBeatState.switchState(new states.PlayState());
+				MusicBeatState.switchState("states.PlayState", []);
 			}
 			else
 			{
-				MusicBeatState.switchState(new states.MainMenuState());
+				MusicBeatState.switchState("states.MainMenuState", []);
 			}
 		}
 

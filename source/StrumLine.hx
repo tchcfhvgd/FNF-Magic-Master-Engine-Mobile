@@ -24,6 +24,7 @@ import flixel.FlxSprite;
 import flixel.ui.FlxBar;
 import flixel.FlxObject;
 import flixel.FlxG;
+import haxe.Timer;
 import haxe.Json;
 
 #if windows
@@ -44,6 +45,7 @@ import Note.Note;
 import Controls;
 import Script;
 
+using SavedFiles;
 using StringTools;
 
 class StaticNotes extends FlxUIGroup {
@@ -104,10 +106,13 @@ class StaticNotes extends FlxUIGroup {
         }else{
             if(statics.length > 0){
                 for(i in 0...statics.length){
-                    var strum:StrumNote = statics[i];
+                    var strum:StrumNote = statics.shift();
                     strum.onDebug = true;
 
-                    FlxTween.tween(strum, {alpha: 0, y: strum.y + (strum.height / 2)}, (0.5 * (i + 1) / statics.length), {ease: FlxEase.quadInOut, onComplete: function(twn:FlxTween){this.members.remove(strum);}});
+                    FlxTween.tween(strum, {alpha: 0, y: strum.y + (strum.height / 2)}, (0.5 * (i + 1) / statics.length), {ease: FlxEase.quadInOut, onComplete: function(twn:FlxTween){
+                        this.members.remove(strum);
+                        strum.destroy();
+                    }});
                 }
             }
             
@@ -139,15 +144,8 @@ typedef Strums_Data = {
 }
 
 class StrumLine extends FlxTypedGroup<Dynamic> {
-    public static var strum_players:Array<StrumLine> = [];
-
-    public static var GLOBAL_VARIABLES:Map<String, Dynamic> = [
-        "Player" => null,
-        "Enemy" => null
-    ];
-    public var LOCAL_VARIABLES:Map<String, Dynamic> = [
-        "Player" => null
-    ];
+    public static var GLOBAL_VARIABLES:Dynamic = {};
+    public var LOCAL_VARIABLES:Dynamic = {};
 
     // STRUM OBJECTS
     public var staticnotes:StaticNotes;
@@ -171,9 +169,11 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     public var style(get, never):String; inline function get_style():String{return staticnotes.style;}
     public var type(get, never):String; inline function get_type():String{return staticnotes.type;}
 
+    public var holdNotes:Array<Note> = [];
+    public var notelist:Array<Note> = [];
     public var notes:FlxTypedGroup<Note>;
-    public var recycleGrp:FlxTypedGroup<Dynamic>;
-    
+
+    //OBJECT VARIABLES
 	public var healthBar:FlxBar;
 	public var leftIcon:HealthIcon;
 	public var rightIcon:HealthIcon;
@@ -183,23 +183,22 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     // STRUMLINE VARIABLES
     public var player:Int = 0;
 
-    public var typeStrum:String = "BotPlay"; //BotPlay, Playing, Charting
-    public var notelist:Array<Note> = [];
+    public var typeStrum:String = "BotPlay"; //BotPlay, Playing, Charting, 
 
     // NOTE EVENTS
-    public var onHIT:Note->Void = null;
-    public var onMISS:Note->Void = null;
-    public var onGAME_OVER:Void->Void = null;
-    public var update_hud:Void->Void = null;    
-    public dynamic function onLIFE(value){
+    public dynamic function onHIT(_note:Note):Void {};
+    public dynamic function onMISS(_note:Note):Void {}
+    public dynamic function onRANK(_note:Note,_score:Float,_rank:String, _pop_image:String):Void {}
+    public dynamic function onGAME_OVER():Void {}
+    public dynamic function update_hud():Void {}
+    public dynamic function onLIFE(value:Float){
         HEALTH += value;
         
         if(HEALTH > MAXHEALTH){HEALTH = MAXHEALTH;}
         if(HEALTH <= 0){  
-            HEALTH = 0;           
+            HEALTH = 0;
             if(onGAME_OVER != null){onGAME_OVER();}
         }
-
     };
 
     // STATS VARIABLES    
@@ -211,17 +210,17 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         {rank:"._.", popup:"shit", score:50, diff:200},
     ];
     
-    public var STATS:Map<String, Dynamic> = [
-        "TotalNotes" => 0,
-		"Record" => 0,
-		"Score" => 0,
-		"Combo" => 0,
-		"MaxCombo" => 0,
-		"Hits" => 0,
-		"Misses" => 0,
-        "Percent" => 0,
-		"Rating" => "MAGIC"
-	];
+    public var STATS:Dynamic = {
+        TotalNotes: 0,
+		Record: 0,
+		Score: 0,
+		Combo: 0,
+		MaxCombo: 0,
+		Hits: 0,
+		Misses: 0,
+        Percent: 0,
+		Rating: "MAGIC"
+    };
 
     public static var RATING:Array<Dynamic> = [
         {percent: 1.0, rate:"MAGIC!!"},
@@ -260,11 +259,6 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         this.controls = _controls;
         super();
 
-        recycleGrp = new FlxTypedGroup<Dynamic>();
-        recycleGrp.add(new NoteSplash());
-        recycleGrp.add(new FlxSprite());
-        recycleGrp.add(new PopUpScore());
-
         staticnotes = new StaticNotes(X, Y, _keys, _size, _image, _style, _type);
         add(staticnotes);
 
@@ -275,23 +269,119 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 
         changeTypeStrum(typeStrum);
+
+        onRANK = function(daNote:Note, _score:Float, _rate:String, _pop_image:String){
+            if(PreSettings.getPreSetting("Type Splash", "Visual Settings") == "OnSick" && _score >= 350){splashNote(daNote);}
+            var cur_character = LOCAL_VARIABLES.Player;
+            if(cur_character == null){return;}
+    
+            var popRank:FlxSprite = new FlxSprite();
+            popRank.loadGraphic(Paths.styleImage(_pop_image, ui_style).getGraphic());
+            popRank.scale.set(0.7, 0.7); popRank.updateHitbox();
+            popRank.setPosition(cur_character.c.getGraphicMidpoint().x, cur_character.c.getGraphicMidpoint().y);
+            popRank.alpha = 1;
+            popRank.cameras = [FlxG.camera];
+            add(popRank);
+            FlxTween.tween(popRank, {y: popRank.y - 25, alpha: 0}, 0.5, {ease:FlxEase.quadOut, onComplete:function(twn){popRank.destroy();}});
+            
+            var ppScore:PopUpScore = new PopUpScore();
+            ppScore.setPosition(popRank.x, popRank.y + (popRank.height / 2));
+            ppScore.popup(STATS.Score, ui_style);
+            ppScore.cameras = [FlxG.camera];
+            add(ppScore);
+            Timer.delay(function(){ppScore.destroy();}, Std.int(0.5 + (0.2 * ('${STATS.Score}'.length - 1)) * 1000));
+    
+            var sprt_combo:FlxSprite = new FlxSprite();
+            sprt_combo.loadGraphic(Paths.styleImage("combo", ui_style).getGraphic());
+            sprt_combo.scale.set(0.5, 0.5); sprt_combo.updateHitbox();
+            sprt_combo.setPosition(popRank.x, popRank.y + popRank.height + 5);
+            sprt_combo.alpha = 1;
+            sprt_combo.cameras = [FlxG.camera];
+            add(sprt_combo);
+            FlxTween.tween(sprt_combo, {y: sprt_combo.y - 25, alpha: 0}, 0.5, {ease:FlxEase.quadOut, onComplete:function(twn){popRank.destroy();}});
+    
+            var ppCombo:PopUpScore = new PopUpScore();
+            ppCombo.setPosition(sprt_combo.x, sprt_combo.y + (sprt_combo.height / 2));
+            ppCombo.popup(STATS.Combo, ui_style);
+            ppCombo.cameras = [FlxG.camera];
+            add(ppCombo);
+            Timer.delay(function(){ppCombo.destroy();}, Std.int(0.5 + (0.2 * ('${STATS.Combo}'.length - 1)) * 1000));
+        }
     }
 
     public function load_solo_ui():Void {
-        strum_players.push(this);
+        update_hud = function(){
+            if(STATS.Combo > STATS.MaxCombo){STATS.MaxCombo = STATS.Combo;}
+            if(STATS.Score > STATS.Record){STATS.Record = STATS.Score;}
+
+            if(healthBar != null){
+                healthBar.x = staticnotes.x;
+                if(!healthBar.flipX){healthBar.x = staticnotes.x + staticnotes.genWidth - healthBar.width;}
+
+                var _player:Character = LOCAL_VARIABLES.Player;
+                if(_player != null){
+                    healthBar.flipX = _player.onRight;
+
+                    if(leftIcon != null){
+                        var _char_left:Character = LOCAL_VARIABLES.Player;
+                        if(_char_left != null && leftIcon.curIcon != _char_left.healthIcon){leftIcon.setIcon(_char_left.healthIcon); leftIcon.visible = true;}
+                                    
+                        leftIcon.flipX = !_player.onRight;
+                        leftIcon.x = sprite_healthBar.x - (leftIcon.width / 2);
+                        if(leftIcon.flipX){leftIcon.x = sprite_healthBar.x + sprite_healthBar.width - (leftIcon.width / 2);}
+
+                        leftIcon.playAnim(HEALTH < 0.8 ? 'losing' : 'default');		
+                    }
+                }
+            }
+            if(sprite_healthBar != null){
+                sprite_healthBar.x = healthBar.x;
+                sprite_healthBar.flipX = !healthBar.flipX;
+            }
+    
+            if(lblStats != null){
+                lblStats.x = staticnotes.x;
+                
+                if(LOCAL_VARIABLES.GameOver){lblStats.text = '|| You Died ||';}
+                else{
+                    switch(PreSettings.getPreSetting("Type HUD", "Visual Settings")){
+                        case "MagicHUD":{
+                            lblStats.text = '||'+
+                                ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} |' +
+                                ' ${LangSupport.getText('gmp_misses')}: ${STATS.Misses} ' +
+                            '||';
+                        }
+                        case "Original":{
+                            lblStats.text = '||'+
+                                ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} |' +
+                                ' ${LangSupport.getText('gmp_misses')}: ${STATS.Misses} ' +
+                            '||';
+                        }
+                        case "Minimized":{
+                            lblStats.text = '||'+
+                                ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} ' +
+                            '||';
+                        }
+                        case "OnlyNotes":{
+                            lblStats.text = '';
+                        }
+                    }
+                }
+            }
+        }
 
 		var cont:Array<Bool> = []; for(s in MusicBeatState.state.scripts){cont.push(s.exFunction('load_solo_${player}_ui', [this]));}
 		if(cont.contains(true)){return; trace("RETURN");}
 
         if(healthBar == null){
-			healthBar = new FlxBar(330, 663, RIGHT_TO_LEFT, Std.int(FlxG.width / 2) - 20, 16, this, 'HEALTH', 0, MAXHEALTH);
+			healthBar = new FlxBar(x, 663, RIGHT_TO_LEFT, 330, 16, this, 'HEALTH', 0, MAXHEALTH);
 			healthBar.numDivisions = 500;
 			//healthBar.cameras = [camHUD];
 			add(healthBar);
 		}
 
 		if(sprite_healthBar == null){
-			sprite_healthBar = new FlxSprite(326, 655).loadGraphic(Paths.styleImage("single_healthBar", ui_style, "shared"));
+			sprite_healthBar = new FlxSprite(x, 655).loadGraphic(Paths.styleImage("single_healthBar", ui_style, "shared").getGraphic());
 			sprite_healthBar.scale.set(0.7,0.7); sprite_healthBar.updateHitbox();
 			//sprite_healthBar.cameras = [camHUD];
 			add(sprite_healthBar);
@@ -305,9 +395,8 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 		}
 
         if(lblStats == null){
-			lblStats = new FlxText(0,0,0,"|| ...Starting Song... ||");
+			lblStats = new FlxText(x, 0, genWidth, "|| ...Starting Song... ||");
 			lblStats.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			lblStats.screenCenter(X);
 			lblStats.y = FlxG.height - lblStats.height - 5;
 			//lblStats.cameras = [camHUD];
 			add(lblStats);
@@ -315,7 +404,77 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     }
 
     public function load_global_ui():Void {
-        strum_players.push(this);
+        update_hud = function(){
+            if(STATS.Combo > STATS.MaxCombo){STATS.MaxCombo = STATS.Combo;}
+            if(STATS.Score > STATS.Record){STATS.Record = STATS.Score;}
+
+            if(healthBar != null){
+                var _player:Character = LOCAL_VARIABLES.Player;
+                if(_player != null){
+                    healthBar.flipX = _player.onRight;
+
+                    if(leftIcon != null){
+                        var _char_left:Character = (_player.onRight ? GLOBAL_VARIABLES.Player : GLOBAL_VARIABLES.Enemy);
+                        if(_char_left != null && leftIcon.curIcon != _char_left.healthIcon){leftIcon.setIcon(_char_left.healthIcon); leftIcon.visible = true;}
+        
+                        leftIcon.y = (healthBar.y + (healthBar.height / 2)) - (leftIcon.height / 2);
+                        if(_player.onRight){
+                            leftIcon.x = healthBar.x + (healthBar.width - (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01))) - leftIcon.width;
+                        }else{
+                            leftIcon.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - leftIcon.width;
+                        }
+                        
+                        leftIcon.playAnim(HEALTH < 0.8 ? 'default' : 'losing');		
+                    }
+
+                    if(rightIcon != null){
+                        var _char_right:Character = (_player.onRight ? GLOBAL_VARIABLES.Enemy : GLOBAL_VARIABLES.Player);
+                        if(_char_right != null && rightIcon.curIcon != _char_right.healthIcon){rightIcon.setIcon(_char_right.healthIcon); rightIcon.visible = true;}
+    
+                        rightIcon.y = (healthBar.y + (healthBar.height / 2)) - (rightIcon.height / 2);
+                        if(_player.onRight){
+                            rightIcon.x = healthBar.x + (healthBar.width - (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)));
+                        }else{
+                            rightIcon.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01));
+                        }
+
+                        rightIcon.playAnim(HEALTH > 0.2 ? 'default' : 'losing');
+                    }
+                }
+            }
+    
+            if(lblStats != null){
+                switch(PreSettings.getPreSetting("Type HUD", "Visual Settings")){
+                    case "MagicHUD":{
+                        lblStats.text = '||'+
+                            ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} |' +
+                            //' ${LangSupport.getText('gmp_record')}: ${STATS['Record']} |' +
+                            ' ${LangSupport.getText('gmp_combo')}: ${STATS.Combo} |' +
+                            //' ${LangSupport.getText('gmp_maxCombo')}: ${STATS['MaxCombo']} |' +
+                            ' ${LangSupport.getText('gmp_misses')}: ${STATS.Misses} |' +
+                            //' ${LangSupport.getText('gmp_hits')}: ${STATS['Hits']} |' +
+                            ' ${LangSupport.getText('gmp_rating')}: ${STATS.Rating} ' +
+                        '||';
+                    }
+                    case "Original":{
+                        lblStats.text = '||'+
+                            ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} |' +
+                            ' ${LangSupport.getText('gmp_misses')}: ${STATS.Misses} ' +
+                        '||';
+                    }
+                    case "Minimized":{
+                        lblStats.text = '||'+
+                            ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} ' +
+                        '||';
+                    }
+                    case "OnlyNotes":{
+                        lblStats.text = '';
+                    }
+                }
+                
+                lblStats.screenCenter(X);
+            }
+        }
 
 		var cont:Array<Bool> = []; for(s in MusicBeatState.state.scripts){cont.push(s.exFunction('load_global_ui',[this]));}
 		if(cont.contains(true)){trace("RETURN"); return;}
@@ -336,7 +495,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 		}
 
 		if(sprite_healthBar == null){
-			sprite_healthBar = new FlxSprite(326, 655).loadGraphic(Paths.styleImage("healthbar", ui_style, "shared"));
+			sprite_healthBar = new FlxSprite(326, 655).loadGraphic(Paths.styleImage("healthbar", ui_style, "shared").getGraphic());
 			sprite_healthBar.scale.set(0.7,0.7); sprite_healthBar.updateHitbox();
             sprite_healthBar.setPosition(healthBar.x + (healthBar.width/2) - (sprite_healthBar.width/2), healthBar.y + (healthBar.height/2) - (sprite_healthBar.height/2));
 			//sprite_healthBar.cameras = [camHUD];
@@ -361,87 +520,14 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         add(leftIcon);
         add(rightIcon);
         add(lblStats);
-
-
-        if(update_hud == null){
-            update_hud = function(){
-                if(STATS["Combo"] > STATS["MaxCombo"]){STATS["MaxCombo"] = STATS["Combo"];}
-                if(STATS["Score"] > STATS["Record"]){STATS["Record"] = STATS["Score"];}
-
-                if(healthBar != null){
-                    var _player:Character = LOCAL_VARIABLES["Player"];
-                    if(_player != null){
-                        healthBar.flipX = _player.onRight;
-    
-                        if(leftIcon != null){
-                            var _char_left:Character = (_player.onRight ? GLOBAL_VARIABLES["Player"] : GLOBAL_VARIABLES["Enemy"]);
-                            if(_char_left != null && leftIcon.curIcon != _char_left.healthIcon){leftIcon.setIcon(_char_left.healthIcon); leftIcon.visible = true;}
-            
-                            if(_player.onRight){
-                                leftIcon.x = healthBar.x + (healthBar.width - (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01))) - leftIcon.width;
-                            }else{
-                                leftIcon.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - leftIcon.width;
-                            }
-                            
-                            leftIcon.playAnim(HEALTH < 0.8 ? 'default' : 'losing');		
-                        }
-    
-                        if(rightIcon != null){
-                            var _char_right:Character = (_player.onRight ? GLOBAL_VARIABLES["Enemy"] : GLOBAL_VARIABLES["Player"]);
-                            if(_char_right != null && rightIcon.curIcon != _char_right.healthIcon){rightIcon.setIcon(_char_right.healthIcon); rightIcon.visible = true;}
-        
-                            if(_player.onRight){
-                                rightIcon.x = healthBar.x + (healthBar.width - (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)));
-                            }else{
-                                rightIcon.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01));
-                            }
-    
-                            rightIcon.playAnim(HEALTH > 0.2 ? 'default' : 'losing');
-                        }
-                    }
-                }
-        
-                if(lblStats != null){
-                    switch(PreSettings.getPreSetting("Type HUD", "Visual Settings")){
-                        case "MagicHUD":{
-                            lblStats.text = '||'+
-                                ' ${LangSupport.getText('gmp_score')}: ${STATS['Score']} |' +
-                                //' ${LangSupport.getText('gmp_record')}: ${STATS['Record']} |' +
-                                ' ${LangSupport.getText('gmp_combo')}: ${STATS['Combo']} |' +
-                                //' ${LangSupport.getText('gmp_maxCombo')}: ${STATS['MaxCombo']} |' +
-                                ' ${LangSupport.getText('gmp_misses')}: ${STATS['Misses']} |' +
-                                //' ${LangSupport.getText('gmp_hits')}: ${STATS['Hits']} |' +
-                                ' ${LangSupport.getText('gmp_rating')}: ${STATS['Rating']} ' +
-                            '||';
-                        }
-                        case "Original":{
-                            lblStats.text = '||'+
-                                ' ${LangSupport.getText('gmp_score')}: ${STATS['Score']} |' +
-                                ' ${LangSupport.getText('gmp_misses')}: ${STATS['Misses']} ' +
-                            '||';
-                        }
-                        case "Minimized":{
-                            lblStats.text = '||'+
-                                ' ${LangSupport.getText('gmp_score')}: ${STATS['Score']} ' +
-                            '||';
-                        }
-                        case "OnlyNotes":{
-                            lblStats.text = '';
-                        }
-                    }
-                    
-                    lblStats.screenCenter(X);
-                }
-            }
-        }
 	}
 
     public function changeTypeStrum(_type:String):Void {
         typeStrum = _type;
 
         switch(typeStrum){
+            default:{for(c in staticnotes.statics){c.autoStatic = false;}}
             case 'BotPlay':{for(c in staticnotes.statics){c.autoStatic = true;}}
-            case 'Playing':{for(c in staticnotes.statics){c.autoStatic = false;}}
         }
     }
 
@@ -452,43 +538,40 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 	}
 
     private function onKeyPress(event:KeyboardEvent):Void {
-        if(typeStrum != "Playing"){return;}
+        if(typeStrum == "BotPlay" || PreSettings.getPreSetting("Type Mode", "Cheating Settings") == "BotPlay"){return;}
+        if(controls.keyboardScheme != Solo){return;}
 
         var eventKey:FlxKey = event.keyCode;
         var key:Int = controls.getNoteDataFromKey(eventKey, key_number);
     
         if(key < 0 || disableArray[key]){return;}
 
-        if(FlxG.keys.checkStatus(eventKey, JUST_PRESSED)){
-            staticnotes.playById(key, "pressed", true);
-            pressArray[key] = true;
-        }
-
+        staticnotes.playById(key, "pressed", true);
+        
+        pressArray[key] = true;
         holdArray[key] = true;
         keyShit();
         pressArray[key] = false;
     }
 
     private function onKeyRelease(event:KeyboardEvent):Void {
-        if(typeStrum != "Playing"){return;}
+        if(typeStrum == "BotPlay" || PreSettings.getPreSetting("Type Mode", "Cheating Settings") == "BotPlay"){return;}
+        if(controls.keyboardScheme != Solo){return;}
         
         var eventKey:FlxKey = event.keyCode;
         var key:Int = controls.getNoteDataFromKey(eventKey, key_number);
     
         if(key < 0 || disableArray[key]){return;}
         
-        if(FlxG.keys.checkStatus(eventKey, JUST_RELEASED)){
-            staticnotes.playById(key, "static", true);
-            releaseArray[key] = true;
-        }
-
-        holdArray[key] = false;
+        staticnotes.playById(key, "static", true);
+        
+        releaseArray[key] = true;
         keyShit();
+        holdArray[key] = false;
         releaseArray[key] = false;
     }
 
     public function getStrumSize():Int {return Std.int(genWidth / key_number);}
-    public function getSustainHeight():Int {return Std.int(getScrollSpeed() * (getStrumSize() / (bpm * 2.3 / 150)));}
 
     public function setGraphicToNotes(?_image:String, ?_style:String, ?_type:String){
         staticnotes.setGraphicToNotes(_image, _style, _type);
@@ -533,8 +616,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
                     nSData.strumTime = sStrumTime;
         
                     var nSustain:Note = new Note(nSData, key_number, image, style, type);
-                    nSustain.note_size.set(getStrumSize(), getSustainHeight());
-                    nSustain.updateHitbox();
+                    nSustain.note_size.set(getStrumSize(), getStrumSize());
         
                     nSustain.typeNote = "Sustain";
                     nSustain.typeHit = "Hold";
@@ -548,6 +630,16 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
             }
         }
 
+        notelist.sort(function(a, b){
+            if(a.strumTime < b.strumTime){return -1;}
+            else if(a.strumTime > b.strumTime){return 1;}
+            else if(a.noteData < b.noteData){return -1;}
+            else if(a.noteData > b.noteData){return 1;}
+            else {return 0;}
+        });
+    
+        if(onRANK != null){onRANK(new Note(Note.getNoteData(), key_number), 500, "SICK", "sick");}
+
         strumGenerated = true;
     }
 
@@ -559,11 +651,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 
         if(notelist[0] != null){
             if(notelist[0].strumTime - strumConductor.songPosition < 3500){
-                var nNote:Note = notelist[0];
-                notes.add(nNote);
-
-                var index:Int = notelist.indexOf(nNote);
-				notelist.splice(index, 1);
+				notes.insert(0, notelist.shift());
             }
         }
 
@@ -580,23 +668,26 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 
         notes.forEachAlive(function(daNote:Note){
             if(daNote.strumTime > strumConductor.songPosition - Conductor.safeZoneOffset && daNote.strumTime < strumConductor.songPosition + (Conductor.safeZoneOffset * 0.5)){daNote.noteStatus = "CanBeHit";}
-            if(strumConductor.songPosition > daNote.strumTime + (Conductor.safeZoneOffset * 0.5) && daNote.noteStatus != "Pressed"){daNote.noteStatus = "Late";}
-
-            var pre_TypeScroll:String = PreSettings.getPreSetting("Typec Scroll", "Visual Settings");
+            if(strumConductor.songPosition > daNote.strumTime + (Conductor.safeZoneOffset * 0.5) && daNote.noteStatus != "Pressed"){missNOTE(daNote); return;}
             
-            var yStuff:Float = getScroll(daNote);
-
             daNote.visible = false;
             var noteStrum:StrumNote = staticnotes.statics[daNote.noteData];
             if(noteStrum == null){return;}
 
-            switch(pre_TypeScroll){
-                default:{daNote.y = noteStrum.y - yStuff;}
-                case "DownScroll":{daNote.y = noteStrum.y + yStuff;}
+            var yStuff:Float = noteStrum.y - getScroll(daNote);
+            if(PreSettings.getPreSetting("Typec Scroll", "Visual Settings") == "DownScroll"){yStuff = noteStrum.y + getScroll(daNote);}
+
+            switch(daNote.noteStatus){
+                default:{daNote.y = yStuff;}
+                case "MultiTap":{
+                    var radio:Float = (strumConductor.songPosition - daNote.prevStrumTime) * 1 / daNote.noteLength;
+                    radio = Math.min(1, radio); radio = Math.max(0, radio);
+
+                    daNote.y = FlxMath.lerp(daNote.y, yStuff, radio);
+                }
             }
 
             daNote.visible = noteStrum.visible;
-            daNote.alpha = noteStrum.alpha;
 
             if(daNote.typeNote == "Switch"){
                 daNote.x = noteStrum.x + ((getStrumSize() * 0.25) * (daNote.noteHits+2));
@@ -610,40 +701,48 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
                     daNote.angle = 0;
                 }
             }
-            
-            if(daNote.noteStatus == "Late"){missNOTE(daNote);}
         });
+        
+        if(typeStrum == "BotPlay" || PreSettings.getPreSetting("Type Mode", "Cheating Settings") == "BotPlay"){
+            keyShit();
+        }else if(controls.gamepadsAdded.length > 0){
+            pressArray = controls.getStrumCheckers(key_number, JUST_PRESSED);
+            releaseArray = controls.getStrumCheckers(key_number, JUST_RELEASED);
+            holdArray = controls.getStrumCheckers(key_number, PRESSED);
 
-        keyShit();
-    
+            for(i in 0...pressArray.length){if(!pressArray[i]){continue;} staticnotes.playById(i, "pressed", true);}
+            for(i in 0...releaseArray.length){if(!releaseArray[i]){continue;} staticnotes.playById(i, "static", true);}
+        
+            keyShit();
+        }
+
+        for(holdnote in holdNotes){
+            if(!holdArray[holdnote.noteData]){continue;}
+            if(holdnote.noteStatus != "CanBeHit" || (holdnote.noteStatus == "CanBeHit" && !holdArray[holdnote.noteData])){continue;}
+            hitNOTE(holdnote);
+        }
+
         //PERCENT = Math.min(1, Math.max(0, TNOTES / HITS));
         //for(k in RATING.keys()){if(PERCENT <= k){RATE = RATING.get(k);}}
 	}
 
-    public function getScroll(daNote:Note):Float {
-        switch(daNote.noteStatus){
-            default:{return 0.45 * (strumConductor.songPosition - daNote.strumTime) * getScrollSpeed();}
-            case "MultiTap":{return 0.45 * (strumConductor.songPosition - daNote.strumTime) * getScrollSpeed();}
-        }
-    }
+    public function getScroll(daNote:Note):Float {return 0.45 * (strumConductor.songPosition - daNote.strumTime) * getScrollSpeed();}
 
     private function keyShit():Void{
-        if(typeStrum == "Playing"){    
+        if(typeStrum == "BotPlay" || PreSettings.getPreSetting("Type Mode", "Cheating Settings") == "BotPlay"){
+            notes.forEachAlive(function(daNote:Note){
+                if(daNote.strumTime <= strumConductor.songPosition && !daNote.hitMiss){hitNOTE(daNote);}
+            });
+        }else{
             notes.forEachAlive(function(daNote:Note){
                 if(daNote.noteStatus == "CanBeHit" &&
                     (
                         (daNote.typeHit == "Press" && pressArray[daNote.noteData]) ||
-                        (daNote.typeHit == "Hold" && holdArray[daNote.noteData]) ||
-                        (daNote.typeHit == "Release" && releaseArray[daNote.noteData]) ||
-                        (daNote.typeHit == "Always" || daNote.typeHit == "Ghost")
+                        (daNote.typeHit == "Release" && releaseArray[daNote.noteData])
                     )
                 ){
                     hitNOTE(daNote);
                 }
-            });
-        }else if(typeStrum == "BotPlay"){
-            notes.forEachAlive(function(daNote:Note){
-                if(daNote.strumTime <= strumConductor.songPosition && !daNote.hitMiss){hitNOTE(daNote);}
             });
         }
     }
@@ -663,32 +762,35 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         }
         
         if(daNote.hitMiss){missNOTE(daNote); return;}
-
         
         if(daNote.typeNote == "Sustain"){daNote.hitHealth *= 0.25;}
 
         if(daNote.noteHits > 0){
             daNote.noteStatus = "MultiTap";
+            daNote.prevStrumTime = daNote.strumTime;
             daNote.strumTime += daNote.noteLength;            
             daNote.noteHits--;
-        }else{
-            daNote.kill();
-            remove(daNote, true);
-            daNote.destroy();
         }
 
         if(daNote.typeHit != "Ghost"){
-            onLIFE(daNote.hitHealth);
+            onLIFE(daNote.hitHealth * PreSettings.getPreSetting("Healing Multiplier", "Cheating Settings"));
 
             rankNote(daNote);
             if(onHIT != null){onHIT(daNote);}
         }
+
+        if(daNote.nextNote != null){holdNotes.push(daNote.nextNote);}
+
+        if((daNote.noteStatus != "MultiTap" && daNote.noteHits <= 0) || (daNote.noteHits < 0 && daNote.noteStatus == "MultiTap")){
+            daNote.kill();
+            notes.remove(daNote, true);
+            holdNotes.remove(daNote);
+            daNote.destroy();
+        }
     }
 
     public function missNOTE(daNote:Note) {
-        daNote.kill();
-        remove(daNote, true);
-        daNote.destroy();
+        if(typeStrum == 'Practice'){return;}
 
         if(daNote.typeNote == "Sustain"){daNote.missHealth *= 0.25;}
         if(daNote.noteHits > 0){daNote.missHealth *= daNote.noteHits + 1;}
@@ -700,28 +802,37 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         
         if(daNote.ignoreMiss && !daNote.hitMiss){return;}
 
-        onLIFE(-daNote.missHealth);
+        if(PreSettings.getPreSetting("Type Mode", "Cheating Settings") != "Practice"){
+            onLIFE(-daNote.missHealth * PreSettings.getPreSetting("Damage Multiplier", "Cheating Settings"));
+        }
 
-        STATS["TotalNotes"]++;
-        STATS["Misses"] += 1 + daNote.noteHits;
-        STATS["Score"] -= 100;
-        STATS["Combo"] = 0;
+        STATS.TotalNotes++;
+        if(daNote.typeNote != "Sustain"){STATS.Misses += 1 + daNote.noteHits;}
+        STATS.Score -= 100;
+        STATS.Combo = 0;
 
         if(onMISS != null){onMISS(daNote);}
+        
+        if(daNote.nextNote != null){missNOTE(daNote.nextNote);}
+
+        daNote.kill();
+        holdNotes.remove(daNote);
+        notes.remove(daNote, true);
+        daNote.destroy();
     }
 
     public function rankNote(daNote:Note){
         if(typeStrum == 'BotPlay' || daNote.typeNote == "Sustain"){return;}
         
-        STATS["TotalNotes"]++;
-        STATS["Hits"]++;
-        STATS["Combo"]++;
+        STATS.TotalNotes++;
+        STATS.Hits++;
+        STATS.Combo++;
 
         var diff_rate:Float = Math.abs(daNote.strumTime - strumConductor.songPosition);
         
+        var _score:Int = 0;
         var _rate:String = "MAGIC!!!";
         var _popImage:String = "Magic";
-        var _score:Int = 0;
 
         for(r in P_STAT){
             if(diff_rate > r.diff){continue;}
@@ -731,47 +842,16 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
             break;
         }
 
-        STATS["Percent"] = STATS["Hits"] / STATS["TotalNotes"];
+        STATS.Percent = STATS.Hits / STATS.TotalNotes;
         for(rt in RATING){
-            if(rt.percent > STATS["Percent"]){continue;}
-            STATS["Rating"] = rt.rate;
+            if(rt.percent > STATS.Percent){continue;}
+            STATS.Rating = rt.rate;
             break;
         }
 
-        STATS["Score"] += _score;
+        STATS.Score += _score;
 
-        var stuff_x:Float = staticnotes.x + genWidth + 5;
-        if(LOCAL_VARIABLES["Player"] != null && !LOCAL_VARIABLES["Player"].onRight){stuff_x = staticnotes.x - 250;}
-
-        if(_score >= 350){splashNote(daNote);}
-
-        var popRank:FlxSprite = recycleGrp.recycle(FlxSprite);
-        popRank.loadGraphic(Paths.styleImage(_popImage, ui_style));
-        popRank.scale.set(0.7, 0.7); popRank.updateHitbox();
-        popRank.setPosition(stuff_x, staticnotes.y);
-        popRank.alpha = 1;
-        add(popRank);
-        FlxTween.tween(popRank, {y: popRank.y - 25, alpha: 0}, 0.5, {ease:FlxEase.quadOut, onComplete:function(twn){remove(popRank);}});
-        
-        var ppScore:PopUpScore = recycleGrp.recycle(PopUpScore);
-        ppScore.setPosition(popRank.x, popRank.y + (popRank.height / 2));
-        ppScore.popup(STATS["Score"], ui_style);
-        add(ppScore);
-        new FlxTimer().start(0.5 + (0.2 * ('${STATS["Score"]}'.length - 1)), function(tmr){remove(ppScore);});
-
-        var sprt_combo:FlxSprite = recycleGrp.recycle(FlxSprite);
-        sprt_combo.loadGraphic(Paths.styleImage("combo", ui_style));
-        sprt_combo.scale.set(0.5, 0.5); sprt_combo.updateHitbox();
-        sprt_combo.setPosition(popRank.x, popRank.y + popRank.height + 5);
-        sprt_combo.alpha = 1;
-        add(sprt_combo);
-        FlxTween.tween(sprt_combo, {y: sprt_combo.y - 25, alpha: 0}, 0.5, {ease:FlxEase.quadOut, onComplete:function(twn){remove(popRank);}});
-
-        var ppCombo:PopUpScore = recycleGrp.recycle(PopUpScore);
-        ppCombo.setPosition(sprt_combo.x, sprt_combo.y + (sprt_combo.height / 2));
-        ppCombo.popup(STATS["Combo"], ui_style);
-        add(ppCombo);
-        new FlxTimer().start(0.5 + (0.2 * ('${STATS["Combo"]}'.length - 1)), function(tmr){remove(ppCombo);});
+        if(onRANK != null){onRANK(daNote, _score, _rate, _popImage);}
     }
 
     public function splashNote(daNote:Note):Void {
@@ -780,19 +860,21 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         var cur_strum:StrumNote = staticnotes.statics[cur_data];
         if(cur_strum == null){return;}
 
-        var note_splash = recycleGrp.recycle(NoteSplash);
+        var note_splash = new NoteSplash();
         note_splash.setupByNote(daNote, cur_strum);
+        note_splash.onSplashed = function(){note_splash.destroy();}
         add(note_splash);
     }
 
     public function getScrollSpeed():Float{
         var pre_TypeScrollSpeed:String = PreSettings.getPreSetting("Scroll Speed Type", "Game Settings");
         var pre_ScrollSpeed:Float = PreSettings.getPreSetting("ScrollSpeed", "Game Settings");
+        var pre_NoteOffset:Float = PreSettings.getPreSetting("Note Offset", "Game Settings");
 
         switch(pre_TypeScrollSpeed){
-            case "Scale":{return scrollSpeed * pre_ScrollSpeed;}
-            case "Force":{return pre_ScrollSpeed;}
-            default:{return scrollSpeed;}
+            case "Scale":{return (scrollSpeed * pre_ScrollSpeed) + pre_NoteOffset;}
+            case "Force":{return pre_ScrollSpeed + pre_NoteOffset;}
+            default:{return scrollSpeed + pre_NoteOffset;}
         }
     }
 }

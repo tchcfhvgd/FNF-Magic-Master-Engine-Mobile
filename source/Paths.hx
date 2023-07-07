@@ -2,7 +2,6 @@ package;
 
 import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
 import flixel.graphics.frames.FlxFramesCollection;
-import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.Assets as OpenFlAssets;
 import openfl.utils.AssetManifest;
@@ -33,49 +32,22 @@ using StringTools;
 
 class Paths {
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
-	
-	static var curLibrary:String = "shared";
-	static public function setCurrentLibrary(name:String){curLibrary = name.toLowerCase();}
-
-	inline static public function setTempToGlobal():Void{
-		for(i in savedTempMap.keys()){savedGlobMap.set(i, savedTempMap.copy()[i]);}
-		savedTempMap.clear();
-	}
-	public static var savedTempMap:Map<String, Dynamic> = new Map<String, Dynamic>();
-	public static var savedGlobMap:Map<String, Dynamic> = new Map<String, Dynamic>();
-	inline static public function isSaved(file:String):Bool {
-		if(savedTempMap.exists(file)){return true;}
-		if(savedTempMap.exists(setPath(file))){return true;}
-		if(savedGlobMap.exists(file)){return true;}
-		if(savedGlobMap.exists(setPath(file))){return true;}
-		trace('No Saved: ${file}');
-		return false;
-	}
-	inline static public function getSavedFile(file:String):Any {
-		if(savedTempMap.exists(file)){return savedTempMap.get(file);}
-		if(savedTempMap.exists(setPath(file))){return savedTempMap.get(setPath(file));}
-		if(savedGlobMap.exists(file)){return savedGlobMap.get(file);}
-		if(savedGlobMap.exists(setPath(file))){return savedGlobMap.get(setPath(file));}
-		return null;
-	}
-	inline static public function saveFile(file:String, instance:Dynamic, isGlobal:Bool = false):Void {
-		if(isGlobal){savedGlobMap.set(file, instance); return;}
-		savedTempMap.set(file, instance);
-	}
-	
+		
 	public static function getFileName(key:String, toFile:Bool = false){
 		if(toFile){return key.replace(" ", "_");}
 		return key.replace("_", " ");
 	}
 
+	static var curLibrary:String = "shared";
+	static public function setCurrentLibrary(name:String){curLibrary = name.toLowerCase();}
+
 	inline public static function exists(path:String){
 		if(Assets.exists(path)){return true;}
 		#if sys	if(FileSystem.exists(setPath(path))){return true;} #end
-
 		return false;
 	}
 
-	inline public static function readDirectory(file:String, isPath:Bool = false):Array<String> {
+	inline public static function readDirectory(file:String):Array<String> {
 		var toReturn:Array<String> = [];
 
 		#if sys
@@ -84,7 +56,7 @@ class Paths {
 		if(FileSystem.exists(_path) && FileSystem.isDirectory(_path)){
 			for(i in FileSystem.readDirectory(_path)){
 				if(!toReturn.contains(i)){
-					toReturn.push('${isPath ? '$_path/' : ''}$i');
+					toReturn.push('$_path/$i');
 				}
 			}
 		}
@@ -94,7 +66,7 @@ class Paths {
 			if(mod.enabled && FileSystem.exists(mod_path) && FileSystem.isDirectory(mod_path)){
 				for(i in FileSystem.readDirectory(mod_path)){
 					if(!toReturn.contains(i)){
-						toReturn.push('${isPath ? '$mod_path/' : ''}$i');
+						toReturn.push('$mod_path/$i');
 					}
 				}
 
@@ -106,8 +78,8 @@ class Paths {
 		return toReturn;
 	}
 
-	inline public static function readFile(file:String):Array<Dynamic> {
-		var toReturn:Array<Dynamic> = [];
+	inline public static function readFile(file:String):Array<String> {
+		var toReturn:Array<String> = [];
 
 		#if sys
 		if(FileSystem.exists(setPath(file))){toReturn.push(setPath(file));}
@@ -123,7 +95,7 @@ class Paths {
 
 	public static function setPath(key):String {return #if sys FileSystem.absolutePath(key) #else key #end;}
 	public static function getPath(file:String, type:AssetType, library:Null<String>, ?mod_name:String){
-		if(mod_name != null){return getModPath(file, mod_name);}		
+		if(mod_name != null){return getModPath(file, mod_name);}
 		if(library != null){return getLibraryPath(file, library);}
 
 		if (curLibrary != null){
@@ -168,362 +140,104 @@ class Paths {
 		return path;
 	}
 
-	inline static public function file(file:String, type:AssetType = TEXT, ?library:String){
-		return getPath(file, type, library);
+	inline static public function character(char:String, key:String, ?mod:String):String {return getPath('${char}/Sprites/${key}.png', IMAGE, 'characters', mod);}
+	inline static public function file(file:String, type:AssetType = TEXT, ?library:String, ?mod:String):String {return getPath(file, type, library, mod);}
+	inline static public function sound(key:String, ?library:String, ?mod:String):String {return getPath('sounds/$key.$SOUND_EXT', SOUND, library, mod);}
+	inline static public function music(key:String, ?library:String, ?mod:String):String {return getPath('music/$key.$SOUND_EXT', MUSIC, library, mod);}
+	inline static public function shader(key:String, ?library:String, ?mod:String):String {return getPath('shaders/$key.frag', TEXT, library, mod);}
+	inline static public function song_script(song:String, ?mod:String):String {return getPath('${song}/Data/Song_Events.hx', TEXT, 'songs', mod);}
+	inline static public function image(key:String, ?library:String, ?mod:String):String {return getPath('images/$key.png', IMAGE, library, mod);}
+	inline static public function json(key:String, ?library:String, ?mod:String):String {return getPath('data/$key.json', TEXT, library, mod);}
+	inline static public function xml(key:String, ?library:String, ?mod:String):String {return getPath('images/$key.xml', TEXT, library, mod);}
+	inline static public function txt(key:String, ?library:String, ?mod:String):String {return getPath('data/$key.txt', TEXT, library, mod);}
+	inline static public function text(key:String, ?library:String, ?mod:String):String {return getPath('data/$key', TEXT, library, mod);}
+	inline static public function font(key:String, ?mod:String):String {return getPath('$key', TEXT, 'fonts', mod);}
+	inline static public function soundRandom(key:String, min:Int, max:Int, ?library:String, ?mod:String):String {
+		return sound(key + FlxG.random.int(min, max), library, mod);
 	}
-
-	inline public static function getSound(file:String):Any {
-		if(isSaved(file)){return getSavedFile(file);}
-
-		var sound:Sound = null;
-		if(Assets.exists(file)){sound = Assets.getSound(file);}
-		if(sound == null){sound = Sound.fromFile(file);}	
-
-		if(sound == null){return file;}
-		
-		saveFile(file, sound);
-
-		return getSavedFile(file);
-	}
-	inline public static function getBytes(file:String):Any {
-		if(isSaved(file)){return getSavedFile(file);}
-
-		var bites = null;
-		if(Assets.exists(file)){bites = Assets.getBytes(file);}
-		if(bites == null){bites = File.getBytes(file);}	
-
-		if(bites == null){return file;}
-
-		saveFile(file, bites);
-		
-		return getSavedFile(file);
-	}
-	inline public static function getGraphic(file:String):Any {
-		if(isSaved(file)){return getSavedFile(file);}
-		
-		if(!Paths.exists(file)){return file;}
-
-		var bit:BitmapData = BitmapData.fromFile(file);
-
-		if(bit == null){return file;}
-
-		var graphic:FlxGraphic = FlxGraphic.fromBitmapData(bit, false, file);
-		graphic.persist = true;
-
-		saveFile(file, graphic);
-		
-		return getSavedFile(file);
-	}
-	inline public static function getText(file:String):String{
-		if(isSaved(file)){return getSavedFile(file);}
-		
-		var text = null;
-		if(Assets.exists(file)){text = Assets.getText(file);}
-		if(text == null){text = File.getContent(file);}	
-
-		if(text == null){return file;}
-
-		saveFile(file, text);
-		
-		return getSavedFile(file);
-	}
-
-	inline static public function image(key:String, ?library:String, isPath:Bool = false, ?mod_name:String):Any {
-		var path = getPath('images/$key.png', IMAGE, library, mod_name);
-		
-		return isPath ? path : getGraphic(path);
-	}
-	
-	inline static public function xml(key:String, ?library:String, isPath:Bool = false, ?mod:String){
-		var path = getPath('images/$key.xml', TEXT, library, mod);
-		return isPath ? path : getText(path);
-	}
-		
-	inline static public function styleImage(key:String, style:String = "Default", ?library:String, isPath:Bool = false, ?mod:String):Any {
+	inline static public function styleImage(key:String, style:String = "Default", ?library:String, ?mod:String):String {
 		var path = getPath('images/style_UI/$style/$key.png', IMAGE, library, mod);
-
 		if(!Paths.exists(path)){path = getPath('images/style_UI/Default/$key.png', IMAGE, library, mod);}
-
-		return isPath ? path : getGraphic(path);
+		return path;
 	}
-	inline static public function styleSound(key:String, style:String = "Default", ?library:String, isPath:Bool = false, ?mod:String):Any {
+	inline static public function styleSound(key:String, style:String = "Default", ?library:String, ?mod:String):String {
 		var path = getPath('sounds/style_UI/$style/$key.$SOUND_EXT', SOUND, library, mod);
-
 		if(!Paths.exists(path)){path = getPath('sounds/style_UI/Default/$key.$SOUND_EXT', SOUND, library, mod);}
-
-		return isPath ? path : getSound(path);
+		return path;
 	}
-
-	inline static public function font(key:String, ?mod:String){
-		return getPath('$key', TEXT, 'fonts', mod);
+	inline static public function styleMusic(key:String, style:String = "Default", ?library:String, ?mod:String):String {
+		var path = getPath('music/style_UI/$style/$key.$SOUND_EXT', MUSIC, library, mod);
+		if(!Paths.exists(path)){path = getPath('music/style_UI/Default/$key.$SOUND_EXT', SOUND, library, mod);}
+		return path;
+	}	
+	inline static public function inst(song:String, category:String, ?mod:String):String {
+		var path = getPath('${song}/Audio/Inst-${category}.$SOUND_EXT', MUSIC, 'songs', mod);
+		if(!Paths.exists(path)){path = getPath('${song}/Audio/Inst.$SOUND_EXT', MUSIC, 'songs', mod);}
+		return path;
 	}
-
-	inline static public function txt(key:String, ?library:String, isPath:Bool = false, ?mod:String){
-		var path = getPath('data/$key.txt', TEXT, library, mod);
-		return isPath ? path : getText(path);
-	}
-
-	inline static public function shader(key:String, ?library:String, isPath:Bool = false, ?mod:String){
-		var path = getPath('shaders/$key.frag', TEXT, library, mod);
-		return isPath ? path : getText(path);
-	}
-
-	inline static public function json(key:String, ?library:String, isPath:Bool = false, ?mod:String):Dynamic{
-		var path = getPath('data/$key.json', TEXT, library, mod);
-		return isPath ? path : Json.parse(getText(path));
-	}
-
-	static public function sound(key:String, ?library:String, isPath:Bool = false, ?mod:String):Dynamic {
-		var path = getPath('sounds/$key.$SOUND_EXT', SOUND, library, mod);
-		return isPath ? path : getSound(path);
-	}
-
-	inline static public function soundRandom(key:String, min:Int, max:Int, ?library:String, isPath:Bool = false, ?mod:String){
-		return sound(key + FlxG.random.int(min, max), library, isPath, mod);
-	}
-
-	inline static public function music(key:String, ?library:String, isPath:Bool = false, ?mod:String):Dynamic{
-		var path = getPath('music/$key.$SOUND_EXT', MUSIC, library, mod);
-		return isPath ? path : getSound(path);
-	}
-
-	inline static public function voice(id:Int, char:String, song:String, category:String, isPath:Bool = false, ?mod:String):Dynamic {
+	inline static public function voice(id:Int, char:String, song:String, category:String, ?mod:String):String {
 		var path = getPath('${song}/Audio/${id}-${char}-${category}.$SOUND_EXT', SOUND, 'songs', mod);
-
 		if(!Paths.exists(path)){path = getPath('${song}/Audio/${id}-Default-${category}.$SOUND_EXT', SOUND, 'songs', mod);}
 		if(!Paths.exists(path)){path = getPath('${song}/Audio/${id}-Default.$SOUND_EXT', SOUND, 'songs', mod);}
-			
 		if(!Paths.exists(path) && id == 0){path = getPath('${song}/Audio/Voices-${category}.$SOUND_EXT', SOUND, 'songs', mod);}
 		if(!Paths.exists(path) && id == 0){path = getPath('${song}/Audio/Voices.$SOUND_EXT', SOUND, 'songs', mod);}
-			
-		return isPath ? path : getSound(path);
-	}
-
-	inline static public function inst(song:String, category:String, isPath:Bool = false, ?mod:String):Any {
-		var path = getPath('${song}/Audio/Inst-${category}.$SOUND_EXT', MUSIC, 'songs', mod);
-
-		if(!Paths.exists(path)){path = getPath('${song}/Audio/Inst.$SOUND_EXT', MUSIC, 'songs', mod);}
-		
-		return isPath ? path : getSound(path);
-	}
-
-	inline static public function chart_events(jsonInput:String, ?mod:String):String {
-		var path = getPath('${jsonInput.split('-')[0]}/Data/global_events.json', TEXT, 'songs', mod);
-		
-		if(!Paths.exists(path)){path = getPath('Test/Data/global_events.json', TEXT, 'songs', mod);}
-	
 		return path;
 	}
 	inline static public function chart(jsonInput:String, ?mod:String):String {
 		var path = getPath('${jsonInput.split('-')[0]}/Data/${jsonInput}.json', TEXT, 'songs', mod);
-
 		if(!Paths.exists(path)){path = getPath('Test/Data/Test-Normal-Normal.json', TEXT, 'songs', mod);}
-
 		return path;
 	}
-	inline static public function dialogue(song:String, isPath:Bool = false, ?mod:String):Dynamic {
+	inline static public function chart_events(jsonInput:String, ?mod:String):String {
+		var path = getPath('${jsonInput.split('-')[0]}/Data/global_events.json', TEXT, 'songs', mod);
+		if(!Paths.exists(path)){path = getPath('Test/Data/global_events.json', TEXT, 'songs', mod);}
+		return path;
+	}
+	inline static public function dialogue(song:String, ?mod:String):String {
 		var language = PreSettings.getPreSetting("Language", "Game Settings");
-
 		var path = getPath('${song}/Data/${language}_dialog.json', TEXT, 'songs', mod);
 		if(!Paths.exists(path)){path = getPath('${song}/Data/Default_dialog.json', TEXT, 'songs', mod);}
-
-		return isPath ? path : Json.parse(getText(path)).dialogue;
-	}
-	inline static public function song_script(song:String, ?mod:String):String {
-		var path = getPath('${song}/Data/Song_Events.hx', TEXT, 'songs', mod);
-		
 		return path;
 	}
-	
-	inline static public function character(char:String, key:String, ?mod:String){
-		return getPath('${char}/Sprites/${key}.png', IMAGE, 'characters', mod);
-	}
-
-	inline static public function stage(key:String, ?mod:String){
+	inline static public function stage(key:String, ?mod:String):String {
 		var path = getPath('${key}.hx', TEXT, 'stages', mod);
-
 		if(!Paths.exists(path)){path = getPath('Stage.hx', TEXT, 'stages', mod);}
-
 		return path;
 	}
-
-	inline static public function colorNote(key:String):String {
-		var fileName:String = key.split("/").pop();
-		var toReturn:String = "None";
-		if(!Paths.exists(key.replace(fileName,"") + "colors.txt")){return toReturn;}
-		var arrColors:Array<String> = Paths.getText(key.replace(fileName,"") + "colors.txt").split("\n");
-		for(t in arrColors){var tt:Array<String> = t.split(":"); if(tt[0] == fileName){toReturn = tt[1];}}
-		return toReturn;
-	}
-	
-	inline static public function note(image:String, style:String, ?type:String, ?mod:String){
+	inline static public function note(image:String, style:String, ?type:String, ?mod:String):String {
 		if(type == null){type = PreSettings.getPreSetting("Note Skin", "Visual Settings");}
-		
 		var path:String = getPath('${type}/${style}/${image}.png', IMAGE, 'notes', mod);
 		if(!Paths.exists(path)){path = getPath('${type}/Default/${image}.png', IMAGE, 'notes', mod);}
 		if(!Paths.exists(path)){path =  getPath('Default/Default/${image}.png', IMAGE, 'notes', mod);}
-		
 		return path;
 	}
-
-	inline static public function event(key:String, ?mod:String){
+	inline static public function event(key:String, ?mod:String):String {
 		var path = getPath('events/${key}.hx', TEXT, 'data', mod);
 		if(!Paths.exists(path)){path = getPath('note_events/${key}.hx', TEXT, 'data', mod);}
+		if(!Paths.exists(path)){
+			for(p in Paths.readDirectory('assets/stages')){
+				if(!Paths.exists('$p/events')){continue;}
+				if(!Paths.exists('$p/events/${key}.hx')){continue;}
+				path = '$p/events/${key}.hx'; break;
+			}
+		}
 		return path;
-	}
-	
-	inline static public function strumline_json(keys:Int, ?type:String, isPath:Bool = false):StrumLine.StrumLine_Graphic_Data {
+	}	
+	inline static public function strum_keys(keys:Int, ?type:String):String {
 		if(type == null){type = PreSettings.getPreSetting("Note Skin", "Visual Settings");}
-
 		var path = getPath('${type}/${keys}k.json', TEXT, 'notes');
+		if(!Paths.exists(path)){path = getPath('${type}/_k.json', TEXT, 'notes');}
 		if(!Paths.exists(path)){path = getPath('Default/${keys}k.json', TEXT, 'notes');}
 		if(!Paths.exists(path)){path = getPath('Default/_k.json', TEXT, 'notes');}
-
-		return cast Json.parse(getText(path));
-	}
-
-	inline static public function note_json(data:Int, keys:Int, ?type:String):Note.Note_Graphic_Data {
-		if(type == null){type = PreSettings.getPreSetting("Note Skin", "Visual Settings");}
-
-		var strumJSON:StrumLine.StrumLine_Graphic_Data = strumline_json(keys, type);
-		var noteJSON:Note.Note_Graphic_Data = strumJSON.gameplay_notes.notes[(data % keys) % strumJSON.gameplay_notes.notes.length];
-
-		if(strumJSON == null || strumJSON.gameplay_notes == null || strumJSON.gameplay_notes.general_animations == null || strumJSON.gameplay_notes.general_animations.length <= 0){return noteJSON;}
-		for(anim in strumJSON.gameplay_notes.general_animations){noteJSON.animations.push(anim);}
-		return noteJSON;
-	}
-
-	inline static public function strum_json(data:Int, keys:Int, ?type:String):Note.Note_Graphic_Data {
-		if(type == null){type = PreSettings.getPreSetting("Note Skin", "Visual Settings");}
-
-		var strumJSON:StrumLine.StrumLine_Graphic_Data = strumline_json(keys, type);
-		var noteJSON:Note.Note_Graphic_Data = strumJSON.static_notes.notes[(data % keys) % strumJSON.static_notes.notes.length];
-		
-		if(strumJSON == null || strumJSON.gameplay_notes == null || strumJSON.static_notes.general_animations == null || strumJSON.static_notes.general_animations.length <= 0){return noteJSON;}
-		for(anim in strumJSON.static_notes.general_animations){noteJSON.animations.push(anim);}
-		return noteJSON;
-	}
-
-	inline static public function getCharacterJSON(char:String, asp:String, ?skin:String, ?mod:String){
-		if(skin == null){skin = Skins.getSkin(char);}
-
-		var path = getPath('${char}/Skins/${char}-${skin}-${asp}.json', TEXT, 'characters', mod);
-
-		if(!Paths.exists(path)){path = getPath('${char}/Skins/${char}-Default-${asp}.json', TEXT, 'characters', mod);}
-		if(!Paths.exists(path)){path = getPath('${char}/Skins/${char}-Default-Default.json', TEXT, 'characters', mod);}
-		if(!Paths.exists(path)){path = getPath('Boyfriend/Skins/Boyfriend-Default-Default.json', TEXT, 'characters', mod);}
-
 		return path;
 	}
-
-	inline static public function getSparrowAtlas(path:String):FlxAtlasFrames {
-		path = path.replace(".png","").replace('.xml','');
-		var custom_path:String = '$path.custom_atlas';
-
-		if(isSaved(custom_path)){return getSavedFile(custom_path);}
-
-		var bit = Paths.getGraphic('$path.png');
-		var xml = Paths.getText('$path.xml');
-
-		if(bit == null|| xml == null){return null;}
-
-		var atlas = fromUncachedSparrow(bit, xml);
-
-		if(atlas == null){return null;}
-
-		saveFile(custom_path, atlas);
-
-		return getSavedFile(custom_path);
-	}
-
-	inline static public function getPackerAtlas(path:String):FlxAtlasFrames {
-		path = path.replace(".png","").replace('.txt','');
-		var custom_path:String = '$path.custom_atlas';
-
-		if(isSaved(custom_path)){return getSavedFile(custom_path);}
-
-		var bit = Paths.getGraphic('$path.png');
-		var txt = Paths.getText('$path.txt');
-
-		if(bit == null|| txt == null){return null;}
-		
-		var atlas = FlxAtlasFrames.fromSpriteSheetPacker(bit, txt);
-
-		if(atlas == null){return null;}
-
-		saveFile(custom_path, atlas);
-		
-		return getSavedFile(custom_path);
-	}
-
-	static public function getAtlas(path:String):FlxAtlasFrames {
-		if(path.contains('.png')){Paths.getGraphic(path);}
-
-		path = path.replace(".png", "").replace(".xml", "").replace(".txt", "");
-		
-		if(Paths.exists('${path}.xml')){return getSparrowAtlas('$path.xml');}
-		else if(Paths.exists('${path}.txt')){return getPackerAtlas('$path.txt');}
-		return null;
-	}
-
-	static public function fromUncachedSparrow(Source:FlxGraphicAsset, Description:String):FlxAtlasFrames {
-        var graphic:FlxGraphic = FlxG.bitmap.add(Source);
-    
-        if(graphic == null || Description == null){return null;}
-    
-        var frames:FlxAtlasFrames = new FlxAtlasFrames(graphic);
-        
-        var data:Access = new Access(Xml.parse(Description).firstElement());
-    
-        for(texture in data.nodes.SubTexture){
-            var name = texture.att.name;
-            var trimmed = texture.has.frameX;
-            var rotated = (texture.has.rotated && texture.att.rotated == "true");
-            var flipX = (texture.has.flipX && texture.att.flipX == "true");
-            var flipY = (texture.has.flipY && texture.att.flipY == "true");
-    
-            var rect = FlxRect.get(Std.parseFloat(texture.att.x), Std.parseFloat(texture.att.y), Std.parseFloat(texture.att.width), Std.parseFloat(texture.att.height));
-
-            var size = if(trimmed){new Rectangle(Std.parseInt(texture.att.frameX), Std.parseInt(texture.att.frameY), Std.parseInt(texture.att.frameWidth), Std.parseInt(texture.att.frameHeight));}else{new Rectangle(0, 0, rect.width, rect.height);}
-    
-            var angle = rotated ? FlxFrameAngle.ANGLE_NEG_90 : FlxFrameAngle.ANGLE_0;
-    
-            var offset = FlxPoint.get(-size.left, -size.top);
-            var sourceSize = FlxPoint.get(size.width, size.height);
-    
-            if(rotated && !trimmed){sourceSize.set(size.height, size.width);}
-    
-            frames.addAtlasFrame(rect, sourceSize, offset, name, angle, flipX, flipY);
-        }
-    
-        return frames;
-    }
-
-	static public function fromUncachedSpriteSheetPacker(Source:FlxGraphicAsset, Description:String):FlxAtlasFrames {
-		var graphic:FlxGraphic = FlxG.bitmap.add(Source);
-		
-		if(graphic == null){return null;}
-		if(graphic == null || Description == null){return null;}
-	
-		var frames:FlxAtlasFrames = new FlxAtlasFrames(graphic);
-	
-		if(Assets.exists(Description)){Description = Assets.getText(Description);}
-	
-		var pack = StringTools.trim(Description);
-		var lines:Array<String> = pack.split("\n");
-	
-		for(i in 0...lines.length){
-			var currImageData = lines[i].split("=");
-			var name = StringTools.trim(currImageData[0]);
-			var currImageRegion = StringTools.trim(currImageData[1]).split(" ");
-	
-			var rect = FlxRect.get(Std.parseInt(currImageRegion[0]), Std.parseInt(currImageRegion[1]), Std.parseInt(currImageRegion[2]), Std.parseInt(currImageRegion[3]));
-			var sourceSize = FlxPoint.get(rect.width, rect.height);
-			var offset = FlxPoint.get();
-	
-			frames.addAtlasFrame(rect, sourceSize, offset, name, FlxFrameAngle.ANGLE_0);
-		}
-	
-		return frames;
+	inline static public function character_json(char:String, asp:String, ?skin:String, ?is_death:Bool, ?mod:String):String {
+		if(skin == null){skin = Skins.getSkin(char);}
+		var cur_char_file:String = '${char}'; if(is_death){cur_char_file = '${cur_char_file}_Death';}
+		var path = getPath('${char}/Skins/${cur_char_file}-${skin}-${asp}.json', TEXT, 'characters', mod);
+		if(!Paths.exists(path)){path = getPath('${char}/Skins/${cur_char_file}-Default-${asp}.json', TEXT, 'characters', mod);}
+		if(!Paths.exists(path)){path = getPath('${char}/Skins/${cur_char_file}-Default-Default.json', TEXT, 'characters', mod);}
+		if(!Paths.exists(path)){path = getPath('Boyfriend/Skins/Boyfriend-Default-Default.json', TEXT, 'characters', mod);}
+		return path;
 	}
 }

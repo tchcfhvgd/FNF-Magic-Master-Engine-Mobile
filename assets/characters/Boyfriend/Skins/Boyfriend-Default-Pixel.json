@@ -1,86 +1,107 @@
 {
 	"aspect": "Pixel",
 	"position": [
-		185,
-		500
+		0,
+		320
 	],
+	"scale": 6,
 	"anims": [
 		{
-			"loop": false,
-			"symbol": "BF DOWN MISS instance 1",
+			"indices": [],
+			"symbol": "BF DOWN MISS",
+			"fps": 24,
 			"anim": "singDOWNmiss",
-			"fps": 24,
-			"indices": []
+			"loop": false
 		},
 		{
-			"loop": false,
-			"symbol": "BF DOWN NOTE instance 1",
+			"indices": [],
+			"symbol": "BF DOWN NOTE",
+			"fps": 24,
 			"anim": "singDOWN",
-			"fps": 24,
-			"indices": []
+			"loop": false
 		},
 		{
-			"loop": false,
-			"symbol": "BF IDLE instance 1",
+			"indices": [],
+			"symbol": "BF Dies pixel",
+			"fps": 24,
+			"anim": "firstDeath",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "BF IDLE",
+			"fps": 24,
 			"anim": "idle",
-			"fps": 24,
-			"indices": []
+			"loop": false
 		},
 		{
-			"loop": false,
-			"symbol": "BF LEFT MISS instance 1",
+			"indices": [],
+			"symbol": "BF LEFT MISS",
+			"fps": 24,
 			"anim": "singLEFTmiss",
-			"fps": 24,
-			"indices": []
+			"loop": false
 		},
 		{
-			"loop": false,
-			"symbol": "BF LEFT NOTE instance 1",
+			"indices": [],
+			"symbol": "BF LEFT NOTE",
+			"fps": 24,
 			"anim": "singLEFT",
-			"fps": 24,
-			"indices": []
+			"loop": false
 		},
 		{
-			"loop": false,
-			"symbol": "BF RIGHT MISS instance 1",
+			"indices": [],
+			"symbol": "BF RIGHT MISS",
+			"fps": 24,
 			"anim": "singRIGHTmiss",
-			"fps": 24,
-			"indices": []
+			"loop": false
 		},
 		{
-			"loop": false,
-			"symbol": "BF RIGHT NOTE instance 1",
+			"indices": [],
+			"symbol": "BF RIGHT NOTE",
+			"fps": 24,
 			"anim": "singRIGHT",
-			"fps": 24,
-			"indices": []
+			"loop": false
 		},
 		{
-			"loop": false,
-			"symbol": "BF UP MISS instance 1",
+			"indices": [],
+			"symbol": "BF UP MISS",
+			"fps": 24,
 			"anim": "singUPmiss",
-			"fps": 24,
-			"indices": []
+			"loop": false
 		},
 		{
-			"loop": false,
-			"symbol": "BF UP NOTE instance 1",
-			"anim": "singUP",
+			"indices": [],
+			"symbol": "BF UP NOTE",
 			"fps": 24,
-			"indices": []
+			"anim": "singUP",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "RETRY CONFIRM",
+			"fps": 24,
+			"anim": "deathConfirm",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "Retry Loop",
+			"fps": 24,
+			"anim": "deathLoop",
+			"loop": false
 		}
 	],
 	"nAntialiasing": true,
-	"scale": 6,
-	"zoom": 0.8,
-	"image": "bfPixel",
 	"name": "Boyfriend",
+	"image": "bfPixel",
+	"zoom": 0.8,
 	"antialiasing": false,
-	"deathCharacter": "Boyfriend_Death",
-	"healthicon": "bf-pixel",
-	"camera": [
-		-1,
-		7
-	],
+	"skin": "Default",
 	"onRight": false,
-	"skin": "Default"
+	"camera": [
+		171,
+		213
+	],
+	"healthicon": "bf-pixel",
+	"deathCharacter": "Boyfriend"
 }
