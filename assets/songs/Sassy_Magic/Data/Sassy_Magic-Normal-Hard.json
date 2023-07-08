@@ -503,7 +503,7 @@
 			}
 		],
 		"uiStyle": "Default",
-		"stage": "stage",
+		"stage": "bus",
 		"needsVoices": true,
 		"category": "Normal",
 		"sectionStrums": [

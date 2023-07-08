@@ -1,0 +1,161 @@
+{
+	"objects": [
+		{
+			"Values": {
+				"Position_X": -600,
+				"Position_Y": -50,
+				"Sprite_Name": "window"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Symbol_Name": "window",
+						"Graphic_Library": "stages/bus",
+						"Graphic_File": "window"
+					},
+					"Name": "Animated_Graphic"
+				},
+				{
+					"Values": {
+						"Scale_Y": 1.2,
+						"Scale_X": 1.2
+					},
+					"Name": "Scale"
+				},
+				{
+					"Values": {
+						"Scroll_X": 0.8,
+						"Scroll_Y": 0.8
+					},
+					"Name": "ScrollFactor"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -200,
+				"Sprite_Name": "back",
+				"Position_Y": -50
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/bus",
+						"Graphic_File": "back"
+					},
+					"Name": "Basic_Graphic"
+				},
+				{
+					"Values": {
+						"Scroll_X": 0.9,
+						"Scroll_Y": 0.9
+					},
+					"Name": "ScrollFactor"
+				},
+				{
+					"Values": {
+						"Scale_Y": 1.2,
+						"Scale_X": 1.2
+					},
+					"Name": "Scale"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": -70,
+				"Position_Y": 0,
+				"Sprite_Name": "bars"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/bus",
+						"Graphic_File": "bars"
+					},
+					"Name": "Basic_Graphic"
+				},
+				{
+					"Values": {
+						"Scale_Y": 1.2,
+						"Scale_X": 1.2
+					},
+					"Name": "Scale"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": 0,
+				"Position_Y": 0,
+				"Sprite_Name": "blue"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Graphic_Library": "stages/bus",
+						"Graphic_File": "filtro"
+					},
+					"Name": "Basic_Graphic"
+				},
+				{
+					"Values": {
+						"Scroll_X": 1.38777878078145e-16,
+						"Scroll_Y": 1.38777878078145e-16
+					},
+					"Name": "ScrollFactor"
+				}
+			],
+			"Name": "Sprite_Object"
+		},
+		{
+			"Values": {
+				"Position_X": 480,
+				"Position_Y": 530,
+				"Sprite_Name": "radio"
+			},
+			"Attributes": [
+				{
+					"Values": {
+						"Symbol_Name": "RADIO",
+						"Graphic_Library": "stages/bus",
+						"Graphic_File": "radio"
+					},
+					"Name": "Animated_Graphic"
+				}
+			],
+			"Name": "Sprite_Object"
+		}
+	],
+	"variables": [
+		{
+			"Type": "Int",
+			"Name": "initChar",
+			"Value": 4
+		},
+		{
+			"Type": "Array",
+			"Name": "camP_1",
+			"Value": [
+				450,
+				360
+			]
+		},
+		{
+			"Type": "Array",
+			"Name": "camP_2",
+			"Value": [
+				820,
+				520
+			]
+		},
+		{
+			"Type": "Float",
+			"Name": "zoom",
+			"Value": 1.1
+		}
+	]
+}

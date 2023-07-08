@@ -86,6 +86,7 @@ typedef SongsData = {
 
 typedef ItemWeek = {
 	var name:String;
+	var image:String;
 	var display:String;
 	var title:String;
 	var categories:Array<SongCategoryData>;

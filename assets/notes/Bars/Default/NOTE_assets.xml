@@ -1,0 +1,33 @@
+<TextureAtlas imagePath="bar NOTE assets.png">
+	<!-- Created with Adobe Animate version 19.2.1.408 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="0" frameWidth="157" y="0" frameX="-51" name="HoldEnd0000" frameHeight="63" frameY="0" width="50" height="64"/>
+	<SubTexture x="50" frameWidth="157" y="0" frameX="-51" name="HoldPiece0000" frameHeight="39" frameY="0" width="50" height="40"/>
+	<SubTexture x="100" frameWidth="157" y="0" frameX="-32" name="SwitchHold0000" frameHeight="157" frameY="0" width="95" height="100"/>
+	<SubTexture x="195" frameWidth="157" y="0" frameX="0" name="Bar0000" frameHeight="157" frameY="0" width="157" height="76"/>
+	<SubTexture x="0" frameWidth="157" y="100" frameX="28" name="ConfirmBar0000" frameHeight="157" frameY="24" width="223" height="132"/>
+	<SubTexture x="223" frameWidth="157" y="100" frameX="28" name="ConfirmBar0001" frameHeight="157" frameY="24" width="223" height="132"/>
+	<SubTexture x="0" frameWidth="157" y="232" frameX="28" name="ConfirmBar0002" frameHeight="157" frameY="29" width="222" height="142"/>
+	<SubTexture x="0" frameWidth="157" y="232" frameX="28" name="ConfirmBar0003" frameHeight="157" frameY="29" width="222" height="142"/>
+	<SubTexture x="222" frameWidth="157" y="232" frameX="-8" name="PressBar0000" frameHeight="157" frameY="-7" width="140" height="64"/>
+	<SubTexture x="222" frameWidth="157" y="232" frameX="-8" name="PressBar0001" frameHeight="157" frameY="-7" width="140" height="64"/>
+	<SubTexture x="362" frameWidth="157" y="232" frameX="-4" name="PressBar0002" frameHeight="157" frameY="-4" width="147" height="70"/>
+	<SubTexture x="362" frameWidth="157" y="232" frameX="-4" name="PressBar0003" frameHeight="157" frameY="-4" width="147" height="70"/>
+	<SubTexture x="362" frameWidth="157" y="232" frameX="-4" name="PressBar0004" frameHeight="157" frameY="-4" width="147" height="70"/>
+	<SubTexture x="362" frameWidth="157" y="232" frameX="-4" name="PressBar0005" frameHeight="157" frameY="-4" width="147" height="70"/>
+	<SubTexture x="362" frameWidth="157" y="232" frameX="-4" name="PressBar0006" frameHeight="157" frameY="-4" width="147" height="70"/>
+	<SubTexture x="362" frameWidth="157" y="232" frameX="-4" name="PressBar0007" frameHeight="157" frameY="-4" width="147" height="70"/>
+	<SubTexture x="362" frameWidth="157" y="232" frameX="-4" name="PressBar0008" frameHeight="157" frameY="-4" width="147" height="70"/>
+	<SubTexture x="362" frameWidth="157" y="232" frameX="-4" name="PressBar0009" frameHeight="157" frameY="-4" width="147" height="70"/>
+	<SubTexture x="362" frameWidth="157" y="232" frameX="-4" name="PressBar0010" frameHeight="157" frameY="-4" width="147" height="70"/>
+	<SubTexture x="362" frameWidth="157" y="232" frameX="-4" name="PressBar0011" frameHeight="157" frameY="-4" width="147" height="70"/>
+	<SubTexture x="362" frameWidth="157" y="232" frameX="-4" name="PressBar0012" frameHeight="157" frameY="-4" width="147" height="70"/>
+	<SubTexture x="362" frameWidth="157" y="232" frameX="-4" name="PressBar0013" frameHeight="157" frameY="-4" width="147" height="70"/>
+	<SubTexture x="362" frameWidth="157" y="232" frameX="-4" name="PressBar0014" frameHeight="157" frameY="-4" width="147" height="70"/>
+	<SubTexture x="362" frameWidth="157" y="232" frameX="-4" name="PressBar0015" frameHeight="157" frameY="-4" width="147" height="70"/>
+	<SubTexture x="362" frameWidth="157" y="232" frameX="-4" name="PressBar0016" frameHeight="157" frameY="-4" width="147" height="70"/>
+	<SubTexture x="362" frameWidth="157" y="232" frameX="-4" name="PressBar0017" frameHeight="157" frameY="-4" width="147" height="70"/>
+	<SubTexture x="362" frameWidth="157" y="232" frameX="-4" name="PressBar0018" frameHeight="157" frameY="-4" width="147" height="70"/>
+	<SubTexture x="362" frameWidth="157" y="232" frameX="-4" name="PressBar0019" frameHeight="157" frameY="-4" width="147" height="70"/>
+	<SubTexture x="0" frameWidth="157" y="374" frameX="0" name="StaticBar0000" frameHeight="157" frameY="0" width="157" height="76"/>
+</TextureAtlas>

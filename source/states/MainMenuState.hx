@@ -62,6 +62,8 @@ class MainMenuState extends MusicBeatState {
 	var curAlphabet:Alphabet;
     var grpArrows:FlxTypedGroup<FlxSprite>;
 
+	var logo:FlxSprite;
+
 	override function create(){
 		FlxG.mouse.visible = true;
 
@@ -135,6 +137,11 @@ class MainMenuState extends MusicBeatState {
 
 			lastWidth += _opt.width + 5;
 		}
+
+		logo = new FlxSprite(0, 5).loadGraphic(Paths.image("LOGO").getGraphic());
+		logo.setGraphicSize(Std.int(FlxG.width / 4)); logo.updateHitbox();
+		logo.screenCenter(X);
+		add(logo);
 
 		changeSelection();
 		

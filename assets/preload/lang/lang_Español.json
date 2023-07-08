@@ -6,6 +6,44 @@
 
 	"mod_list": [{"animated":true, "bold":true, "text":"Lista de Mods"}],
 
+	"intro_start": [{"scale":0.5, "animated":true, "bold":true, "text":"Presiona Enter Para Empezar!!"}],
+	"intro_1":[{"text": "Luego de mas de 2 años..."}],
+	"intro_2":[
+		{"text": "Gracias a este Epico Juego\n"},
+		{"image": "fnf_logo"}
+	],
+	"intro_3":[
+		{"text": "Hecho por estas epicas Personas\n\n"},
+		{"image": "credits/ninja_muffin"},
+		{"image": "credits/kawai_sprite"},
+		{"image": "credits/phantomarcade"},
+		{"image": "credits/evilsk8r"}
+	],
+	"intro_4":[
+		{"text": "Gracias a\n\n"},
+		{"image": "newgrounds_logo"}
+	],
+	"intro_5":[{"text": "Espero\n\n"}],
+	"intro_6":[{"text": "Que\n\n"}],
+	"intro_7":[{"text": "Disfrutes\n\n"}],
+	"intro_8":[{"image": "credits/yirius"}],
+	"intro_list":[
+		{"animated":true, "bold":true, "text":"me pican\nlos cocos"},
+		{"animated":true, "bold":true, "text":"eso tilin\nvaya tilin"},
+		{"animated":true, "bold":true, "text":"messi mi idolo"},
+		{"animated":true, "bold":true, "text":"somos kabro chicos"},
+		{"animated":true, "bold":true, "text":"flipi?\nese quien es"},
+		{"animated":true, "bold":true, "text":"esto es\npor ti redud"},
+		{"animated":true, "bold":true, "text":"si"},
+		{"animated":true, "bold":true, "text":"oigan...\ny perry?"},
+		{"animated":true, "bold":true, "text":"muy buenas\namigos de youtube"},
+		{"animated":true, "bold":true, "text":"el pepe\netesech"},
+		{"animated":true, "bold":true, "text":"la vida no tiene color,\ntodo lo veo negro"},
+		{"animated":true, "bold":true, "text":"mondongo"},
+		{"animated":true, "bold":true, "text":"mucho texto"},
+		{"animated":true, "bold":true, "text":"okey"}
+	],
+
     "menu_storymode": [{"bold":true, "animated":true, "text":"Modo Historia"}],
     "menu_freeplay": [{"bold":true, "animated":true, "text":"Juego libre"}],
 	"menu_multiplayer": [{"bold":true, "animated":true, "text":"Multijugador"}],

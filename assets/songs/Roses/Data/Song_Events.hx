@@ -72,17 +72,17 @@ function startSong(startCountdown:Void->Void):Void {
 
 function endSong(endCountdown:Void->Void):Void {
     getState().camFHUD.fade(0xFFFF0000, 1, true);
-    FlxG.sound.play(Paths.sound("ANGRY", "stages/schoolEvil"));
+    FlxG.sound.play(SavedFiles.getSound(Paths.sound("ANGRY", "stages/schoolEvil")));
 
     FlxTween.tween(getState().camHUD, {alpha: 0}, 2, {ease: FlxEase.linear});
     var evil_timer:FlxTimer = new FlxTimer().start(2, function(tmr:FlxTimer){
         getState().camFHUD.fade(0xFFFF0000, 1, true);
-        FlxG.sound.play(Paths.sound("ANGRY", "stages/schoolEvil"));
-        FlxG.sound.playMusic(Paths.music("LunchboxScary", "stages/schoolEvil"));
+        FlxG.sound.play(SavedFiles.getSound(Paths.sound("ANGRY", "stages/schoolEvil")));
+        FlxG.sound.playMusic(SavedFiles.getSound(Paths.music("LunchboxScary", "stages/schoolEvil")));
 
         FlxG.sound.music.fadeIn(2, 0, 1, function(twn:FlxTween){
-            FlxG.sound.play(Paths.sound("ANGRY", "stages/schoolEvil"));
-            FlxG.sound.play(Paths.sound("Senpai_Dies", "stages/schoolEvil"), 1, false, null, true, endCountdown);
+            FlxG.sound.play(SavedFiles.getSound(Paths.sound("ANGRY", "stages/schoolEvil")));
+            FlxG.sound.play(SavedFiles.getSound(Paths.sound("Senpai_Dies", "stages/schoolEvil")), 1, false, null, true, endCountdown);
 
             getState().camFHUD.fade(0xFFFF0000, 0.8, true);
             redScreen.alpha = 1;

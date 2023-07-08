@@ -520,7 +520,7 @@
 		],
 		"uiStyle": "Default",
 		"needsVoices": true,
-		"stage": "stage",
+		"stage": "bus",
 		"category": "Normal",
 		"bpm": 100,
 		"sectionStrums": [

@@ -73,6 +73,8 @@ class StrumNote extends FlxSprite{
 
     public var note_size:FlxPoint = new FlxPoint(60, 60);
 
+    public var note_path:String = "";
+
 	public function new(_data:Int = 0, _keys:Int = 4, ?_image:String, ?_style:String, ?_type:String){
         if(_image != null){image = _image;}
         if(_style != null){style = _style;}
@@ -94,7 +96,8 @@ class StrumNote extends FlxSprite{
         var sAnim:String = this.animation != null && this.animation.curAnim != null ? this.animation.curAnim.name : "static";
         if(_image != null){image = _image;} if(_style != null){style = _style;} if(_type != null){type = _type;}
 
-        frames = Paths.note(image, style, type).getAtlas();
+        note_path = Paths.note(image, style, type);
+        frames = note_path.getAtlas();
         var getJSON:Note_Graphic_Data = SavedFiles.getDataStaticNote(noteData, noteKeys, type);
         if((this is Note)){getJSON = SavedFiles.getDataNote(noteData, noteKeys, type);}
         
@@ -109,7 +112,7 @@ class StrumNote extends FlxSprite{
             else{animation.addByPrefix(anim.anim, anim.symbol, anim.fps, anim.loop);}
         }
 
-        shader = ColorFilterShader.getColorShader(Paths.note(image, style, type).getColorNote(), FlxColor.fromString(playColor));
+        shader = ColorFilterShader.getColorShader(note_path.getColorNote(), FlxColor.fromString(playColor));
         
         playAnim(sAnim);
     }
@@ -295,6 +298,9 @@ class Note extends StrumNote {
 
     public var singCharacters:Array<Int> = null;
     
+	//PreSettings Variables
+	public var pre_TypeScroll:String = PreSettings.getPreSetting("Type Scroll", "Visual Settings");
+    
 	public function new(data:NoteData, noteKeys:Int, ?_image:String, ?_style:String, ?_type:String){
         this.strumTime = data.strumTime;
         this.noteLength = data.sustainLength;
@@ -336,6 +342,7 @@ class Note extends StrumNote {
             case "Sustain":{
                 if(this.nextNote != null){playAnim("sustain");}
                 else{playAnim("end");}
+                if(pre_TypeScroll == "DownScroll"){flipY = true;}
             }
             case "Switch":{playAnim("sustain"); angle = 270;}
             case "Merge":{playAnim("merge");}
@@ -345,10 +352,18 @@ class Note extends StrumNote {
     override public function playAnim(anim:String, force:Bool = false){
 		animation.play(anim, force);
         if(typeNote == "Sustain"){
-            if(nextNote != null){
-                setGraphicSize(Std.int(note_size.x), Std.int(nextNote.y - this.y));
+            if(pre_TypeScroll == "DownScroll"){
+                if(nextNote != null){
+                    nextNote.setGraphicSize(Std.int(nextNote.note_size.x), Std.int(this.y - nextNote.y));
+                }else{
+                    setGraphicSize(Std.int(note_size.x), Std.int(note_size.y));
+                }
             }else{
-                setGraphicSize(Std.int(note_size.x), Std.int(note_size.y / 4));
+                if(nextNote != null){
+                    setGraphicSize(Std.int(note_size.x), Std.int(nextNote.y - this.y));
+                }else{
+                    setGraphicSize(Std.int(note_size.x), Std.int(note_size.y / 4));
+                }
             }
         }else{
             setGraphicSize(Std.int(note_size.x), Std.int(note_size.y));
@@ -375,7 +390,8 @@ class StrumEvent extends StrumNote {
         var sAnim:String = this.animation != null && this.animation.curAnim != null ? this.animation.curAnim.name : "static";
         if(_image != null){image = _image;} if(_style != null){style = _style;} if(_type != null){type = _type;}
 
-        frames = Paths.note(image, style, type).getAtlas();
+        note_path = Paths.note(image, style, type);
+        frames = note_path.getAtlas();
             
         antialiasing = !style.contains("pxl-");
         if(frames == null){return;}
@@ -408,6 +424,8 @@ class NoteSplash extends FlxSprite {
 
     public var playColor:String = "0xffffff";
 
+    public var note_path:String = "";
+
     public function new(){super();}
 
     override function update(elapsed:Float){
@@ -423,7 +441,8 @@ class NoteSplash extends FlxSprite {
 
         this.setPosition(X, Y);
 
-        frames = Paths.note(image, style, type).getAtlas();
+        note_path = Paths.note(image, style, type);
+        frames = note_path.getAtlas();
         animation.addByPrefix("Splash", "Splash", 30, false);
 
         playAnim("Splash");
@@ -432,12 +451,13 @@ class NoteSplash extends FlxSprite {
     public function setupByNote(daNote:Note, strumNote:StrumNote):Void {
         this.setPosition(strumNote.x, strumNote.y);
 
-        frames = Paths.note(IMAGE_DEFAULT, daNote.style, daNote.type).getAtlas();
+        note_path = Paths.note(IMAGE_DEFAULT, daNote.style, daNote.type);
+        frames = note_path.getAtlas();
         animation.addByPrefix("Splash", "Splash", 30, false);
 
         playColor = daNote.playColor;
 
-        shader = ColorFilterShader.getColorShader(Paths.note(IMAGE_DEFAULT, daNote.style, daNote.type).getColorNote(), FlxColor.fromString(playColor));
+        shader = ColorFilterShader.getColorShader(note_path.getColorNote(), FlxColor.fromString(playColor));
 
         playAnim("Splash");
     }

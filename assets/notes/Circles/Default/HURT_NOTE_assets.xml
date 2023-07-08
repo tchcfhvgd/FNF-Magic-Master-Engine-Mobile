@@ -1,0 +1,8 @@
+<TextureAtlas imagePath="HURT_NOTE_assets.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="2" frameWidth="157" y="2" frameX="-53" name="HoldEnd0000" frameHeight="61" frameY="0" width="51" height="65"/>
+	<SubTexture x="55" frameWidth="157" y="2" frameX="-53" name="HoldPiece0000" frameHeight="41" frameY="0" width="51" height="44"/>
+	<SubTexture x="108" frameWidth="157" y="2" frameX="-32" name="SwitchHold0000" frameHeight="158" frameY="-29" width="96" height="100"/>
+	<SubTexture x="206" frameWidth="157" y="2" frameX="0" name="Circle0000" frameHeight="158" frameY="0" width="157" height="158"/>
+</TextureAtlas>

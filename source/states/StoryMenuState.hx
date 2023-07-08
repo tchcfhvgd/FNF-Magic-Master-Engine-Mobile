@@ -46,6 +46,7 @@ class StoryMenuState extends MusicBeatState {
 	public var curDiff:String = "Normal";
 	public var curCat:String = "Normal";
 
+    public var week_image:FlxSprite;
     public var weeks:Array<ItemWeek> = [];
 
     public var grpWeeks:FlxTypedGroup<FlxSprite>;
@@ -77,6 +78,9 @@ class StoryMenuState extends MusicBeatState {
 
         var shape_1:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, 60, FlxColor.BLACK);
         add(shape_1);
+
+        week_image = new FlxSprite(0, 60);
+        add(week_image);
 
         titleAlpha = new Alphabet(0, 0, [{text:"PlaceHolder"}]);
         add(titleAlpha);
@@ -216,6 +220,10 @@ class StoryMenuState extends MusicBeatState {
         titleAlpha.cur_data = [{scale:0.6, bold:true, text:weeks[curWeek].title}];
         titleAlpha.loadText();
         titleAlpha.screenCenter(X);
+
+        week_image.loadGraphic(Paths.image('story_menu/${weeks[curWeek].image}'));
+        week_image.setGraphicSize(FlxG.width);
+        week_image.screenCenter(X);
 
         changeCateg();
 	}

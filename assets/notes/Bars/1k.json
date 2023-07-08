@@ -1,0 +1,75 @@
+{
+    "static_notes":{
+        "general_animations":[],
+        "notes":[
+            {
+                "animations":[
+                    {
+                        "anim": "static",
+                        "symbol": "StaticBar",
+    
+                        "fps": 32,
+                        "loop": false
+                    },
+                    {
+                        "anim": "pressed",
+                        "symbol": "PressBar",
+    
+                        "fps": 32,
+                        "loop": false
+                    },
+                    {
+                        "anim": "confirm",
+                        "symbol": "ConfirmBar",
+    
+                        "fps": 32,
+                        "loop": false
+                    }
+                ],
+                "antialiasing": true,
+                "color": "#63ffcb"
+            }
+        ]
+    },
+    "gameplay_notes":{
+        "general_animations":[
+            {
+                "anim": "sustain",
+                "symbol": "HoldPiece",
+
+                "fps": 32,
+                "loop": false
+            },
+            {
+                "anim": "end",
+                "symbol": "HoldEnd",
+
+                "fps": 32,
+                "loop": false
+            },
+            {
+                "anim": "merge",
+                "symbol": "SwitchHold",
+
+                "fps": 32,
+                "loop": false
+            }
+        ],
+        "notes":[
+            {
+                "sing_animation": "singMIDDLE",
+                "animations":[
+                    {
+                        "anim": "static",
+                        "symbol": "Bar",
+    
+                        "fps": 32,
+                        "loop": false
+                    }
+                ],
+                "antialiasing": true,
+                "color": "#63ffcb"
+            }
+        ]
+    }
+}

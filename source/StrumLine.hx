@@ -255,6 +255,9 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     public var releaseArray:Array<Bool> = [];
     public var holdArray:Array<Bool> = [];
     
+	//PreSettings Variables
+	public var pre_TypeScroll:String = PreSettings.getPreSetting("Type Scroll", "Visual Settings");
+    
     public function new(X:Float, Y:Float, ?_keys:Int, ?_size:Int, ?_controls:Controls, ?_image:String, ?_style:String, ?_type:String){
         this.controls = _controls;
         super();
@@ -374,14 +377,14 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 		if(cont.contains(true)){return; trace("RETURN");}
 
         if(healthBar == null){
-			healthBar = new FlxBar(x, 663, RIGHT_TO_LEFT, 330, 16, this, 'HEALTH', 0, MAXHEALTH);
+			healthBar = new FlxBar(x, pre_TypeScroll == "DownScroll" ? 52 : 663, RIGHT_TO_LEFT, 330, 16, this, 'HEALTH', 0, MAXHEALTH);
 			healthBar.numDivisions = 500;
 			//healthBar.cameras = [camHUD];
 			add(healthBar);
 		}
 
 		if(sprite_healthBar == null){
-			sprite_healthBar = new FlxSprite(x, 655).loadGraphic(Paths.styleImage("single_healthBar", ui_style, "shared").getGraphic());
+			sprite_healthBar = new FlxSprite(x, pre_TypeScroll == "DownScroll" ? 50 : 655).loadGraphic(Paths.styleImage("single_healthBar", ui_style, "shared").getGraphic());
 			sprite_healthBar.scale.set(0.7,0.7); sprite_healthBar.updateHitbox();
 			//sprite_healthBar.cameras = [camHUD];
 			add(sprite_healthBar);
@@ -397,7 +400,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         if(lblStats == null){
 			lblStats = new FlxText(x, 0, genWidth, "|| ...Starting Song... ||");
 			lblStats.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			lblStats.y = FlxG.height - lblStats.height - 5;
+			lblStats.y = pre_TypeScroll == "DownScroll" ? sprite_healthBar.y + sprite_healthBar.height : FlxG.height - lblStats.height - 5;
 			//lblStats.cameras = [camHUD];
 			add(lblStats);
 		}
@@ -479,26 +482,17 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 		var cont:Array<Bool> = []; for(s in MusicBeatState.state.scripts){cont.push(s.exFunction('load_global_ui',[this]));}
 		if(cont.contains(true)){trace("RETURN"); return;}
 
-		if(lblStats == null){
-			lblStats = new FlxText(0,0,0,"|| ...Starting Song... ||");
-			lblStats.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			lblStats.screenCenter(X);
-			lblStats.y = FlxG.height - lblStats.height - 5;
-			//lblStats.cameras = [camHUD];
+		if(sprite_healthBar == null){
+			sprite_healthBar = new FlxSprite(326, pre_TypeScroll == "DownScroll" ? 25 : 655).loadGraphic(Paths.styleImage("healthbar", ui_style, "shared").getGraphic());
+			sprite_healthBar.scale.set(0.7,0.7); sprite_healthBar.updateHitbox();
+			//sprite_healthBar.cameras = [camHUD];
 		}
 
 		if(healthBar == null){
-			healthBar = new FlxBar(330, 663, RIGHT_TO_LEFT, Std.int(FlxG.width / 2) - 20, 16, this, 'HEALTH', 0, MAXHEALTH);
+			healthBar = new FlxBar(330, pre_TypeScroll == "DownScroll" ? 35 : 663, RIGHT_TO_LEFT, Std.int(FlxG.width / 2) - 20, 16, this, 'HEALTH', 0, MAXHEALTH);
 			healthBar.numDivisions = 500;
-            healthBar.screenCenter(X); healthBar.y = lblStats.y - healthBar.height - 18;
+            healthBar.screenCenter(X);
 			//healthBar.cameras = [camHUD];
-		}
-
-		if(sprite_healthBar == null){
-			sprite_healthBar = new FlxSprite(326, 655).loadGraphic(Paths.styleImage("healthbar", ui_style, "shared").getGraphic());
-			sprite_healthBar.scale.set(0.7,0.7); sprite_healthBar.updateHitbox();
-            sprite_healthBar.setPosition(healthBar.x + (healthBar.width/2) - (sprite_healthBar.width/2), healthBar.y + (healthBar.height/2) - (sprite_healthBar.height/2));
-			//sprite_healthBar.cameras = [camHUD];
 		}
         
 		if(leftIcon == null){
@@ -513,6 +507,14 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 			rightIcon.setPosition(healthBar.x+healthBar.width-(rightIcon.width/2),healthBar.y-(rightIcon.height/2));
             rightIcon.visible = false;
 			//rightIcon.camera = camHUD;
+		}
+        
+		if(lblStats == null){
+			lblStats = new FlxText(0,0,0,"|| ...Starting Song... ||");
+			lblStats.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			lblStats.screenCenter(X);
+			lblStats.y = pre_TypeScroll == "DownScroll" ? sprite_healthBar.y + sprite_healthBar.height : FlxG.height - lblStats.height - 5;
+			//lblStats.cameras = [camHUD];
 		}
 
         add(healthBar);
@@ -675,7 +677,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
             if(noteStrum == null){return;}
 
             var yStuff:Float = noteStrum.y - getScroll(daNote);
-            if(PreSettings.getPreSetting("Typec Scroll", "Visual Settings") == "DownScroll"){yStuff = noteStrum.y + getScroll(daNote);}
+            if(pre_TypeScroll == "DownScroll"){yStuff = noteStrum.y + getScroll(daNote);}
 
             switch(daNote.noteStatus){
                 default:{daNote.y = yStuff;}

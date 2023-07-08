@@ -8,16 +8,23 @@
             "Color": "#47ffc2"
         },
         {
-            "Name": "SugarMoon",
-            "Icon": "sugar",
-            "Description": "",
+            "Name": "MixinFlame",
+            "Icon": "mixin",
+            "Description": "When rusheas la song del menu",
             "Rol": "musician",
-            "Color": "#ff87f7"
+            "Color": "#0e9df0"
+        },
+        {
+            "Name": "Manolo Dev",
+            "Icon": "manolo",
+            "Description": "Odio Bolivia",
+            "Rol": "animator",
+            "Color": "#dfe37b"
         },
         {
             "Name": "Massacre",
             "Icon": "massan",
-            "Description": "",
+            "Description": "Chamoy",
             "Rol": "animator",
             "Color": "#ff8585"
         },
@@ -27,13 +34,6 @@
             "Description": "",
             "Rol": "animator",
             "Color": "#5f9662"
-        },
-        {
-            "Name": "Manolo Dev",
-            "Icon": "manolo",
-            "Description": "Odio Bolivia",
-            "Rol": "animator",
-            "Color": "#dfe37b"
         },
         {
             "Name": "Doggy",
@@ -50,13 +50,6 @@
             "Color": "#e6c28c"
         },
         {
-            "Name": "CaptainCheddar",
-            "Icon": "cheddar",
-            "Description": "",
-            "Rol": "artist",
-            "Color": "#f7ff59"
-        },
-        {
             "Name": "Ricky",
             "Icon": "ricky",
             "Description": "el que madruga dios le ayuda, a mi nunca me ayudo xd",
@@ -66,9 +59,23 @@
     ],
     "Magic Master Engine [Special Thanks]":[
         {
+            "Name": "CaptainCheddar",
+            "Icon": "cheddar",
+            "Description": "hola",
+            "Rol": "artist",
+            "Color": "#f7ff59"
+        },
+        {
+            "Name": "SugarMoon",
+            "Icon": "sugar",
+            "Description": "'StereoFunk' Song",
+            "Rol": "musician",
+            "Color": "#ff87f7"
+        },
+        {
             "Name": "Saruky",
-            "Icon": "",
-            "Description": "Cassette Girl Voice",
+            "Icon": "saruky",
+            "Description": "Cassette Girl Chromatic",
             "Rol": "",
             "Color": "#842ec9"
         }

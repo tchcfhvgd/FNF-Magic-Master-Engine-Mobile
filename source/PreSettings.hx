@@ -19,7 +19,7 @@ class PreSettings {
         ],
         "Visual Settings" => [
             "Type HUD" => [0, ["MagicHUD", "Original", "Minimized", "Detailed", "OnlyNotes"]],
-            "Note Skin" => [0, ["Arrows", "Circles", "Rhombuses", "Bars"]],
+            "Note Skin" => [0, ["Arrows", "Circles", "Bars", "Haxe"]],
             "Type Scroll" => [0, ["UpScroll", "DownScroll"]],
             "Default Strum Position" => [0, ["Middle", "Right", "Left"]],
             "Type Middle Scroll" => [0, ["None", "OnlyPlayer", "FadeOthers"]],
@@ -59,6 +59,8 @@ class PreSettings {
                 for(ikey in PRESETTINGS.get(key).keys()){
                     if(!CURRENT_SETTINGS.get(key).exists(ikey)){
                         CURRENT_SETTINGS.get(key).set(ikey, PRESETTINGS.get(key).get(ikey));
+                    }else{
+                        CURRENT_SETTINGS.get(key).get(ikey)[1] = PRESETTINGS.get(key).get(ikey)[1];
                     }
                 }
             }
@@ -134,11 +136,13 @@ class PreSettings {
         CURRENT_SETTINGS.get(category).set(setting, check);
     }
 
-    static function removePreSetting(setting:String, category:String){
-        CURRENT_SETTINGS.get(category).remove(setting);
-    }
-
-    public static function addCategory(setting:String, options:Map<String, Dynamic>){
-        PRESETTINGS.set(setting, options);
+    public static function delPreSetting(setting:String, category:String){CURRENT_SETTINGS.get(category).remove(setting);}
+    public static function addCategory(setting:String, options:Map<String, Dynamic>){PRESETTINGS.set(setting, options);}
+    public static function delCategory(setting:String){PRESETTINGS.remove(setting);}
+    public static function addArrayOption(option:String, setting:String, category:String){
+        if(!CURRENT_SETTINGS.exists(category)){return;}
+        if(!CURRENT_SETTINGS.get(category).exists(setting)){return;}
+        if(!CURRENT_SETTINGS.get(category).get(setting)[1].contains(setting)){return;}
+        CURRENT_SETTINGS.get(category).get(setting)[1].push(option);
     }
 }

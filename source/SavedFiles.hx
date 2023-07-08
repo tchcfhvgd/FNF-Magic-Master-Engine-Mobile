@@ -215,10 +215,13 @@ class SavedFiles {
 	}
 
 	inline static public function getColorNote(key:String):String {
-		var fileName:String = key.split("/").pop();
 		var toReturn:String = "None";
-		if(!Paths.exists('${key.replace(fileName,"")}colors.txt')){return toReturn;}
-		var arrColors:Array<String> = getText(key.replace(fileName,"") + "colors.txt").split("\n");
+
+		var fileName:String = key.split("/").pop();
+		var note_path:String = key.replace(fileName, "colors.txt");
+		if(!Paths.exists(note_path)){return toReturn;}
+
+		var arrColors:Array<String> = getText(note_path).split("\n");
 		for(t in arrColors){var tt:Array<String> = t.split(":"); if(tt[0] == fileName){toReturn = tt[1];}}
 		return toReturn;
 	}

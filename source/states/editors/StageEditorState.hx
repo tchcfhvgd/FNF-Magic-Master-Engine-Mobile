@@ -332,6 +332,8 @@ class StageEditorState extends MusicBeatState {
         }); object_settings_gp.add(btnDeleteObject); last_menu_height += btnDeleteObject.height + 10;
 
         var btnMoveUp = new FlxUICustomButton(5, last_menu_height, Std.int((MENU.width - 10) / 2), null, "Move up", null, function(){
+            if(SCRIPT_SOURCE.objects.length <= 1){return;}
+            
             var new_id:Int = _object.ID - 1; if(new_id < 0){new_id = SCRIPT_SOURCE.objects.length - 1;}
             
             SCRIPT_SOURCE.objects[new_id].ID = _object.ID;
@@ -343,6 +345,8 @@ class StageEditorState extends MusicBeatState {
         }); object_settings_gp.add(btnMoveUp);
 
         var btnMoveDown = new FlxUICustomButton(5 + btnMoveUp.width + 3, last_menu_height, Std.int((MENU.width - 10) / 2), null, "Move Down", null, function(){
+            if(SCRIPT_SOURCE.objects.length <= 1){return;}
+
             var new_id:Int = _object.ID + 1; if(new_id >= SCRIPT_SOURCE.objects.length){new_id = 0;}
             
             SCRIPT_SOURCE.objects[new_id].ID = _object.ID;

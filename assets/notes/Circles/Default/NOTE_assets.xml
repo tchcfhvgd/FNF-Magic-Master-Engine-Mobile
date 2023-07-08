@@ -1,0 +1,33 @@
+<TextureAtlas imagePath="circle NOTE assets.png">
+	<!-- Created with Adobe Animate version 19.2.1.408 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="0" frameWidth="157" y="0" frameX="-56" name="HoldEnd0000" frameHeight="63" frameY="0" width="50" height="64"/>
+	<SubTexture x="50" frameWidth="157" y="0" frameX="-56" name="HoldPiece0000" frameHeight="36" frameY="0" width="50" height="40"/>
+	<SubTexture x="100" frameWidth="157" y="0" frameX="-33" name="SwitchHold0000" frameHeight="157" frameY="-31" width="95" height="100"/>
+	<SubTexture x="195" frameWidth="157" y="0" frameX="0" name="Circle0000" frameHeight="157" frameY="0" width="157" height="157"/>
+	<SubTexture x="0" frameWidth="157" y="157" frameX="32" name="ConfirmCircle0000" frameHeight="157" frameY="28" width="224" height="226"/>
+	<SubTexture x="224" frameWidth="157" y="157" frameX="32" name="ConfirmCircle0001" frameHeight="157" frameY="28" width="224" height="226"/>
+	<SubTexture x="0" frameWidth="157" y="383" frameX="31" name="ConfirmCircle0002" frameHeight="157" frameY="27" width="223" height="222"/>
+	<SubTexture x="0" frameWidth="157" y="383" frameX="31" name="ConfirmCircle0003" frameHeight="157" frameY="27" width="223" height="222"/>
+	<SubTexture x="223" frameWidth="157" y="383" frameX="-12" name="PressCircle0000" frameHeight="157" frameY="-10" width="139" height="142"/>
+	<SubTexture x="223" frameWidth="157" y="383" frameX="-12" name="PressCircle0001" frameHeight="157" frameY="-10" width="139" height="142"/>
+	<SubTexture x="362" frameWidth="157" y="383" frameX="-9" name="PressCircle0002" frameHeight="157" frameY="-7" width="145" height="149"/>
+	<SubTexture x="362" frameWidth="157" y="383" frameX="-9" name="PressCircle0003" frameHeight="157" frameY="-7" width="145" height="149"/>
+	<SubTexture x="362" frameWidth="157" y="383" frameX="-9" name="PressCircle0004" frameHeight="157" frameY="-7" width="145" height="149"/>
+	<SubTexture x="362" frameWidth="157" y="383" frameX="-9" name="PressCircle0005" frameHeight="157" frameY="-7" width="145" height="149"/>
+	<SubTexture x="362" frameWidth="157" y="383" frameX="-9" name="PressCircle0006" frameHeight="157" frameY="-7" width="145" height="149"/>
+	<SubTexture x="362" frameWidth="157" y="383" frameX="-9" name="PressCircle0007" frameHeight="157" frameY="-7" width="145" height="149"/>
+	<SubTexture x="362" frameWidth="157" y="383" frameX="-9" name="PressCircle0008" frameHeight="157" frameY="-7" width="145" height="149"/>
+	<SubTexture x="362" frameWidth="157" y="383" frameX="-9" name="PressCircle0009" frameHeight="157" frameY="-7" width="145" height="149"/>
+	<SubTexture x="362" frameWidth="157" y="383" frameX="-9" name="PressCircle0010" frameHeight="157" frameY="-7" width="145" height="149"/>
+	<SubTexture x="362" frameWidth="157" y="383" frameX="-9" name="PressCircle0011" frameHeight="157" frameY="-7" width="145" height="149"/>
+	<SubTexture x="362" frameWidth="157" y="383" frameX="-9" name="PressCircle0012" frameHeight="157" frameY="-7" width="145" height="149"/>
+	<SubTexture x="362" frameWidth="157" y="383" frameX="-9" name="PressCircle0013" frameHeight="157" frameY="-7" width="145" height="149"/>
+	<SubTexture x="362" frameWidth="157" y="383" frameX="-9" name="PressCircle0014" frameHeight="157" frameY="-7" width="145" height="149"/>
+	<SubTexture x="362" frameWidth="157" y="383" frameX="-9" name="PressCircle0015" frameHeight="157" frameY="-7" width="145" height="149"/>
+	<SubTexture x="362" frameWidth="157" y="383" frameX="-9" name="PressCircle0016" frameHeight="157" frameY="-7" width="145" height="149"/>
+	<SubTexture x="362" frameWidth="157" y="383" frameX="-9" name="PressCircle0017" frameHeight="157" frameY="-7" width="145" height="149"/>
+	<SubTexture x="362" frameWidth="157" y="383" frameX="-9" name="PressCircle0018" frameHeight="157" frameY="-7" width="145" height="149"/>
+	<SubTexture x="362" frameWidth="157" y="383" frameX="-9" name="PressCircle0019" frameHeight="157" frameY="-7" width="145" height="149"/>
+	<SubTexture x="0" frameWidth="157" y="605" frameX="0" name="StaticCircle0000" frameHeight="157" frameY="0" width="157" height="157"/>
+</TextureAtlas>

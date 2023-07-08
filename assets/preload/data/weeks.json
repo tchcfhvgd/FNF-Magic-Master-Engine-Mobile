@@ -2,6 +2,7 @@
     "weekData": [
         {
             "name": "week0",
+            "image": "tuto",
             "display": "Tutorial",
             "title": "",
             "categories": [
@@ -15,6 +16,7 @@
         },
         {
             "name": "week1",
+            "image": "week-1",
             "display": "Week 1",
             "title": "Daddy Dearest",
             "categories": [
@@ -28,6 +30,7 @@
         },
         {
             "name": "week2",
+            "image": "week-2",
             "display": "Week 2",
             "title": "Spooky Month",
             "categories": [
@@ -41,6 +44,7 @@
         },
         {
             "name": "week3",
+            "image": "pico",
             "display": "Week 3",
             "title": "PICO",
             "categories": [
@@ -54,6 +58,7 @@
         },
         {
             "name": "week4",
+            "image": "mom",
             "display": "Week 4",
             "title": "MOMMY MUST MURDER",
             "categories": [
@@ -67,6 +72,7 @@
         },
         {
             "name": "week5",
+            "image": "week-5",
             "display": "Week 5",
             "title": "RED SNOW",
             "categories": [
@@ -80,6 +86,7 @@
         },
         {
             "name": "week6",
+            "image": "week-6",
             "display": "Week 6",
             "title": "hating simulator ft. moawling",
             "categories": [
@@ -93,6 +100,7 @@
         },
         {
             "name": "week7",
+            "image": "TankmanScreen",
             "display": "Week 7",
             "title": "Tankman",
             "categories": [
