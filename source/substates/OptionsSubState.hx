@@ -21,7 +21,7 @@ import flixel.addons.ui.*;
 class OptionsSubState extends MusicBeatSubstate {
 	private var backgrad:FlxSprite;
 
-	private var category_list:Array<String> = [];
+	private var category_list:Array<{text:String, display:Dynamic}> = [];
 	private var gpCategorys:FlxTypedGroup<Alphabet>;
 	private var gpOptions:FlxTypedGroup<Alphabet>;
 
@@ -35,8 +35,8 @@ class OptionsSubState extends MusicBeatSubstate {
 		curCamera.alpha = 0;
 		
 		//---------------------------------------------------------------------------------------------------------//
-		for(i in PreSettings.CURRENT_SETTINGS.keys()){category_list.push(i);}
-		category_list.push('Controls'); category_list.push('Key Controls');
+		for(i in PreSettings.CURRENT_SETTINGS.keys()){category_list.push({text:i, display:LangSupport.getText('opt_${Paths.getFileName(i.toLowerCase(), true)}')});}
+		category_list.push({text:'Controls', display:LangSupport.getText('opt_controls')}); category_list.push({text:'Key Controls', display:LangSupport.getText('opt_key_controls')});
 		//---------------------------------------------------------------------------------------------------------//
 
 		backgrad = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, [0xff000000, 0x00000000], 1, 0);
@@ -50,7 +50,7 @@ class OptionsSubState extends MusicBeatSubstate {
 		gpOptions.cameras = [curCamera];
 		
 		for(i in 0...category_list.length){
-			var _cat:Alphabet = new Alphabet(10,0,[{scale:0.8,bold:true,text:'${category_list[i]}:'}]);
+			var _cat:Alphabet = new Alphabet(10, 0, category_list[i].display);
 			_cat.ID = i;
 			gpCategorys.add(_cat);
 		}
@@ -111,12 +111,10 @@ class OptionsSubState extends MusicBeatSubstate {
 
 	public function chooseCategory():Void {
 		onOptions = true;
-
 		curOption = 0;
-
 		gpOptions.clear();
 
-		switch(category_list[curCategory]){
+		switch(category_list[curCategory].text){
 			case "Controls":{
 				var _i:Int = 0;
 				for(control in Controls.STATIC_ACTIONS.keys()){
@@ -141,8 +139,8 @@ class OptionsSubState extends MusicBeatSubstate {
 			}
 			default:{
 				var _i:Int = 0;
-				for(setting in PreSettings.CURRENT_SETTINGS.get(category_list[curCategory]).keys()){
-					var _presetting_opt:PreSettingOption = new PreSettingOption(setting, category_list[curCategory], principal_controls, this);
+				for(setting in PreSettings.CURRENT_SETTINGS.get(category_list[curCategory].text).keys()){
+					var _presetting_opt:PreSettingOption = new PreSettingOption(setting, category_list[curCategory].text, principal_controls, this);
 					gpOptions.add(_presetting_opt);
 
 					_presetting_opt.ID = _i;
@@ -345,9 +343,10 @@ class PreSettingOption extends Alphabet {
 	}
 
 	override public function loadText():Void {
-		cur_data = [{scale:0.5, text:'\t${Paths.getFileName(setting)}: '}];
+		cur_data = [{scale:0.5, text:'\t${LangSupport.getText('set_${Paths.getFileName(setting.toLowerCase(), true)}')}: '}];
 		var setting_data:Dynamic = PreSettings.getPreSetting(setting, category);
 		
+		if(!(setting_data is Int) && !(setting_data is Float)){setting_data = LangSupport.getText(setting_data);}
 		cur_data.push({scale:0.5, bold:true, text: '> ${setting_data} <'});
 
 		super.loadText();

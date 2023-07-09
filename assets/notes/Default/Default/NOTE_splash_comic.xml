@@ -1,9 +1,0 @@
-<TextureAtlas imagePath="NOTE_splash_comic.png">
-	<!-- Created with Adobe Animate version 21.0.0.35450 -->
-	<!-- http://www.adobe.com/products/animate.html -->
-	<SubTexture x="2" frameWidth="73" y="2" frameX="47" name="Splash: Water0000" frameHeight="73" frameY="34" width="179" height="167"/>
-	<SubTexture x="183" frameWidth="73" y="2" frameX="72" name="Splash: Water0001" frameHeight="73" frameY="80" width="221" height="262"/>
-	<SubTexture x="406" frameWidth="73" y="2" frameX="77" name="Splash: Water0002" frameHeight="73" frameY="84" width="232" height="270"/>
-	<SubTexture x="640" frameWidth="73" y="2" frameX="79" name="Splash: Water0003" frameHeight="73" frameY="87" width="236" height="275"/>
-	<SubTexture x="2" frameWidth="73" y="279" frameX="82" name="Splash: Water0004" frameHeight="73" frameY="89" width="242" height="280"/>
-</TextureAtlas>

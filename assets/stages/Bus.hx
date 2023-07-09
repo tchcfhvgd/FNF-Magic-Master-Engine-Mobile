@@ -61,5 +61,5 @@ function create():Void {
 
 function beatHit(curBeat:Int):Void {
 	if(!PreSettings.getPreSetting("Background Animated", "Graphic Settings")){return;}
-	radio.animation.play('idle');
+	radio.animation.play('idle', true);
 }

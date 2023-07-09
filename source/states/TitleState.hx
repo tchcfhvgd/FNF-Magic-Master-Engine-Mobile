@@ -107,6 +107,8 @@ class TitleState extends MusicBeatState {
 					skipIntro(true);
 				}else{
 					canControlle = false;
+					FlxG.sound.play(Paths.sound("confirmMenu").getSound());
+					camHUD.flash(FlxColor.WHITE, conductor.crochet / 4000, null, true);
 					FlxTween.tween(gradient, {y: FlxG.height}, 1, {ease: FlxEase.quadIn});
 					FlxTween.tween(press_title, {y: FlxG.height + 20}, 2, {ease: FlxEase.elasticOut});
 					FlxTween.tween(logo, {y: FlxG.height}, 1, {ease: FlxEase.quadIn, onComplete: function(twn){MusicBeatState.switchState("states.MainMenuState", []);}});

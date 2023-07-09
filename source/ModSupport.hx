@@ -42,9 +42,10 @@ class ModSupport {
         if(FlxG.save.data.saved_mods != null){savedMODS = FlxG.save.data.saved_mods;}
 
         //Adding Mods from Archives
-        var _i:Int = 0;
         #if (desktop && sys)
         if(FileSystem.exists('mods')){
+            var _i:Int = 0;
+            
             for(modFolder in FileSystem.readDirectory('mods')){
                 var mod_path:String = FileSystem.absolutePath('mods/$modFolder');
 

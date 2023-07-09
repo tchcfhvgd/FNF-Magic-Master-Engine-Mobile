@@ -42,7 +42,7 @@ function preload():Void {
 
     senpaidies = new FlxSprite(0,-120);
     senpaidies.cameras = [getState().camBHUD];
-    senpaidies.frames = Paths.getAtlas(Paths.image("senpaiCrazy", "stages/schoolEvil", true));
+    senpaidies.frames = SavedFiles.getAtlas(Paths.image("senpaiCrazy", "stages/schoolEvil"));
     senpaidies.animation.addByPrefix("die", "Senpai Pre Explosion instance 1", 24, false);
     senpaidies.scale.set(6,6); senpaidies.updateHitbox();
     senpaidies.antialiasing = false;

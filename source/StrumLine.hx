@@ -489,7 +489,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 		}
 
 		if(healthBar == null){
-			healthBar = new FlxBar(330, pre_TypeScroll == "DownScroll" ? 35 : 663, RIGHT_TO_LEFT, Std.int(FlxG.width / 2) - 20, 16, this, 'HEALTH', 0, MAXHEALTH);
+			healthBar = new FlxBar(330, pre_TypeScroll == "DownScroll" ? 35 : 665, RIGHT_TO_LEFT, Std.int(FlxG.width / 2) - 20, 16, this, 'HEALTH', 0, MAXHEALTH);
 			healthBar.numDivisions = 500;
             healthBar.screenCenter(X);
 			//healthBar.cameras = [camHUD];

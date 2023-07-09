@@ -1,8 +1,9 @@
-import("SavedFiles", "SavedFiles");
-import("flixel.FlxSprite", "FlxSprite");
-import("Paths", "Paths");
 import("flixel.system.FlxSound", "FlxSound");
+import("flixel.FlxSprite", "FlxSprite");
+import("SavedFiles", "SavedFiles");
+import("Character", "Character");
 import("flixel.FlxG", "FlxG");
+import("Paths", "Paths");
 
 presset("initChar", 5);
 presset("camP_1", [585,305]);

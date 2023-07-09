@@ -1,9 +1,11 @@
-import("SavedFiles", "SavedFiles");
-import("flixel.FlxSprite", "FlxSprite");
 import("flixel.group.FlxTypedGroup", "FlxTypedGroup");
-import("Type", "Type");
-import("Paths", "Paths");
+import("flixel.util.FlxTimer", "FlxTimer");
+import("flixel.FlxSprite", "FlxSprite");
 import("PreSettings", "PreSettings");
+import("SavedFiles", "SavedFiles");
+import("flixel.FlxG", "FlxG");
+import("Paths", "Paths");
+import("Type", "Type");
 
 presset("initChar", 4);
 presset("camP_1", [250,-1000]);
@@ -65,15 +67,15 @@ function create():Void {
 	if(PreSettings.getPreSetting('Background Animated', 'Graphic Settings')){frontlimo.animation.play('idle');}
 	instance.add(frontlimo);
 
-	resetFastCar();
 	pushGlobal();
+	resetFastCar();
 }
 
 function beatHit(curBeat:Int):Void {
 	if(!PreSettings.getPreSetting("Background Animated", "Graphic Settings")){return;}
 
 	isLeftDancing = !isLeftDancing;
-	for(dancer in limo_dancers){
+	for(dancer in dancers.members){
 		if(isLeftDancing){dancer.animation.play('danceLeft', true);}
 		else{dancer.animation.play('danceRight', true);}
 	}
@@ -82,16 +84,16 @@ function beatHit(curBeat:Int):Void {
 }
 
 function resetFastCar():Void {
-	fastCar.x = -12600;
-	fastCar.y = FlxG.random.int(-110, 0);
-	fastCar.velocity.x = 0;
+	fastcar.x = -12600;
+	fastcar.y = FlxG.random.int(-110, 0);
+	fastcar.velocity.x = 0;
 	fastCarCanDrive = true;
 }
 
 function fastCarDrive(){
 	//trace('Car drive');
 	FlxG.sound.play(SavedFiles.getSound(Paths.soundRandom('carPass', 0, 1, 'stages/limo')), 0.7);
-	fastCar.velocity.x = (FlxG.random.int(170, 220) / FlxG.elapsed) * 3;
+	fastcar.velocity.x = (FlxG.random.int(170, 220) / FlxG.elapsed) * 3;
 	fastCarCanDrive = false;
 	carTimer = new FlxTimer().start(2, function(tmr:FlxTimer){
 		resetFastCar();

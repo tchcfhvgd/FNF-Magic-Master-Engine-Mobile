@@ -13,7 +13,7 @@
                 "box_anim": "Normal",
                 "dialog":[
                     {
-                        "portrait": "Senpai_Angry", "font": "Pixel Arial 11 Bold", "sound": "dialog_audios/senpai", "time": 0.033, "bold": true, "scale": 32,
+                        "portrait": "Senpai_Angry", "font": "pixel", "sound": "dialog_audios/senpai", "time": 0.033, "bold": true, "scale": 32,
                         "text": "Not bad for an ugly worm."
                     }
                 ]

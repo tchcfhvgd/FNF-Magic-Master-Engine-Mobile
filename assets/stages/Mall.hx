@@ -72,7 +72,7 @@ function create():Void {
 
 function beatHit(curBeat:Int):Void {
     if(!PreSettings.getPreSetting("Background Animated", "Graphic Settings")){return;}
-    upperBoopers.animation.play("beat");
-    bottomBoopers.animation.play("beat");
-    santa.animation.play("idle");
+    upperBoopers.animation.play("beat", true);
+    bottomBoopers.animation.play("beat", true);
+    santa.animation.play("idle", true);
 }

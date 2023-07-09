@@ -124,7 +124,7 @@ class MusicBeatState extends FlxUIState {
 
 		if(canControlle){
 			if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED) && onConfirm != null){MusicBeatState.switchState(onConfirm, []);}
-			if(principal_controls.checkAction("Menu_Back", JUST_PRESSED) && onBack != null){MusicBeatState.switchState(onBack, []);}
+			if(principal_controls.checkAction("Menu_Back", JUST_PRESSED) && onBack != null){FlxG.sound.play(Paths.sound("cancelMenu").getSound()); MusicBeatState.switchState(onBack, []);}
 	
 			if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.P){trace('State Name: ${Type.getClassName(Type.getClass(state))}');}
 			if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.O){if(script == null){trace('Null Script'); return;} trace('Script Name: ${script.Name}');}

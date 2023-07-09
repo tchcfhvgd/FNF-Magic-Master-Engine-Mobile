@@ -55,6 +55,8 @@ class PlayerSelectorState extends MusicBeatState {
 	}
 
 	override function create(){
+		super.create();
+		
         #if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence('Selecting', '[Song Selector]');
@@ -73,6 +75,8 @@ class PlayerSelectorState extends MusicBeatState {
 			if(!selSong.sectionStrums[i].isPlayable){continue;}
 			playable_strums.push(i);
 		}
+
+		if(playable_strums.length <= 0){MusicBeatState.switchState(onBack, []);}
 
 		var cur_width:Float = 5; 
 		strumGroup = new FlxTypedGroup<FlxSprite>();
@@ -107,15 +111,13 @@ class PlayerSelectorState extends MusicBeatState {
 			cursorGroup.add(new_cursor);
 		}
 		add(cursorGroup);
-
-		super.create();
 	}
 
 	override function update(elapsed:Float){
 		for(i in 0...strum_players.length){
 			var cur_cursor = cursorGroup.members[i];
 			var cur_grid = strumGroup.members[strum_players[i].strum];
-			MagicStuff.lerpX(cur_cursor, (cur_grid.x + (cur_grid.width / 2) - (cur_cursor.width / 2)));
+			if(cur_grid != null){MagicStuff.lerpX(cur_cursor, (cur_grid.x + (cur_grid.width / 2) - (cur_cursor.width / 2)));}
 		}
 
 		if(canControlle){

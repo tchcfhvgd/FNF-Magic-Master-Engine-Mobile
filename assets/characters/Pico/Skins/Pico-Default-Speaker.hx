@@ -103,7 +103,7 @@ function playAnim(AnimName:String, Force:Bool, Reversed:Bool, Frame:Int){
         cur_sprite.visible = true;
         c.visible = false;
         cur_sprite.animation.play("play", Force, Reversed, Frame);
-        //instance.holdTimer = ((cur_sprite.animation.curAnim.frames.length - Frame) / cur_sprite.animation.curAnim.frameRate);
+        instance.holdTimer = ((cur_sprite.animation.curAnim.frames.length - Frame) / cur_sprite.animation.curAnim.frameRate);
         return true;
     }
 

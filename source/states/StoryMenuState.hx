@@ -262,9 +262,13 @@ class StoryMenuState extends MusicBeatState {
         
         scoreAlpha.cur_data = [{scale:0.4, bold:true, text:'${LangSupport.getText('gmp_score')}: ${Highscore.getWeekScore(weeks[curWeek].name, curDiff, curCat)}'}];
         scoreAlpha.loadText();
+        
+		FlxG.sound.play(Paths.sound("scrollMenu").getSound());
     }
 
     function chooseWeek():Void {
+        FlxG.sound.play(Paths.sound("confirmMenu").getSound());
+        
         SongListData.resetVariables();
         SongListData.loadWeek(weeks[curWeek], curCat, curDiff);
         SongListData.playSong();

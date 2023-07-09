@@ -104,6 +104,12 @@ class PopLangState extends MusicBeatState {
 	}
 
     public function chooseLang():Void {
+        for(i in 0...PreSettings.getArrayPreSetting("Language", "Game Settings").length){
+            if(PreSettings.getArrayPreSetting("Language", "Game Settings")[i] != langGroup.members[curLang].text){continue;}
+            PreSettings.CURRENT_SETTINGS.get("Game Settings").get("Language")[0] = i; break;
+        }
+        PreSettings.saveSettings();
+        
         LangSupport.setLang(langGroup.members[curLang].text);
         MusicBeatState.loadState(toNext, [], []);
     }

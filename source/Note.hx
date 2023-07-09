@@ -18,6 +18,7 @@ import openfl.utils.Assets;
 import flixel.math.FlxMath;
 import haxe.DynamicAccess;
 import flixel.FlxSprite;
+import flixel.FlxG;
 import haxe.Json;
 
 import Song.SwagSection;
@@ -418,13 +419,16 @@ class StrumEvent extends StrumNote {
 }
 
 class NoteSplash extends FlxSprite {
-    public static var IMAGE_DEFAULT:String = "NOTE_splash_comic";
+    public static var IMAGE_DEFAULT(get, never):String;
+    public static function get_IMAGE_DEFAULT(){return Paths.getFileName(PreSettings.getPreSetting("Splash Skin", "Visual Settings"), true);}
 
     public var onSplashed:Void->Void = function(){};
 
     public var playColor:String = "0xffffff";
 
     public var note_path:String = "";
+
+    public var splash_anims:Array<String> = [];
 
     public function new(){super();}
 
@@ -435,6 +439,8 @@ class NoteSplash extends FlxSprite {
 	}
 
     public function setup(X:Float = 0, Y:Float = 0, ?image:String, ?style:String, ?type:String){
+        splash_anims = [];
+
         if(image == null){image = IMAGE_DEFAULT;}
         if(style == null){style = StrumNote.STYLE_DEFAULT;}
         if(type == null){type = StrumNote.TYPE_DEFAULT;}
@@ -443,23 +449,48 @@ class NoteSplash extends FlxSprite {
 
         note_path = Paths.note(image, style, type);
         frames = note_path.getAtlas();
-        animation.addByPrefix("Splash", "Splash", 30, false);
+        
+        var json_path:String = note_path.replace('${IMAGE_DEFAULT}.png', 'Splash_Anims.json');
+        if(Paths.exists(json_path)){
+            var anim_list:Array<String> = cast Reflect.getProperty(json_path.getJson(), IMAGE_DEFAULT);
+            for(a in anim_list){
+                animation.addByPrefix(a, a, 30, false);
+                splash_anims.push(a);
+            }
+        }else{
+            animation.addByPrefix("Splash", "Splash", 30, false);
+            splash_anims.push("Splash");
+        }
 
-        playAnim("Splash");
+        playAnim(splash_anims[FlxG.random.int(0, splash_anims.length - 1)]);
     }
 
     public function setupByNote(daNote:Note, strumNote:StrumNote):Void {
+        splash_anims = [];
+
         this.setPosition(strumNote.x, strumNote.y);
 
         note_path = Paths.note(IMAGE_DEFAULT, daNote.style, daNote.type);
+
         frames = note_path.getAtlas();
-        animation.addByPrefix("Splash", "Splash", 30, false);
+        
+        var json_path:String = note_path.replace('${IMAGE_DEFAULT}.png', 'Splash_Anims.json');
+        if(Paths.exists(json_path)){
+            var anim_list:Array<String> = cast Reflect.getProperty(json_path.getJson(), IMAGE_DEFAULT);
+            for(a in anim_list){
+                animation.addByPrefix(a, a, 30, false);
+                splash_anims.push(a);
+            }
+        }else{
+            animation.addByPrefix("Splash", "Splash", 30, false);
+            splash_anims.push("Splash");
+        }
 
         playColor = daNote.playColor;
 
         shader = ColorFilterShader.getColorShader(note_path.getColorNote(), FlxColor.fromString(playColor));
 
-        playAnim("Splash");
+        playAnim(splash_anims[FlxG.random.int(0, splash_anims.length - 1)]);
     }
 
     public function playAnim(anim:String, ?force:Bool = false){

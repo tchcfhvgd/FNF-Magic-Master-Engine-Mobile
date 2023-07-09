@@ -98,8 +98,9 @@ class PlayState extends MusicBeatState {
 	public var moveStrums:Bool = true;
 
 	//Other
-	private var songGenerated:Bool = false;
-	private var songPlaying:Bool = false;
+	public var songStarted:Bool = false;
+	public var songGenerated:Bool = false;
+	public var songPlaying:Bool = false;
 	public var canPause:Bool = false;
 	public var isPaused:Bool = false;
 	public var onGameOver:Bool = false;
@@ -220,7 +221,7 @@ class PlayState extends MusicBeatState {
 		//Loading Strumlines
 		for(i in 0...songData.sectionStrums.length){
 			var strumLine = new StrumLine(0, 0, songData.sectionStrums[i].keys, Std.int(FlxG.width / 3) - 40, principal_controls, null, songData.sectionStrums[i].noteStyle);
-
+			
 			strumLine.onHIT = function(note:Note){
 				if(stage == null){return;}
 				var focus:Bool = false;
@@ -234,8 +235,10 @@ class PlayState extends MusicBeatState {
 					new_character.playAnim(song_animation, true);
 
 					if(!focus){
-						if(strumLine.typeStrum == "Playing"){StrumLine.GLOBAL_VARIABLES.Player = new_character;}
-						else{StrumLine.GLOBAL_VARIABLES.Enemy = new_character;}
+						if(songData.sectionStrums[i].isPlayable){
+							if(strumLine.typeStrum == "Playing"){StrumLine.GLOBAL_VARIABLES.Player = new_character;}
+							else{StrumLine.GLOBAL_VARIABLES.Enemy = new_character;}
+						}
 						strumLine.LOCAL_VARIABLES.Player = new_character;
 						focus = true;
 					}
@@ -339,6 +342,8 @@ class PlayState extends MusicBeatState {
 		resyncVocals();
 		
 		for(s in scripts){s.exFunction('song_started');}
+
+		songStarted = true;
 	}
 
 	var last_conductor:Float = -10000;
@@ -608,7 +613,7 @@ class PlayState extends MusicBeatState {
 	override public function onFocusLost():Void {
 		super.onFocusLost();
 
-		if(!songPlaying){return;}
+		if(!songStarted){return;}
 
 		pauseAndOpen(
 			"substates.PauseSubState",

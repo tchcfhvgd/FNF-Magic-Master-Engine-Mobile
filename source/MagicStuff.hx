@@ -19,7 +19,7 @@ import openfl.Lib;
 using SavedFiles;
 
 class MagicStuff {
-	public static final version:String = "0.9.1";
+	public static final version:String = "1.0";
 
     public static function reload_data():Void {        
         PreSettings.init();

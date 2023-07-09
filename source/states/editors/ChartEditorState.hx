@@ -190,7 +190,7 @@ class ChartEditorState extends MusicBeatState {
         strumLineEvent.cameras = [camHUD];
 		add(strumLineEvent);
 
-        btnAddStrum = new FlxCustomButton(0, 0, KEYSIZE, KEYSIZE, "", [Paths.image('UI_Assets/addStrum', 'shared').getGraphic(), false, 0, 0], null, function(){
+        btnAddStrum = new FlxCustomButton(0, 0, KEYSIZE, KEYSIZE, "", [Paths.image('editor_assets/addStrum').getGraphic(), false, 0, 0], null, function(){
             var nStrum:SwagStrum = {
                 isPlayable: true,
                 keys: 4,
@@ -221,7 +221,7 @@ class ChartEditorState extends MusicBeatState {
         btnAddStrum.scrollFactor.set(1, 0);
         add(btnAddStrum);
 
-        btnDelStrum = new FlxCustomButton(0, KEYSIZE * 1.5, KEYSIZE, KEYSIZE, "", [Paths.image('UI_Assets/delStrum', 'shared').getGraphic(), false, 0, 0], null, function(){
+        btnDelStrum = new FlxCustomButton(0, KEYSIZE * 1.5, KEYSIZE, KEYSIZE, "", [Paths.image('editor_assets/delStrum').getGraphic(), false, 0, 0], null, function(){
             if(_song.sectionStrums.length <= 1){return;}
     
             _song.sectionStrums.remove(_song.sectionStrums[curStrum]);
@@ -288,7 +288,7 @@ class ChartEditorState extends MusicBeatState {
         camHUD.follow(genFollow, LOCKON);
         camBHUD.zoom = stage.zoom;
         
-        updateSection();
+		changeSection(curSection);
     }
     
     function updateSection(value:Int = 0, force:Bool = false):Void {

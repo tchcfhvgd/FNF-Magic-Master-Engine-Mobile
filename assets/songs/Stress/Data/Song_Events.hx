@@ -57,10 +57,11 @@ function preload():Void {
 function startSong(_startCountdown:Void->Void):Void {
     if(!PlayState.isStoryMode){return false;}
     startCountdown = _startCountdown;
-    onCinematic = true;
 
     Character.setCameraToCharacter(tankman, camFollow);
     FlxTween.tween(getState().camHUD, {alpha: 0}, 0.5);
+
+    Timer.delay(function(){onCinematic = true;}, 1000);
 
     return true;
 }

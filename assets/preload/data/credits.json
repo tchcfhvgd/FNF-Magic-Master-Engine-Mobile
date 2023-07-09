@@ -22,7 +22,7 @@
             "Color": "#dfe37b"
         },
         {
-            "Name": "Massacre",
+            "Name": "Massanross",
             "Icon": "massan",
             "Description": "Chamoy",
             "Rol": "animator",
@@ -76,7 +76,7 @@
             "Name": "Saruky",
             "Icon": "saruky",
             "Description": "Cassette Girl Chromatic",
-            "Rol": "",
+            "Rol": "musician",
             "Color": "#842ec9"
         }
     ],

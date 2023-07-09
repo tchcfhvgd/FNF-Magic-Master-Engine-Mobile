@@ -260,9 +260,13 @@ class FreeplayState extends MusicBeatState {
 		var song_score:Float = Highscore.getScore(Paths.getFileName(songList[curSong].song, true), curDiff, curCat);
         scoreAlpha.cur_data = [{scale:0.3, bold:true, text:'${LangSupport.getText('gmp_score')}: ${song_score}'}];
         scoreAlpha.loadText(); scoreAlpha.screenCenter(X);
+		
+		FlxG.sound.play(Paths.sound("scrollMenu").getSound());
     }
 
 	function selectSong():Void {
+		FlxG.sound.play(Paths.sound("confirmMenu").getSound());
+		
 		var songInput:String = Song.fileSong(songList[curSong].song, curCat, curDiff);
 		var songdata:SwagSong = Song.loadFromJson(songInput);
 		onSelect(songdata);

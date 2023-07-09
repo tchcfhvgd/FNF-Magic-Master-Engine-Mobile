@@ -20,6 +20,7 @@ class PreSettings {
         "Visual Settings" => [
             "Type HUD" => [0, ["MagicHUD", "Original", "Minimized", "Detailed", "OnlyNotes"]],
             "Note Skin" => [0, ["Arrows", "Circles", "Bars", "Haxe"]],
+            "Splash Skin" => [0, ["Magic Splash"]],
             "Type Scroll" => [0, ["UpScroll", "DownScroll"]],
             "Default Strum Position" => [0, ["Middle", "Right", "Left"]],
             "Type Middle Scroll" => [0, ["None", "OnlyPlayer", "FadeOthers"]],
@@ -55,7 +56,9 @@ class PreSettings {
         if(CURRENT_SETTINGS == null){CURRENT_SETTINGS = PRESETTINGS;}
         
         for(key in PRESETTINGS.keys()){
-            if(!CURRENT_SETTINGS.exists(key)){CURRENT_SETTINGS.set(key, PRESETTINGS.get(key));}else{
+            if(!CURRENT_SETTINGS.exists(key)){
+                CURRENT_SETTINGS.set(key, PRESETTINGS.get(key));
+            }else{
                 for(ikey in PRESETTINGS.get(key).keys()){
                     if(!CURRENT_SETTINGS.get(key).exists(ikey)){
                         CURRENT_SETTINGS.get(key).set(ikey, PRESETTINGS.get(key).get(ikey));
@@ -67,7 +70,9 @@ class PreSettings {
         }
 
         for(key in CURRENT_SETTINGS.keys()){
-            if(!PRESETTINGS.exists(key)){CURRENT_SETTINGS.remove(key);}else{
+            if(!PRESETTINGS.exists(key)){
+                CURRENT_SETTINGS.remove(key);
+            }else{
                 for(ikey in CURRENT_SETTINGS.get(key).keys()){
                     if(!PRESETTINGS.get(key).exists(ikey)){
                         CURRENT_SETTINGS.get(key).remove(ikey);
@@ -118,7 +123,7 @@ class PreSettings {
         if((toReturn is Array)){return toReturn[1][toReturn[0]];}
         return toReturn;
     }
-    public static function getArrayPreSetting(setting:String, category:String){
+    public static function getArrayPreSetting(setting:String, category:String):Array<String>{
         return CURRENT_SETTINGS.get(category).get(setting)[1];
     }
 

@@ -230,6 +230,8 @@ class SkinsMenuState extends MusicBeatState {
 
 		alpReloadCharacter.visible = true;
 		canChange = true;
+		
+		FlxG.sound.play(Paths.sound("scrollMenu").getSound());
 	}
 
 	function updateCharacter():Void {

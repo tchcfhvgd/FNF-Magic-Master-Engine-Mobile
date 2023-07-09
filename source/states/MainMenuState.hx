@@ -173,6 +173,7 @@ class MainMenuState extends MusicBeatState {
 	function chooseSelection():Void {
 		if(principal_options[curSelected].icon == "mods" && ModSupport.MODS.length <= 0){return;}
 		
+		FlxG.sound.play(Paths.sound("confirmMenu").getSound());
 		optionGroup.members[curSelected].animation.play("selected");
 		if(principal_options[curSelected].func != null){principal_options[curSelected].func();}
 	}
@@ -194,5 +195,7 @@ class MainMenuState extends MusicBeatState {
 
 		curAlphabet.screenCenter(X);
 		curAlphabet.y = FlxG.height + 100;
+		
+		FlxG.sound.play(Paths.sound("scrollMenu").getSound());
 	}
 }

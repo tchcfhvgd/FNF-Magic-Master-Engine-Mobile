@@ -112,10 +112,13 @@ class PauseSubState extends MusicBeatSubstate {
 			grpMenuShit.members[i].alpha = 0.5;
 			if(i == curSelected){grpMenuShit.members[i].alpha = 1;}
 		}
+		
+		FlxG.sound.play(Paths.sound("scrollMenu").getSound());
 	}
 
 	public function doClose(){
 		canControlle = false;
+		FlxG.sound.play(Paths.sound("cancelMenu").getSound());
 		FlxTween.tween(curCamera, {alpha: 0}, 1, {onComplete: function(twn){close();}});
 	}
 }
