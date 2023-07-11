@@ -145,6 +145,7 @@ class PlayerSelectorState extends MusicBeatState {
 
 	function goToSong():Void {
 		SongListData.loadAndPlaySong(selSong, FlxG.keys.pressed.SHIFT);
+		PlayState.isDuel = true;
 		PlayState.strum_players = strum_players;
 	}
 }

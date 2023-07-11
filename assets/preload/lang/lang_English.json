@@ -100,6 +100,11 @@
 		{"bold":true, "scale":0.4, "text":"Difficulty"}
 	],
 
+	"pas_resume": "Resume",
+	"pas_restart_song": "Restart Song",
+	"pas_options": "Options",
+	"pas_exit_to_menu": "Exit to Menu",
+
 	"opt_cheating_settings": [{"scale":0.8, "bold":true, "text":"Cheating Settings"}],
 	"opt_game_settings": [{"scale":0.8, "bold":true, "text":"Game Settings"}],
 	"opt_other_settings": [{"scale":0.8, "bold":true, "text":"Other Settings"}],
@@ -112,6 +117,8 @@
 	"set_healing_multiplier": "Healing Multiplier",
 	"set_type_mode": "Type Mode",
 	"set_language": "Language",
+	"set_miss_sounds": "Miss Sounds",
+	"set_mute_on_miss": "Mute on Miss",
 	"set_scroll_speed_type": "Scroll Speed Type",
 	"set_scrollspeed": "Scroll Speed",
 	"set_note_offset": "Note Offset",

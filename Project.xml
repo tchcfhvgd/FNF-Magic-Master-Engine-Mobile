@@ -49,30 +49,18 @@
 	
 	<section if="PRELOAD_ALL">
 		<library name="songs"         preload="true" />
-		<library name="characters"    preload="true" />
 		<library name="shared"        preload="true" />
-		<library name="notes"         preload="true" />
-		<library name="stages"        preload="true" />
 	</section>
 	
 	<section if="NO_PRELOAD_ALL">
 		<library name="songs"         preload="false" />
-		<library name="characters"    preload="false" />
 		<library name="shared"        preload="false" />
-		<library name="notes"         preload="false" />
-		<library name="stages"        preload="false" />
 	</section>
 	
 	<assets path="assets/songs"         library="songs"       exclude="*.ogg" if="web"/>
 	<assets path="assets/songs"         library="songs"       exclude="*.mp3" unless="web"/>
-	<assets path="assets/characters"    library="characters"  exclude="*.ogg" if="web"/>
-	<assets path="assets/characters"    library="characters"  exclude="*.mp3" unless="web"/>
 	<assets path="assets/shared"        library="shared"      exclude="*.ogg" if="web"/>
 	<assets path="assets/shared"        library="shared"      exclude="*.mp3" unless="web"/>
-	<assets path="assets/notes"         library="notes"       exclude="*.ogg" if="web"/>
-	<assets path="assets/notes"         library="notes"       exclude="*.mp3" unless="web"/>
-	<assets path="assets/stages"        library="stages"      exclude="*.ogg" if="web"/>
-	<assets path="assets/stages"        library="stages"      exclude="*.mp3" unless="web"/>
 	
 	
 	<assets path='example_mods' rename='mods' embed='false'/>
@@ -156,5 +144,4 @@
 
 	<!-- <haxedef name="SKIP_TO_PLAYSTATE" if="debug" /> -->
 	<haxedef name="NG_LOGIN" if="newgrounds" />
-	
 </project>

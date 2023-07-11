@@ -226,22 +226,19 @@ class FlxAtlasFrames extends FlxFramesCollection
 	 */
 	public static function fromSparrow(Source:FlxGraphicAsset, Description:String):FlxAtlasFrames
 	{
-		var graphic:FlxGraphic = FlxG.bitmap.add(Source);
-		if (graphic == null)
-			return null;
+		var graphic:FlxGraphic = Source;
+		if(!(graphic is FlxGraphic)){graphic = FlxG.bitmap.add(Source);}
+		if(graphic == null){return null;}
 
 		// No need to parse data again
 		var frames:FlxAtlasFrames = FlxAtlasFrames.findFrame(graphic);
-		if (frames != null)
-			return frames;
+		if(frames != null){return frames;}
 
-		if (graphic == null || Description == null)
-			return null;
+		if(graphic == null || Description == null){return null;}
 
 		frames = new FlxAtlasFrames(graphic);
 
-		if (Assets.exists(Description))
-			Description = Assets.getText(Description);
+		if(Assets.exists(Description)){Description = Assets.getText(Description);}
 
 		var data:Access = new Access(Xml.parse(Description).firstElement());
 
@@ -343,22 +340,19 @@ class FlxAtlasFrames extends FlxFramesCollection
 	 */
 	public static function fromSpriteSheetPacker(Source:FlxGraphicAsset, Description:String):FlxAtlasFrames
 	{
-		var graphic:FlxGraphic = FlxG.bitmap.add(Source);
-		if (graphic == null)
-			return null;
+		var graphic:FlxGraphic = Source;
+		if(!(graphic is FlxGraphic)){graphic = FlxG.bitmap.add(Source);}
+		if(graphic == null){return null;}
 
 		// No need to parse data again
 		var frames = FlxAtlasFrames.findFrame(graphic);
-		if (frames != null)
-			return frames;
+		if(frames != null){return frames;}
 
-		if (graphic == null || Description == null)
-			return null;
+		if(graphic == null || Description == null){return null;}
 
 		frames = new FlxAtlasFrames(graphic);
 
-		if (Assets.exists(Description))
-			Description = Assets.getText(Description);
+		if(Assets.exists(Description)){Description = Assets.getText(Description);}
 
 		var pack = StringTools.trim(Description);
 		var lines:Array<String> = pack.split("\n");

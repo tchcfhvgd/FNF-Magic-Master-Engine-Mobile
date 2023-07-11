@@ -348,6 +348,12 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
                 if(LOCAL_VARIABLES.GameOver){lblStats.text = '|| You Died ||';}
                 else{
                     switch(PreSettings.getPreSetting("Type HUD", "Visual Settings")){
+                        case "Detailed":{
+                            lblStats.text = '||'+
+                                ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} |' +
+                                ' ${LangSupport.getText('gmp_misses')}: ${STATS.Misses} ' +
+                            '||';
+                        }
                         case "MagicHUD":{
                             lblStats.text = '||'+
                                 ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} |' +
@@ -448,14 +454,22 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     
             if(lblStats != null){
                 switch(PreSettings.getPreSetting("Type HUD", "Visual Settings")){
+                    case "Detailed":{
+                        lblStats.text = '||'+
+                            ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} |' +
+                            ' ${LangSupport.getText('gmp_record')}: ${STATS.Record} |' +
+                            ' ${LangSupport.getText('gmp_combo')}: ${STATS.Combo} |' +
+                            ' ${LangSupport.getText('gmp_maxCombo')}: ${STATS.MaxCombo} |' +
+                            ' ${LangSupport.getText('gmp_misses')}: ${STATS.Misses} |' +
+                            ' ${LangSupport.getText('gmp_hits')}: ${STATS.Hits} |' +
+                            ' ${LangSupport.getText('gmp_rating')}: ${STATS.Rating} ' +
+                        '||';
+                    }
                     case "MagicHUD":{
                         lblStats.text = '||'+
                             ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} |' +
-                            //' ${LangSupport.getText('gmp_record')}: ${STATS['Record']} |' +
                             ' ${LangSupport.getText('gmp_combo')}: ${STATS.Combo} |' +
-                            //' ${LangSupport.getText('gmp_maxCombo')}: ${STATS['MaxCombo']} |' +
                             ' ${LangSupport.getText('gmp_misses')}: ${STATS.Misses} |' +
-                            //' ${LangSupport.getText('gmp_hits')}: ${STATS['Hits']} |' +
                             ' ${LangSupport.getText('gmp_rating')}: ${STATS.Rating} ' +
                         '||';
                     }
@@ -483,13 +497,13 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 		if(cont.contains(true)){trace("RETURN"); return;}
 
 		if(sprite_healthBar == null){
-			sprite_healthBar = new FlxSprite(326, pre_TypeScroll == "DownScroll" ? 25 : 655).loadGraphic(Paths.styleImage("healthbar", ui_style, "shared").getGraphic());
+			sprite_healthBar = new FlxSprite(326, pre_TypeScroll == "DownScroll" ? 25 : 655).loadGraphic(Paths.styleImage("healthBar", ui_style, "shared").getGraphic());
 			sprite_healthBar.scale.set(0.7,0.7); sprite_healthBar.updateHitbox();
 			//sprite_healthBar.cameras = [camHUD];
 		}
 
 		if(healthBar == null){
-			healthBar = new FlxBar(330, pre_TypeScroll == "DownScroll" ? 35 : 665, RIGHT_TO_LEFT, Std.int(FlxG.width / 2) - 20, 16, this, 'HEALTH', 0, MAXHEALTH);
+			healthBar = new FlxBar(330, pre_TypeScroll == "DownScroll" ? 35 : 664, RIGHT_TO_LEFT, Std.int(FlxG.width / 2) - 20, 16, this, 'HEALTH', 0, MAXHEALTH);
 			healthBar.numDivisions = 500;
             healthBar.screenCenter(X);
 			//healthBar.cameras = [camHUD];
@@ -834,7 +848,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         
         var _score:Int = 0;
         var _rate:String = "MAGIC!!!";
-        var _popImage:String = "Magic";
+        var _popImage:String = "good";
 
         for(r in P_STAT){
             if(diff_rate > r.diff){continue;}

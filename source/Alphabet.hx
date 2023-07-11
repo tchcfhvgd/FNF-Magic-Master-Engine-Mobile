@@ -70,6 +70,7 @@ class Alphabet extends FlxUIGroup {
         text = "";
         curX = 0;
         curY = 0;
+
         clear();
 
         if(timer != null){timer.cancel();}
@@ -142,6 +143,7 @@ class Alphabet extends FlxUIGroup {
         text = "";
         curX = 0;
         curY = 0;
+        
         clear();
 
         isTyping = true;

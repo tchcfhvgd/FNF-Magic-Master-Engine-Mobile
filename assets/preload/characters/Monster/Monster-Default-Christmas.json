@@ -7,51 +7,51 @@
 	"scale": 1,
 	"anims": [
 		{
-			"loop": false,
-			"symbol": "Monster Right note",
-			"anim": "singLEFT",
-			"fps": 24,
-			"indices": []
-		},
-		{
-			"loop": false,
 			"symbol": "Monster left note",
+			"loop": false,
+			"fps": 24,
+			"anim": "singLEFT",
+			"indices": []
+		},
+		{
+			"symbol": "Monster Right note",
+			"loop": false,
+			"fps": 24,
 			"anim": "singRIGHT",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "monster down",
+			"loop": false,
+			"fps": 24,
 			"anim": "singDOWN",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "monster idle",
-			"anim": "idle",
+			"loop": false,
 			"fps": 24,
+			"anim": "idle",
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "monster up note",
-			"anim": "singUP",
+			"loop": false,
 			"fps": 24,
+			"anim": "singUP",
 			"indices": []
 		}
 	],
-	"zoom": 0.8,
-	"image": "monsterchristmas",
 	"name": "Monster",
+	"image": "monsterchristmas",
+	"zoom": 0.8,
 	"antialiasing": true,
+	"deathCharacter": "Boyfriend",
+	"skin": "Default",
+	"onRight": true,
+	"healthicon": "monster",
 	"camera": [
 		35,
 		-65
-	],
-	"healthicon": "monster",
-	"onRight": true,
-	"skin": "Default",
-	"deathCharacter": "Boyfriend"
+	]
 }

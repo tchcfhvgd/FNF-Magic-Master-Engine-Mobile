@@ -38,9 +38,6 @@ class Paths {
 		return key.replace("_", " ");
 	}
 
-	static var curLibrary:String = "shared";
-	static public function setCurrentLibrary(name:String){curLibrary = name.toLowerCase();}
-
 	inline public static function exists(path:String){
 		if(Assets.exists(path)){return true;}
 		#if sys	if(FileSystem.exists(setPath(path))){return true;} #end
@@ -98,13 +95,8 @@ class Paths {
 		if(mod_name != null){return getModPath(file, mod_name);}
 		if(library != null){return getLibraryPath(file, library);}
 
-		if (curLibrary != null){
-			var levelPath = getLibraryPathForce(file, curLibrary);
-			if(Paths.exists(levelPath)){return levelPath;}
-
-			levelPath = getLibraryPathForce(file, "shared");
-			if(Paths.exists(levelPath)){return levelPath;}
-		}
+		var levelPath = getLibraryPathForce(file, "shared");
+		if(Paths.exists(levelPath)){return levelPath;}
 
 		return getForcedPath(file);
 	}
@@ -140,7 +132,6 @@ class Paths {
 		return path;
 	}
 
-	inline static public function character(char:String, key:String, ?mod:String):String {return getPath('${char}/Sprites/${key}.png', IMAGE, 'characters', mod);}
 	inline static public function file(file:String, type:AssetType = TEXT, ?library:String, ?mod:String):String {return getPath(file, type, library, mod);}
 	inline static public function sound(key:String, ?library:String, ?mod:String):String {return getPath('sounds/$key.$SOUND_EXT', SOUND, library, mod);}
 	inline static public function music(key:String, ?library:String, ?mod:String):String {return getPath('music/$key.$SOUND_EXT', MUSIC, library, mod);}
@@ -231,13 +222,13 @@ class Paths {
 		if(!Paths.exists(path)){path = getPath('Default/_k.json', TEXT, 'notes');}
 		return path;
 	}
-	inline static public function character_json(char:String, asp:String, ?skin:String, ?is_death:Bool, ?mod:String):String {
+	inline static public function character(char:String, asp:String, ?skin:String, ?is_death:Bool, ?mod:String):String {
 		if(skin == null){skin = Skins.getSkin(char);}
 		var cur_char_file:String = '${char}'; if(is_death){cur_char_file = '${cur_char_file}_Death';}
-		var path = getPath('${char}/Skins/${cur_char_file}-${skin}-${asp}.json', TEXT, 'characters', mod);
-		if(!Paths.exists(path)){path = getPath('${char}/Skins/${cur_char_file}-Default-${asp}.json', TEXT, 'characters', mod);}
-		if(!Paths.exists(path)){path = getPath('${char}/Skins/${cur_char_file}-Default-Default.json', TEXT, 'characters', mod);}
-		if(!Paths.exists(path)){path = getPath('Boyfriend/Skins/Boyfriend-Default-Default.json', TEXT, 'characters', mod);}
+		var path = getPath('${char}/${cur_char_file}-${skin}-${asp}.json', TEXT, 'characters', mod);
+		if(!Paths.exists(path)){path = getPath('${char}/${cur_char_file}-Default-${asp}.json', TEXT, 'characters', mod);}
+		if(!Paths.exists(path)){path = getPath('${char}/${cur_char_file}-Default-Default.json', TEXT, 'characters', mod);}
+		if(!Paths.exists(path)){path = getPath('Boyfriend/Boyfriend-Default-Default.json', TEXT, 'characters', mod);}
 		return path;
 	}
 }

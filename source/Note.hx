@@ -132,7 +132,7 @@ class StrumNote extends FlxSprite{
 	}
 
     override public function setGraphicSize(Width:Int = 0, Height:Int = 0):Void {
-        super.setGraphicSize(Width,Height);
+        super.setGraphicSize(Width, Height);
         this.updateHitbox();
     }
 }
@@ -353,18 +353,10 @@ class Note extends StrumNote {
     override public function playAnim(anim:String, force:Bool = false){
 		animation.play(anim, force);
         if(typeNote == "Sustain"){
-            if(pre_TypeScroll == "DownScroll"){
-                if(nextNote != null){
-                    nextNote.setGraphicSize(Std.int(nextNote.note_size.x), Std.int(this.y - nextNote.y));
-                }else{
-                    setGraphicSize(Std.int(note_size.x), Std.int(note_size.y));
-                }
+            if(nextNote != null){
+                setGraphicSize(Std.int(note_size.x), Std.int(nextNote.y - this.y) + 2);
             }else{
-                if(nextNote != null){
-                    setGraphicSize(Std.int(note_size.x), Std.int(nextNote.y - this.y));
-                }else{
-                    setGraphicSize(Std.int(note_size.x), Std.int(note_size.y / 4));
-                }
+                setGraphicSize(Std.int(note_size.x), Std.int(note_size.y / 4));
             }
         }else{
             setGraphicSize(Std.int(note_size.x), Std.int(note_size.y));

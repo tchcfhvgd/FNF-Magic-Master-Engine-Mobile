@@ -1,0 +1,57 @@
+{
+    "dialogue":{
+        "dialogue_position": [36, 36],
+        "box": "Senpai_Box",
+        "portraits": [
+            "Senpai",
+            "Pixel_Boyfriend"
+        ],
+        "dialogue": [
+            {
+                "appear_left": "Senpai",
+                "text_type": "Flixel",
+                "box_anim": "Normal",
+                "dialog":[
+                    {
+                        "portrait": "Senpai", "font": "pixel", "sound": "dialog_audios/senpai", "time": 0.033, "bold": true, "scale": 32,
+                        "text": "Ah, una nueva doncella ha venido en busca del amor verdadero!"
+                    }
+                ]
+            },
+            {
+                "dialog":[
+                    {
+                        "portrait": "Senpai", "sound": "dialog_audios/senpai", "time": 0.033, "bold": true, "scale": 32,
+                        "text": "Una serenata entre caballeros decidira donde residira su hermoso corazon."
+                    }
+                ]
+            },
+            {
+                "appear_right": "Pixel_Boyfriend",
+                "dialog":[
+                    {
+                        "portrait": "Pixel_Boyfriend", "sound": "dialog_audios/pixel_boyfriend", "time": 0.033, "bold": true, "scale": 32,
+                        "text": "Callate."
+                    }
+                ]
+            },
+            {
+                "dialog":[
+                    {
+                        "portrait": "Senpai", "sound": "dialog_audios/senpai", "time": 0.033, "bold": true, "scale": 32,
+                        "text": "Que?"
+                    }
+                ]
+            },
+            {
+                "appear_right": "Pixel_Boyfriend",
+                "dialog":[
+                    {
+                        "portrait": "Pixel_Boyfriend", "sound": "dialog_audios/pixel_boyfriend", "time": 0.033, "bold": true, "scale": 32,
+                        "text": "Beep bo bop."
+                    }
+                ]
+            }
+        ]
+    }
+}

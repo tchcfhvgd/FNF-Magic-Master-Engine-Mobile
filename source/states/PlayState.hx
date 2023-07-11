@@ -62,6 +62,8 @@ using StringTools;
 
 class PlayState extends MusicBeatState {
 	public static var SONG:SwagSong = null;
+	public static var isDuel:Bool = false;
+	public static var total_plays:Int = 0;
 	public static var isStoryMode:Bool = false;
 	public static var strum_players:Array<SongPlayer> = null;
 
@@ -130,6 +132,7 @@ class PlayState extends MusicBeatState {
 	}
 
 	public var timers:Array<FlxTimer> = [];
+	public var tweens:Array<FlxTween> = [];
 	
 	public var stage:Stage;
 
@@ -137,7 +140,8 @@ class PlayState extends MusicBeatState {
 
 	override public function create(){
 		super.create();
-
+		total_plays++;
+		
 		FlxG.mouse.visible = false;
 		
 		persistentUpdate = true;
@@ -187,6 +191,12 @@ class PlayState extends MusicBeatState {
 
 			startCountdown(startSong);
 		});
+
+		#if desktop
+		// Updating Discord Rich Presence
+		DiscordClient.changePresence("Playing " + SONG.song, null);
+		MagicStuff.setWindowTitle("Playing " + SONG.song);
+		#end
 	}
 
 	private var loadedStrums:Int = 0;
@@ -208,21 +218,34 @@ class PlayState extends MusicBeatState {
 
 		if(songData.hasVoices){
             for(i in 0...songData.characters.length){
-                var voice = new FlxSound().loadEmbedded(Paths.voice(i, songData.characters[i][0], songData.song, songData.category).getSound());
-                FlxG.sound.list.add(voice);
-                voices.add(voice);
+				if(!Paths.exists(Paths.voice(i, songData.characters[i][0], songData.song, songData.category))){continue;}
+				var voice = new FlxSound().loadEmbedded(Paths.voice(i, songData.characters[i][0], songData.song, songData.category).getSound());
+				FlxG.sound.list.add(voice);
+				voices.add(voice);
             }
-        }else{
-            var voice = new FlxSound();
-            FlxG.sound.list.add(voice);
-            voices.add(voice);
         }
+		
+		if(voices.sounds.length <= 0){
+			var voice = new FlxSound();
+			FlxG.sound.list.add(voice);
+			voices.add(voice);
+		}
 
 		//Loading Strumlines
 		for(i in 0...songData.sectionStrums.length){
 			var strumLine = new StrumLine(0, 0, songData.sectionStrums[i].keys, Std.int(FlxG.width / 3) - 40, principal_controls, null, songData.sectionStrums[i].noteStyle);
 			
 			strumLine.onHIT = function(note:Note){
+				if(PreSettings.getPreSetting("Mute on Miss", "Game Settings")){
+					if(SONG.hasVoices){
+						if(voices.sounds[i] != null){
+							voices.sounds[i].volume = 1;
+						}else{
+							voices.sounds[0].volume = 1;
+						}
+					}
+				}
+
 				if(stage == null){return;}
 				var focus:Bool = false;
 				
@@ -232,7 +255,7 @@ class PlayState extends MusicBeatState {
 				for(ii in Song.getNoteCharactersToSing(note, strumLine.swagStrum, strumLine.curSection)){
 					var new_character:Character = stage.getCharacterById(ii);
 					
-					new_character.playAnim(song_animation, true);
+					new_character.singAnim(song_animation, note.typeNote == "Sustain");
 
 					if(!focus){
 						if(songData.sectionStrums[i].isPlayable){
@@ -246,6 +269,17 @@ class PlayState extends MusicBeatState {
 			};
 
 			strumLine.onMISS = function(note:Note){
+				if(PreSettings.getPreSetting("Miss Sounds", "Game Settings")){FlxG.sound.play(Paths.soundRandom('missnote', 1, 3).getSound(), 0.5);}
+				if(PreSettings.getPreSetting("Mute on Miss", "Game Settings")){
+					if(SONG.hasVoices){
+						if(voices.sounds[i] != null){
+							voices.sounds[i].volume = 0;
+						}else{
+							voices.sounds[0].volume = 0;
+						}
+					}
+				}
+
 				if(stage == null){return;}
 				var focus:Bool = false;
 				
@@ -371,7 +405,7 @@ class PlayState extends MusicBeatState {
 		checkEvents();
 
 		if(canControlle){	
-			if(principal_controls.checkAction("Menu_Pause", JUST_PRESSED) && canPause){
+			if(principal_controls.checkAction("Pause_Game", JUST_PRESSED) && canPause){
 				for(s in strumsGroup){s.changeTypeStrum("BotPlay");}
 				pauseAndOpen(
 					"substates.PauseSubState",
@@ -482,19 +516,8 @@ class PlayState extends MusicBeatState {
 			}
 						
 			if(!pre_OnlyNotes){
-				if(followChar){Character.setCameraToCharacter(stage.getCharacterById(Character.getFocusCharID(SONG, curSection)), camFollow);}
+				if(followChar){Character.setCameraToCharacter(stage.getCharacterById(Character.getFocusCharID(SONG, curSection)), camFollow, stage);}
 			}			
-		}
-
-		if(stage != null){
-			if(stage.camP_1 != null){
-				if(camFollow.x < stage.camP_1[0]){camFollow.x = stage.camP_1[0];}
-				if(camFollow.y < stage.camP_1[1]){camFollow.y = stage.camP_1[1];}
-			}
-			if(stage.camP_2 != null){
-				if(camFollow.x > stage.camP_2[0]){camFollow.x = stage.camP_2[0];}
-				if(camFollow.y > stage.camP_2[1]){camFollow.y = stage.camP_2[1];}
-			}
 		}
 	}
 
@@ -525,8 +548,15 @@ class PlayState extends MusicBeatState {
 			for(s in scripts){s.exFunction('song_ended');}
 			
 			if(SongListData.songPlaylist.length <= 0){
+				FlxG.sound.playMusic(Paths.music('freakyMenu').getSound());
+
+				inst.destroy();
+				for(s in voices.sounds){s.destroy();}
+				stage.destroy();
+
 				SongListData.resetVariables();
-				if(states.PlayState.isStoryMode){states.MusicBeatState.switchState("states.MainMenuState", []);}
+				if(states.PlayState.isDuel){states.MusicBeatState.switchState("states.FreeplayState", [null, "states.MainMenuState", function(_song){MusicBeatState.switchState("states.PlayerSelectorState", [_song, null, "states.MainMenuState"]);}]);}
+				else if(states.PlayState.isStoryMode){states.MusicBeatState.switchState("states.StoryMenuState", [null, "states.MainMenuState"]);}
 				else{states.MusicBeatState.switchState("states.FreeplayState", [null, "states.MainMenuState"]);}
 			}else{
 				trace('LOADING NEXT SONG');
@@ -573,10 +603,12 @@ class PlayState extends MusicBeatState {
 				inst.pause();
 				for(sound in voices.sounds){sound.pause();}
 			}
-			for(timer in timers){if(!timer.finished){timer.active = false;}}
+			for(timer in timers){if(timer != null){timer.active = false;}}
+			for(tween in tweens){if(tween != null){tween.active = false;}}
 		}else{
 			if(songGenerated && inst != null){resyncVocals();}	
-			for(timer in timers){if(!timer.finished){timer.active = true;}}
+			for(timer in timers){if(timer != null){timer.active = true;}}
+			for(tween in tweens){if(tween != null){tween.active = true;}}
 		}
 	}
 
@@ -696,6 +728,7 @@ class SongListData {
 	
 	public static function nextSong(score){
 		PlayState.strum_players = null;
+		PlayState.total_plays = 0;
 
 		campScore += score;
 		songPlaylist.shift();
@@ -703,6 +736,7 @@ class SongListData {
 
 	public static function resetVariables(){
 		PlayState.strum_players = null;
+		PlayState.total_plays = 0;
 
 		songPlaylist = [];
 		campScore = 0;

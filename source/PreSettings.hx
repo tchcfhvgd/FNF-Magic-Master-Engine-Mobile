@@ -12,6 +12,8 @@ class PreSettings {
     public static var PRESETTINGS:Map<String, Map<String, Dynamic>> = [];
     public static final DEFAULTSETTINGS:Map<String, Map<String, Dynamic>> = [
         "Game Settings" => [
+            "Miss Sounds" => true,
+            "Mute on Miss" => true,
             "Language" => [0, ["English", "Español"]],
             "Note Offset" => 0,
             "Scroll Speed Type" => [0, ["Scale", "Force", "Disabled"]],

@@ -57,7 +57,7 @@ class PauseSubState extends MusicBeatSubstate {
 
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
 		for (i in 0...menuItems.length){
-			var songText:Alphabet = new Alphabet(10,(70*i)+30,menuItems[i]);
+			var songText:Alphabet = new Alphabet(10, (70 * i) + 30, LangSupport.getText('pas_${Paths.getFileName(menuItems[i].toLowerCase(), true)}'));
 			grpMenuShit.add(songText);
 		}
 		grpMenuShit.cameras = [curCamera];
@@ -87,8 +87,17 @@ class PauseSubState extends MusicBeatSubstate {
 					case "Options":{loadSubState("substates.OptionsSubState", []);}
 					case "Restart Song":{MusicBeatState.loadState("states.PlayState", [], [[{type:"SONG", instance:states.PlayState.SONG}], false]);}
 					case "Exit to menu":{
+						var cur_state = MusicBeatState.state;
+						if((cur_state is states.PlayState)){		
+							var cur_playstate:states.PlayState = cast cur_state;
+							cur_playstate.inst.destroy();
+							for(s in cur_playstate.voices.sounds){s.destroy();}
+							cur_playstate.stage.destroy();
+						}
 						SongListData.resetVariables();
-						MusicBeatState.switchState("states.MainMenuState", []);
+						if(states.PlayState.isDuel){states.MusicBeatState.switchState("states.FreeplayState", [null, "states.MainMenuState", function(_song){MusicBeatState.switchState("states.PlayerSelectorState", [_song, null, "states.MainMenuState"]);}]);}
+						else if(states.PlayState.isStoryMode){states.MusicBeatState.switchState("states.StoryMenuState", [null, "states.MainMenuState"]);}
+						else{states.MusicBeatState.switchState("states.FreeplayState", [null, "states.MainMenuState"]);}
 					}
 				}
 			}

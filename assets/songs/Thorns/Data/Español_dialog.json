@@ -1,0 +1,55 @@
+{
+    "dialogue":{
+        "dialogue_position": [36, 36],
+        "box": "Spirit_Box",
+        "portraits": [
+            "Spirit",
+            "Pixel_Boyfriend"
+        ],
+        "dialogue": [
+            {
+                "appear_left": "Spirit",
+                "text_type": "Flixel",
+                "box_anim": "Normal",
+                "dialog":[
+                    {
+                        "portrait": "Spirit", "font": "Pixel Arial 11 Bold", "sound": "dialog_audios/spirit", "time": 0.033, "bold": true, "scale": 32,
+                        "text": "Contacto directo con humanos reales, despues de estar atrapado aqui tanto tiempo..."
+                    }
+                ]
+            },
+            {
+                "dialog":[
+                    {
+                        "portrait": "Spirit", "sound": "dialog_audios/spirit", "time": 0.033, "bold": true, "scale": 32,
+                        "text": "y ELLA sobre todas las personas."
+                    }
+                ]
+            },
+            {
+                "dialog":[
+                    {
+                        "portrait": "Spirit", "sound": "dialog_audios/spirit", "time": 0.033, "bold": true, "scale": 32,
+                        "text": "Hare que su padre pague por todo lo que me ha hecho a mi y a los demas,,,,"
+                    }
+                ]
+            },
+            {
+                "dialog":[
+                    {
+                        "portrait": "Spirit", "sound": "dialog_audios/spirit", "time": 0.033, "bold": true, "scale": 32,
+                        "text": "Te destruire y tomare tu diminuto cuerpo en lo que tomas mi lugar."
+                    }
+                ]
+            },
+            {
+                "dialog":[
+                    {
+                        "portrait": "Spirit", "sound": "dialog_audios/spirit", "time": 0.033, "bold": true, "scale": 32,
+                        "text": "No creo que lo uses mucho para que te importe..."
+                    }
+                ]
+            }
+        ]
+    }
+}

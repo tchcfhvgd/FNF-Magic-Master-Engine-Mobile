@@ -36,28 +36,55 @@ class SavedFiles {
 	public static var savedTempMap:Map<String, Dynamic> = new Map<String, Dynamic>();
 	public static var usedAssets:Array<String> = [];
 
+	public static function gc():Void {System.gc();}
+	public static function clearAsset(key:String, asset_type:AssetType = IMAGE):Void {
+		if(!savedTempMap.exists(key)){return;}
+
+		@:privateAccess
+		switch(asset_type){
+			case BINARY, MOVIE_CLIP, TEMPLATE, TEXT:{}
+			case IMAGE:{
+				openfl.Assets.cache.removeBitmapData(key);
+				FlxG.bitmap._cache.remove(key);
+				//trace('deleted image: [${key}]');
+			}
+			case SOUND, MUSIC:{
+				openfl.Assets.cache.removeSound(key);
+				//trace('deleted sound: [${key}]');
+			}
+			case FONT:{
+				openfl.Assets.cache.removeFont(key);
+				//trace('deleted font: [${key}]');
+			}
+		}
+		
+		savedTempMap.remove(key);
+	}
 	public static function clearUnusedAssets() {
 		for(key in savedTempMap.keys()){
 			if(usedAssets.contains(key)){continue;}
 
 			var cur_asset = savedTempMap.get(key);
-			if(cur_asset != null){continue;}
+			if(cur_asset == null){continue;}
 
 			@:privateAccess
 			switch(cur_asset.asset_type){
 				case IMAGE:{
 					openfl.Assets.cache.removeBitmapData(key);
 					FlxG.bitmap._cache.remove(key);
+					//trace('deleted image: [${key}]');
 				}
 				case SOUND, MUSIC:{
 					openfl.Assets.cache.removeSound(key);
+					//trace('deleted sound: [${key}]');
 				}
 				case FONT:{
 					openfl.Assets.cache.removeFont(key);
+					//trace('deleted font: [${key}]');
 				}
 			}
 			
-			cur_asset.asset.destroy();
+			if(Reflect.hasField(cur_asset.asset, 'destroy')){cur_asset.asset.destroy();}
 			savedTempMap.remove(key);
 		}
 		System.gc();
@@ -71,22 +98,29 @@ class SavedFiles {
 			openfl.Assets.cache.removeBitmapData(key);
 			FlxG.bitmap._cache.remove(key);
 			cur_asset.destroy();
+			
+			//trace('removed image: [${key}]');
 		}
 
 		for (key in savedTempMap.keys()) {
 			var cur_saved = savedTempMap.get(key);
 			if(cur_saved == null || usedAssets.contains(key)){continue;}
 			switch(cur_saved.asset_type){
-				default:{savedTempMap.remove(key);}
+				default:{
+					savedTempMap.remove(key);
+					//trace('removed default: [${key}]');
+				}
 				case SOUND, MUSIC:{
 					openfl.Assets.cache.clear(key);
 					savedTempMap.remove(key);
+					//trace('removed sound: [${key}]');
 				}
 				case IMAGE:{}
 			}
 		}
 
 		usedAssets = [];
+		#if !html5 openfl.Assets.cache.clear("songs"); #end
 	}
 
 	inline static public function isSaved(file:String):Bool {
@@ -95,12 +129,14 @@ class SavedFiles {
 		return false;
 	}
 	inline static public function getSavedFile(file:String):Any {
-		if(savedTempMap.exists(file)){usedAssets.push(file); return savedTempMap.get(file).asset;}
-		if(savedTempMap.exists(Paths.setPath(file))){usedAssets.push(Paths.setPath(file)); return savedTempMap.get(Paths.setPath(file)).asset;}
+		if(savedTempMap.exists(file)){return savedTempMap.get(file).asset;}
+		if(savedTempMap.exists(Paths.setPath(file))){return savedTempMap.get(Paths.setPath(file)).asset;}
 		return null;
 	}
 	inline static public function saveFile(file:String, instance:Dynamic, type:Dynamic):Void {
+		usedAssets.push(file);
 		savedTempMap.set(file, {asset_type: type, asset: instance});
+		//trace('saved [${file}]');
 	}
 	inline static public function unsaveFile(file:String):Void {
 		savedTempMap.remove(Paths.setPath(file));
@@ -135,20 +171,28 @@ class SavedFiles {
 		#end
 	}
 
-	inline public static function getGraphic(file:String):Any {
+	public static function getGraphic(file:String):Any {
 		if(isSaved(file)){return getSavedFile(file);}
-		var bit:BitmapData = BitmapData.fromFile(file);
-		if(bit == null){return file;}
-		var graphic:FlxGraphic = FlxGraphic.fromBitmapData(bit, false, file);
+		var graphic:FlxGraphic = FlxG.bitmap.add(file, false);
+		if(graphic == null){
+			trace('Null: ${file}');
+			var bit:BitmapData = BitmapData.fromFile(file);
+			if(bit == null){return file;}
+			graphic = FlxGraphic.fromBitmapData(bit, false, file);
+		}
 		graphic.persist = true;
 		saveFile(file, graphic, IMAGE);
 		return getSavedFile(file);
 	}
-	inline public static function saveGraphic(file:String):Void {
+	public static function saveGraphic(file:String):Void {
 		if(isSaved(file) || !Paths.exists(file)){return;}
-		var bit:BitmapData = BitmapData.fromFile(file);
-		if(bit == null){return;}
-		var graphic:FlxGraphic = FlxGraphic.fromBitmapData(bit, false, file);
+		var graphic:FlxGraphic = FlxG.bitmap.add(file, false);
+		if(graphic == null){
+			trace('Null: ${file}');
+			var bit:BitmapData = BitmapData.fromFile(file);
+			if(bit == null){return;}
+			graphic = FlxGraphic.fromBitmapData(bit, false, file);
+		}
 		graphic.persist = true;
 		saveFile(file, graphic, IMAGE);
 	}
@@ -173,32 +217,22 @@ class SavedFiles {
 
 	inline static public function getSparrowAtlas(path:String):FlxAtlasFrames {
 		path = path.replace(".png", "").replace('.xml', '');
-		var custom_path:String = '$path.custom_atlas';
-
-		if(isSaved(custom_path)){return getSavedFile(custom_path);}
 
 		var bit = getGraphic('$path.png');
 		var xml = getText('$path.xml');
 
 		if(bit == null || xml == null){return null;}
-
-		saveFile(custom_path, FlxAtlasFrames.fromSparrow(bit, xml), "ATLAS");
-		return getSavedFile(custom_path);
+		return FlxAtlasFrames.fromSparrow(bit, xml);
 	}
 
 	inline static public function getPackerAtlas(path:String):FlxAtlasFrames {
 		path = path.replace(".png", "").replace('.txt', '');
-		var custom_path:String = '$path.custom_atlas';
-
-		if(isSaved(custom_path)){return getSavedFile(custom_path);}
 
 		var bit = getGraphic('$path.png');
 		var txt = getText('$path.txt');
 
 		if(bit == null || txt == null){return null;}
-
-		saveFile(custom_path, FlxAtlasFrames.fromSpriteSheetPacker(bit, txt), "ATLAS");
-		return getSavedFile(custom_path);
+		return FlxAtlasFrames.fromSpriteSheetPacker(bit, txt);
 	}
 
 	static public function getAtlas(path:String):FlxAtlasFrames {
@@ -206,7 +240,6 @@ class SavedFiles {
 
 		if(Paths.exists('${path}.xml')){return getSparrowAtlas('$path.xml');}
 		else if(Paths.exists('${path}.txt')){return getPackerAtlas('$path.txt');}
-
 		return null;
 	}
 	

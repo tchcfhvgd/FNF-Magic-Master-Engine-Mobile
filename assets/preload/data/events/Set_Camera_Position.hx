@@ -20,5 +20,5 @@ function execute(x:Int, y:Int, time:Float):Void {
     getState().camFollow.setPosition(x,y);
     
     var step:Float = getState().conductor.stepCrochet / 1000;
-    new FlxTimer().start((time * step), function(tmr:FlxTimer){getState().followChar = true;});
+    getState().timers.push(new FlxTimer().start((time * step), function(tmr:FlxTimer){getState().followChar = true;}));
 }

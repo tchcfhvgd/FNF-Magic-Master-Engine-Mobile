@@ -121,21 +121,20 @@ class Stage extends FlxTypedGroup<Dynamic>{
     }
 
     public function charge():Void {
-        var numCont:Int = 0;
-        for(sPart in stageData){
-            add(sPart);
+        var current_layer:Int = 0;
+        for(current_part in stageData){
+            add(current_part);
             for(char in characterData){
-                var cLyr:Int = Std.int(initChar + char.curLayer);
-                if(cLyr < 0){cLyr = 0;}
-                if(cLyr >= stageData.members.length){cLyr = stageData.members.length - 1;}
+                var char_layer:Int = Std.int(initChar + char.curLayer);
+                if(char_layer < 0){char_layer = 0;} if(char_layer >= stageData.members.length){char_layer = stageData.members.length - 1;}
 
-                if(cLyr == numCont){
-                    if(sPart.scrollFactor != null){char.scrollFactor.set(sPart.scrollFactor.x, sPart.scrollFactor.y);}
+                if(char_layer == current_layer){
+                    if(current_part.scrollFactor != null){char.scrollFactor.set(current_part.scrollFactor.x, current_part.scrollFactor.y);}
                     add(char);
                 }
             }
 
-            numCont++;
+            current_layer++;
         }
 
         if(showCamPoints){
@@ -182,6 +181,8 @@ class Stage extends FlxTypedGroup<Dynamic>{
     }
 
     override function destroy():Void {
+        if(stageData.members != null && stageData.members.length > 0){for(m in stageData.members){stageData.remove(m); if(Reflect.hasField(m, "destroy")){m.destroy();}}}
+        if(members != null && members.length > 0){for(m in members){remove(m); if(Reflect.hasField(m, "destroy")){m.destroy();}}}
         if(script != null){script.destroy();}
         super.destroy();
     }

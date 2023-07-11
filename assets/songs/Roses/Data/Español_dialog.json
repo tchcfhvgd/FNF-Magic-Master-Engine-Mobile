@@ -1,0 +1,40 @@
+{
+    "dialogue":{
+        "dialogue_position": [36, 36],
+        "box": "Senpai_Box",
+        "portraits": [
+            "Senpai_Angry",
+            "Pixel_Boyfriend"
+        ],
+        "dialogue": [
+            {
+                "appear_left": "Senpai_Angry",
+                "text_type": "Flixel",
+                "box_anim": "Normal",
+                "dialog":[
+                    {
+                        "portrait": "Senpai_Angry", "font": "pixel", "sound": "dialog_audios/senpai", "time": 0.033, "bold": true, "scale": 32,
+                        "text": "Nada mal para un asqueroso gusano."
+                    }
+                ]
+            },
+            {
+                "dialog":[
+                    {
+                        "portrait": "Senpai_Angry", "sound": "dialog_audios/senpai", "time": 0.033, "bold": true, "scale": 32,
+                        "text": "Pero esta vez te arrancare los huevos justo despues de que tu novia termine de hacer gargaras con los mios."
+                    }
+                ]
+            },
+            {
+                "appear_right": "Pixel_Boyfriend",
+                "dialog":[
+                    {
+                        "portrait": "Pixel_Boyfriend", "sound": "dialog_audios/pixel_boyfriend", "time": 0.033, "bold": true, "scale": 32,
+                        "text": "Bop beep be be skdoo bep"
+                    }
+                ]
+            }
+        ]
+    }
+}

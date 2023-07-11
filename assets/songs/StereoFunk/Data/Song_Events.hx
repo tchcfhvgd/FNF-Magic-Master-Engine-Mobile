@@ -19,6 +19,7 @@ import("haxe.format.JsonParser", "Json");
 import("flixel.FlxSprite", "FlxSprite");
 import("flixel.FlxObject", "FlxObject");
 import("flixel.FlxCamera", "FlxCamera");
+import("states.PlayState", "PlayState");
 import("haxe.Timer", "Timer");
 import("flixel.FlxG", "FlxG");
 
@@ -47,7 +48,6 @@ function preload():Void {
 }
 
 function startSong(startCountdown:Void->Void):Void {
-
     getState().followChar = false;
 
     fadeStart = new FlxSprite(0,0).makeGraphic(FlxG.width, FlxG.height, 0xFF000000);
@@ -68,7 +68,7 @@ function startSong(startCountdown:Void->Void):Void {
 function beatHit(curBeat:Int):Void {    
     switch(curBeat){
         case 1:{
-            FlxTween.tween(camFollow, {y: 40}, (step * 60), {ease: FlxEase.quadInOut, onComplete: function(tween:FlxTween){getState().followChar = true;}});
+            getState().tweens.push(FlxTween.tween(camFollow, {y: 40}, (step * 60), {ease: FlxEase.quadInOut, onComplete: function(tween:FlxTween){getState().followChar = true;}}));
         }
     }
 }

@@ -576,7 +576,7 @@ class ChartEditorState extends MusicBeatState {
             cursor_Event.alpha = 0;
             for(grid in gridGroup){grid.alpha = 0.5;}
 
-            Character.setCameraToCharacter(stage.getCharacterById(Character.getFocusCharID(_song, curSection)), backFollow);
+            Character.setCameraToCharacter(stage.getCharacterById(Character.getFocusCharID(_song, curSection)), backFollow, stage);
 
             for(i in 0...notesCanHit.length){
                 for(n in notesCanHit[i]){
@@ -604,8 +604,11 @@ class ChartEditorState extends MusicBeatState {
             eveGrid.alpha = 1;
             MagicStuff.doToMember(cast gridGroup, curStrum + 1, function(grid){grid.alpha = 1;}, function(grid){grid.alpha = 0.5;});           
             
-            Character.setCameraToCharacter(stage.getCharacterById(Character.getFocusCharID(_song, curSection, curStrum)), backFollow);
-            if(chkFocusChar.checked){Character.setCameraToCharacter(stage.getCharacterById(selCharacter), backFollow);}
+            if(chkFocusChar.checked){
+                Character.setCameraToCharacter(stage.getCharacterById(selCharacter), backFollow, stage);
+            }else{
+                Character.setCameraToCharacter(stage.getCharacterById(Character.getFocusCharID(_song, curSection, curStrum)), backFollow, stage);
+            }
 
             btnAddStrum.revive();
             btnDelStrum.revive();

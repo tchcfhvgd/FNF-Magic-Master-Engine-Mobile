@@ -56,7 +56,7 @@ function preload():Void {
 }
 
 function startSong(startCountdown:Void->Void):Void {
-    if(!PlayState.isStoryMode){startCountdown(); return;}
+    if(!PlayState.isStoryMode){return false;}
 
     FlxG.sound.play(SavedFiles.getSound(Paths.sound("ANGRY_TEXT_BOX", "stages/schoolEvil")));
     
@@ -71,6 +71,8 @@ function startSong(startCountdown:Void->Void):Void {
 }
 
 function endSong(endCountdown:Void->Void):Void {
+    if(!PlayState.isStoryMode){return false;}
+
     getState().camFHUD.fade(0xFFFF0000, 1, true);
     FlxG.sound.play(SavedFiles.getSound(Paths.sound("ANGRY", "stages/schoolEvil")));
 

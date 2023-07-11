@@ -24,14 +24,14 @@
         {
             "Name": "Massanross",
             "Icon": "massan",
-            "Description": "Chamoy",
+            "Description": "2 años y todavia no se como hacer cinematicas XD",
             "Rol": "animator",
             "Color": "#ff8585"
         },
         {
             "Name": "ElSniper",
             "Icon": "sniper",
-            "Description": "",
+            "Description": ":v",
             "Rol": "animator",
             "Color": "#5f9662"
         },
@@ -77,6 +77,13 @@
             "Icon": "saruky",
             "Description": "Cassette Girl Chromatic",
             "Rol": "musician",
+            "Color": "#842ec9"
+        },
+        {
+            "Name": "YokuTzen",
+            "Icon": "yokze",
+            "Description": "No se que hago aca si no hice el oro",
+            "Rol": "",
             "Color": "#842ec9"
         }
     ],

@@ -21,6 +21,8 @@ function preload():Void {
     curTween = null;
     initZoom = getState().stage.zoom;
     cur_zoom = getState().stage.zoom;
+
+    getState().tweens.push(curTween);
 }
 
 function execute(_zoom:Float, _delay:Float, _type:String):Void {

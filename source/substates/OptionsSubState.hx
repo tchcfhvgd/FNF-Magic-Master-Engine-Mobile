@@ -117,7 +117,16 @@ class OptionsSubState extends MusicBeatSubstate {
 		switch(category_list[curCategory].text){
 			case "Controls":{
 				var _i:Int = 0;
-				for(control in Controls.STATIC_ACTIONS.keys()){
+				var control_list:Array<String> = [for(key in Controls.STATIC_ACTIONS.keys()) key];
+				control_list.sort(function(a:String, b:String):Int {
+					a = a.toUpperCase();
+					b = b.toUpperCase();
+				  
+					if(a < b){return -1;}
+					else if(a > b){return 1;}
+					else{return 0;}
+				});
+				for(control in control_list){
 					var _control_opt:ControlOption = new ControlOption(control, principal_controls, this);
 					gpOptions.add(_control_opt);
 
@@ -128,7 +137,13 @@ class OptionsSubState extends MusicBeatSubstate {
 			}
 			case "Key Controls":{
 				var _i:Int = 0;
-				for(key in Controls.STATIC_STRUMCONTROLS.keys()){
+				var control_list:Array<Int> = [for(key in Controls.STATIC_STRUMCONTROLS.keys()) key];
+				control_list.sort(function(a:Int, b:Int):Int {
+					if(a < b){return -1;}
+					else if(a > b){return 1;}
+					else{return 0;}
+				});
+				for(key in control_list){
 					var _control_opt:ControlStrumOption = new ControlStrumOption(key, principal_controls, this);
 					gpOptions.add(_control_opt);
 

@@ -73,6 +73,11 @@
 		{"bold":true, "scale":0.4, "text":"Dificultad"}
 	],
 	
+	"pas_resume": "Continuar",
+	"pas_restart_song": "Reiniciar Cancion",
+	"pas_options": "Opciones",
+	"pas_exit_to_menu": "Salir al Menu",
+	
 	"opt_cheating_settings": [{"scale":0.8, "bold":true, "text":"Trampas"}],
 	"opt_game_settings": [{"scale":0.8, "bold":true, "text":"Opciones Generales"}],
 	"opt_other_settings": [{"scale":0.8, "bold":true, "text":"Otras Opciones"}],
@@ -85,6 +90,8 @@
 	"set_healing_multiplier": "Multiplicador de Vida",
 	"set_type_mode": "Modo de Juego",
 	"set_language": "Lenguaje",
+	"set_miss_sounds": "Sonidos de Fallo",
+	"set_mute_on_miss": "Mutear al Fallar",
 	"set_scroll_speed_type": "Tipo de Velocidad de Scroll",
 	"set_scrollspeed": "Velocidad de Scroll",
 	"set_note_offset": "Note Offset",

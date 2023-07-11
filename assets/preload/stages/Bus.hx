@@ -19,7 +19,7 @@ function addToLoad(temp):Void {
 	temp.push({type: "IMAGE", instance: Paths.image('back','stages/bus')});
 	temp.push({type: "IMAGE", instance: Paths.image('bars','stages/bus')});
 	temp.push({type: "IMAGE", instance: Paths.image('filtro','stages/bus')});
-	temp.push({type: "IMAGE", instance: Paths.image('radio','stages/bus')});
+	temp.push({type: "IMAGE", instance: Paths.image('Radio','stages/bus')});
 }
 
 function create():Void {
@@ -51,7 +51,7 @@ function create():Void {
 	instance.add(blue);
 
 	radio = new FlxSprite(480, 530);
-	radio.frames = SavedFiles.getAtlas(Paths.image('radio', 'stages/bus'));
+	radio.frames = SavedFiles.getAtlas(Paths.image('Radio', 'stages/bus'));
 	radio.animation.addByPrefix('idle', 'RADIO', 24, false);
 	if(PreSettings.getPreSetting('Background Animated', 'Graphic Settings')){radio.animation.play('idle');}
 	instance.add(radio);

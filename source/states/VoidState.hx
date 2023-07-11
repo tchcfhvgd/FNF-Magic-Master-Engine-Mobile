@@ -35,6 +35,7 @@ using SavedFiles;
 using StringTools;
 
 class VoidState extends FlxState {
+    public static var clearAssets:Bool = true;
     public var target:FlxState;
 
     public function new(_target:FlxState):Void {
@@ -43,8 +44,8 @@ class VoidState extends FlxState {
     }
 
 	override function create(){
-		SavedFiles.clearMemoryAssets();
-        trace('Next State: ${target}');
+		if(clearAssets){SavedFiles.clearMemoryAssets();}else{trace("Not Clearing");}
+        clearAssets = true;
         FlxG.switchState(target);
     }
 }

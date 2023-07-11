@@ -195,6 +195,7 @@ class LoadingState extends MusicBeatState {
 
 	private function onLoad():Void {
 		trace('Loaded All -> $TARGET');
+		VoidState.clearAssets = false;
 		MusicBeatState._switchState(TARGET);
 	}
 }

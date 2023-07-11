@@ -12,5 +12,5 @@ presset("defaultValues",
 );
 
 function execute(id:Int, name:String):Void {
-    getState().stage.getCharacterById(id).playAnim(name);
+    getState().stage.getCharacterById(id).singAnim(name);
 }

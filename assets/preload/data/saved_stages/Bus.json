@@ -122,7 +122,7 @@
 					"Values": {
 						"Symbol_Name": "RADIO",
 						"Graphic_Library": "stages/bus",
-						"Graphic_File": "radio"
+						"Graphic_File": "Radio"
 					},
 					"Name": "Animated_Graphic"
 				}

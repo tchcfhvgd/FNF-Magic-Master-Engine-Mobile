@@ -1,6 +1,8 @@
-import("SavedFiles", "SavedFiles");
-import("Paths", "Paths");
 import("flixel.FlxSprite", "FlxSprite");
+import("PreSettings", "PreSettings");
+import("SavedFiles", "SavedFiles");
+import("flixel.FlxG", "FlxG");
+import("Paths", "Paths");
 
 presset("initChar", 0);
 presset("camP_1", [400,230]);
@@ -32,8 +34,8 @@ function beatHit(curBeat:Int):Void {
 
 function lightningStrikeShit(curBeat:Int):Void {
 	FlxG.sound.play(SavedFiles.getSound(Paths.soundRandom('thunder_', 1, 2, 'stages/spooky')));
-	if(PreSettings.getPreSetting("Background Animated", "Graphic Settings")){background.animation.play('idle');}
+	background.animation.play('idle');
 	lightningStrikeBeat = curBeat;
 	lightningOffset = FlxG.random.int(8, 24);
-    for(i in 0...getState().stage.character_Length){stage.getCharacterById(i).playAnim('scared', true, true);}
+    for(i in 0...getState().stage.character_Length){getState().stage.getCharacterById(i).singAnim('scared');}
 }

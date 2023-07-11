@@ -75,7 +75,7 @@ class Controls extends FlxActionSet {
 			[FlxKey.ESCAPE],
 			[FlxGamepadInputID.B, FlxGamepadInputID.BACK]
 		],
-        "Menu_Pause" => [
+        "Pause_Game" => [
 			[FlxKey.ENTER, FlxKey.ESCAPE],
 			[FlxGamepadInputID.START, FlxGamepadInputID.BACK]
 		],

@@ -71,7 +71,7 @@ class Skins {
 		for(char in character_list){
 			var current_skin_char = {current_skin: "Default", skins: [{name: "Default", locked: false}]};
 
-			for(json in Paths.readDirectory('assets/characters/$char/Skins')){
+			for(json in Paths.readDirectory('assets/characters/$char')){
 				var j_array:Array<String> = json.split("/").pop().split("-");
 				if(j_array.length < 2){continue;}
 
@@ -175,26 +175,49 @@ class Character extends FlxSpriteGroup {
 		return strum_list[focused_strum].charToSing[focused_character];
 	}
 
-	public static function setCameraToCharacter(char:Character, cam:FlxObject){
-		if(char == null){return;}
+	public static function setCameraToCharacter(char:Character, cam:FlxObject, stage:Stage){
+		if(char == null){return;} if(cam == null){return;}
 
 		var camMoveX = char.c.getGraphicMidpoint().x;
 		var camMoveY = char.c.getGraphicMidpoint().y;
 
 		camMoveX += char.cameraPosition[0];
 		camMoveY += char.cameraPosition[1];
+		
+		if(stage != null){
+			if(stage.camP_1 != null){
+				camMoveX = Math.max(camMoveX, stage.camP_1[0]);
+				camMoveY = Math.max(camMoveY, stage.camP_1[1]);
+			}
+			if(stage.camP_2 != null){
+				camMoveX = Math.min(camMoveX, stage.camP_2[0]);
+				camMoveY = Math.min(camMoveY, stage.camP_2[1]);
+			}
+		}
 
 		switch(PreSettings.getPreSetting("Type Camera", "Visual Settings")){
 			case "Static":{}
 			case "MoveToSing":{
-				if(char.c.animation.curAnim != null){
-					switch(char.c.animation.curAnim.name){
-						case 'singUP':{camMoveY -= 100;}
-						case 'singDOWN':{camMoveY += 100;}
-						case 'singRIGHT':{camMoveX += (!char.c.flipX) ? 100 : -100;}
-						case 'singLEFT':{camMoveX -= (!char.c.flipX) ? 100 : -100;}
-					}
-				}				
+				if(char.curAnim.contains("UP")){
+					camMoveY -= 100;
+				}else if(char.curAnim.contains("DOWN")){
+					camMoveY += 100;
+				}else if(char.curAnim.contains("LEFT")){
+					camMoveX -= 100;
+				}else if(char.curAnim.contains("RIGHT")){
+					camMoveX += 100;
+				}
+			}
+		}
+
+		if(stage != null){
+			if(stage.camP_1 != null){
+				camMoveX = Math.max(camMoveX, stage.camP_1[0]);
+				camMoveY = Math.max(camMoveY, stage.camP_1[1]);
+			}
+			if(stage.camP_2 != null){
+				camMoveX = Math.min(camMoveX, stage.camP_2[0]);
+				camMoveY = Math.min(camMoveY, stage.camP_2[1]);
 			}
 		}
 
@@ -213,10 +236,10 @@ class Character extends FlxSpriteGroup {
 	public static function addToLoad(list:Array<Dynamic>, character:String = 'Boyfriend', aspect:String = 'Default'):Void {
 		trace('|| CHARACTER: ${character} | ASPECT: ${aspect} ||');
 
-		var char_path:String = Paths.character_json(character, aspect);
+		var char_path:String = Paths.character(character, aspect);
 		var char_file:CharacterFile = cast char_path.getJson();
 
-		list.push({type: IMAGE, instance: Paths.character(character, char_file.image)});
+		list.push({type: IMAGE, instance: Paths.image('characters/${character}/${char_file.image}')});
 		list.push({type: IMAGE, instance: Paths.image('icons/icon-${char_file.healthicon}')});
 
 		var char_script_path:String = char_path.replace('.json', '.hx');
@@ -278,7 +301,7 @@ class Character extends FlxSpriteGroup {
 	}
 
 	public function setupByCharacterFile(?jCharacter:CharacterFile):Void {
-		var char_path:String = Paths.character_json(curCharacter, curAspect, curSkin, isDeath);
+		var char_path:String = Paths.character(curCharacter, curAspect, curSkin, isDeath);
 		if(jCharacter == null){jCharacter = cast char_path.getJson();}
 
 		charFile = jCharacter;
@@ -338,13 +361,13 @@ class Character extends FlxSpriteGroup {
 	public function setCharacterGraphic(?IMAGE:String):Void {
 		if(IMAGE != null){imageFile = IMAGE;}
 
-		this.clear();
+		for(obj in this.members){if(Reflect.hasField(obj, "destroy")){obj.destroy();} remove(obj);}
 
 		c = new FlxSprite(positionArray[0], positionArray[1]);
 
 		c.antialiasing = charFile.antialiasing;
 
-		c.frames = Paths.character(curCharacter, imageFile).getAtlas();
+		c.frames = Paths.image('characters/${curCharacter}/${imageFile}').getAtlas();
 		if(animationsArray != null && animationsArray.length > 0){
 			for(anim in animationsArray){
 				var animAnim:String = '' + anim.anim;
@@ -369,22 +392,24 @@ class Character extends FlxSpriteGroup {
 		if(charScript != null){charScript.exFunction('load_after_char');}
 	}
 
-	var oldBeat:Int = -1;
+	private var oldBeat:Int = -1;
 	override function update(elapsed:Float){
-		if(c.animation.curAnim != null && !onDebug && !noDance){
-			if(holdTimer > 0){holdTimer -= elapsed;}
-			else{
+		if(!onDebug && !noDance){
+			if(holdTimer > 0){
+				holdTimer -= elapsed;
+			}else{
 				specialAnim = false;
 				if(MusicBeatState.state.curBeat != oldBeat){
-					oldBeat = MusicBeatState.state.curBeat;
 					dance();
 				}
 			}
 
-			if(c.animation.curAnim.finished && c.animation.getByName(c.animation.curAnim.name + '-loop') != null){
-				playAnim(c.animation.curAnim.name+'-loop');
+			if(c.animation.curAnim != null && c.animation.curAnim.finished && c.animation.getByName(c.animation.curAnim.name + '-loop') != null){
+				c.animation.play(c.animation.curAnim.name+'-loop');
 			}
 		}
+
+		oldBeat = MusicBeatState.state.curBeat;
 
 		super.update(elapsed);
 
@@ -395,12 +420,23 @@ class Character extends FlxSpriteGroup {
 		if(specialAnim || (charScript != null && charScript.exFunction('dance'))){return;}
 
 		if(dancedIdle){
-			if(c.animation.curAnim != null && c.animation.curAnim.name == 'danceRight'){playAnim('danceLeft');}
-			else{playAnim('danceRight');}
-			holdTimer = 0;
-		}else{playAnim('idle');}
+			if(curAnim == 'danceRight'){
+				playAnim('danceLeft', true);
+			}else{
+				playAnim('danceRight', true);
+			}
+		}else{
+			playAnim('idle', true);
+		}
 	}
 
+	public var curAnim:String = "";
+	public function singAnim(AnimName:String, IsSustain:Bool = false):Void {
+		if(IsSustain && curAnim.contains("sing")){holdTimer = ((c.animation.getByName(AnimName).frames.length) / c.animation.getByName(AnimName).frameRate); return;}
+		playAnim(AnimName, true);
+		if(c.animation.getByName(AnimName) == null){return;}
+		holdTimer = ((c.animation.getByName(AnimName).frames.length) / c.animation.getByName(AnimName).frameRate);
+	}
 	public function playAnim(AnimName:String, Force:Bool = false, Special:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void {
 		if(c.flipX){
 			if(AnimName.contains("LEFT")){AnimName = AnimName.replace("LEFT", "RIGHT");}
@@ -408,19 +444,14 @@ class Character extends FlxSpriteGroup {
 		}
 		
 		if(charScript != null && charScript.exFunction('playAnim', [AnimName, Force, Reversed, Frame])){return;}
-		if((specialAnim && !Special)
-			|| (!Force 
-				&& c.animation.curAnim != null
-				&& c.animation.curAnim.name == AnimName
-				&& c.animation.curAnim.name.contains("sing")
-				&& c.animation.curAnim.curFrame < singTimer)
-		){return;}
+		if((specialAnim && !Special) || (!Force && curAnim == AnimName)){return;}
 		if(c.animation.getByName(AnimName) == null){return;}
 		
 		specialAnim = Special;
+		curAnim = AnimName;
 		
 		c.animation.play(AnimName, Force, Reversed, Frame);
-		holdTimer = ((c.animation.getByName(AnimName).frames.length - Frame) / c.animation.getByName(AnimName).frameRate);
+		holdTimer = 0;
 	}
 
 	public function turnLook(toRight:Bool = true):Void {

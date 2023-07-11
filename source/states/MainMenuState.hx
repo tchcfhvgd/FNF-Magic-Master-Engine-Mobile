@@ -65,13 +65,13 @@ class MainMenuState extends MusicBeatState {
 	var logo:FlxSprite;
 
 	override function create(){
+		if(FlxG.sound.music == null || (FlxG.sound.music != null && !FlxG.sound.music.playing)){FlxG.sound.playMusic(Paths.music('freakyMenu').getSound());}
 		FlxG.mouse.visible = true;
+		PlayState.isDuel = false;
 
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		MagicStuff.setWindowTitle('In the Menus');
-
-		if(FlxG.sound.music == null || (FlxG.sound.music != null && !FlxG.sound.music.playing)){FlxG.sound.playMusic(Paths.music('freakyMenu').getSound());}
 
 		var bg = new FlxSprite().loadGraphic(Paths.image('menuBG').getGraphic());
 		bg.setGraphicSize(FlxG.width, FlxG.height);

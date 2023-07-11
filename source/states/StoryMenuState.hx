@@ -43,7 +43,7 @@ using StringTools;
 class StoryMenuState extends MusicBeatState {
     public static var curOption:Int = 1;
 	public static var curWeek:Int = 0;
-	public var curDiff:String = "Normal";
+	public static var curDiff:String = "Normal";
 	public var curCat:String = "Normal";
 
     public var week_image:FlxSprite;
@@ -60,8 +60,9 @@ class StoryMenuState extends MusicBeatState {
     var scoreAlpha:Alphabet;
 
 	override function create(){
+		if(FlxG.sound.music == null || (FlxG.sound.music != null && !FlxG.sound.music.playing)){FlxG.sound.playMusic(Paths.music('freakyMenu').getSound());}
 		FlxG.mouse.visible = false;
-
+        
 		#if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("Selecting a Week", null);
