@@ -26,7 +26,7 @@ _____________________________________
 * [Artist] Doggy647
 * [Artist] AceOutAnd
 * [Musician] MixinFlame
-* 
+
 ## || < Special Thanks > ||
 * [Cassette Voice] Saruky
 * [StereoFunk] SugarMoon
