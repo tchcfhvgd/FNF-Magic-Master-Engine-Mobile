@@ -1,4 +1,7 @@
 # Friday Night Funkin' - Magic Master Engine
+
+![](https://github.com/Yirius125/FNF-Magic-Master-Engine-MAIN/blob/main/docs/img/MagicTitle.jpg)
+
 This Engine started as a Modification of Kade Engine for a Mod, but as time went by it became a complete Modification of the Base Code with some new features for the Community.
 
 This Engine is not intended as a Template to be used in mods.
