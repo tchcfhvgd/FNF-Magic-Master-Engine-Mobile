@@ -107,11 +107,11 @@ class MagicStuff {
         }
     }
 
-    public static var shaders:Map<String, FlxShader> = [];
+    public static var shaders:Map<String, FlxCustomShader> = [];
     public static function getShaderFilter(_shader:String):ShaderFilter {
         return new ShaderFilter(getShader(_shader));
     }
-    public static function getShader(_shader):FlxShader {
+    public static function getShader(_shader:String):FlxCustomShader {
         if(shaders.exists(_shader)){
 			if(shaders.get(_shader) == null){
                 shaders.remove(_shader);

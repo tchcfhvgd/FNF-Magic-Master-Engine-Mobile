@@ -18,4 +18,4 @@ function load_after_char(){
 }
 
 function turnLook(toRight:Bool){}
-function playAnim(AnimName:String, Force:Bool, Reversed:Bool, Frame:Int){}
+function playAnim(AnimName:String, Force:Bool){}

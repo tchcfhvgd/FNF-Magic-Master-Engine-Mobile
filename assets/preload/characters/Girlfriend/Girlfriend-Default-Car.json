@@ -7,17 +7,17 @@
 	"scale": 1,
 	"anims": [
 		{
-			"symbol": "GF Dancing Beat Hair blowing CAR",
 			"loop": false,
-			"fps": 24,
+			"symbol": "GF Dancing Beat Hair blowing CAR",
 			"anim": "idle",
+			"fps": 24,
 			"indices": []
 		},
 		{
-			"symbol": "GF Dancing Beat Hair blowing CAR",
 			"loop": false,
-			"fps": 24,
+			"symbol": "GF Dancing Beat Hair blowing CAR",
 			"anim": "danceLeft",
+			"fps": 24,
 			"indices": [
 				0,
 				1,
@@ -37,10 +37,10 @@
 			]
 		},
 		{
-			"symbol": "GF Dancing Beat Hair blowing CAR",
 			"loop": false,
-			"fps": 24,
+			"symbol": "GF Dancing Beat Hair blowing CAR",
 			"anim": "danceRight",
+			"fps": 24,
 			"indices": [
 				16,
 				17,
@@ -57,19 +57,39 @@
 				28,
 				29
 			]
+		},
+		{
+			"indices": [
+				13,
+				14
+			],
+			"symbol": "GF Dancing Beat Hair blowing CAR",
+			"fps": 16,
+			"anim": "danceLeft-loop",
+			"loop": true
+		},
+		{
+			"indices": [
+				25,
+				26
+			],
+			"symbol": "GF Dancing Beat Hair blowing CAR",
+			"fps": 16,
+			"anim": "danceRight-loop",
+			"loop": true
 		}
 	],
-	"name": "Girlfriend",
-	"image": "gfCar",
 	"zoom": 0.8,
+	"image": "gfCar",
+	"name": "Girlfriend",
 	"antialiasing": true,
-	"deathCharacter": "Boyfriend",
-	"onRight": false,
+	"skin": "Default",
+	"healthicon": "gf",
 	"camera": [
 		-10,
 		-100
 	],
-	"healthicon": "gf",
-	"skin": "Default",
+	"onRight": false,
+	"deathCharacter": "Boyfriend",
 	"danceIdle": true
 }

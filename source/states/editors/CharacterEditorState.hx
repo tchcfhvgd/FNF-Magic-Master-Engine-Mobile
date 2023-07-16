@@ -390,14 +390,12 @@ class CharacterEditorState extends MusicBeatState{
         }); tabMENU.add(btnAnimUpd);
 
         var btnAnimDel:FlxButton = new FlxCustomButton(btnAnimUpd.x + btnAnimUpd.width + 10, btnAnimUpd.y, Std.int(MENU.width / 2) - 10, null, "Delete Animation", null, FlxColor.fromRGB(255, 138, 138), function(){
-            if(clAnims.contains(txtAnimName.text)){
-                for(anim in _character.anims){
-                    if(anim.anim == txtAnimName.text){
-                        _character.anims.remove(anim);
-                        break;
-                    }
-                }
+            if(!clAnims.contains(txtAnimName.text)){return;}
+            for(anim in _character.anims){
+                if(anim.anim != txtAnimName.text){continue;}
+                _character.anims.remove(anim); break;
             }
+            
             var anims:Array<String> = []; for(anim in _character.anims){anims.push(anim.anim);}
             clAnims.setData(anims);
             clAnims.updateIndex();
@@ -428,29 +426,29 @@ class CharacterEditorState extends MusicBeatState{
         chkAnimLoop = new FlxUICheckBox(lblAnimFrame.x, lblAnimFrame.y + lblAnimFrame.height + 5, null, null, "Animation Loop", 100); tabMENU.add(chkAnimLoop);
         
         var btnSetXMLAnims:FlxButton = new FlxCustomButton(chkAnimLoop.x, chkAnimLoop.y + chkAnimLoop.height + 10, Std.int(MENU.width - 10), null, "SET ANIMATIONS FROM XML", null, null, function(){
-            if(Paths.exists(Paths.getPath('${chrStage.curCharacter}/Sprites/${_character.image}.xml', TEXT, 'characters'))){
-                var xml =  Xml.parse(Paths.getPath('${chrStage.curCharacter}/Sprites/${_character.image}.xml', TEXT, 'characters').getText());
-                var animSymbols:Array<String> = XMLEditorState.getNamesArray(new Access(xml.firstElement()).elements);
+            var character_path:String = Paths.image('characters/${chrStage.curCharacter}/${_character.image}').replace('.png', '.xml');
+            if(!Paths.exists(character_path)){return;}
+            var xml =  Xml.parse(character_path.getText());
+            var animSymbols:Array<String> = XMLEditorState.getNamesArray(new Access(xml.firstElement()).elements);
 
-                _character.anims = [];
-                for(symbol in animSymbols){
-                    var nCharAnim:AnimArray = {
-                        anim: symbol,
-                        symbol: symbol,
-                        fps: 24,
-        
-                        indices: [],
-        
-                        loop: false
-                    }
-
-                    _character.anims.push(nCharAnim);
+            _character.anims = [];
+            for(symbol in animSymbols){
+                var nCharAnim:AnimArray = {
+                    anim: symbol,
+                    symbol: symbol,
+                    fps: 24,
+    
+                    indices: [],
+    
+                    loop: false
                 }
-                
-                reloadCharacter();
-                var anims:Array<String> = []; for(anim in _character.anims){anims.push(anim.anim);}
-                clAnims.setData(anims);
+
+                _character.anims.push(nCharAnim);
             }
+            
+            reloadCharacter();
+            var anims:Array<String> = []; for(anim in _character.anims){anims.push(anim.anim);}
+            clAnims.setData(anims);
         }); tabMENU.add(btnSetXMLAnims);
 
         var ttlCharFunc = new FlxText(btnSetXMLAnims.x, btnSetXMLAnims.y + btnSetXMLAnims.height + 5, Std.int(MENU.width - 10), "Script Function", 8); ttlCharFunc.alignment = CENTER; tabMENU.add(ttlCharFunc);

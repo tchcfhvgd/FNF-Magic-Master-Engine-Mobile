@@ -1,25 +1,26 @@
 package;
 
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.animation.FlxBaseAnimation;
+import flixel.group.FlxSpriteGroup;
 import Song.SwagGeneralSection;
-import Song.SwagSection;
-import Song.SwagSong;
-import Song.SwagStrum;
+import flixel.tweens.FlxTween;
+import haxe.format.JsonParser;
+import openfl.utils.AssetType;
+import states.MusicBeatState;
+import haxe.macro.Expr.Catch;
 import flash.geom.Rectangle;
+import flixel.math.FlxMath;
+import flixel.util.FlxSort;
+import openfl.utils.Assets;
 import flixel.FlxCamera;
-import flixel.FlxG;
+import Song.SwagSection;
 import flixel.FlxObject;
 import flixel.FlxSprite;
-import flixel.animation.FlxBaseAnimation;
-import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.group.FlxSpriteGroup;
-import flixel.tweens.FlxTween;
-import flixel.util.FlxSort;
+import Song.SwagSong;
+import Song.SwagStrum;
+import flixel.FlxG;
 import haxe.Json;
-import haxe.format.JsonParser;
-import haxe.macro.Expr.Catch;
-import openfl.utils.AssetType;
-import openfl.utils.Assets;
-import states.MusicBeatState;
 
 #if windows
 import sys.FileSystem;
@@ -199,13 +200,13 @@ class Character extends FlxSpriteGroup {
 			case "Static":{}
 			case "MoveToSing":{
 				if(char.curAnim.contains("UP")){
-					camMoveY -= 100;
+					camMoveY -= 25;
 				}else if(char.curAnim.contains("DOWN")){
-					camMoveY += 100;
+					camMoveY += 25;
 				}else if(char.curAnim.contains("LEFT")){
-					camMoveX -= 100;
+					camMoveX -= 25;
 				}else if(char.curAnim.contains("RIGHT")){
-					camMoveX += 100;
+					camMoveX += 25;
 				}
 			}
 		}
@@ -221,7 +222,8 @@ class Character extends FlxSpriteGroup {
 			}
 		}
 
-		cam.setPosition(camMoveX, camMoveY);
+		
+		cam.setPosition(FlxMath.lerp(cam.x, camMoveX, FlxG.elapsed * 20), FlxMath.lerp(cam.y, camMoveY, FlxG.elapsed * 20));
 	}
 
 	public static function getCharacters():Array<String>{
@@ -358,16 +360,21 @@ class Character extends FlxSpriteGroup {
 		if(charFile.camera == null){charFile.camera = [0, 0];}
 	}
 
+	private var last_path:String = null;
 	public function setCharacterGraphic(?IMAGE:String):Void {
 		if(IMAGE != null){imageFile = IMAGE;}
 
-		for(obj in this.members){if(Reflect.hasField(obj, "destroy")){obj.destroy();} remove(obj);}
+		this.clear();
 
 		c = new FlxSprite(positionArray[0], positionArray[1]);
 
 		c.antialiasing = charFile.antialiasing;
 
-		c.frames = Paths.image('characters/${curCharacter}/${imageFile}').getAtlas();
+		var new_path:String = Paths.image('characters/${curCharacter}/${imageFile}');
+		if(last_path != null && last_path != new_path){SavedFiles.clearAsset(last_path);}
+		c.frames = new_path.getAtlas();
+		last_path = new_path;
+
 		if(animationsArray != null && animationsArray.length > 0){
 			for(anim in animationsArray){
 				var animAnim:String = '' + anim.anim;
@@ -392,7 +399,7 @@ class Character extends FlxSpriteGroup {
 		if(charScript != null){charScript.exFunction('load_after_char');}
 	}
 
-	private var oldBeat:Int = -1;
+	private var oldBeat:Int = 0;
 	override function update(elapsed:Float){
 		if(!onDebug && !noDance){
 			if(holdTimer > 0){
@@ -416,42 +423,43 @@ class Character extends FlxSpriteGroup {
 		if(charScript != null){charScript.exFunction('update', [elapsed]);}
 	}
 
+	private var isDanceRight:Bool = false;
 	public function dance():Void {
 		if(specialAnim || (charScript != null && charScript.exFunction('dance'))){return;}
 
 		if(dancedIdle){
-			if(curAnim == 'danceRight'){
-				playAnim('danceLeft', true);
+			isDanceRight = !isDanceRight;
+			if(!isDanceRight){
+				c.animation.play('danceLeft', true);
 			}else{
-				playAnim('danceRight', true);
+				c.animation.play('danceRight', true);
 			}
 		}else{
-			playAnim('idle', true);
+			c.animation.play('idle');
 		}
 	}
 
 	public var curAnim:String = "";
-	public function singAnim(AnimName:String, IsSustain:Bool = false):Void {
-		if(IsSustain && curAnim.contains("sing")){holdTimer = ((c.animation.getByName(AnimName).frames.length) / c.animation.getByName(AnimName).frameRate); return;}
-		playAnim(AnimName, true);
-		if(c.animation.getByName(AnimName) == null){return;}
-		holdTimer = ((c.animation.getByName(AnimName).frames.length) / c.animation.getByName(AnimName).frameRate);
+	public function singAnim(AnimName:String, Force:Bool = false, Special:Bool = false, IsSustain:Bool = false):Void {
+		if(IsSustain && curAnim.contains("sing") && c.animation.getByName(AnimName) != null){holdTimer = ((c.animation.getByName(AnimName).frames.length) / c.animation.getByName(AnimName).frameRate); return;}
+		playAnim(AnimName, Force, Special);
+		if(c.animation.getByName(AnimName) != null){holdTimer = ((c.animation.getByName(AnimName).frames.length) / c.animation.getByName(AnimName).frameRate);}
 	}
-	public function playAnim(AnimName:String, Force:Bool = false, Special:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void {
+	public function playAnim(AnimName:String, Force:Bool = false, Special:Bool = false):Void {
+		if(specialAnim && !Special){return;}
+
 		if(c.flipX){
 			if(AnimName.contains("LEFT")){AnimName = AnimName.replace("LEFT", "RIGHT");}
 			else{AnimName = AnimName.replace("RIGHT", "LEFT");}
 		}
 		
-		if(charScript != null && charScript.exFunction('playAnim', [AnimName, Force, Reversed, Frame])){return;}
-		if((specialAnim && !Special) || (!Force && curAnim == AnimName)){return;}
+		if(charScript != null && charScript.exFunction('playAnim', [AnimName, Force])){return;}
 		if(c.animation.getByName(AnimName) == null){return;}
 		
 		specialAnim = Special;
 		curAnim = AnimName;
 		
-		c.animation.play(AnimName, Force, Reversed, Frame);
-		holdTimer = 0;
+		c.animation.play(AnimName, Force);
 	}
 
 	public function turnLook(toRight:Bool = true):Void {
@@ -464,5 +472,15 @@ class Character extends FlxSpriteGroup {
 		var new_scale = _scale * charFile.scale;
 		c.scale.set(new_scale, new_scale);
 		c.updateHitbox();
+	}
+
+	override public function destroy():Void {
+		super.destroy();
+
+		if(last_path != null){SavedFiles.clearAsset(last_path);}
+		if(charScript != null){
+			charScript.destroy();
+			charScript = null;
+		}
 	}
 }

@@ -95,6 +95,13 @@
                 "loop": false
             },
             {
+                "anim": "line",
+                "symbol": "HoldSwitch",
+
+                "fps": 32,
+                "loop": false
+            },
+            {
                 "anim": "end",
                 "symbol": "HoldEnd",
 
@@ -125,7 +132,7 @@
                 "color": "#c24b98"
             },
             {
-                "sing_animation": "singMIDDLE",
+                "sing_animation": "singUP",
                 "animations":[
                     {
                         "anim": "static",

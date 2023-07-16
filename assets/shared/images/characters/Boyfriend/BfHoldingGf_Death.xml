@@ -1,0 +1,126 @@
+<TextureAtlas imagePath="BfHoldingGf_Death.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="0" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0000" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="592" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0001" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="592" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0002" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="1184" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0003" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="1184" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0004" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="1776" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0005" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="1776" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0006" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="2368" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0007" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="2960" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0008" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="3552" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0009" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="3552" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0010" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="4144" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0011" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="4736" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0012" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="4736" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0013" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="2960" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0014" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="2960" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0015" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="2960" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0016" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="0" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0017" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="592" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0018" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="592" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0019" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="1184" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0020" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="1184" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0021" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="1776" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0022" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="1776" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0023" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="2960" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0024" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="2960" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0025" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="2960" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0026" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="2960" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0027" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="2960" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0028" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="2960" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0029" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="2368" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0030" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="2960" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0031" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="2960" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0032" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="2960" frameWidth="581" y="0" frameX="0" name="BF Dead with GF Loop0033" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="5328" frameWidth="581" y="0" frameX="-1" name="BF Dies with GF0000" frameHeight="458" frameY="0" width="581" height="458"/>
+	<SubTexture x="5910" frameWidth="581" y="0" frameX="-1" name="BF Dies with GF0001" frameHeight="458" frameY="0" width="581" height="458"/>
+	<SubTexture x="6492" frameWidth="581" y="0" frameX="0" name="BF Dies with GF0002" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="7084" frameWidth="581" y="0" frameX="0" name="BF Dies with GF0003" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="0" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0004" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="592" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0005" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="1184" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0006" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="1184" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0007" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="1184" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0008" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="1184" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0009" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="1184" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0010" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="1776" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0011" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="1776" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0012" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="2368" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0013" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="2960" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0014" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="3552" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0015" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="4144" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0016" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="4144" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0017" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="4736" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0018" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="4736" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0019" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="5328" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0020" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="5328" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0021" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="5920" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0022" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="5920" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0023" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="6512" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0024" frameHeight="458" frameY="-17" width="591" height="444"/>
+	<SubTexture x="7104" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0025" frameHeight="458" frameY="-17" width="591" height="471"/>
+	<SubTexture x="7104" frameWidth="581" y="468" frameX="0" name="BF Dies with GF0026" frameHeight="458" frameY="-17" width="591" height="471"/>
+	<SubTexture x="0" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0027" frameHeight="458" frameY="-17" width="591" height="465"/>
+	<SubTexture x="0" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0028" frameHeight="458" frameY="-17" width="591" height="465"/>
+	<SubTexture x="592" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0029" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="592" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0030" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="1184" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0031" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="1184" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0032" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="1184" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0033" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="1184" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0034" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="1184" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0035" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="1776" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0036" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="1776" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0037" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="2368" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0038" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="2368" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0039" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="2368" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0040" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="2960" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0041" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="3552" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0042" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="4144" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0043" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="4736" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0044" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="5328" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0045" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="5328" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0046" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="5920" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0047" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="5920" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0048" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="5920" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0049" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="5920" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0050" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="5920" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0051" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="5920" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0052" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="5920" frameWidth="581" y="940" frameX="0" name="BF Dies with GF0053" frameHeight="458" frameY="-17" width="591" height="467"/>
+	<SubTexture x="6512" frameWidth="581" y="940" frameX="0" name="RETRY confirm holding gf0000" frameHeight="458" frameY="8" width="605" height="492"/>
+	<SubTexture x="7118" frameWidth="581" y="940" frameX="0" name="RETRY confirm holding gf0001" frameHeight="458" frameY="11" width="605" height="495"/>
+	<SubTexture x="0" frameWidth="581" y="1436" frameX="0" name="RETRY confirm holding gf0002" frameHeight="458" frameY="14" width="606" height="498"/>
+	<SubTexture x="607" frameWidth="581" y="1436" frameX="0" name="RETRY confirm holding gf0003" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="1214" frameWidth="581" y="1436" frameX="0" name="RETRY confirm holding gf0004" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="1821" frameWidth="581" y="1436" frameX="0" name="RETRY confirm holding gf0005" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="2428" frameWidth="581" y="1436" frameX="0" name="RETRY confirm holding gf0006" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="3035" frameWidth="581" y="1436" frameX="0" name="RETRY confirm holding gf0007" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="3642" frameWidth="581" y="1436" frameX="0" name="RETRY confirm holding gf0008" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="4249" frameWidth="581" y="1436" frameX="0" name="RETRY confirm holding gf0009" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="4856" frameWidth="581" y="1436" frameX="0" name="RETRY confirm holding gf0010" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="5463" frameWidth="581" y="1436" frameX="0" name="RETRY confirm holding gf0011" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="6070" frameWidth="581" y="1436" frameX="0" name="RETRY confirm holding gf0012" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="6677" frameWidth="581" y="1436" frameX="0" name="RETRY confirm holding gf0013" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="7284" frameWidth="581" y="1436" frameX="0" name="RETRY confirm holding gf0014" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="0" frameWidth="581" y="1935" frameX="0" name="RETRY confirm holding gf0015" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="607" frameWidth="581" y="1935" frameX="0" name="RETRY confirm holding gf0016" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="1214" frameWidth="581" y="1935" frameX="0" name="RETRY confirm holding gf0017" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="1821" frameWidth="581" y="1935" frameX="0" name="RETRY confirm holding gf0018" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="2428" frameWidth="581" y="1935" frameX="0" name="RETRY confirm holding gf0019" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="3035" frameWidth="581" y="1935" frameX="0" name="RETRY confirm holding gf0020" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="3642" frameWidth="581" y="1935" frameX="0" name="RETRY confirm holding gf0021" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="3642" frameWidth="581" y="1935" frameX="0" name="RETRY confirm holding gf0022" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="3642" frameWidth="581" y="1935" frameX="0" name="RETRY confirm holding gf0023" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="4249" frameWidth="581" y="1935" frameX="0" name="RETRY confirm holding gf0024" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="4249" frameWidth="581" y="1935" frameX="0" name="RETRY confirm holding gf0025" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="4249" frameWidth="581" y="1935" frameX="0" name="RETRY confirm holding gf0026" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="4249" frameWidth="581" y="1935" frameX="0" name="RETRY confirm holding gf0027" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="4249" frameWidth="581" y="1935" frameX="0" name="RETRY confirm holding gf0028" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="4249" frameWidth="581" y="1935" frameX="0" name="RETRY confirm holding gf0029" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="4249" frameWidth="581" y="1935" frameX="0" name="RETRY confirm holding gf0030" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="4249" frameWidth="581" y="1935" frameX="0" name="RETRY confirm holding gf0031" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="4249" frameWidth="581" y="1935" frameX="0" name="RETRY confirm holding gf0032" frameHeight="458" frameY="8" width="606" height="492"/>
+	<SubTexture x="4249" frameWidth="581" y="1935" frameX="0" name="RETRY confirm holding gf0033" frameHeight="458" frameY="8" width="606" height="492"/>
+</TextureAtlas>

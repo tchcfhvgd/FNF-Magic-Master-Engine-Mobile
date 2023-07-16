@@ -10,7 +10,7 @@
 				{
 					"Values": {
 						"Graphic_Library": "stages/war",
-						"Graphic_File": "tankSky"
+						"Graphic_File": "sky"
 					},
 					"Name": "Basic_Graphic"
 				},
@@ -48,7 +48,7 @@
 				{
 					"Values": {
 						"Graphic_Library": "stages/war",
-						"Graphic_File": "tankClouds"
+						"Graphic_File": "clouds"
 					},
 					"Name": "Basic_Graphic"
 				}
@@ -57,7 +57,7 @@
 		},
 		{
 			"Values": {
-				"Position_X": -90,
+				"Position_X": -400,
 				"Position_Y": 100,
 				"Sprite_Name": "mountains"
 			},
@@ -72,7 +72,7 @@
 				{
 					"Values": {
 						"Graphic_Library": "stages/war",
-						"Graphic_File": "tankMountains"
+						"Graphic_File": "mountains"
 					},
 					"Name": "Basic_Graphic"
 				}
@@ -96,7 +96,7 @@
 				{
 					"Values": {
 						"Graphic_Library": "stages/war",
-						"Graphic_File": "tankBuildings"
+						"Graphic_File": "ruins"
 					},
 					"Name": "Basic_Graphic"
 				}
@@ -106,7 +106,7 @@
 		{
 			"Values": {
 				"Position_X": -180,
-				"Position_Y": 150,
+				"Position_Y": 500,
 				"Sprite_Name": "ruins"
 			},
 			"Attributes": [
@@ -120,7 +120,7 @@
 				{
 					"Values": {
 						"Graphic_Library": "stages/war",
-						"Graphic_File": "tankRuins"
+						"Graphic_File": "ruins1"
 					},
 					"Name": "Basic_Graphic"
 				}
@@ -143,9 +143,9 @@
 				},
 				{
 					"Values": {
-						"Symbol_Name": "SmokeBlurLeft",
+						"Symbol_Name": "smoke to blur",
 						"Graphic_Library": "stages/war",
-						"Graphic_File": "smokeLeft"
+						"Graphic_File": "leftsmoke"
 					},
 					"Name": "Animated_Graphic"
 				}
@@ -168,9 +168,9 @@
 				},
 				{
 					"Values": {
-						"Symbol_Name": "SmokeRight",
+						"Symbol_Name": "smoke to blur",
 						"Graphic_Library": "stages/war",
-						"Graphic_File": "smokeRight"
+						"Graphic_File": "rightsmoke"
 					},
 					"Name": "Animated_Graphic"
 				}
@@ -195,7 +195,7 @@
 					"Values": {
 						"Symbol_Name": "watchtower gradient color",
 						"Graphic_Library": "stages/war",
-						"Graphic_File": "tankWatchtower"
+						"Graphic_File": "watchtower"
 					},
 					"Name": "Animated_Graphic"
 				}
@@ -220,7 +220,7 @@
 					"Values": {
 						"Symbol_Name": "BG tank w lighting instance 1",
 						"Graphic_Library": "stages/war",
-						"Graphic_File": "tankRolling"
+						"Graphic_File": "rolltank"
 					},
 					"Name": "Animated_Graphic"
 				}
@@ -229,15 +229,15 @@
 		},
 		{
 			"Values": {
-				"Position_X": -250,
-				"Position_Y": -50,
+				"Position_X": -450,
+				"Position_Y": 550,
 				"Sprite_Name": "ground"
 			},
 			"Attributes": [
 				{
 					"Values": {
 						"Graphic_Library": "stages/war",
-						"Graphic_File": "tankGround"
+						"Graphic_File": "ground"
 					},
 					"Name": "Basic_Graphic"
 				}
@@ -280,7 +280,7 @@
 					"Values": {
 						"Symbol_Name": "fg",
 						"Graphic_Library": "stages/war",
-						"Graphic_File": "tank1"
+						"Graphic_File": "tank3"
 					},
 					"Name": "Animated_Graphic"
 				},
@@ -312,7 +312,7 @@
 					"Values": {
 						"Symbol_Name": "foreground",
 						"Graphic_Library": "stages/war",
-						"Graphic_File": "tank2"
+						"Graphic_File": "tank1"
 					},
 					"Name": "Animated_Graphic"
 				}
@@ -337,7 +337,7 @@
 					"Values": {
 						"Symbol_Name": "fg",
 						"Graphic_Library": "stages/war",
-						"Graphic_File": "tank4"
+						"Graphic_File": "tank2"
 					},
 					"Name": "Animated_Graphic"
 				}

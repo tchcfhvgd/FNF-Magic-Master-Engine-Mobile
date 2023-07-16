@@ -8,35 +8,35 @@
 	"anims": [
 		{
 			"loop": false,
-			"symbol": "SENPAI DOWN NOTE instance 1",
+			"symbol": "SENPAI DOWN NOTE",
 			"anim": "singDOWN",
 			"fps": 24,
 			"indices": []
 		},
 		{
 			"loop": false,
-			"symbol": "SENPAI LEFT NOTE instance 1",
+			"symbol": "SENPAI LEFT NOTE",
 			"anim": "singLEFT",
 			"fps": 24,
 			"indices": []
 		},
 		{
 			"loop": false,
-			"symbol": "SENPAI RIGHT NOTE instance 1",
+			"symbol": "SENPAI RIGHT NOTE",
 			"anim": "singRIGHT",
 			"fps": 24,
 			"indices": []
 		},
 		{
 			"loop": false,
-			"symbol": "SENPAI UP NOTE instance 1",
+			"symbol": "SENPAI UP NOTE",
 			"anim": "singUP",
 			"fps": 24,
 			"indices": []
 		},
 		{
 			"loop": false,
-			"symbol": "Senpai Idle instance 1",
+			"symbol": "Senpai Idle",
 			"anim": "idle",
 			"fps": 24,
 			"indices": []

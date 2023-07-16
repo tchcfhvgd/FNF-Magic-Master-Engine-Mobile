@@ -21,6 +21,7 @@ import("Type");
 import("Std");
 
 var gf_idle:FlxSprite;
+var bf_idle:FlxSprite;
 var gf_demon_1:FlxSprite;
 var gf_demon_2:FlxSprite;
 var pico_arrives_1:FlxSprite;
@@ -43,16 +44,17 @@ var startCountdown:Void->Void = function(){};
 
 function addToLoad(list:Array<Dynamic>){
     if(!PlayState.isStoryMode || PlayState.total_plays > 1){return;}
-    list.push({type: "IMAGE", instance: Paths.image("characters/Girlfriend/gfTankmen")});
-    list.push({type: "IMAGE", instance: Paths.image("characters/Pico/Pico_Arrives_1")});
-    list.push({type: "IMAGE", instance: Paths.image("characters/Pico/Pico_Arrives_2")});
-    list.push({type: "IMAGE", instance: Paths.image("characters/Pico/Pico_Arrives_3")});
-    list.push({type: "IMAGE", instance: Paths.image("characters/Pico/Gf_Demon_1")});
-    list.push({type: "IMAGE", instance: Paths.image("characters/Pico/Gf_Demon_2")});
-    list.push({type: "IMAGE", instance: Paths.image("characters/Tankman/stress2")});
-    list.push({type: "IMAGE", instance: Paths.image("characters/Tankman/stress")});
+    list.push({type: "IMAGE", instance: Paths.image("cutscenes/Pico_Arrives_1", "stages/war")});
+    list.push({type: "IMAGE", instance: Paths.image("cutscenes/Pico_Arrives_2", "stages/war")});
+    list.push({type: "IMAGE", instance: Paths.image("cutscenes/Pico_Arrives_3", "stages/war")});
+    list.push({type: "IMAGE", instance: Paths.image("cutscenes/Gf_Demon_1", "stages/war")});
+    list.push({type: "IMAGE", instance: Paths.image("cutscenes/Gf_Demon_2", "stages/war")});
+    list.push({type: "IMAGE", instance: Paths.image("cutscenes/stress2", "stages/war")});
+    list.push({type: "IMAGE", instance: Paths.image("cutscenes/stress", "stages/war")});
     list.push({type: "MUSIC", instance: Paths.music("DISTORTO", "stages/war")});
     list.push({type: "SOUND", instance: Paths.sound("stress_1", "stages/war")});
+    list.push({type: "IMAGE", instance: Paths.image("GF_IDLE", "stages/war")});
+    list.push({type: "IMAGE", instance: Paths.image("BF_IDLE", "stages/war")});
 }
 
 function preload():Void {
@@ -67,58 +69,57 @@ function preload():Void {
 
     // Tankman Assets
     stressCinematic1 = new FlxSprite(tankman.x - 160, tankman.y + 110);
-    stressCinematic1.frames = SavedFiles.getSparrowAtlas(Paths.image("characters/Tankman/stress"));
+    stressCinematic1.frames = SavedFiles.getSparrowAtlas(Paths.image("cutscenes/stress", "stages/war"));
     stressCinematic1.animation.addByPrefix("play", "TANK TALK 3 P1 UNCUT", 24, false);
     tankman.add(stressCinematic1);
     
     stressCinematic2 = new FlxSprite(tankman.x - 160, tankman.y + 110);
-    stressCinematic2.frames = SavedFiles.getSparrowAtlas(Paths.image("characters/Tankman/stress2"));
+    stressCinematic2.frames = SavedFiles.getSparrowAtlas(Paths.image("cutscenes/stress2", "stages/war"));
     stressCinematic2.animation.addByPrefix("play", "TANK TALK 3 P2 UNCUT", 24, false);
     stressCinematic2.visible = false;
     tankman.add(stressCinematic2);
     
     // Pico Assets
-    gf_idle = new FlxSprite(girlfriend.x, girlfriend.y);
-    gf_idle.frames = SavedFiles.getAtlas(Paths.image("characters/Girlfriend/gfTankmen"));
-    gf_idle.animation.addByPrefix("play", "GF Dancing at Gunpoint", 24, false);
-    gf_idle.animation.play("play");
+    gf_idle = new FlxSprite(-247, 83).loadGraphic(SavedFiles.getGraphic(Paths.image("cutscenes/GF_IDLE", "stages/war")));
     girlfriend.add(gf_idle);
 
-    gf_demon_1 = new FlxSprite(girlfriend.x, girlfriend.y);
-    gf_demon_1.frames = SavedFiles.getAtlas(Paths.image("characters/Pico/Gf_Demon_1"));
+    gf_demon_1 = new FlxSprite(-140, 76);
+    gf_demon_1.frames = SavedFiles.getAtlas(Paths.image("cutscenes/Gf_Demon_1", "stages/war"));
     gf_demon_1.animation.addByPrefix("play", "GF STARTS TO TURN PART 1", 24, false);
     gf_demon_1.visible = false;
     girlfriend.add(gf_demon_1);
-    
-    gf_demon_2 = new FlxSprite(girlfriend.x, girlfriend.y);
-    gf_demon_2.frames = SavedFiles.getAtlas(Paths.image("characters/Pico/Gf_Demon_2"));
+
+    gf_demon_2 = new FlxSprite(-141, 74);
+    gf_demon_2.frames = SavedFiles.getAtlas(Paths.image("cutscenes/Gf_Demon_2", "stages/war"));
     gf_demon_2.animation.addByPrefix("play", "GF STARTS TO TURN PART 2", 24, false);
     gf_demon_2.visible = false;
     girlfriend.add(gf_demon_2);
-    
-    pico_arrives_1 = new FlxSprite(girlfriend.x, girlfriend.y);
-    pico_arrives_1.frames = SavedFiles.getAtlas(Paths.image("characters/Pico/Pico_Arrives_1"));
+        
+    pico_arrives_1 = new FlxSprite(-141, 73);
+    pico_arrives_1.frames = SavedFiles.getAtlas(Paths.image("cutscenes/Pico_Arrives_1", "stages/war"));
     pico_arrives_1.animation.addByPrefix("play", "PICO ARRIVES PART 1", 24, false);
     pico_arrives_1.visible = false;
     girlfriend.add(pico_arrives_1);
     
-    pico_arrives_2 = new FlxSprite(girlfriend.x, girlfriend.y);
-    pico_arrives_2.frames = SavedFiles.getAtlas(Paths.image("characters/Pico/Pico_Arrives_2"));
+    pico_arrives_2 = new FlxSprite(-138, 74);
+    pico_arrives_2.frames = SavedFiles.getAtlas(Paths.image("cutscenes/Pico_Arrives_2", "stages/war"));
     pico_arrives_2.animation.addByPrefix("play", "PICO ARRIVES PART 2", 24, false);
     pico_arrives_2.visible = false;
     girlfriend.add(pico_arrives_2);
     
-    pico_arrives_3 = new FlxSprite(girlfriend.x, girlfriend.y);
-    pico_arrives_3.frames = SavedFiles.getAtlas(Paths.image("characters/Pico/Pico_Arrives_3"));
+    pico_arrives_3 = new FlxSprite(-141, 74);
+    pico_arrives_3.frames = SavedFiles.getAtlas(Paths.image("cutscenes/Pico_Arrives_3", "stages/war"));
     pico_arrives_3.animation.addByPrefix("play", "PICO ARRIVES PART 3", 24, false);
     pico_arrives_3.visible = false;
     girlfriend.add(pico_arrives_3);
 
+    // Boyfriend Assets
+    bf_idle = new FlxSprite(2, 341).loadGraphic(SavedFiles.getGraphic(Paths.image("cutscenes/BF_IDLE", "stages/war")));
+    boyfriend.add(bf_idle);
+
     tankman.c.visible = false;
+    boyfriend.c.visible = false;
     girlfriend.c.visible = false;
-    
-    boyfriend.playAnim("singleIdle", true, true, false, 0);
-    girlfriend.playAnim("gf_idle", true, true, false, 0);
 }
 
 function startSong(_startCountdown:Void->Void):Void {
@@ -128,7 +129,7 @@ function startSong(_startCountdown:Void->Void):Void {
     Character.setCameraToCharacter(tankman, camFollow, getState().stage);
     FlxTween.tween(getState().camHUD, {alpha: 0}, 0.5);
 
-    Timer.delay(function(){onCinematic = true;}, 1000);
+    onCinematic = true;
 
     return true;
 }
@@ -161,10 +162,12 @@ function update(elapsed:Float){
 
         FlxTween.tween(FlxG.camera, {zoom: stage.zoom}, 1, {ease: FlxEase.quadInOut});
         
+        bf_idle.visible = false;
         gf_demon_2.visible = false;
+        boyfriend.c.visible = true;
         pico_arrives_1.visible = true;
         pico_arrives_1.animation.play("play");
-        boyfriend.playAnim("catch", true, true, false, 0);
+        boyfriend.playAnim("catch");
     }else if(total_time >= 18.745  && total_events == 4){
         total_events++;
 
@@ -189,12 +192,12 @@ function update(elapsed:Float){
 
         pico_arrives_3.visible = false;
         girlfriend.c.visible = true;
-        girlfriend.playAnim("right1-loop", true, true, false, 0);
+        girlfriend.playAnim("right1-loop");
     }else if(total_time >= 32.75  && total_events == 8){
         total_events++;
 
         Character.setCameraToCharacter(boyfriend, camFollow, getState().stage);
-        boyfriend.playAnim("singUPmiss", true, true, false, 0);
+        boyfriend.playAnim("singUPmiss");
     }else if(total_time >= 35  && total_events == 9){
         total_events++;
         
@@ -203,7 +206,6 @@ function update(elapsed:Float){
         
         gf_idle.kill();
         gf_demon_1.kill();
-        gf_demon_2.kill();
         pico_arrives_1.kill();
         pico_arrives_2.kill();
         pico_arrives_3.kill();
@@ -226,7 +228,6 @@ function update(elapsed:Float){
         
         girlfriend.remove(gf_idle);
         girlfriend.remove(gf_demon_1);
-        girlfriend.remove(gf_demon_2);
         girlfriend.remove(pico_arrives_1);
         girlfriend.remove(pico_arrives_2);
         girlfriend.remove(pico_arrives_3);
@@ -235,12 +236,22 @@ function update(elapsed:Float){
 
         gf_idle.destroy();
         gf_demon_1.destroy();
-        gf_demon_2.destroy();
         pico_arrives_1.destroy();
         pico_arrives_2.destroy();
         pico_arrives_3.destroy();
         stressCinematic2.destroy();
         stressCinematic1.destroy();
+        
+        SavedFiles.clearAsset(Paths.image("cutscenes/Pico_Arrives_1", "stages/war"), false);
+        SavedFiles.clearAsset(Paths.image("cutscenes/Pico_Arrives_2", "stages/war"), false);
+        SavedFiles.clearAsset(Paths.image("cutscenes/Pico_Arrives_3", "stages/war"), false);
+        SavedFiles.clearAsset(Paths.image("cutscenes/Gf_Demon_1", "stages/war"), false);
+        SavedFiles.clearAsset(Paths.image("cutscenes/Gf_Demon_2", "stages/war"), false);
+        SavedFiles.clearAsset(Paths.image("cutscenes/stress2", "stages/war"), false);
+        SavedFiles.clearAsset(Paths.image("cutscenes/stress", "stages/war"), false);
+        SavedFiles.clearAsset(Paths.sound("stress_1", "stages/war"), false);
+        SavedFiles.clearAsset(Paths.image("GF_IDLE", "stages/war"), false);
+        SavedFiles.clearAsset(Paths.image("BF_IDLE", "stages/war"));
 
         onCinematic = false;
     }

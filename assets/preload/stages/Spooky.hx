@@ -13,6 +13,8 @@ var background:FlxSprite = null;
 
 function addToLoad(temp):Void {
 	temp.push({type: "IMAGE", instance: Paths.image('halloween_bg','stages/spooky')});
+	temp.push({type: "SOUND", instance: Paths.image('thunder_1','stages/spooky')});
+	temp.push({type: "SOUND", instance: Paths.image('thunder_2','stages/spooky')});
 }
 
 function create():Void {

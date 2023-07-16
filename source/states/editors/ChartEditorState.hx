@@ -247,7 +247,7 @@ class ChartEditorState extends MusicBeatState {
         addMENUTABS();        
         add(MENU);
 
-        lblSongInfo = new FlxText(0, 0, 300, "", 16);
+        lblSongInfo = new FlxText(0, 50, 300, "", 16);
         lblSongInfo.scrollFactor.set();
         lblSongInfo.camera = camFHUD;
         add(lblSongInfo);
@@ -341,7 +341,7 @@ class ChartEditorState extends MusicBeatState {
             for(n in sectionInfo){if(n[1] < 0 || n[1] >= Song.getStrumKeys(_song.sectionStrums[ii], curSection)){sectionInfo.remove(n);}}
             
             var cSection = _song.sectionStrums[ii];
-            var mergedGroup:Array<Note> = [];
+            var slide_gp:Array<Note> = [];
             for(n in sectionInfo){
                 var nData:NoteData = Note.getNoteData(n);
                 var isSelected:Bool = Note.compNotes(nData, selNote);
@@ -358,7 +358,7 @@ class ChartEditorState extends MusicBeatState {
                     renderedEvents.add(iconEvent);
                 }
 
-                if(nData.canMerge){mergedGroup.push(note);}
+                if(nData.canMerge){slide_gp.push(note);}
                         
                 renderedNotes.add(note);
                 notesCanHit[ii].push(note);
@@ -389,32 +389,61 @@ class ChartEditorState extends MusicBeatState {
                     }
                 }else{
                     var cSusNote:Int = Math.floor(nData.sustainLength / (conductor.stepCrochet / 4) + 1);
-                    var prevSustain:Note = note;
-                    
+
                     var nSData:NoteData = Note.getNoteData(Note.convNoteData(nData));
                     nSData.strumTime += (conductor.stepCrochet / 2);
                     var nSustain:Note = new Note(nSData, Song.getStrumKeys(cSection, curSection), null, cSection.noteStyle);
                     nSustain.typeNote = "Sustain";
                     nSustain.typeHit = "Hold";
-                    prevSustain.nextNote = nSustain;
+                    note.nextNote = nSustain;
                     setupNote(nSustain, ii);
-                    nSustain.note_size.set(KEYSIZE,KEYSIZE*cSusNote);
                     nSustain.alpha = isSelected || inst.playing ? 0.5 : 0.3;
                     renderedSustains.add(nSustain);
                     notesCanHit[ii].push(nSustain);
-                    prevSustain = nSustain;
                     
                     var nEData:NoteData = Note.getNoteData(Note.convNoteData(nData));
                     nEData.strumTime += ((conductor.stepCrochet / 4) * (cSusNote + 2));
                     var nSustainEnd:Note = new Note(nEData, Song.getStrumKeys(cSection, curSection), null, cSection.noteStyle);
                     nSustainEnd.typeNote = "Sustain";
                     nSustainEnd.typeHit = "Hold";
-                    prevSustain.nextNote = nSustainEnd;
+                    nSustain.nextNote = nSustainEnd;
                     setupNote(nSustainEnd, ii);
                     nSustainEnd.alpha = isSelected || inst.playing ? 0.5 : 0.3;
                     renderedSustains.add(nSustainEnd);
                     notesCanHit[ii].push(nSustainEnd);
-                    prevSustain = nSustainEnd;
+
+                    if(nData.canMerge){slide_gp.push(nSustainEnd);}
+                }
+            }
+
+            slide_gp.sort(function(a, b) {
+                if(a.strumTime < b.strumTime) return -1;
+                else if(a.strumTime > b.strumTime) return 1;
+                else if(a.noteData < b.noteData) return -1;
+                else if(a.noteData > b.noteData) return 1;
+                else return 0;
+             });
+
+            while(slide_gp.length > 0){
+                var first_slide = slide_gp.shift();
+                
+                for(second_slide in slide_gp){
+                    if(first_slide.strumTime != second_slide.strumTime){continue;}
+                    if(first_slide.noteData == second_slide.noteData){continue;}
+                    first_slide.typeNote = "Merge";
+                    second_slide.typeNote = "Merge";
+
+                    var new_slide:Note = new Note(Note.getNoteData([first_slide.strumTime]), Song.getStrumKeys(cSection, curSection), null, cSection.noteStyle);
+                    setupNote(new_slide, ii);
+                    first_slide.nextNote = new_slide;
+                    new_slide.nextNote = second_slide;
+                    new_slide.typeNote = "Switch";
+                    new_slide.setPosition(first_slide.x + (new_slide.width / 2), first_slide.y);
+                    new_slide.shader = ShaderColorSwap.get_shader(new_slide.note_path.getColorNote(), first_slide.playColor, second_slide.playColor);
+                    new_slide.alpha = 0.3;
+                    renderedSustains.add(new_slide);
+
+                    break;
                 }
             }
         }
@@ -736,7 +765,7 @@ class ChartEditorState extends MusicBeatState {
             stpNoteLength.value = selNote.sustainLength;
             stpNoteHits.value = selNote.multiHits;
             clNotePressets.setLabel(selNote.presset, true);
-            //btnCanMerge.label.text = selNote.canMerge ? "Is Merge Button" : "Is Not Merge Button";
+            btnCanMerge.label.text = selNote.canMerge ? "Is Slide" : "Is Not Slide";
             var events:Array<String> = []; for(e in selNote.eventData){events.push(e[0]);} clNoteEventList.setData(events);
             clNoteEventList.setLabel(clNoteEventList.getSelectedLabel(), false, true);
         }else{
@@ -744,7 +773,7 @@ class ChartEditorState extends MusicBeatState {
             stpNoteLength.value = 0;
             stpNoteHits.value = 0;
             clNotePressets.setLabel("Default", true);
-            //btnCanMerge.label.text =  "Note UnSelected";            
+            btnCanMerge.label.text =  "Note UnSelected";            
             clNoteEventList.setData([]); clNoteEventList.setLabel(clNoteEventList.getSelectedLabel(), false, true);
         }
 
@@ -826,7 +855,7 @@ class ChartEditorState extends MusicBeatState {
 
     function setupNote(note:Dynamic, ?grid:Int):Void {
         note.note_size.set(KEYSIZE,KEYSIZE);
-        if(note.typeNote == "Switch"){note.note_size.set(KEYSIZE,KEYSIZE/4);}
+        if(note.typeNote == "Switch"){note.note_size.set(KEYSIZE , KEYSIZE / 4);}
 
         note.onDebug = true;
         note.y = Math.floor(getYfromStrum((note.strumTime - sectionStartTime())));
@@ -1654,7 +1683,7 @@ class ChartEditorState extends MusicBeatState {
         
         btnCanMerge = new FlxUICustomButton(5, lblNoteHits.y + lblNoteHits.height + 5, Std.int(MENU.width - 10), null, selNote.canMerge ? "Is Merge Button" : "Is Not Merge Button", null, null, function(){
             updateSelectedNote(function(curNote){curNote.canMerge = !curNote.canMerge;});
-        }); //tabNOTE.add(btnCanMerge);
+        }); tabNOTE.add(btnCanMerge);
 
         clNotePressets = new FlxUICustomList(5, btnCanMerge.y + btnCanMerge.height + 5, Std.int(MENU.width - 10), Note.getNotePressets(), function(){
             updateSelectedNote(

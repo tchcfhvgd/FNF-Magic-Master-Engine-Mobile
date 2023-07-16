@@ -107,12 +107,7 @@ class Stage extends FlxTypedGroup<Dynamic>{
 
         initChar = script.getVariable("initChar");
 
-        if(members != null && members.length > 0){
-            for(m in members){
-                remove(m);
-                if(Reflect.hasField(m, "destroy")){m.destroy();}
-            }
-        }
+        this.clear();
         stageData.clear();
 
         script.exFunction("create");
@@ -181,9 +176,8 @@ class Stage extends FlxTypedGroup<Dynamic>{
     }
 
     override function destroy():Void {
-        if(stageData.members != null && stageData.members.length > 0){for(m in stageData.members){stageData.remove(m); if(Reflect.hasField(m, "destroy")){m.destroy();}}}
-        if(members != null && members.length > 0){for(m in members){remove(m); if(Reflect.hasField(m, "destroy")){m.destroy();}}}
         if(script != null){script.destroy();}
+        for(c in characterData){if(c == null){continue;} c.destroy();}
         super.destroy();
     }
 }

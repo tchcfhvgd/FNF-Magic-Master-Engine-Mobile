@@ -1,57 +1,57 @@
 {
 	"aspect": "Christmas",
 	"position": [
-		-115,
+		-65,
 		55
 	],
 	"scale": 1,
 	"anims": [
 		{
+			"loop": false,
 			"symbol": "Monster left note",
-			"loop": false,
-			"fps": 24,
 			"anim": "singLEFT",
+			"fps": 24,
 			"indices": []
 		},
 		{
+			"loop": false,
 			"symbol": "Monster Right note",
-			"loop": false,
-			"fps": 24,
 			"anim": "singRIGHT",
+			"fps": 24,
 			"indices": []
 		},
 		{
+			"loop": false,
 			"symbol": "monster down",
-			"loop": false,
-			"fps": 24,
 			"anim": "singDOWN",
+			"fps": 24,
 			"indices": []
 		},
 		{
+			"loop": false,
 			"symbol": "monster idle",
-			"loop": false,
-			"fps": 24,
 			"anim": "idle",
+			"fps": 24,
 			"indices": []
 		},
 		{
-			"symbol": "monster up note",
 			"loop": false,
-			"fps": 24,
+			"symbol": "monster up note",
 			"anim": "singUP",
+			"fps": 24,
 			"indices": []
 		}
 	],
-	"name": "Monster",
-	"image": "monsterchristmas",
 	"zoom": 0.8,
+	"image": "monsterchristmas",
+	"name": "Monster",
 	"antialiasing": true,
-	"deathCharacter": "Boyfriend",
-	"skin": "Default",
-	"onRight": true,
-	"healthicon": "monster",
 	"camera": [
-		35,
-		-65
-	]
+		-5,
+		25
+	],
+	"healthicon": "monster",
+	"onRight": true,
+	"skin": "Default",
+	"deathCharacter": "Boyfriend"
 }

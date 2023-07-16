@@ -34,7 +34,7 @@ var startCountdown:Void->Void = function(){};
 
 function addToLoad(list:Array<Dynamic>){
     if(!PlayState.isStoryMode || PlayState.total_plays > 1){return;}
-    list.push({type: "IMAGE", instance: Paths.image("characters/Tankman/guns")});
+    list.push({type: "IMAGE", instance: Paths.image("cutscenes/guns", "stages/war")});
     list.push({type: "MUSIC", instance: Paths.music("DISTORTO", "stages/war")});
     list.push({type: "SOUND", instance: Paths.sound("guns_1", "stages/war")});
 }
@@ -45,7 +45,7 @@ function preload():Void {
     girlfriend = getState().stage.getCharacterByName("Girlfriend");
 
     gunsCinematic = new FlxSprite(tankman.x - 160, tankman.y + 110);
-    gunsCinematic.frames = SavedFiles.getSparrowAtlas(Paths.image("characters/Tankman/guns"));
+    gunsCinematic.frames = SavedFiles.getSparrowAtlas(Paths.image("cutscenes/guns", "stages/war"));
     gunsCinematic.animation.addByPrefix("play", "TANK TALK 2", 24, false);
     tankman.add(gunsCinematic);
 

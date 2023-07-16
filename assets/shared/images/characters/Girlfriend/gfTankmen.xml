@@ -1,69 +1,69 @@
 <TextureAtlas imagePath="gfTankmen.png">
-	<!--  Created with Adobe Animate version 21.0.0.35450  -->
-	<!--  http://www.adobe.com/products/animate.html  -->
-	<SubTexture x="1824" frameWidth="907" y="1926" frameX="0" name="GF Crying at Gunpoint 0000" frameHeight="634" frameY="-23" width="911" height="625"/>
-	<SubTexture x="1824" frameWidth="907" y="1926" frameX="0" name="GF Crying at Gunpoint 0001" frameHeight="634" frameY="-23" width="911" height="625"/>
-	<SubTexture x="0" frameWidth="907" y="1925" frameX="0" name="GF Crying at Gunpoint 0002" frameHeight="634" frameY="-19" width="911" height="629"/>
-	<SubTexture x="0" frameWidth="907" y="1925" frameX="0" name="GF Crying at Gunpoint 0003" frameHeight="634" frameY="-19" width="911" height="629"/>
-	<SubTexture x="4569" frameWidth="907" y="1288" frameX="0" name="GF Crying at Gunpoint 0004" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="4569" frameWidth="907" y="1288" frameX="0" name="GF Crying at Gunpoint 0005" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="0" frameWidth="907" y="1291" frameX="0" name="GF Crying at Gunpoint 0006" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="0" frameWidth="907" y="1291" frameX="0" name="GF Crying at Gunpoint 0007" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="915" frameWidth="907" y="1292" frameX="0" name="GF Crying at Gunpoint 0008" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="915" frameWidth="907" y="1292" frameX="0" name="GF Crying at Gunpoint 0009" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="4569" frameWidth="907" y="1922" frameX="0" name="GF Crying at Gunpoint 0010" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="4569" frameWidth="907" y="1922" frameX="0" name="GF Crying at Gunpoint 0011" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="4569" frameWidth="907" y="1288" frameX="0" name="GF Crying at Gunpoint 0012" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="4569" frameWidth="907" y="1288" frameX="0" name="GF Crying at Gunpoint 0013" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="0" frameWidth="907" y="1291" frameX="0" name="GF Crying at Gunpoint 0014" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="0" frameWidth="907" y="1291" frameX="0" name="GF Crying at Gunpoint 0015" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="915" frameWidth="907" y="1292" frameX="0" name="GF Crying at Gunpoint 0016" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="915" frameWidth="907" y="1292" frameX="0" name="GF Crying at Gunpoint 0017" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="4569" frameWidth="907" y="1922" frameX="0" name="GF Crying at Gunpoint 0018" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="4569" frameWidth="907" y="1922" frameX="0" name="GF Crying at Gunpoint 0019" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="4569" frameWidth="907" y="1288" frameX="0" name="GF Crying at Gunpoint 0020" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="4569" frameWidth="907" y="1288" frameX="0" name="GF Crying at Gunpoint 0021" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="0" frameWidth="907" y="1291" frameX="0" name="GF Crying at Gunpoint 0022" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="0" frameWidth="907" y="1291" frameX="0" name="GF Crying at Gunpoint 0023" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="915" frameWidth="907" y="1292" frameX="0" name="GF Crying at Gunpoint 0024" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="915" frameWidth="907" y="1292" frameX="0" name="GF Crying at Gunpoint 0025" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="4569" frameWidth="907" y="1922" frameX="0" name="GF Crying at Gunpoint 0026" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="4569" frameWidth="907" y="1922" frameX="0" name="GF Crying at Gunpoint 0027" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="4569" frameWidth="907" y="1288" frameX="0" name="GF Crying at Gunpoint 0028" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="4569" frameWidth="907" y="1288" frameX="0" name="GF Crying at Gunpoint 0029" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="0" frameWidth="907" y="1291" frameX="0" name="GF Crying at Gunpoint 0030" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="0" frameWidth="907" y="1291" frameX="0" name="GF Crying at Gunpoint 0031" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="915" frameWidth="907" y="1292" frameX="0" name="GF Crying at Gunpoint 0032" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="915" frameWidth="907" y="1292" frameX="0" name="GF Crying at Gunpoint 0033" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="4569" frameWidth="907" y="1922" frameX="0" name="GF Crying at Gunpoint 0034" frameHeight="634" frameY="-18" width="911" height="630"/>
-	<SubTexture x="6399" frameWidth="907" y="1287" frameX="-2" name="GF Dancing at Gunpoint0000" frameHeight="634" frameY="-14" width="907" height="634"/>
-	<SubTexture x="2737" frameWidth="907" y="1288" frameX="-2" name="GF Dancing at Gunpoint0001" frameHeight="634" frameY="-14" width="907" height="634"/>
-	<SubTexture x="6399" frameWidth="907" y="1925" frameX="-3" name="GF Dancing at Gunpoint0002" frameHeight="634" frameY="-16" width="905" height="632"/>
-	<SubTexture x="915" frameWidth="907" y="1926" frameX="-3" name="GF Dancing at Gunpoint0003" frameHeight="634" frameY="-16" width="905" height="632"/>
-	<SubTexture x="3660" frameWidth="907" y="647" frameX="0" name="GF Dancing at Gunpoint0004" frameHeight="634" frameY="-13" width="911" height="635"/>
-	<SubTexture x="0" frameWidth="907" y="652" frameX="0" name="GF Dancing at Gunpoint0005" frameHeight="634" frameY="-13" width="911" height="635"/>
-	<SubTexture x="5490" frameWidth="907" y="646" frameX="0" name="GF Dancing at Gunpoint0006" frameHeight="634" frameY="-11" width="911" height="637"/>
-	<SubTexture x="0" frameWidth="907" y="0" frameX="0" name="GF Dancing at Gunpoint0007" frameHeight="634" frameY="0" width="911" height="648"/>
-	<SubTexture x="0" frameWidth="907" y="0" frameX="0" name="GF Dancing at Gunpoint0008" frameHeight="634" frameY="0" width="911" height="648"/>
-	<SubTexture x="0" frameWidth="907" y="0" frameX="0" name="GF Dancing at Gunpoint0009" frameHeight="634" frameY="0" width="911" height="648"/>
-	<SubTexture x="915" frameWidth="907" y="0" frameX="0" name="GF Dancing at Gunpoint0010" frameHeight="634" frameY="0" width="911" height="648"/>
-	<SubTexture x="915" frameWidth="907" y="0" frameX="0" name="GF Dancing at Gunpoint0011" frameHeight="634" frameY="0" width="911" height="648"/>
-	<SubTexture x="915" frameWidth="907" y="0" frameX="0" name="GF Dancing at Gunpoint0012" frameHeight="634" frameY="0" width="911" height="648"/>
-	<SubTexture x="1830" frameWidth="907" y="0" frameX="0" name="GF Dancing at Gunpoint0013" frameHeight="634" frameY="0" width="911" height="648"/>
-	<SubTexture x="1830" frameWidth="907" y="0" frameX="0" name="GF Dancing at Gunpoint0014" frameHeight="634" frameY="0" width="911" height="648"/>
-	<SubTexture x="915" frameWidth="907" y="652" frameX="-2" name="GF Dancing at Gunpoint0015" frameHeight="634" frameY="-12" width="907" height="636"/>
-	<SubTexture x="1826" frameWidth="907" y="652" frameX="-2" name="GF Dancing at Gunpoint0016" frameHeight="634" frameY="-12" width="907" height="636"/>
-	<SubTexture x="3660" frameWidth="907" y="1286" frameX="-3" name="GF Dancing at Gunpoint0017" frameHeight="634" frameY="-12" width="905" height="636"/>
-	<SubTexture x="5490" frameWidth="907" y="1287" frameX="-3" name="GF Dancing at Gunpoint0018" frameHeight="634" frameY="-12" width="905" height="636"/>
-	<SubTexture x="6405" frameWidth="907" y="646" frameX="0" name="GF Dancing at Gunpoint0019" frameHeight="634" frameY="-11" width="911" height="637"/>
-	<SubTexture x="2745" frameWidth="907" y="647" frameX="0" name="GF Dancing at Gunpoint0020" frameHeight="634" frameY="-11" width="911" height="637"/>
-	<SubTexture x="4575" frameWidth="907" y="646" frameX="0" name="GF Dancing at Gunpoint0021" frameHeight="634" frameY="-10" width="911" height="638"/>
-	<SubTexture x="2745" frameWidth="907" y="0" frameX="0" name="GF Dancing at Gunpoint0022" frameHeight="634" frameY="-5" width="911" height="643"/>
-	<SubTexture x="2745" frameWidth="907" y="0" frameX="0" name="GF Dancing at Gunpoint0023" frameHeight="634" frameY="-5" width="911" height="643"/>
-	<SubTexture x="3660" frameWidth="907" y="0" frameX="0" name="GF Dancing at Gunpoint0024" frameHeight="634" frameY="-5" width="911" height="643"/>
-	<SubTexture x="4575" frameWidth="907" y="0" frameX="0" name="GF Dancing at Gunpoint0025" frameHeight="634" frameY="-6" width="911" height="642"/>
-	<SubTexture x="4575" frameWidth="907" y="0" frameX="0" name="GF Dancing at Gunpoint0026" frameHeight="634" frameY="-6" width="911" height="642"/>
-	<SubTexture x="5490" frameWidth="907" y="0" frameX="0" name="GF Dancing at Gunpoint0027" frameHeight="634" frameY="-6" width="911" height="642"/>
-	<SubTexture x="6405" frameWidth="907" y="0" frameX="0" name="GF Dancing at Gunpoint0028" frameHeight="634" frameY="-6" width="911" height="642"/>
-	<SubTexture x="6405" frameWidth="907" y="0" frameX="0" name="GF Dancing at Gunpoint0029" frameHeight="634" frameY="-6" width="911" height="642"/>
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture x="0" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0000" frameHeight="625" frameY="-23" width="911" height="625"/>
+	<SubTexture x="0" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0001" frameHeight="625" frameY="-23" width="911" height="625"/>
+	<SubTexture x="912" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0002" frameHeight="625" frameY="-19" width="911" height="629"/>
+	<SubTexture x="912" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0003" frameHeight="625" frameY="-19" width="911" height="629"/>
+	<SubTexture x="1824" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0004" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="1824" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0005" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="2736" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0006" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="2736" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0007" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="3648" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0008" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="3648" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0009" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="4560" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0010" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="4560" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0011" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="1824" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0012" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="1824" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0013" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="2736" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0014" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="2736" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0015" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="3648" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0016" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="3648" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0017" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="4560" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0018" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="4560" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0019" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="1824" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0020" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="1824" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0021" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="2736" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0022" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="2736" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0023" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="3648" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0024" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="3648" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0025" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="4560" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0026" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="4560" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0027" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="1824" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0028" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="1824" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0029" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="2736" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0030" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="2736" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0031" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="3648" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0032" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="3648" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0033" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="4560" frameWidth="911" y="0" frameX="0" name="GF Crying at Gunpoint 0034" frameHeight="625" frameY="-18" width="911" height="630"/>
+	<SubTexture x="5472" frameWidth="911" y="0" frameX="-2" name="GF Dancing at Gunpoint0000" frameHeight="625" frameY="-14" width="907" height="634"/>
+	<SubTexture x="6380" frameWidth="911" y="0" frameX="-2" name="GF Dancing at Gunpoint0001" frameHeight="625" frameY="-14" width="907" height="634"/>
+	<SubTexture x="0" frameWidth="911" y="635" frameX="-3" name="GF Dancing at Gunpoint0002" frameHeight="625" frameY="-16" width="905" height="632"/>
+	<SubTexture x="906" frameWidth="911" y="635" frameX="-3" name="GF Dancing at Gunpoint0003" frameHeight="625" frameY="-16" width="905" height="632"/>
+	<SubTexture x="1812" frameWidth="911" y="635" frameX="0" name="GF Dancing at Gunpoint0004" frameHeight="625" frameY="-13" width="911" height="635"/>
+	<SubTexture x="2724" frameWidth="911" y="635" frameX="0" name="GF Dancing at Gunpoint0005" frameHeight="625" frameY="-13" width="911" height="635"/>
+	<SubTexture x="3636" frameWidth="911" y="635" frameX="0" name="GF Dancing at Gunpoint0006" frameHeight="625" frameY="-11" width="911" height="637"/>
+	<SubTexture x="4548" frameWidth="911" y="635" frameX="0" name="GF Dancing at Gunpoint0007" frameHeight="625" frameY="0" width="911" height="648"/>
+	<SubTexture x="4548" frameWidth="911" y="635" frameX="0" name="GF Dancing at Gunpoint0008" frameHeight="625" frameY="0" width="911" height="648"/>
+	<SubTexture x="4548" frameWidth="911" y="635" frameX="0" name="GF Dancing at Gunpoint0009" frameHeight="625" frameY="0" width="911" height="648"/>
+	<SubTexture x="5460" frameWidth="911" y="635" frameX="0" name="GF Dancing at Gunpoint0010" frameHeight="625" frameY="0" width="911" height="648"/>
+	<SubTexture x="5460" frameWidth="911" y="635" frameX="0" name="GF Dancing at Gunpoint0011" frameHeight="625" frameY="0" width="911" height="648"/>
+	<SubTexture x="5460" frameWidth="911" y="635" frameX="0" name="GF Dancing at Gunpoint0012" frameHeight="625" frameY="0" width="911" height="648"/>
+	<SubTexture x="6372" frameWidth="911" y="635" frameX="0" name="GF Dancing at Gunpoint0013" frameHeight="625" frameY="0" width="911" height="648"/>
+	<SubTexture x="6372" frameWidth="911" y="635" frameX="0" name="GF Dancing at Gunpoint0014" frameHeight="625" frameY="0" width="911" height="648"/>
+	<SubTexture x="7284" frameWidth="911" y="635" frameX="-2" name="GF Dancing at Gunpoint0015" frameHeight="625" frameY="-12" width="907" height="636"/>
+	<SubTexture x="0" frameWidth="911" y="1284" frameX="-2" name="GF Dancing at Gunpoint0016" frameHeight="625" frameY="-12" width="907" height="636"/>
+	<SubTexture x="908" frameWidth="911" y="1284" frameX="-3" name="GF Dancing at Gunpoint0017" frameHeight="625" frameY="-12" width="905" height="636"/>
+	<SubTexture x="1814" frameWidth="911" y="1284" frameX="-3" name="GF Dancing at Gunpoint0018" frameHeight="625" frameY="-12" width="905" height="636"/>
+	<SubTexture x="2720" frameWidth="911" y="1284" frameX="0" name="GF Dancing at Gunpoint0019" frameHeight="625" frameY="-11" width="911" height="637"/>
+	<SubTexture x="3632" frameWidth="911" y="1284" frameX="0" name="GF Dancing at Gunpoint0020" frameHeight="625" frameY="-11" width="911" height="637"/>
+	<SubTexture x="4544" frameWidth="911" y="1284" frameX="0" name="GF Dancing at Gunpoint0021" frameHeight="625" frameY="-10" width="911" height="638"/>
+	<SubTexture x="5456" frameWidth="911" y="1284" frameX="0" name="GF Dancing at Gunpoint0022" frameHeight="625" frameY="-5" width="911" height="643"/>
+	<SubTexture x="5456" frameWidth="911" y="1284" frameX="0" name="GF Dancing at Gunpoint0023" frameHeight="625" frameY="-5" width="911" height="643"/>
+	<SubTexture x="6368" frameWidth="911" y="1284" frameX="0" name="GF Dancing at Gunpoint0024" frameHeight="625" frameY="-5" width="911" height="643"/>
+	<SubTexture x="7280" frameWidth="911" y="1284" frameX="0" name="GF Dancing at Gunpoint0025" frameHeight="625" frameY="-6" width="911" height="642"/>
+	<SubTexture x="7280" frameWidth="911" y="1284" frameX="0" name="GF Dancing at Gunpoint0026" frameHeight="625" frameY="-6" width="911" height="642"/>
+	<SubTexture x="0" frameWidth="911" y="1928" frameX="0" name="GF Dancing at Gunpoint0027" frameHeight="625" frameY="-6" width="911" height="642"/>
+	<SubTexture x="912" frameWidth="911" y="1928" frameX="0" name="GF Dancing at Gunpoint0028" frameHeight="625" frameY="-6" width="911" height="642"/>
+	<SubTexture x="912" frameWidth="911" y="1928" frameX="0" name="GF Dancing at Gunpoint0029" frameHeight="625" frameY="-6" width="911" height="642"/>
 </TextureAtlas>

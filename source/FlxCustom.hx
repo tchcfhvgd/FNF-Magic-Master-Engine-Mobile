@@ -388,13 +388,13 @@ class FlxCustomShader extends FlxShader {
     public static var shaders:Array<FlxCustomShader> = [];
 
     @:glFragmentHeader('
+        #define iResolution openfl_TextureSize
+        #define iChannel0 bitmap
+        
         uniform float iTime;
         uniform vec4 iMouse;
         uniform float iFrame;
         uniform float iTimeDelta;
-
-        #define iResolution openfl_TextureSize
-        #define iChannel0 bitmap
     ')
 	@:glFragmentSource("
         #pragma header
@@ -429,6 +429,11 @@ class FlxCustomShader extends FlxShader {
         iMouse.value[1] = FlxG.mouse.screenY;
         iMouse.value[2] = FlxG.mouse.pressed ? FlxG.mouse.screenX : 0.0;
         iMouse.value[2] = FlxG.mouse.pressed ? FlxG.mouse.screenY : 0.0;
+    }
+
+    public function set_value(field:String, value:Dynamic):Void {
+        if(!Reflect.hasField(this, field)){return;}
+        Reflect.getProperty(this, field).value = [value];
     }
 }
 #end

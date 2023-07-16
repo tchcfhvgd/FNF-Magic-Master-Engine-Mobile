@@ -3,6 +3,8 @@ package substates;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
+import states.PlayState;
+import flixel.FlxCamera;
 import flixel.FlxSubState;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
@@ -21,19 +23,24 @@ class GameOverSubstate extends MusicBeatSubstate {
 
     public var death_characters:FlxTypedGroup<Character>;
     public var camFollow:FlxObject;
+
+    public var cur_playstate:PlayState;
+
+    public var otherCamera:FlxCamera;
     
 	public function new(characters:Array<Character>, style_ui:String){
 		cur_style_ui = style_ui;
         super();
         curCamera.bgColor.alpha = 0;
 
-        var blackGround = new FlxSprite().makeGraphic(FlxG.width * 10, FlxG.height * 10, FlxColor.BLACK);
-		blackGround.scrollFactor.set();
-        blackGround.screenCenter();
-        blackGround.alpha = 0;
-        add(blackGround);
+        otherCamera = new FlxCamera();
+		FlxG.cameras.add(otherCamera);
+        otherCamera.zoom = FlxG.camera.zoom;
+
+        if((MusicBeatState.state is PlayState)){cur_playstate = cast MusicBeatState.state;}
 
         death_characters = new FlxTypedGroup<Character>();
+        death_characters.cameras = [otherCamera];
         add(death_characters);
 
 		for(i in 0...characters.length){
@@ -41,19 +48,20 @@ class GameOverSubstate extends MusicBeatSubstate {
             if(die_char == null && i > 0){continue;}
 
             var new_character = new Character(characters[i].x, characters[i].y, die_char, characters[i].curAspect, characters[i].curType, true);
-            new_character.noDance = true;
             new_character.turnLook(characters[i].onRight);
             new_character.playAnim('firstDeath', true);
             death_characters.add(new_character);
+            new_character.noDance = true;
 		}
         characters_created = true;
 
 		FlxG.sound.play(Paths.sound('fnf_loss_sfx').getSound());
-		FlxTween.tween(blackGround, {alpha: 1}, 2, {ease: FlxEase.linear});
+        curCamera.fade(FlxColor.BLACK, 2);
 
 		conductor.changeBPM(100);
 
 		camFollow = new FlxObject(characters[0].c.x + (characters[0].c.width / 2), characters[0].c.y + (characters[0].c.height / 2), 1, 1); add(camFollow);
+        otherCamera.scroll = FlxG.camera.scroll; otherCamera.follow(camFollow, LOCKON, 0.04);
 		FlxG.camera.follow(camFollow, LOCKON, 0.04);
 	}
 
@@ -65,12 +73,16 @@ class GameOverSubstate extends MusicBeatSubstate {
                 if(death_characters.members[0].c.animation.curAnim.finished){
                     FlxG.sound.playMusic(Paths.styleMusic('gameOver', cur_style_ui).getSound());
                     for(char in death_characters){char.playAnim('deathLoop', true);}
+                    if(cur_playstate != null){cur_playstate.stage.destroy();}
+                    MusicBeatState.state.persistentUpdate = false;
                     MusicBeatState.state.persistentDraw = false;
                     characters_created = false;
                     canControlle = true;
                 }
             }else{
                 FlxG.sound.playMusic(Paths.styleMusic('gameOver', cur_style_ui).getSound());
+                if(cur_playstate != null){cur_playstate.stage.destroy();}
+                MusicBeatState.state.persistentUpdate = false;
                 MusicBeatState.state.persistentDraw = false;
                 characters_created = false;
                 canControlle = true;

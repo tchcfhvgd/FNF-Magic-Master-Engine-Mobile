@@ -97,7 +97,7 @@ class XMLEditorState extends MusicBeatState {
         eSprite.cameras = [camFGame];
         eSprite.antialiasing = false;
 
-        imgIcon = new FlxSprite(5, 5);
+        imgIcon = new FlxSprite(5, 55);
         imgIcon.cameras = [camHUD];
 
         add(eSprite);
@@ -248,6 +248,7 @@ class XMLEditorState extends MusicBeatState {
         var values:Array<Dynamic> = null;
         if(eSprite != null && eSprite.animation.curAnim != null){values = [eSprite.animation.curAnim.name, eSprite.animation.curAnim.curFrame];}
         if(_XML != null && _IMG != null){
+            @:privateAccess _IMG.frameCollections.clear();
             eSprite.frames = SavedFiles.fromUncachedSparrow(_IMG, _XML.x.toString());
             
             var animArr = getNamesArray(_XML.elements);

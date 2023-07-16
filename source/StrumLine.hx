@@ -12,6 +12,7 @@ import openfl.events.KeyboardEvent;
 import flixel.addons.ui.FlxUIGroup;
 import haxe.format.JsonParser;
 import flixel.tweens.FlxTween;
+import states.MusicBeatState;
 import flixel.tweens.FlxEase;
 import flixel.group.FlxGroup;
 import flixel.util.FlxColor;
@@ -32,10 +33,10 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-import Alphabet.PopUpScore;
 import Note.Note_Animation_Data;
 import Note.Note_Graphic_Data;
-import states.MusicBeatState;
+import Note.ShaderColorSwap;
+import Alphabet.PopUpScore;
 import Song.SwagSection;
 import Note.NoteSplash;
 import Note.StrumNote;
@@ -379,27 +380,24 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
             }
         }
 
-		var cont:Array<Bool> = []; for(s in MusicBeatState.state.scripts){cont.push(s.exFunction('load_solo_${player}_ui', [this]));}
+		var cont:Array<Bool> = []; for(s in MusicBeatState.state.scripts){cont.push(s.exFunction('load_solo_ui', [this, this.ID]));}
 		if(cont.contains(true)){return; trace("RETURN");}
 
         if(healthBar == null){
 			healthBar = new FlxBar(x, pre_TypeScroll == "DownScroll" ? 52 : 663, RIGHT_TO_LEFT, 330, 16, this, 'HEALTH', 0, MAXHEALTH);
 			healthBar.numDivisions = 500;
-			//healthBar.cameras = [camHUD];
 			add(healthBar);
 		}
 
 		if(sprite_healthBar == null){
 			sprite_healthBar = new FlxSprite(x, pre_TypeScroll == "DownScroll" ? 50 : 655).loadGraphic(Paths.styleImage("single_healthBar", ui_style, "shared").getGraphic());
 			sprite_healthBar.scale.set(0.7,0.7); sprite_healthBar.updateHitbox();
-			//sprite_healthBar.cameras = [camHUD];
 			add(sprite_healthBar);
 		}
 
 		if(leftIcon == null){
 			leftIcon = new HealthIcon('tankman');
 			leftIcon.setPosition(healthBar.x-(leftIcon.width/2),healthBar.y-(leftIcon.height/2));
-			//leftIcon.camera = camHUD;
 			add(leftIcon);
 		}
 
@@ -407,7 +405,6 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 			lblStats = new FlxText(x, 0, genWidth, "|| ...Starting Song... ||");
 			lblStats.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			lblStats.y = pre_TypeScroll == "DownScroll" ? sprite_healthBar.y + sprite_healthBar.height : FlxG.height - lblStats.height - 5;
-			//lblStats.cameras = [camHUD];
 			add(lblStats);
 		}
     }
@@ -499,28 +496,24 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 		if(sprite_healthBar == null){
 			sprite_healthBar = new FlxSprite(326, pre_TypeScroll == "DownScroll" ? 25 : 655).loadGraphic(Paths.styleImage("healthBar", ui_style, "shared").getGraphic());
 			sprite_healthBar.scale.set(0.7,0.7); sprite_healthBar.updateHitbox();
-			//sprite_healthBar.cameras = [camHUD];
 		}
 
 		if(healthBar == null){
 			healthBar = new FlxBar(330, pre_TypeScroll == "DownScroll" ? 35 : 664, RIGHT_TO_LEFT, Std.int(FlxG.width / 2) - 20, 16, this, 'HEALTH', 0, MAXHEALTH);
 			healthBar.numDivisions = 500;
             healthBar.screenCenter(X);
-			//healthBar.cameras = [camHUD];
 		}
         
 		if(leftIcon == null){
 			leftIcon = new HealthIcon('face');
 			leftIcon.setPosition(healthBar.x-(leftIcon.width/2),healthBar.y-(leftIcon.height/2));
             leftIcon.visible = false;
-			//leftIcon.camera = camHUD;
 		}
 
 		if(rightIcon == null){
 			rightIcon = new HealthIcon('face', true);
 			rightIcon.setPosition(healthBar.x+healthBar.width-(rightIcon.width/2),healthBar.y-(rightIcon.height/2));
             rightIcon.visible = false;
-			//rightIcon.camera = camHUD;
 		}
         
 		if(lblStats == null){
@@ -528,7 +521,6 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 			lblStats.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			lblStats.screenCenter(X);
 			lblStats.y = pre_TypeScroll == "DownScroll" ? sprite_healthBar.y + sprite_healthBar.height : FlxG.height - lblStats.height - 5;
-			//lblStats.cameras = [camHUD];
 		}
 
         add(healthBar);
@@ -553,11 +545,13 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 		super.destroy();
 	}
 
+    private var pressedKeys:Array<FlxKey> = [];
     private function onKeyPress(event:KeyboardEvent):Void {
         if(typeStrum == "BotPlay" || PreSettings.getPreSetting("Type Mode", "Cheating Settings") == "BotPlay"){return;}
         if(controls.keyboardScheme != Solo){return;}
 
         var eventKey:FlxKey = event.keyCode;
+        if(pressedKeys.contains(eventKey)){return;} pressedKeys.push(eventKey);
         var key:Int = controls.getNoteDataFromKey(eventKey, key_number);
     
         if(key < 0 || disableArray[key]){return;}
@@ -575,6 +569,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         if(controls.keyboardScheme != Solo){return;}
         
         var eventKey:FlxKey = event.keyCode;
+        if(pressedKeys.contains(eventKey)){pressedKeys.remove(eventKey);}
         var key:Int = controls.getNoteDataFromKey(eventKey, key_number);
     
         if(key < 0 || disableArray[key]){return;}
@@ -610,6 +605,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         notelist = [];
         for(i in 0...swagStrum.notes.length){
             var sectionInfo:Array<Dynamic> = swagStrum.notes[i].sectionNotes.copy();
+            var slide_gp:Array<Note> = [];
 
             for(n in sectionInfo){if(n[1] < 0 || n[1] >= Song.getStrumKeys(swagStrum, i)){sectionInfo.remove(n);}}
 
@@ -622,6 +618,8 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
                 notelist.push(swagNote);
         
                 if(note.sustainLength <= 0 || note.multiHits > 0){continue;}
+
+                if(note.canMerge){slide_gp.push(swagNote);}
 
                 var cSusNote = Math.floor(note.sustainLength / (strumConductor.stepCrochet * 0.25)) + 2;
         
@@ -643,6 +641,40 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
                     prevSustain = nSustain;
                     cSusNote--;
                 }
+
+                var lastNote:Note = swagNote; while(lastNote.nextNote != null){lastNote = lastNote.nextNote;}
+                if(note.canMerge){slide_gp.push(lastNote);}
+            }
+            
+
+            slide_gp.sort(function(a, b) {
+                if(a.strumTime < b.strumTime) return -1;
+                else if(a.strumTime > b.strumTime) return 1;
+                else if(a.noteData < b.noteData) return -1;
+                else if(a.noteData > b.noteData) return 1;
+                else return 0;
+             });
+
+            while(slide_gp.length > 0){
+                var first_slide = slide_gp.shift();
+                
+                for(second_slide in slide_gp){
+                    if(first_slide.strumTime != second_slide.strumTime){continue;}
+                    if(first_slide.noteData == second_slide.noteData){continue;}
+
+                    if(first_slide.prevNote != null){first_slide.typeHit = "Release";}else{first_slide.typeHit = "Press";}
+                    if(second_slide.prevNote != null){second_slide.typeHit = "Release";}else{second_slide.typeHit = "Press";}
+                    first_slide.typeNote = "Merge"; second_slide.typeNote = "Merge";
+
+                    var new_slide:Note = new Note(Note.getNoteData([first_slide.strumTime, first_slide.noteData]), Song.getStrumKeys(swagStrum, i), image, style, type);
+                    first_slide.nextNote = new_slide; new_slide.nextNote = second_slide;
+                    new_slide.typeNote = "Switch"; new_slide.typeHit = "Ghost";
+                    new_slide.note_size.set(getStrumSize(), getStrumSize());
+                    new_slide.shader = ShaderColorSwap.get_shader(new_slide.note_path.getColorNote(), first_slide.playColor, second_slide.playColor);
+                    notelist.push(new_slide);
+
+                    break;
+                }
             }
         }
 
@@ -662,6 +694,13 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     var pre_TypeStrums:String = PreSettings.getPreSetting("Type Light Strums", "Visual Settings");
     override function update(elapsed:Float){
 		super.update(elapsed);
+
+        for(i in 0...staticnotes.members.length){
+            if(!staticnotes.members[i].animation.finished){continue;}
+            if(staticnotes.members[i].animation.curAnim.name == 'static'){continue;}
+            if(holdArray[i]){continue;}
+            staticnotes.playById(i, "static", true);
+        }
         
         if(update_hud != null){update_hud();}
 
@@ -684,7 +723,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 
         notes.forEachAlive(function(daNote:Note){
             if(daNote.strumTime > strumConductor.songPosition - Conductor.safeZoneOffset && daNote.strumTime < strumConductor.songPosition + (Conductor.safeZoneOffset * 0.5)){daNote.noteStatus = "CanBeHit";}
-            if(strumConductor.songPosition > daNote.strumTime + (Conductor.safeZoneOffset * 0.5) && daNote.noteStatus != "Pressed"){missNOTE(daNote); return;}
+            if(strumConductor.songPosition > daNote.strumTime + (350 / getScrollSpeed()) && daNote.noteStatus != "Pressed"){missNOTE(daNote); return;}
             
             daNote.visible = false;
             var noteStrum:StrumNote = staticnotes.statics[daNote.noteData];
@@ -706,7 +745,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
             daNote.visible = noteStrum.visible;
 
             if(daNote.typeNote == "Switch"){
-                daNote.x = noteStrum.x + ((getStrumSize() * 0.25) * (daNote.noteHits+2));
+                daNote.x = noteStrum.x + (noteStrum.width / 2);
                 daNote.alpha = noteStrum.alpha * 0.8;
             }else{
                 daNote.x = noteStrum.x;
@@ -717,11 +756,20 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
                     daNote.angle = 0;
                 }
             }
+
+            if(daNote.strumTime <= strumConductor.songPosition && 
+                (
+                    daNote.typeHit == "Ghost" ||
+                    daNote.typeHit == "Always"
+                )
+            ){
+                hitNOTE(daNote);
+            }
         });
         
         if(typeStrum == "BotPlay" || PreSettings.getPreSetting("Type Mode", "Cheating Settings") == "BotPlay"){
             keyShit();
-        }else if(controls.gamepadsAdded.length > 0){
+        }else if(controls.keyboardScheme != Solo){
             pressArray = controls.getStrumCheckers(key_number, JUST_PRESSED);
             releaseArray = controls.getStrumCheckers(key_number, JUST_RELEASED);
             holdArray = controls.getStrumCheckers(key_number, PRESSED);
@@ -733,6 +781,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         }
 
         for(holdnote in holdNotes){
+            if(holdnote.typeHit != "Hold"){holdNotes.remove(holdnote); continue;}
             if(!holdArray[holdnote.noteData]){continue;}
             if(holdnote.noteStatus != "CanBeHit" || (holdnote.noteStatus == "CanBeHit" && !holdArray[holdnote.noteData])){continue;}
             hitNOTE(holdnote);
@@ -795,7 +844,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
             if(onHIT != null){onHIT(daNote);}
         }
 
-        if(daNote.nextNote != null){holdNotes.push(daNote.nextNote);}
+        if(daNote.nextNote != null && daNote.nextNote.typeHit == "Hold"){holdNotes.push(daNote.nextNote);}
 
         if((daNote.noteStatus != "MultiTap" && daNote.noteHits <= 0) || (daNote.noteHits < 0 && daNote.noteStatus == "MultiTap")){
             daNote.kill();

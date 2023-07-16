@@ -1,72 +1,37 @@
 {
 	"aspect": "Christmas",
 	"position": [
-		-140,
+		-220,
 		85
 	],
 	"scale": 1,
 	"anims": [
 		{
+			"loop": false,
 			"symbol": "GF Cheer",
-			"loop": false,
-			"fps": 24,
 			"anim": "hey",
+			"fps": 24,
 			"indices": []
 		},
 		{
-			"symbol": "GF Dancing Beat",
 			"loop": false,
-			"fps": 24,
+			"symbol": "GF Dancing Beat",
 			"anim": "idle",
-			"indices": []
-		},
-		{
-			"symbol": "GF Down Note",
-			"loop": false,
 			"fps": 24,
-			"anim": "singDOWN",
 			"indices": []
 		},
 		{
-			"symbol": "GF FEAR ",
 			"loop": false,
-			"fps": 24,
-			"anim": "scared",
-			"indices": []
-		},
-		{
-			"symbol": "GF Right Note",
-			"loop": false,
-			"fps": 24,
-			"anim": "singRIGHT",
-			"indices": []
-		},
-		{
-			"symbol": "GF Up Note",
-			"loop": false,
-			"fps": 24,
-			"anim": "singUP",
-			"indices": []
-		},
-		{
-			"symbol": "GF left note",
-			"loop": false,
-			"fps": 24,
-			"anim": "singLEFT",
-			"indices": []
-		},
-		{
 			"symbol": "gf sad",
-			"loop": false,
-			"fps": 24,
 			"anim": "sad",
+			"fps": 24,
 			"indices": []
 		},
 		{
-			"symbol": "GF Dancing Beat",
 			"loop": false,
-			"fps": 24,
+			"symbol": "GF Dancing Beat",
 			"anim": "danceLeft",
+			"fps": 24,
 			"indices": [
 				0,
 				1,
@@ -86,10 +51,10 @@
 			]
 		},
 		{
-			"symbol": "GF Dancing Beat",
 			"loop": false,
-			"fps": 24,
+			"symbol": "GF Dancing Beat",
 			"anim": "danceRight",
+			"fps": 24,
 			"indices": [
 				16,
 				17,
@@ -108,17 +73,17 @@
 			]
 		}
 	],
-	"name": "Girlfriend",
-	"image": "gfChristmas",
 	"zoom": 0.8,
+	"image": "gfChristmas",
+	"name": "Girlfriend",
 	"antialiasing": true,
-	"deathCharacter": "Boyfriend",
-	"onRight": false,
+	"skin": "Default",
+	"healthicon": "gf",
 	"camera": [
 		-10,
 		-100
 	],
-	"healthicon": "gf",
-	"skin": "Default",
+	"onRight": false,
+	"deathCharacter": "Boyfriend",
 	"danceIdle": true
 }

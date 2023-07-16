@@ -30,7 +30,6 @@ class OptionsSubState extends MusicBeatSubstate {
 	public var curOption:Int = 0;
 	
 	public function new(?onClose:Void->Void){
-		FlxG.mouse.visible = true;
 		super(onClose);
 		curCamera.alpha = 0;
 		
@@ -102,6 +101,8 @@ class OptionsSubState extends MusicBeatSubstate {
 					Controls.saveControls();
 					PreSettings.saveSettings();
 					PlayerSettings.init();
+
+					LangSupport.setLang(PreSettings.getPreSetting("Language", "Game Settings"));
 	
 					doClose();
 				}

@@ -7,14 +7,14 @@
 	"scale": 6,
 	"anims": [
 		{
-			"symbol": "idle spirit",
+			"symbol": "idle_spirit",
 			"loop": false,
 			"fps": 24,
 			"anim": "idle",
 			"indices": []
 		},
 		{
-			"symbol": "spirit down",
+			"symbol": "spirit_down",
 			"loop": false,
 			"fps": 24,
 			"anim": "singDOWN",

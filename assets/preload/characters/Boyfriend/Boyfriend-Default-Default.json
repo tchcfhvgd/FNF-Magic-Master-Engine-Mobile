@@ -8,30 +8,9 @@
 	"anims": [
 		{
 			"indices": [],
-			"symbol": "BF Dead Loop",
-			"fps": 24,
-			"anim": "deathLoop",
-			"loop": false
-		},
-		{
-			"indices": [],
-			"symbol": "BF Dead confirm",
-			"fps": 24,
-			"anim": "deathConfirm",
-			"loop": false
-		},
-		{
-			"indices": [],
 			"symbol": "BF HEY!!",
 			"fps": 24,
 			"anim": "hey",
-			"loop": false
-		},
-		{
-			"indices": [],
-			"symbol": "BF NOTE DOWN",
-			"fps": 24,
-			"anim": "singDOWN",
 			"loop": false
 		},
 		{
@@ -43,9 +22,9 @@
 		},
 		{
 			"indices": [],
-			"symbol": "BF NOTE LEFT",
+			"symbol": "BF NOTE DOWN",
 			"fps": 24,
-			"anim": "singLEFT",
+			"anim": "singDOWN",
 			"loop": false
 		},
 		{
@@ -57,9 +36,9 @@
 		},
 		{
 			"indices": [],
-			"symbol": "BF NOTE RIGHT",
+			"symbol": "BF NOTE LEFT",
 			"fps": 24,
-			"anim": "singRIGHT",
+			"anim": "singLEFT",
 			"loop": false
 		},
 		{
@@ -71,9 +50,9 @@
 		},
 		{
 			"indices": [],
-			"symbol": "BF NOTE UP",
+			"symbol": "BF NOTE RIGHT",
 			"fps": 24,
-			"anim": "singUP",
+			"anim": "singRIGHT",
 			"loop": false
 		},
 		{
@@ -85,16 +64,9 @@
 		},
 		{
 			"indices": [],
-			"symbol": "BF dies",
+			"symbol": "BF NOTE UP",
 			"fps": 24,
-			"anim": "firstDeath",
-			"loop": false
-		},
-		{
-			"indices": [],
-			"symbol": "BF hit",
-			"fps": 24,
-			"anim": "hit",
+			"anim": "singUP",
 			"loop": false
 		},
 		{
@@ -110,39 +82,18 @@
 			"fps": 24,
 			"anim": "scared",
 			"loop": false
-		},
-		{
-			"indices": [],
-			"symbol": "bf pre attack",
-			"fps": 24,
-			"anim": "preattack",
-			"loop": false
-		},
-		{
-			"indices": [],
-			"symbol": "boyfriend attack",
-			"fps": 24,
-			"anim": "attack",
-			"loop": false
-		},
-		{
-			"indices": [],
-			"symbol": "boyfriend dodge",
-			"fps": 24,
-			"anim": "dodge",
-			"loop": false
 		}
 	],
-	"zoom": 0.8,
-	"image": "BOYFRIEND",
 	"name": "Boyfriend",
+	"image": "BOYFRIEND",
+	"zoom": 0.8,
 	"antialiasing": true,
+	"deathCharacter": "Boyfriend",
+	"skin": "Default",
+	"onRight": false,
+	"healthicon": "bf",
 	"camera": [
 		0,
 		0
-	],
-	"healthicon": "bf",
-	"onRight": false,
-	"skin": "Default",
-	"deathCharacter": "Boyfriend"
+	]
 }

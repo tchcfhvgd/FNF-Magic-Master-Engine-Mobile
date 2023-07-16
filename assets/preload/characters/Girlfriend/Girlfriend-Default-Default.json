@@ -21,55 +21,6 @@
 			"indices": []
 		},
 		{
-			"symbol": "GF Dancing Beat Hair Landing",
-			"loop": false,
-			"fps": 24,
-			"anim": "hairFall",
-			"indices": []
-		},
-		{
-			"symbol": "GF Dancing Beat Hair blowing",
-			"loop": false,
-			"fps": 24,
-			"anim": "hairBlow",
-			"indices": []
-		},
-		{
-			"symbol": "GF Down Note",
-			"loop": false,
-			"fps": 24,
-			"anim": "singDOWN",
-			"indices": []
-		},
-		{
-			"symbol": "GF FEAR ",
-			"loop": false,
-			"fps": 24,
-			"anim": "scared",
-			"indices": []
-		},
-		{
-			"symbol": "GF Right Note",
-			"loop": false,
-			"fps": 24,
-			"anim": "singRIGHT",
-			"indices": []
-		},
-		{
-			"symbol": "GF Up Note",
-			"loop": false,
-			"fps": 24,
-			"anim": "singUP",
-			"indices": []
-		},
-		{
-			"symbol": "GF left note",
-			"loop": false,
-			"fps": 24,
-			"anim": "singLEFT",
-			"indices": []
-		},
-		{
 			"symbol": "gf sad",
 			"loop": false,
 			"fps": 24,
@@ -123,7 +74,7 @@
 		}
 	],
 	"name": "Girlfriend",
-	"image": "GF_assets",
+	"image": "Simple_Girlfriend",
 	"zoom": 0.8,
 	"antialiasing": true,
 	"deathCharacter": "Boyfriend",

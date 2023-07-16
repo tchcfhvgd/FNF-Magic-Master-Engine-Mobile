@@ -78,7 +78,6 @@ class SkinsMenuState extends MusicBeatState {
 		add(background);
 		
 		character = new Character(-25, 100);
-		character.scale.set(0,0);
 		character.cameras = [camFGame];
 		add(character);
 		
@@ -164,8 +163,6 @@ class SkinsMenuState extends MusicBeatState {
 
 	override function update(elapsed:Float){		
 		super.update(elapsed);
-
-		if(principal_controls.checkAction("Menu_Back", JUST_PRESSED)){character.scale.set(0,0);}
 		
 		if(canControlle){
 			if(principal_controls.checkAction("Menu_Up", JUST_PRESSED)){changeCharacter(-1);}

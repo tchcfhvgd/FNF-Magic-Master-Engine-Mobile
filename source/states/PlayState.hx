@@ -255,7 +255,7 @@ class PlayState extends MusicBeatState {
 				for(ii in Song.getNoteCharactersToSing(note, strumLine.swagStrum, strumLine.curSection)){
 					var new_character:Character = stage.getCharacterById(ii);
 					
-					new_character.singAnim(song_animation, note.typeNote == "Sustain");
+					new_character.singAnim(song_animation, true, false, note.typeNote == "Sustain");
 
 					if(!focus){
 						if(songData.sectionStrums[i].isPlayable){
@@ -426,6 +426,9 @@ class PlayState extends MusicBeatState {
 				);
 			}
 			if(FlxG.keys.justPressed.SEVEN){
+				persistentUpdate = false;
+				inst.destroy();
+				for(s in voices.sounds){s.destroy();}
 				states.editors.ChartEditorState._song = SONG;
 				MusicBeatState.switchState("states.editors.ChartEditorState", []);
 			}
@@ -466,7 +469,7 @@ class PlayState extends MusicBeatState {
 					var curStrumPosX:String = "";
 					
 					var newStrumLineX:Float = strumLeftPos;
-					var newStrumLineY:Float = 30; if(pre_TypeScroll == "DownScroll"){newStrumLineY = FlxG.height - curStrumLine.genHeight - 30;}
+					var newStrumLineY:Float = pre_TypeScroll == "DownScroll" ? FlxG.height - curStrumLine.genHeight - 30 : 30;
 					var newStrumLineAlpha:Float = 1;	
 					
 					var setSide = function(_initSide:String):Void {
@@ -552,7 +555,6 @@ class PlayState extends MusicBeatState {
 
 				inst.destroy();
 				for(s in voices.sounds){s.destroy();}
-				stage.destroy();
 
 				SongListData.resetVariables();
 				if(states.PlayState.isDuel){states.MusicBeatState.switchState("states.FreeplayState", [null, "states.MainMenuState", function(_song){MusicBeatState.switchState("states.PlayerSelectorState", [_song, null, "states.MainMenuState"]);}]);}
@@ -610,6 +612,8 @@ class PlayState extends MusicBeatState {
 			for(timer in timers){if(timer != null){timer.active = true;}}
 			for(tween in tweens){if(tween != null){tween.active = true;}}
 		}
+		
+		for(s in scripts){s.exFunction('song_paused', [pause]);}
 	}
 
 	public function pauseAndOpen(substate:String, args:Array<Dynamic>, hasEasterEgg:Bool = false, per_update:Bool = false, per_draw:Bool = true){
@@ -633,6 +637,7 @@ class PlayState extends MusicBeatState {
 	function doGameOver(_player:Int):Void {
 		onGameOver = true;
 		camHUD.visible = false;
+		camFHUD.visible = false;
 		
 		var chars:Array<Character> = [];
 		var char:Array<Int> = SONG.sectionStrums[_player].charToSing;

@@ -48,6 +48,13 @@
                 "loop": false
             },
             {
+                "anim": "line",
+                "symbol": "HoldSwitch",
+
+                "fps": 32,
+                "loop": false
+            },
+            {
                 "anim": "merge",
                 "symbol": "SwitchHold",
 
@@ -57,7 +64,7 @@
         ],
         "notes":[
             {
-                "sing_animation": "singMIDDLE",
+                "sing_animation": "singUP",
                 "animations":[
                     {
                         "anim": "static",

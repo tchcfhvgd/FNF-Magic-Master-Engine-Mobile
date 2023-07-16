@@ -167,7 +167,7 @@ class Mod {
 
         name = identifierJSON.exists('name') ? identifierJSON.get('name') : 'Magic Master PlaceHolder Mod - ${MagicStuff.version}';
         prefix = identifierJSON.exists('prefix') ? identifierJSON.get('prefix') : "Mod";
-        description = identifierJSON.exists('description') ? identifierJSON.get('description') : folder;
+        description = identifierJSON.exists('description') ? identifierJSON.get('description') : folder.split('/').pop();
 
         onlyThis = identifierJSON.exists('onlyThis') ? identifierJSON.get('onlyThis') : false;
         

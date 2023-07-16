@@ -4,104 +4,83 @@
 		0,
 		320
 	],
+	"nAntialiasing": true,
 	"scale": 6,
 	"anims": [
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "BF DOWN MISS",
-			"fps": 24,
 			"anim": "singDOWNmiss",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		},
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "BF DOWN NOTE",
-			"fps": 24,
 			"anim": "singDOWN",
-			"loop": false
-		},
-		{
-			"indices": [],
-			"symbol": "BF Dies pixel",
 			"fps": 24,
-			"anim": "firstDeath",
-			"loop": false
+			"indices": []
 		},
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "BF IDLE",
-			"fps": 24,
 			"anim": "idle",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		},
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "BF LEFT MISS",
-			"fps": 24,
 			"anim": "singLEFTmiss",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		},
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "BF LEFT NOTE",
-			"fps": 24,
 			"anim": "singLEFT",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		},
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "BF RIGHT MISS",
-			"fps": 24,
 			"anim": "singRIGHTmiss",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		},
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "BF RIGHT NOTE",
-			"fps": 24,
 			"anim": "singRIGHT",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		},
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "BF UP MISS",
-			"fps": 24,
 			"anim": "singUPmiss",
-			"loop": false
+			"fps": 24,
+			"indices": []
 		},
 		{
-			"indices": [],
+			"loop": false,
 			"symbol": "BF UP NOTE",
-			"fps": 24,
 			"anim": "singUP",
-			"loop": false
-		},
-		{
-			"indices": [],
-			"symbol": "RETRY CONFIRM",
 			"fps": 24,
-			"anim": "deathConfirm",
-			"loop": false
-		},
-		{
-			"indices": [],
-			"symbol": "Retry Loop",
-			"fps": 24,
-			"anim": "deathLoop",
-			"loop": false
+			"indices": []
 		}
 	],
-	"nAntialiasing": true,
-	"name": "Boyfriend",
-	"image": "bfPixel",
 	"zoom": 0.8,
+	"image": "bfPixel",
+	"name": "Boyfriend",
 	"antialiasing": false,
-	"skin": "Default",
-	"onRight": false,
+	"deathCharacter": "Boyfriend",
+	"healthicon": "bf-pixel",
 	"camera": [
 		171,
 		213
 	],
-	"healthicon": "bf-pixel",
-	"deathCharacter": "Boyfriend"
+	"onRight": false,
+	"skin": "Default"
 }

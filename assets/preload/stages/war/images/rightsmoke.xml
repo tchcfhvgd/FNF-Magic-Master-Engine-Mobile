@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="rightsmoke.png">
+	<!-- Created with Adobe Animate version 21.0.0.35450 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="smoke to blur0000" x="0" y="0" width="589" height="942" frameX="-35" frameY="-47" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0001" x="0" y="0" width="589" height="942" frameX="-35" frameY="-47" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0002" x="590" y="0" width="566" height="927" frameX="-38" frameY="-40" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0003" x="590" y="0" width="566" height="927" frameX="-38" frameY="-40" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0004" x="590" y="0" width="566" height="927" frameX="-38" frameY="-40" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0005" x="1157" y="0" width="557" height="927" frameX="-36" frameY="-32" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0006" x="1157" y="0" width="557" height="927" frameX="-36" frameY="-32" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0007" x="1157" y="0" width="557" height="927" frameX="-36" frameY="-32" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0008" x="1715" y="0" width="579" height="931" frameX="-25" frameY="-23" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0009" x="1715" y="0" width="579" height="931" frameX="-25" frameY="-23" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0010" x="1715" y="0" width="579" height="931" frameX="-25" frameY="-23" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0011" x="2295" y="0" width="589" height="938" frameX="-17" frameY="-12" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0012" x="2295" y="0" width="589" height="938" frameX="-17" frameY="-12" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0013" x="2295" y="0" width="589" height="938" frameX="-17" frameY="-12" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0014" x="2885" y="0" width="598" height="943" frameX="-2" frameY="-6" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0015" x="2885" y="0" width="598" height="943" frameX="-2" frameY="-6" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0016" x="2885" y="0" width="598" height="943" frameX="-2" frameY="-6" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0017" x="3484" y="0" width="594" height="945" frameX="0" frameY="0" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0018" x="3484" y="0" width="594" height="945" frameX="0" frameY="0" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0019" x="3484" y="0" width="594" height="945" frameX="0" frameY="0" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0020" x="0" y="946" width="591" height="886" frameX="0" frameY="-57" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0021" x="0" y="946" width="591" height="886" frameX="0" frameY="-57" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0022" x="0" y="946" width="591" height="886" frameX="0" frameY="-57" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0023" x="592" y="946" width="581" height="890" frameX="-6" frameY="-52" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0024" x="592" y="946" width="581" height="890" frameX="-6" frameY="-52" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0025" x="592" y="946" width="581" height="890" frameX="-6" frameY="-52" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0026" x="1174" y="946" width="580" height="871" frameX="-15" frameY="-68" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0027" x="1174" y="946" width="580" height="871" frameX="-15" frameY="-68" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0028" x="1174" y="946" width="580" height="871" frameX="-15" frameY="-68" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0029" x="1755" y="946" width="571" height="794" frameX="-17" frameY="-147" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0030" x="1755" y="946" width="571" height="794" frameX="-17" frameY="-147" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0031" x="1755" y="946" width="571" height="794" frameX="-17" frameY="-147" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0032" x="2327" y="946" width="498" height="734" frameX="-33" frameY="-195" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0033" x="2327" y="946" width="498" height="734" frameX="-33" frameY="-195" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0034" x="2327" y="946" width="498" height="734" frameX="-33" frameY="-195" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0035" x="2826" y="946" width="535" height="812" frameX="-48" frameY="-149" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0036" x="2826" y="946" width="535" height="812" frameX="-48" frameY="-149" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0037" x="2826" y="946" width="535" height="812" frameX="-48" frameY="-149" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0038" x="3362" y="946" width="564" height="857" frameX="-51" frameY="-122" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0039" x="3362" y="946" width="564" height="857" frameX="-51" frameY="-122" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0040" x="3362" y="946" width="564" height="857" frameX="-51" frameY="-122" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0041" x="0" y="1837" width="575" height="907" frameX="-37" frameY="-80" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0042" x="0" y="1837" width="575" height="907" frameX="-37" frameY="-80" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0043" x="0" y="1837" width="575" height="907" frameX="-37" frameY="-80" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0044" x="576" y="1837" width="564" height="934" frameX="-37" frameY="-60" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0045" x="576" y="1837" width="564" height="934" frameX="-37" frameY="-60" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0046" x="576" y="1837" width="564" height="934" frameX="-37" frameY="-60" frameWidth="624" frameHeight="994"/>
+	<SubTexture name="smoke to blur0047" x="0" y="0" width="589" height="942" frameX="-35" frameY="-47" frameWidth="624" frameHeight="994"/>
+</TextureAtlas>

@@ -35,11 +35,11 @@ var startCountdown:Void->Void = function(){};
 
 function addToLoad(list:Array<Dynamic>){
     if(!PlayState.isStoryMode || PlayState.total_plays > 1){return;}
-    list.push({type: "MUSIC", instance: Paths.music("DISTORTO", "stages/war", true)});
-    list.push({type: "SOUND", instance: Paths.sound("ugh_1", "stages/war", true)});
-    list.push({type: "SOUND", instance: Paths.sound("ugh_2", "stages/war", true)});
-    list.push({type: "SOUND", instance: Paths.sound("ugh_3", "stages/war", true)});
-    list.push({type: "IMAGE", instance: Paths.image("characters/Tankman/ugh")});
+    list.push({type: "IMAGE", instance: Paths.image("cutscenes/ugh", "stages/war")});
+    list.push({type: "MUSIC", instance: Paths.music("DISTORTO", "stages/war")});
+    list.push({type: "SOUND", instance: Paths.sound("ugh_1", "stages/war")});
+    list.push({type: "SOUND", instance: Paths.sound("ugh_2", "stages/war")});
+    list.push({type: "SOUND", instance: Paths.sound("ugh_3", "stages/war")});
 }
 
 function preload():Void {
@@ -50,7 +50,7 @@ function preload():Void {
     girlfriend = getState().stage.getCharacterByName("Girlfriend");
 
     ughCinematic = new FlxSprite(tankman.x - 160, tankman.y + 110);
-    ughCinematic.frames = SavedFiles.getSparrowAtlas(Paths.image("characters/Tankman/ugh"));
+    ughCinematic.frames = SavedFiles.getSparrowAtlas(Paths.image("cutscenes/ugh", "stages/war"));
     ughCinematic.animation.addByPrefix("play_1", "TANK TALK 1 P1", 24, false);
     ughCinematic.animation.addByPrefix("play_2", "TANK TALK 1 P2", 24, false);
     ughCinematic.visible = true;

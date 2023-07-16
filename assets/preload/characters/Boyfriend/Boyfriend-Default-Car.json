@@ -2,84 +2,91 @@
 	"aspect": "Car",
 	"position": [
 		0,
-		340
+		339
 	],
 	"scale": 1,
 	"anims": [
 		{
-			"loop": false,
-			"symbol": "BF NOTE DOWN",
-			"anim": "singDOWN",
+			"indices": [],
+			"symbol": "BF HEY!!",
 			"fps": 24,
-			"indices": []
+			"anim": "hey",
+			"loop": false
 		},
 		{
-			"loop": false,
+			"indices": [],
 			"symbol": "MISS BF NOTE DOWN",
+			"fps": 24,
 			"anim": "singDOWNmiss",
-			"fps": 24,
-			"indices": []
+			"loop": false
 		},
 		{
-			"loop": false,
-			"symbol": "BF NOTE LEFT",
-			"anim": "singLEFT",
+			"indices": [],
+			"symbol": "BF NOTE DOWN",
 			"fps": 24,
-			"indices": []
+			"anim": "singDOWN",
+			"loop": false
 		},
 		{
-			"loop": false,
+			"indices": [],
 			"symbol": "MISS BF NOTE LEFT",
+			"fps": 24,
 			"anim": "singLEFTmiss",
-			"fps": 24,
-			"indices": []
+			"loop": false
 		},
 		{
-			"loop": false,
-			"symbol": "BF NOTE RIGHT",
-			"anim": "singRIGHT",
+			"indices": [],
+			"symbol": "BF NOTE LEFT",
 			"fps": 24,
-			"indices": []
+			"anim": "singLEFT",
+			"loop": false
 		},
 		{
-			"loop": false,
+			"indices": [],
 			"symbol": "MISS BF NOTE RIGHT",
+			"fps": 24,
 			"anim": "singRIGHTmiss",
-			"fps": 24,
-			"indices": []
+			"loop": false
 		},
 		{
-			"loop": false,
-			"symbol": "BF NOTE UP",
-			"anim": "singUP",
+			"indices": [],
+			"symbol": "BF NOTE RIGHT",
 			"fps": 24,
-			"indices": []
+			"anim": "singRIGHT",
+			"loop": false
 		},
 		{
-			"loop": false,
+			"indices": [],
 			"symbol": "MISS BF NOTE UP",
-			"anim": "singUPmiss",
 			"fps": 24,
-			"indices": []
+			"anim": "singUPmiss",
+			"loop": false
 		},
 		{
-			"loop": false,
-			"symbol": "BF idle dance",
-			"anim": "idle",
+			"indices": [],
+			"symbol": "BF NOTE UP",
 			"fps": 24,
-			"indices": []
+			"anim": "singUP",
+			"loop": false
+		},
+		{
+			"indices": [],
+			"symbol": "BF idle dance",
+			"fps": 24,
+			"anim": "idle",
+			"loop": false
 		}
 	],
-	"zoom": 0.8,
-	"image": "bfCar",
 	"name": "Boyfriend",
+	"image": "bfCar",
+	"zoom": 0.8,
 	"antialiasing": true,
 	"deathCharacter": "Boyfriend",
+	"skin": "Default",
+	"onRight": false,
 	"healthicon": "bf",
 	"camera": [
-		0,
-		0
-	],
-	"onRight": false,
-	"skin": "Default"
+		25,
+		20
+	]
 }

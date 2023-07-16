@@ -7,35 +7,35 @@
 	"scale": 6,
 	"anims": [
 		{
-			"symbol": "Angry Senpai DOWN NOTE instance 1",
+			"symbol": "Angry Senpai DOWN NOTE",
 			"loop": false,
 			"fps": 24,
 			"anim": "singDOWN",
 			"indices": []
 		},
 		{
-			"symbol": "Angry Senpai Idle instance 1",
+			"symbol": "Angry Senpai Idle",
 			"loop": false,
 			"fps": 24,
 			"anim": "idle",
 			"indices": []
 		},
 		{
-			"symbol": "Angry Senpai LEFT NOTE instance 1",
+			"symbol": "Angry Senpai LEFT NOTE",
 			"loop": false,
 			"fps": 24,
 			"anim": "singLEFT",
 			"indices": []
 		},
 		{
-			"symbol": "Angry Senpai RIGHT NOTE instance 1",
+			"symbol": "Angry Senpai RIGHT NOTE",
 			"loop": false,
 			"fps": 24,
 			"anim": "singRIGHT",
 			"indices": []
 		},
 		{
-			"symbol": "Angry Senpai UP NOTE instance 1",
+			"symbol": "Angry Senpai UP NOTE",
 			"loop": false,
 			"fps": 24,
 			"anim": "singUP",

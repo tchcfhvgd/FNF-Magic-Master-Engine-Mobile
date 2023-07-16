@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<TextureAtlas imagePath="idles.png">
-	<!-- Created with Adobe Animate version 21.0.0.35450 -->
-	<!-- http://www.adobe.com/products/animate.html -->
-	<SubTexture name="semaforoGreen_Idle0000" x="0" y="0" width="489" height="708"/>
-	<SubTexture name="semaforoRed_Idle0000" x="499" y="0" width="488" height="708"/>
-	<SubTexture name="semaforoYellow_Idle0000" x="997" y="0" width="495" height="708"/>
-</TextureAtlas>

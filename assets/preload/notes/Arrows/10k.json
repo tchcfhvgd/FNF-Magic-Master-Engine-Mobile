@@ -162,7 +162,7 @@
                     }
                 ],
                 "antialiasing": true,
-                "color": "#c24b98"
+                "color": "#fffc59"
             },
             {
                 "animations":[
@@ -189,7 +189,7 @@
                     }
                 ],
                 "antialiasing": true,
-                "color": "#00ffff"
+                "color": "#faa43c"
             },
             {
                 "animations":[
@@ -216,7 +216,7 @@
                     }
                 ],
                 "antialiasing": true,
-                "color": "#63ffcb"
+                "color": "#fa3cb8"
             },
             {
                 "animations":[
@@ -243,7 +243,7 @@
                     }
                 ],
                 "antialiasing": true,
-                "color": "#11fa05"
+                "color": "#73fffd"
             },
             {
                 "animations":[
@@ -270,7 +270,7 @@
                     }
                 ],
                 "antialiasing": true,
-                "color": "#f9393f"
+                "color": "#3252f0"
             }
         ]
     },
@@ -279,6 +279,13 @@
             {
                 "anim": "sustain",
                 "symbol": "HoldPiece",
+
+                "fps": 32,
+                "loop": false
+            },
+            {
+                "anim": "line",
+                "symbol": "HoldSwitch",
 
                 "fps": 32,
                 "loop": false
@@ -328,7 +335,7 @@
                 "color": "#00ffff"
             },
             {
-                "sing_animation": "singMIDDLE",
+                "sing_animation": "singDOWN",
                 "animations":[
                     {
                         "anim": "static",
@@ -381,7 +388,7 @@
                     }
                 ],
                 "antialiasing": true,
-                "color": "#c24b98"
+                "color": "#fffc59"
             },
             {
                 "sing_animation": "singDOWN",
@@ -395,10 +402,10 @@
                     }
                 ],
                 "antialiasing": true,
-                "color": "#00ffff"
+                "color": "#faa43c"
             },
             {
-                "sing_animation": "singMIDDLE",
+                "sing_animation": "singUP",
                 "animations":[
                     {
                         "anim": "static",
@@ -409,7 +416,7 @@
                     }
                 ],
                 "antialiasing": true,
-                "color": "#63ffcb"
+                "color": "#fa3cb8"
             },
             {
                 "sing_animation": "singUP",
@@ -423,7 +430,7 @@
                     }
                 ],
                 "antialiasing": true,
-                "color": "#11fa05"
+                "color": "#73fffd"
             },
             {
                 "sing_animation": "singRIGHT",
@@ -437,7 +444,7 @@
                     }
                 ],
                 "antialiasing": true,
-                "color": "#f9393f"
+                "color": "#3252f0"
             }
         ]
     }

@@ -2,54 +2,43 @@
 	"aspect": "Speaker",
 	"position": [
 		-140,
-		76
+		-59
 	],
 	"scale": 1,
 	"anims": [
 		{
-			"loop": false,
 			"symbol": "Pico shoot 1",
+			"loop": false,
+			"fps": 24,
 			"anim": "right1",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "Pico shoot 2",
+			"loop": false,
+			"fps": 24,
 			"anim": "right2",
-			"fps": 24,
 			"indices": []
 		},
 		{
-			"loop": false,
 			"symbol": "Pico shoot 3",
+			"loop": false,
+			"fps": 24,
 			"anim": "left2",
-			"fps": 24,
 			"indices": []
 		},
 		{
+			"symbol": "Pico shoot 4",
 			"loop": false,
-			"symbol": "Pico shoot 4",
-			"anim": "left1",
 			"fps": 24,
+			"anim": "left1",
 			"indices": []
 		},
 		{
-			"indices": [
-				4,
-				5,
-				6,
-				7,
-				8,
-				9,
-				10
-			],
+			"loop": true,
 			"symbol": "Pico shoot 1",
-			"fps": 24,
 			"anim": "right1-loop",
-			"loop": true
-		},
-		{
+			"fps": 24,
 			"indices": [
 				4,
 				5,
@@ -58,13 +47,13 @@
 				8,
 				9,
 				10
-			],
+			]
+		},
+		{
+			"loop": true,
 			"symbol": "Pico shoot 2",
-			"fps": 24,
 			"anim": "right2-loop",
-			"loop": true
-		},
-		{
+			"fps": 24,
 			"indices": [
 				4,
 				5,
@@ -73,13 +62,13 @@
 				8,
 				9,
 				10
-			],
+			]
+		},
+		{
+			"loop": true,
 			"symbol": "Pico shoot 3",
-			"fps": 24,
 			"anim": "left1-loop",
-			"loop": true
-		},
-		{
+			"fps": 24,
 			"indices": [
 				4,
 				5,
@@ -88,23 +77,34 @@
 				8,
 				9,
 				10
-			],
+			]
+		},
+		{
+			"loop": true,
 			"symbol": "Pico shoot 4",
-			"fps": 24,
 			"anim": "left2-loop",
-			"loop": true
+			"fps": 24,
+			"indices": [
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10
+			]
 		}
 	],
-	"name": "Pico",
-	"image": "Pico_Speakers",
 	"zoom": 0.8,
+	"image": "Pico_Speakers",
+	"name": "Pico",
 	"antialiasing": true,
-	"deathCharacter": "Boyfriend",
-	"skin": "Default",
-	"onRight": false,
-	"healthicon": "pico",
 	"camera": [
-		10,
-		-135
-	]
+		-100,
+		-10
+	],
+	"healthicon": "pico",
+	"onRight": false,
+	"skin": "Default",
+	"deathCharacter": "Boyfriend"
 }

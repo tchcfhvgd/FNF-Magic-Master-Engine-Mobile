@@ -33,11 +33,10 @@ import sys.io.File;
 using StringTools;
 
 class SavedFiles {
-	public static var savedTempMap:Map<String, Dynamic> = new Map<String, Dynamic>();
+	public static var savedTempMap:Map<String, {asset_type:AssetType, asset:Dynamic}> = new Map<String, {asset_type:AssetType, asset:Dynamic}>();
 	public static var usedAssets:Array<String> = [];
 
-	public static function gc():Void {System.gc();}
-	public static function clearAsset(key:String, asset_type:AssetType = IMAGE):Void {
+	public static function clearAsset(key:String, do_gc:Bool = true, asset_type:AssetType = IMAGE):Void {
 		if(!savedTempMap.exists(key)){return;}
 
 		@:privateAccess
@@ -59,6 +58,7 @@ class SavedFiles {
 		}
 		
 		savedTempMap.remove(key);
+		if(do_gc){System.gc();}
 	}
 	public static function clearUnusedAssets() {
 		for(key in savedTempMap.keys()){
@@ -69,6 +69,7 @@ class SavedFiles {
 
 			@:privateAccess
 			switch(cur_asset.asset_type){
+				case BINARY, MOVIE_CLIP, TEMPLATE, TEXT:{}
 				case IMAGE:{
 					openfl.Assets.cache.removeBitmapData(key);
 					FlxG.bitmap._cache.remove(key);
@@ -145,36 +146,38 @@ class SavedFiles {
 
 	inline public static function getSound(file:String):Sound {
 		if(isSaved(file)){return getSavedFile(file);}
-		saveFile(file, Assets.exists(file) ? Assets.getSound(file) : Sound.fromFile(file), SOUND);
+		saveFile(file, OpenFlAssets.exists(file) ? OpenFlAssets.getSound(file) : Sound.fromFile(file), SOUND);
 		return getSavedFile(file);
 	}
 	inline public static function saveSound(file:String):Void {
 		if(isSaved(file) || !Paths.exists(file)){return;}
-		saveFile(file, Assets.exists(file) ? Assets.getSound(file) : Sound.fromFile(file), SOUND);
+		saveFile(file, OpenFlAssets.exists(file) ? OpenFlAssets.getSound(file) : Sound.fromFile(file), SOUND);
 	}
 
 	inline public static function getBytes(file:String):Any {
 		if(isSaved(file)){return getSavedFile(file);}
 		#if sys
-		saveFile(file, Assets.exists(file) ? Assets.getBytes(file) : File.getBytes(file), BINARY);
+		saveFile(file, OpenFlAssets.exists(file) ? OpenFlAssets.getBytes(file) : File.getBytes(file), BINARY);
 		#else
-		saveFile(file, Assets.getBytes(file), BINARY);
+		saveFile(file, OpenFlAssets.getBytes(file), BINARY);
 		#end
 		return getSavedFile(file);
 	}
 	inline public static function saveBytes(file:String):Void {
 		if(isSaved(file) || !Paths.exists(file)){return;}
 		#if sys
-		saveFile(file, Assets.exists(file) ? Assets.getBytes(file) : File.getBytes(file), BINARY);
+		saveFile(file, OpenFlAssets.exists(file) ? OpenFlAssets.getBytes(file) : File.getBytes(file), BINARY);
 		#else
-		saveFile(file, Assets.getBytes(file), BINARY);
+		saveFile(file, OpenFlAssets.getBytes(file), BINARY);
 		#end
 	}
 
 	public static function getGraphic(file:String):Any {
 		if(isSaved(file)){return getSavedFile(file);}
-		var graphic:FlxGraphic = FlxG.bitmap.add(file, false);
-		if(graphic == null){
+		var graphic:FlxGraphic = null;
+		if(OpenFlAssets.exists(file)){
+			graphic = FlxG.bitmap.add(file, false, file);
+		}else{
 			trace('Null: ${file}');
 			var bit:BitmapData = BitmapData.fromFile(file);
 			if(bit == null){return file;}
@@ -186,8 +189,10 @@ class SavedFiles {
 	}
 	public static function saveGraphic(file:String):Void {
 		if(isSaved(file) || !Paths.exists(file)){return;}
-		var graphic:FlxGraphic = FlxG.bitmap.add(file, false);
-		if(graphic == null){
+		var graphic:FlxGraphic = null;
+		if(OpenFlAssets.exists(file)){
+			graphic = FlxG.bitmap.add(file, false, file);
+		}else{
 			trace('Null: ${file}');
 			var bit:BitmapData = BitmapData.fromFile(file);
 			if(bit == null){return;}
@@ -200,18 +205,18 @@ class SavedFiles {
 	inline public static function getText(file:String):String {
 		if(isSaved(file)){return getSavedFile(file);}
 		#if sys
-		saveFile(file, Assets.exists(file) ? Assets.getText(file) : File.getContent(file), TEXT);
+		saveFile(file, OpenFlAssets.exists(file) ? OpenFlAssets.getText(file) : File.getContent(file), TEXT);
 		#else
-		saveFile(file, Assets.getText(file), TEXT);
+		saveFile(file, OpenFlAssets.getText(file), TEXT);
 		#end
 		return getSavedFile(file);
 	}
 	inline public static function saveText(file:String):Void {
 		if(isSaved(file) || !Paths.exists(file)){return;}
 		#if sys
-		saveFile(file, Assets.exists(file) ? Assets.getText(file) : File.getContent(file), TEXT);
+		saveFile(file, OpenFlAssets.exists(file) ? OpenFlAssets.getText(file) : File.getContent(file), TEXT);
 		#else
-		saveFile(file, Assets.getText(file), TEXT);
+		saveFile(file, OpenFlAssets.getText(file), TEXT);
 		#end
 	}
 
@@ -277,7 +282,6 @@ class SavedFiles {
 	
 	public static function fromUncachedSparrow(Source:FlxGraphicAsset, Description:String):FlxAtlasFrames {
         var graphic:FlxGraphic = FlxG.bitmap.add(Source);
-    
         if(graphic == null || Description == null){return null;}
     
         var frames:FlxAtlasFrames = new FlxAtlasFrames(graphic);
@@ -309,9 +313,7 @@ class SavedFiles {
     }	
 	public static function fromUncachedSpriteSheetPacker(Source:FlxGraphicAsset, Description:String):FlxAtlasFrames {
 		var graphic:FlxGraphic = FlxG.bitmap.add(Source);
-		
-		if(graphic == null){return null;}
-		if(graphic == null || Description == null){return null;}
+        if(graphic == null || Description == null){return null;}
 	
 		var frames:FlxAtlasFrames = new FlxAtlasFrames(graphic);
 	

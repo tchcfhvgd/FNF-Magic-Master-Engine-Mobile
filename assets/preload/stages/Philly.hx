@@ -107,19 +107,19 @@ function beatHit(curBeat:Int):Void {
 
 function trainStart():Void {
     trainMoving = true;
-    if(!trainSound.playing){trainSound.play(true);}
+    if(!trainsound.playing){trainsound.play(true);}
 }
 
+function stepHit(curStep:Int):Void {
+    if(trainMoving && trainsound.time >= 4700 && curStep % 2 == 0){
+        var gf_char:Character = getState().stage.getCharacterByType("Girlfriend");
+        if(gf_char != null){gf_char.singAnim('hairBlow', true, true);}
+    }
+}
 function updateTrainPos():Void {
-    if(trainSound.time >= 4700){
+    if(trainsound.time >= 4700){
         train.visible = true;
         startedMoving = true;
-
-        for(i in 0...getState().stage.character_Length){
-            var cur_character:Character = getState().stage.getCharacterById(i);
-            if(cur_character.curType != "Girlfriend"){continue;}
-            cur_character.playAnim('hairBlow', true, true);
-        }
     }
 
     if(startedMoving){
@@ -140,15 +140,20 @@ function trainReset():Void {
     train.x = FlxG.width + 200;
     train.visible = false;
     trainMoving = false;
-    // trainSound.stop();
-    // trainSound.time = 0;
+    trainsound.stop();
+    trainsound.time = 0;
     trainCars = 8;
     trainFinishing = false;
     startedMoving = false;
     
-    for(i in 0...getState().stage.character_Length){
-        var cur_character:Character = getState().stage.getCharacterById(i);
-        if(cur_character.curType != "Girlfriend"){continue;}
-        cur_character.playAnim('hairFall', true, true);
+    var gf_char:Character = getState().stage.getCharacterByType("Girlfriend");
+    if(gf_char != null){gf_char.singAnim('hairFall', true, true);}
+}
+
+function song_paused(isPaused:Bool):Void {
+    if(isPaused){
+        trainsound.pause();
+    }else{
+        trainsound.resume();
     }
 }

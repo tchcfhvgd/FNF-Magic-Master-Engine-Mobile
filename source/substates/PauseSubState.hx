@@ -92,7 +92,6 @@ class PauseSubState extends MusicBeatSubstate {
 							var cur_playstate:states.PlayState = cast cur_state;
 							cur_playstate.inst.destroy();
 							for(s in cur_playstate.voices.sounds){s.destroy();}
-							cur_playstate.stage.destroy();
 						}
 						SongListData.resetVariables();
 						if(states.PlayState.isDuel){states.MusicBeatState.switchState("states.FreeplayState", [null, "states.MainMenuState", function(_song){MusicBeatState.switchState("states.PlayerSelectorState", [_song, null, "states.MainMenuState"]);}]);}
