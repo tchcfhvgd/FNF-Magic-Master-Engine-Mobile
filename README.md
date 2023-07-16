@@ -16,7 +16,7 @@ _____________________________________
 * Mod Support [HScript] (We tried to do our best to make the Mod Support as complete and attractive as possible for the Engine)
 * Improved Chart Editor (A completely different menu with a wide variety of new options)
 * New Character Editor (A New Menu in which you can Modify your Characters) !!!The Offset of each Animation is NOT changed from this Menu
-* New Stage Editor (A Scenario Creator to make it easier to create simple scenarios. !!!YOU CANNOT SCRIPT THE SCENARIOS FROM HERE (More info below)
+* New Stage Editor (A Scenario Creator to make it easier to create simple scenarios. !!!YOU CANNOT SCRIPT THE SCENARIOS FROM HERE (More info in the wiki)
 * New XML Editor (A new Editor in which you can position your SpriteSheets without having to do it from Code)
 
 _____________________________________
