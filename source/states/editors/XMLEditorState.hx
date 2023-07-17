@@ -513,7 +513,7 @@ class XMLEditorState extends MusicBeatState {
         lblCurFrameHeight = new FlxText(lblCurFrameWidth.x, lblCurFrameWidth.y + lblCurFrameWidth.height + 3, 0, "FrameHeight: [0]"); uiBase.add(lblCurFrameHeight);
         vchCurFrameHeight = new FlxUIValueChanger(tabSPRITE.width - 105, lblCurFrameHeight.y - 1, 100, function(value:Float){}); uiBase.add(vchCurFrameHeight); vchCurFrameHeight.name = "SPRITE_FRAMEHEIGHT";
 
-        var btnSetFrameSize0 = new FlxUICustomButton(5, lblCurFrameHeight.y + lblCurFrameHeight.height + 5, Std.int(tabSPRITE.width) - 10, null, "Set FrameSize to 0", null, null, function(){
+        var btnSetFrameSize0 = new FlxUICustomButton(5, lblCurFrameHeight.y + lblCurFrameHeight.height + 5, Std.int(tabSPRITE.width) - 10, null, "\nSet FrameSize to 0", null, null, function(){
             editAttribute("frameWidth", 0, true);
             editAttribute("frameHeight", 0, true);
         }); uiBase.add(btnSetFrameSize0);
@@ -522,16 +522,6 @@ class XMLEditorState extends MusicBeatState {
             editAttribute("frameWidth", Std.parseInt(getAccess().att.width), true);
             editAttribute("frameHeight", Std.parseInt(getAccess().att.height), true);
         }); uiBase.add(btnSetFrameSize);
-
-        var lblFrameName = new FlxText(5, btnSetFrameSize.y + btnSetFrameSize.height + 10, Std.int(tabSPRITE.width) - 10, "[Frame Name]"); uiBase.add(lblFrameName);
-        lblFrameName.alignment = CENTER;
-        var txtFrameName = new FlxUIInputText(5, lblFrameName.y + lblFrameName.height, Std.int(tabSPRITE.width) - 10, ""); uiBase.add(txtFrameName);
-        var btnAddFrame = new FlxUICustomButton(5, txtFrameName.y + txtFrameName.height + 3, Std.int(tabSPRITE.width / 2) - 7, null, "Create Frame", null, FlxColor.fromRGB(94, 255, 99), function(){
-            //_XML.elements.push(txtFrameName.text);
-        }); uiBase.add(btnAddFrame);
-        var btnDelFrame = new FlxUICustomButton(btnAddFrame.x + btnAddFrame.width + 5, btnAddFrame.y, Std.int(tabSPRITE.width / 2) - 7, null, "Delete Frame", null, FlxColor.fromRGB(255, 94, 94), function(){
-            
-        }); uiBase.add(btnDelFrame);
 
 
         tabSPRITE.addGroup(uiBase);

@@ -236,12 +236,14 @@ class PlayState extends MusicBeatState {
 			var strumLine = new StrumLine(0, 0, songData.sectionStrums[i].keys, Std.int(FlxG.width / 3) - 40, principal_controls, null, songData.sectionStrums[i].noteStyle);
 			
 			strumLine.onHIT = function(note:Note){
-				if(PreSettings.getPreSetting("Mute on Miss", "Game Settings")){
-					if(SONG.hasVoices){
-						if(voices.sounds[i] != null){
-							voices.sounds[i].volume = 1;
-						}else{
-							voices.sounds[0].volume = 1;
+				if(songData.sectionStrums[i].isPlayable){
+					if(PreSettings.getPreSetting("Mute on Miss", "Game Settings")){
+						if(SONG.hasVoices){
+							if(voices.sounds[i] != null){
+								voices.sounds[i].volume = 1;
+							}else{
+								voices.sounds[0].volume = 1;
+							}
 						}
 					}
 				}
@@ -269,13 +271,15 @@ class PlayState extends MusicBeatState {
 			};
 
 			strumLine.onMISS = function(note:Note){
-				if(PreSettings.getPreSetting("Miss Sounds", "Game Settings")){FlxG.sound.play(Paths.soundRandom('missnote', 1, 3).getSound(), 0.5);}
-				if(PreSettings.getPreSetting("Mute on Miss", "Game Settings")){
-					if(SONG.hasVoices){
-						if(voices.sounds[i] != null){
-							voices.sounds[i].volume = 0;
-						}else{
-							voices.sounds[0].volume = 0;
+				if(songData.sectionStrums[i].isPlayable){
+					if(PreSettings.getPreSetting("Miss Sounds", "Game Settings")){FlxG.sound.play(Paths.soundRandom('missnote', 1, 3).getSound(), 0.5);}
+					if(PreSettings.getPreSetting("Mute on Miss", "Game Settings")){
+						if(SONG.hasVoices){
+							if(voices.sounds[i] != null){
+								voices.sounds[i].volume = 0;
+							}else{
+								voices.sounds[0].volume = 0;
+							}
 						}
 					}
 				}
@@ -291,8 +295,10 @@ class PlayState extends MusicBeatState {
 					new_character.playAnim(song_animation, true);
 
 					if(!focus){
-						if(strumLine.typeStrum == "Playing"){StrumLine.GLOBAL_VARIABLES.Player = new_character;}
-						else{StrumLine.GLOBAL_VARIABLES.Enemy = new_character;}
+						if(songData.sectionStrums[i].isPlayable){
+							if(strumLine.typeStrum == "Playing"){StrumLine.GLOBAL_VARIABLES.Player = new_character;}
+							else{StrumLine.GLOBAL_VARIABLES.Enemy = new_character;}
+						}
 						strumLine.LOCAL_VARIABLES.Player = new_character;
 						focus = true;
 					}

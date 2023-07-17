@@ -188,6 +188,8 @@ class CharacterEditorState extends MusicBeatState{
                 if(FlxG.keys.justPressed.L){_character.camera[0] ++; reloadCharacter();}
             }
 
+            if(FlxG.keys.justPressed.Q){clAnims.setIndex(clAnims.getSelectedIndex()+1);}
+            if(FlxG.keys.justPressed.E){clAnims.setIndex(clAnims.getSelectedIndex()-1);}
             if(FlxG.keys.justPressed.SPACE){chrStage.playAnim(clAnims.getSelectedLabel(), true);}
 
             if(FlxG.mouse.justPressedMiddle){camFollow.screenCenter();}
@@ -331,21 +333,7 @@ class CharacterEditorState extends MusicBeatState{
 
         var btnAnimAdd:FlxButton = new FlxCustomButton(clAnims.x, clAnims.y + clAnims.height + 5, Std.int(MENU.width / 4) - 7, null, "Add Anim", null, FlxColor.fromRGB(138, 255, 142), function(){
             var arrIndices:Array<Int> = [];
-            var anmIndices:String = txtAnimIndices.text.replace("[","").replace("]","").trim();
-            if(
-                anmIndices.contains("0") ||
-                anmIndices.contains("1") ||
-                anmIndices.contains("2") ||
-                anmIndices.contains("3") || 
-                anmIndices.contains("4") || 
-                anmIndices.contains("5") || 
-                anmIndices.contains("6") || 
-                anmIndices.contains("7") || 
-                anmIndices.contains("8") || 
-                anmIndices.contains("9")
-            ){
-                for(i in anmIndices.split(",")){arrIndices.push(Std.parseInt(i));}
-            }
+            try{arrIndices = Json.parse('{ "Anims": ${txtAnimIndices.text}}'); txtAnimIndices.color = FlxColor.BLACK;}catch(e){trace(e); txtAnimIndices.color = FlxColor.RED;}
 
             if(!clAnims.contains(txtAnimName.text) && txtAnimName.text.length > 0){
                 var nCharAnim:AnimArray = {
@@ -369,8 +357,7 @@ class CharacterEditorState extends MusicBeatState{
         }); tabMENU.add(btnAnimAdd);
         var btnAnimUpd:FlxButton = new FlxCustomButton(btnAnimAdd.x + btnAnimAdd.width + 5, btnAnimAdd.y, Std.int(MENU.width / 4) - 7, null, "Update Anim", null, FlxColor.fromRGB(138, 255, 142), function(){
             var arrIndices:Array<Int> = [];
-            var anmIndices:String = txtAnimIndices.text.replace("[","").replace("]","").trim();
-            if(anmIndices.contains(",")){for(i in anmIndices.split(",")){arrIndices.push(Std.parseInt(i));}}
+            try{arrIndices = Json.parse('{ "Anims": ${txtAnimIndices.text}}'); txtAnimIndices.color = FlxColor.BLACK;}catch(e){trace(e); txtAnimIndices.color = FlxColor.RED;}
 
             for(anim in _character.anims){
                 if(anim.anim == clAnims.getSelectedLabel()){

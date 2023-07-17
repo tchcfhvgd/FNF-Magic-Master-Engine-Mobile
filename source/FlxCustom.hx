@@ -146,7 +146,7 @@ class FlxUICustomList extends FlxUIGroup implements IFlxUIWidget implements IFlx
 	public function getText(){return _lblCuItem;}
     public function contains(x:String):Bool{return list.contains(x);}
 
-    private function c_Index(change:Int = 0, force:Bool = false, func:Bool = true):Void{
+    private function c_Index(change:Int = 0, force:Bool = false, func:Bool = true):Void {
         index += change;
         if(force){index = change;}
         

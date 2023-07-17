@@ -698,7 +698,7 @@ class ChartEditorState extends MusicBeatState {
             }
 
             if(FlxG.keys.justPressed.R){
-                if(FlxG.keys.pressed.CONTROL){KEYSIZE = DEFAULT_KEYSIZE; updateSection();}
+                if(FlxG.keys.pressed.CONTROL){KEYSIZE = DEFAULT_KEYSIZE; cursor_Arrow.note_size.set(KEYSIZE,KEYSIZE); updateSection();}
                 else if(FlxG.keys.pressed.SHIFT){resetSection(true);}
                 else{resetSection();}
             }
@@ -748,6 +748,8 @@ class ChartEditorState extends MusicBeatState {
             if(FlxG.mouse.justPressedRight){
                 if(FlxG.mouse.overlaps(gridGroup)){for(g in gridGroup){if(FlxG.mouse.overlaps(g) && gridGroup.members[0] != g && g.ID != curStrum){updateSection(g.ID, true);}}}
             }
+            
+            if(principal_controls.checkAction("Menu_Accept", JUST_PRESSED) && onConfirm == null){SongListData.loadAndPlaySong(_song);}
         }
 
         var fgrid:FlxSprite = gridGroup.members[_song.generalSection[curSection].strumToFocus + 1];
@@ -765,7 +767,7 @@ class ChartEditorState extends MusicBeatState {
             stpNoteLength.value = selNote.sustainLength;
             stpNoteHits.value = selNote.multiHits;
             clNotePressets.setLabel(selNote.presset, true);
-            btnCanMerge.label.text = selNote.canMerge ? "Is Slide" : "Is Not Slide";
+            btnCanMerge.label.text = selNote.canMerge ? '\nIs Slide' : '\nIs Not Slide';
             var events:Array<String> = []; for(e in selNote.eventData){events.push(e[0]);} clNoteEventList.setData(events);
             clNoteEventList.setLabel(clNoteEventList.getSelectedLabel(), false, true);
         }else{
@@ -1533,34 +1535,13 @@ class ChartEditorState extends MusicBeatState {
         }); tabSTRUM.add(btnDelSecEvents);
         btnDelSecEvents.label.color = FlxColor.WHITE;
 
-        var line2 = new FlxSprite(5, btnDelSecEvents.y + btnDelSecEvents.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabSTRUM.add(line2);
-
-        var lblStrumlSection = new FlxText(line2.x, line2.y + 5, MENU.width - 10, "Current Strum Section"); tabSTRUM.add(lblStrumlSection);
-        lblStrumlSection.alignment = CENTER;
-
-        chkALT = new FlxUICheckBox(lblStrumlSection.x, lblStrumlSection.y + lblStrumlSection.height + 5, null, null, "Change ALT"); tabSTRUM.add(chkALT);
-        chkALT.checked = _song.sectionStrums[curStrum].notes[curSection].altAnim;
-
-        var lblKeys = new FlxText(chkALT.x, chkALT.y + chkALT.height + 10, 0, "Strum Keys: ", 8); tabSTRUM.add(lblKeys);
-        stpKeys = new FlxUINumericStepper(lblKeys.x + lblKeys.width, lblKeys.y, 1, _song.sectionStrums[curStrum].notes[curSection].keys, 1, 10); tabSTRUM.add(stpKeys);
-            @:privateAccess arrayFocus.push(cast stpKeys.text_field);
-        stpKeys.name = "STRUMSEC_KEYS";
-        chkKeys = new FlxUICheckBox(stpKeys.x + stpKeys.width + 5, stpKeys.y - 1, null, null, "Change Keys"); tabSTRUM.add(chkKeys);
-        chkKeys.checked = _song.sectionStrums[curStrum].notes[curSection].changeKeys;
-
-        var btnDelAllSec:FlxButton = new FlxCustomButton(lblKeys.x, lblKeys.y + lblKeys.height + 5, Std.int((MENU.width / 2) - 8), null, "Clear All Section", null, FlxColor.fromRGB(255, 94, 94), function(){
+        var btnDelAllSec:FlxButton = new FlxCustomButton(5, btnDelSecEvents.y + btnDelSecEvents.height + 5, Std.int((MENU.width) - 10), null, "Clear Section", null, FlxColor.fromRGB(255, 94, 94), function(){
             for(strum in _song.sectionStrums){strum.notes[curSection].sectionNotes = [];}
             updateSection();
         }); tabSTRUM.add(btnDelAllSec);
         btnDelAllSec.label.color = FlxColor.WHITE;
-
-        var btnDelStrSec:FlxButton = new FlxCustomButton(btnDelAllSec.x + btnDelAllSec.width + 5, btnDelAllSec.y, Std.int((MENU.width / 2) - 8), null, "Clear Strum Section", null, FlxColor.fromRGB(255, 94, 94), function(){
-            _song.sectionStrums[curStrum].notes[curSection].sectionNotes = [];
-            updateSection();
-        }); tabSTRUM.add(btnDelStrSec);
-        btnDelStrSec.label.color = FlxColor.WHITE;
-
-        var btnCopyAllSec:FlxButton = new FlxCustomButton(btnDelAllSec.x, btnDelAllSec.y + btnDelAllSec.height + 5, Std.int((MENU.width / 3) - 10), null, "Copy Section", null, FlxColor.fromRGB(10, 25, 191), function(){
+        
+        var btnCopyAllSec:FlxButton = new FlxCustomButton(5, btnDelAllSec.y + btnDelAllSec.height + 5, Std.int((MENU.width / 3) - 10), null, "Copy Section", null, FlxColor.fromRGB(10, 25, 191), function(){
             copySection = [curSection, []];
             for(i in 0..._song.sectionStrums.length){
                 copySection[1].push([]);
@@ -1595,14 +1576,41 @@ class ChartEditorState extends MusicBeatState {
         }); tabSTRUM.add(btnSetAllSec);
         btnSetAllSec.label.color = FlxColor.WHITE;
 
-        var btnCopLastAllSec:FlxButton = new FlxCustomButton(btnCopyAllSec.x, btnCopyAllSec.y + btnCopyAllSec.height + 5, Std.int((MENU.width / 2) - 20), null, "Paste Last Section", null, FlxColor.fromRGB(10, 25, 191), function(){
+        var btnCopLastAllSec:FlxButton = new FlxCustomButton(5, btnCopyAllSec.y + btnCopyAllSec.height + 5, Std.int((MENU.width / 2) - 20), null, "Paste Last Section", null, FlxColor.fromRGB(10, 25, 191), function(){
             copyLastSection(Std.int(stpLastSec.value));
         }); tabSTRUM.add(btnCopLastAllSec);
         btnCopLastAllSec.label.color = FlxColor.WHITE;
         stpLastSec = new FlxUINumericStepper(btnCopLastAllSec.x + btnCopLastAllSec.width + 5, btnCopLastAllSec.y + 3, 1, 0, -999, 999); tabSTRUM.add(stpLastSec);
             @:privateAccess arrayFocus.push(cast stpLastSec.text_field);
 
-        var btnCopLastStrum:FlxButton = new FlxCustomButton(btnCopLastAllSec.x, btnCopLastAllSec.y + btnCopLastAllSec.height + 5, Std.int((MENU.width / 2) - 20), null, "Paste Last Strum", null, FlxColor.fromRGB(10, 25, 191), function(){
+        var btnMirrorAll:FlxButton = new FlxCustomButton(5, btnCopLastAllSec.y + btnCopLastAllSec.height + 5, Std.int((MENU.width) - 10), null, "Mirror Section", null, FlxColor.fromRGB(214, 212, 71), function(){for(i in 0..._song.sectionStrums.length){mirrorNotes(i);}}); tabSTRUM.add(btnMirrorAll);
+        btnMirrorAll.label.color = FlxColor.WHITE;
+
+        var btnSync:FlxButton = new FlxCustomButton(5, btnMirrorAll.y + btnMirrorAll.height + 5, Std.int((MENU.width) - 10), null, "Synchronize Notes", null, FlxColor.fromRGB(214, 212, 71), function(){syncNotes();}); tabSTRUM.add(btnSync);
+        btnSync.label.color = FlxColor.WHITE;
+
+        var line2 = new FlxSprite(5, btnSync.y + btnSync.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabSTRUM.add(line2);
+
+        var lblStrumlSection = new FlxText(line2.x, line2.y + 5, MENU.width - 10, "Current Strum Section"); tabSTRUM.add(lblStrumlSection);
+        lblStrumlSection.alignment = CENTER;
+
+        chkALT = new FlxUICheckBox(5, lblStrumlSection.y + lblStrumlSection.height + 5, null, null, "Change ALT"); tabSTRUM.add(chkALT);
+        chkALT.checked = _song.sectionStrums[curStrum].notes[curSection].altAnim;
+
+        var lblKeys = new FlxText(5, chkALT.y + chkALT.height + 10, 0, "Strum Keys: ", 8); tabSTRUM.add(lblKeys);
+        stpKeys = new FlxUINumericStepper(lblKeys.x + lblKeys.width, lblKeys.y, 1, _song.sectionStrums[curStrum].notes[curSection].keys, 1, 10); tabSTRUM.add(stpKeys);
+            @:privateAccess arrayFocus.push(cast stpKeys.text_field);
+        stpKeys.name = "STRUMSEC_KEYS";
+        chkKeys = new FlxUICheckBox(stpKeys.x + stpKeys.width + 5, stpKeys.y - 1, null, null, "Change Keys"); tabSTRUM.add(chkKeys);
+        chkKeys.checked = _song.sectionStrums[curStrum].notes[curSection].changeKeys;
+
+        var btnDelStrSec:FlxButton = new FlxCustomButton(5, lblKeys.y + lblKeys.height + 5, Std.int((MENU.width) - 10), null, "Clear Strum Section", null, FlxColor.fromRGB(255, 94, 94), function(){
+            _song.sectionStrums[curStrum].notes[curSection].sectionNotes = [];
+            updateSection();
+        }); tabSTRUM.add(btnDelStrSec);
+        btnDelStrSec.label.color = FlxColor.WHITE;
+
+        var btnCopLastStrum:FlxButton = new FlxCustomButton(5, btnDelStrSec.y + btnDelStrSec.height + 5, Std.int((MENU.width / 2) - 20), null, "Paste Last Strum", null, FlxColor.fromRGB(10, 25, 191), function(){
             copyLastStrum(Std.int(stpLastSec2.value), Std.int(stpLastStrm.value));
         }); tabSTRUM.add(btnCopLastStrum);
         btnCopLastStrum.label.color = FlxColor.WHITE;
@@ -1625,19 +1633,10 @@ class ChartEditorState extends MusicBeatState {
             @:privateAccess arrayFocus.push(cast stpSwapSec.text_field);
         stpSwapSec.name = "Strums_Length";
 
-        var btnMirror:FlxButton = new FlxCustomButton(btnSwapStrum.x, btnSwapStrum.y + btnSwapStrum.height + 5, Std.int((MENU.width / 2) - 8), null, "Mirror Strum", null, FlxColor.fromRGB(214, 212, 71), function(){mirrorNotes();}); tabSTRUM.add(btnMirror);
+        var btnMirror:FlxButton = new FlxCustomButton(btnSwapStrum.x, btnSwapStrum.y + btnSwapStrum.height + 5, Std.int((MENU.width) - 10), null, "Mirror Strum", null, FlxColor.fromRGB(214, 212, 71), function(){mirrorNotes();}); tabSTRUM.add(btnMirror);
         btnMirror.label.color = FlxColor.WHITE;
 
-        var btnMirrorAll:FlxButton = new FlxCustomButton(btnMirror.x + btnMirror.width + 5, btnMirror.y, Std.int((MENU.width / 2) - 8), null, "Mirror Section", null, FlxColor.fromRGB(214, 212, 71), function(){for(i in 0..._song.sectionStrums.length){mirrorNotes(i);}}); tabSTRUM.add(btnMirrorAll);
-        btnMirrorAll.label.color = FlxColor.WHITE;
-
-        var btnSync:FlxButton = new FlxCustomButton(btnMirror.x, btnMirror.y + btnMirror.height + 5, Std.int((MENU.width) - 10), null, "Synchronize Notes", null, FlxColor.fromRGB(214, 212, 71), function(){syncNotes();}); tabSTRUM.add(btnSync);
-        btnSync.label.color = FlxColor.WHITE;
-
-        var btnMiguel:FlxButton = new FlxCustomButton(btnSync.x, btnSync.y + btnSync.height + 5, Std.int((MENU.width) - 10), null, "Miguel2", null, FlxColor.fromRGB(0, 0, 255), function(){}); tabSTRUM.add(btnMiguel);
-        btnMiguel.label.color = FlxColor.WHITE;
-
-        chkSwitchChars = new FlxUICheckBox(btnMiguel.x, btnMiguel.y + btnMiguel.height + 5, null, null, "Change Characters to Sing", 0); tabSTRUM.add(chkSwitchChars);
+        chkSwitchChars = new FlxUICheckBox(5, btnMirror.y + btnMirror.height + 5, null, null, '\nChange Characters to Sing', 0); tabSTRUM.add(chkSwitchChars);
 
         clSecStrumCharsToAdd = new FlxUICustomList(chkSwitchChars.x , chkSwitchChars.y + chkSwitchChars.height + 5, Std.int(MENU.width / 2) - 10, [], function(){clSecStrumCharsToAdd.setSuffix(' [${clSecStrumCharsToAdd.getSelectedIndex() + 1}/${_song.characters.length}]');}); tabSTRUM.add(clSecStrumCharsToAdd);
         clSecStrumCharsToAdd.setSuffix(' [${clSecStrumCharsToAdd.getSelectedIndex() + 1}/${_song.characters.length}]');
@@ -1681,7 +1680,7 @@ class ChartEditorState extends MusicBeatState {
             @:privateAccess arrayFocus.push(cast stpNoteHits.text_field);
         stpNoteHits.name = "NOTE_HITS";
         
-        btnCanMerge = new FlxUICustomButton(5, lblNoteHits.y + lblNoteHits.height + 5, Std.int(MENU.width - 10), null, selNote.canMerge ? "Is Merge Button" : "Is Not Merge Button", null, null, function(){
+        btnCanMerge = new FlxUICustomButton(5, lblNoteHits.y + lblNoteHits.height + 5, Std.int(MENU.width - 10), null, "Is Slide", null, null, function(){
             updateSelectedNote(function(curNote){curNote.canMerge = !curNote.canMerge;});
         }); tabNOTE.add(btnCanMerge);
 
@@ -1751,7 +1750,7 @@ class ChartEditorState extends MusicBeatState {
 
         var nLine1 = new FlxSprite(5, note_event_sett_group.y + 160).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabNOTE.add(nLine1);
         
-        var lblEvents = new FlxText(5, nLine1.y + 7, MENU.width - 10, "Section Events"); tabNOTE.add(lblEvents);
+        var lblEvents = new FlxText(5, nLine1.y + 7, MENU.width - 10, "Event"); tabNOTE.add(lblEvents);
         lblEvents.alignment = CENTER;
 
         var lblEventStrumLine = new FlxText(lblEvents.x, lblEvents.y + lblEvents.height + 5, 0, "StrumTime: ", 8); tabNOTE.add(lblEventStrumLine);

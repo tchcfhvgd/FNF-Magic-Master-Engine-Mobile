@@ -250,11 +250,16 @@ class StageEditorState extends MusicBeatState {
 
         var last_height:Float = 0;
         for(_object in SCRIPT_SOURCE.objects){
-            var template_obj:FlxUIButton = new FlxUICustomButton(0,last_height, Std.int(LAYERS.width - 10), Std.int(LAYERS.width - 10), "", Paths.image('stage_editor_objects/${_object.name}'), null, function(){loadObjectSettings(_object);});
+            var template_obj:FlxUIButton = new FlxUICustomButton(0, last_height, Std.int(LAYERS.width - 10), Std.int(LAYERS.width - 10), "", Paths.image('stage_editor_objects/${_object.name}'), null, function(){loadObjectSettings(_object);});
+            template_obj.alpha = 0.5;
             stage_objects_list.add(template_obj);
 
             last_height += template_obj.height + 5;
         }
+
+        if(current_object == null){return;}
+        if(stage_objects_list.members.length < current_object.ID){return;}
+        stage_objects_list.members[current_object.ID].alpha = 1;
     }
 
     public function loadVariableSettings():Void {
@@ -323,6 +328,9 @@ class StageEditorState extends MusicBeatState {
         object_settings_gp.clear();
         var last_menu_height:Float = 10;
 
+        for(b in stage_objects_list){b.alpha = 0.5;}
+        stage_objects_list.members[current_object.ID].alpha = 1;
+
         var lblTtlObject = new FlxText(5, last_menu_height, Std.int(MENU.width - 10), Paths.getFileName(_object.name), 16); object_settings_gp.add(lblTtlObject); lblTtlObject.alignment = CENTER; last_menu_height += lblTtlObject.height + 10;
 
         var btnDeleteObject = new FlxUICustomButton(5, last_menu_height, Std.int(MENU.width - 10), null, "Delete Object", 0xf0ff4a4a, function(){
@@ -358,8 +366,16 @@ class StageEditorState extends MusicBeatState {
         }); object_settings_gp.add(btnMoveDown); last_menu_height += btnMoveUp.height + 10;
 
         var clAttList = new FlxUICustomList(5, last_menu_height, Std.int(MENU.width - 55), _object.get_attributes()); object_settings_gp.add(clAttList);
-        var btnAddAtt = new FlxUICustomButton(5 + clAttList.width + 5, last_menu_height, 20, null, "+", null, 0x93ff79, function(){_object.add_attribute(clAttList.getSelectedLabel()); loadObjectSettings(_object); canReload = true;}); object_settings_gp.add(btnAddAtt);
-        var btnDelAtt = new FlxUICustomButton(10 + clAttList.width + btnAddAtt.width, last_menu_height, 20, null, "-", null, 0xff4747, function(){_object.del_attribute(clAttList.getSelectedLabel()); loadObjectSettings(_object); canReload = true;}); object_settings_gp.add(btnDelAtt);
+        var btnAddAtt = new FlxUICustomButton(5 + clAttList.width + 5, last_menu_height, 20, null, "+", null, 0x93ff79, function(){
+            _object.add_attribute(clAttList.getSelectedLabel());
+            loadObjectSettings(_object);
+            canReload = true;
+        }); object_settings_gp.add(btnAddAtt);
+        var btnDelAtt = new FlxUICustomButton(10 + clAttList.width + btnAddAtt.width, last_menu_height, 20, null, "-", null, 0xff4747, function(){
+            _object.del_attribute(clAttList.getSelectedLabel());
+            loadObjectSettings(_object);
+            canReload = true;
+        }); object_settings_gp.add(btnDelAtt);
         last_menu_height += clAttList.height + 10;
 
         for(cur_var in _object.get_variables()){                    
@@ -821,6 +837,11 @@ class StageObject {
     }
 
     public function add_attribute(att_name:String):Void {
+        for(cur_att in attributes){
+            if(cur_att.name != att_name){continue;}
+            return;
+        }
+
         var new_att:StageObject = new StageObject(name, att_name);
         new_att.name = att_name;
         attributes.push(new_att);
