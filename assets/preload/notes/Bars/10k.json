@@ -328,7 +328,7 @@
                 "color": "#00ffff"
             },
             {
-                "sing_animation": "singMIDDLE",
+                "sing_animation": "singUP",
                 "animations":[
                     {
                         "anim": "static",
@@ -398,7 +398,7 @@
                 "color": "#00ffff"
             },
             {
-                "sing_animation": "singMIDDLE",
+                "sing_animation": "singUP",
                 "animations":[
                     {
                         "anim": "static",

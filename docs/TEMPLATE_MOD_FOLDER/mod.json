@@ -1,0 +1,12 @@
+{
+    "save_prefix": "TMP",
+
+    "name": "Mod Template for Magic Master",
+    "prefix": "TMP",
+    "description": "The Mod Description",
+
+    "onlyThis": false,
+
+    "hideVanilla_Weeks": false,
+    "hideVanilla_Songs": false
+}

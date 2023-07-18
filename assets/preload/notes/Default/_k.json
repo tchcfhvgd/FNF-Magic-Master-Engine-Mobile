@@ -64,7 +64,7 @@
         ],
         "notes":[
             {
-                "sing_animation": "singMIDDLE",
+                "sing_animation": "singUP",
                 "animations":[
                     {
                         "anim": "static",

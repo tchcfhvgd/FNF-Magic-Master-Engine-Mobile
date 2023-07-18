@@ -333,7 +333,7 @@ class CharacterEditorState extends MusicBeatState{
 
         var btnAnimAdd:FlxButton = new FlxCustomButton(clAnims.x, clAnims.y + clAnims.height + 5, Std.int(MENU.width / 4) - 7, null, "Add Anim", null, FlxColor.fromRGB(138, 255, 142), function(){
             var arrIndices:Array<Int> = [];
-            try{arrIndices = Json.parse('{ "Anims": ${txtAnimIndices.text}}'); txtAnimIndices.color = FlxColor.BLACK;}catch(e){trace(e); txtAnimIndices.color = FlxColor.RED;}
+            try{arrIndices = Json.parse('{ "Anims": ${txtAnimIndices.text}}').Anims; txtAnimIndices.color = FlxColor.BLACK;}catch(e){trace(e); txtAnimIndices.color = FlxColor.RED;}
 
             if(!clAnims.contains(txtAnimName.text) && txtAnimName.text.length > 0){
                 var nCharAnim:AnimArray = {
@@ -357,7 +357,7 @@ class CharacterEditorState extends MusicBeatState{
         }); tabMENU.add(btnAnimAdd);
         var btnAnimUpd:FlxButton = new FlxCustomButton(btnAnimAdd.x + btnAnimAdd.width + 5, btnAnimAdd.y, Std.int(MENU.width / 4) - 7, null, "Update Anim", null, FlxColor.fromRGB(138, 255, 142), function(){
             var arrIndices:Array<Int> = [];
-            try{arrIndices = Json.parse('{ "Anims": ${txtAnimIndices.text}}'); txtAnimIndices.color = FlxColor.BLACK;}catch(e){trace(e); txtAnimIndices.color = FlxColor.RED;}
+            try{arrIndices = Json.parse('{ "Anims": ${txtAnimIndices.text}}').Anims; txtAnimIndices.color = FlxColor.BLACK;}catch(e){trace(e); txtAnimIndices.color = FlxColor.RED;}
 
             for(anim in _character.anims){
                 if(anim.anim == clAnims.getSelectedLabel()){
@@ -513,7 +513,7 @@ class CharacterEditorState extends MusicBeatState{
                         chrStage.playAnim(curAnim.anim, true);
                         txtAnimName.text = curAnim.anim;
                         txtAnimSymbol.text = curAnim.symbol;
-                        txtAnimIndices.text = curAnim.indices.toString();
+                        if(curAnim.indices != null){txtAnimIndices.text = curAnim.indices.toString();}else{txtAnimIndices.text = "[]";}
                         stpAnimFrameRate.value = curAnim.fps;
                         chkAnimLoop.checked = curAnim.loop;
                     }else{

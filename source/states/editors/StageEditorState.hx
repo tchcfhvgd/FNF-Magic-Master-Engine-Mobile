@@ -259,6 +259,7 @@ class StageEditorState extends MusicBeatState {
 
         if(current_object == null){return;}
         if(stage_objects_list.members.length < current_object.ID){return;}
+        if(stage_objects_list.members[current_object.ID] == null){return;}
         stage_objects_list.members[current_object.ID].alpha = 1;
     }
 
@@ -323,12 +324,15 @@ class StageEditorState extends MusicBeatState {
         }
     }
 
-    function loadObjectSettings(_object:StageObject):Void {
+    function loadObjectSettings(?_object:StageObject):Void {
         current_object = _object;
         object_settings_gp.clear();
         var last_menu_height:Float = 10;
 
         for(b in stage_objects_list){b.alpha = 0.5;}
+
+        if(current_object == null){return;}
+
         stage_objects_list.members[current_object.ID].alpha = 1;
 
         var lblTtlObject = new FlxText(5, last_menu_height, Std.int(MENU.width - 10), Paths.getFileName(_object.name), 16); object_settings_gp.add(lblTtlObject); lblTtlObject.alignment = CENTER; last_menu_height += lblTtlObject.height + 10;
@@ -336,6 +340,7 @@ class StageEditorState extends MusicBeatState {
         var btnDeleteObject = new FlxUICustomButton(5, last_menu_height, Std.int(MENU.width - 10), null, "Delete Object", 0xf0ff4a4a, function(){
             SCRIPT_SOURCE.objects.remove(_object);
             reload_stage_objects();
+            loadObjectSettings();
             canReload = true;
         }); object_settings_gp.add(btnDeleteObject); last_menu_height += btnDeleteObject.height + 10;
 

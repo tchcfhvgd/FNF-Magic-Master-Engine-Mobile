@@ -86,6 +86,12 @@ class PreSettings {
         var toLang:Array<String> = [];
         for(a in Paths.readDirectory('assets/lang')){toLang.push(a.split("/").pop().replace(".json", "").replace("lang_", ""));}
         CURRENT_SETTINGS.get("Game Settings").get("Language")[1] = toLang;
+        
+        #if sys
+        var toNote:Array<String> = [];
+        for(a in Paths.readDirectory('assets/notes')){if(!FileSystem.isDirectory(a)){continue;} toNote.push(a.split("/").pop());}
+        CURRENT_SETTINGS.get("Visual Settings").get("Note Skin")[1] = toNote;
+        #end
 
 		if(PreSettings.getPreSetting("FrameRate", "Graphic Settings") > FlxG.drawFramerate){
 			FlxG.updateFramerate = PreSettings.getPreSetting("FrameRate", "Graphic Settings");
