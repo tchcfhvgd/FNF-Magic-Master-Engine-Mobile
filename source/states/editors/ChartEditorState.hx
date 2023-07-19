@@ -767,7 +767,7 @@ class ChartEditorState extends MusicBeatState {
             stpNoteLength.value = selNote.sustainLength;
             stpNoteHits.value = selNote.multiHits;
             clNotePressets.setLabel(selNote.presset, true);
-            btnCanMerge.label.text = selNote.canMerge ? '\nIs Slide' : '\nIs Not Slide';
+            btnCanMerge.label.text = selNote.canMerge ? 'Is Slide' : 'Is Not Slide';
             var events:Array<String> = []; for(e in selNote.eventData){events.push(e[0]);} clNoteEventList.setData(events);
             clNoteEventList.setLabel(clNoteEventList.getSelectedLabel(), false, true);
         }else{

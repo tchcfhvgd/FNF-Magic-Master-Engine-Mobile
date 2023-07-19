@@ -21,7 +21,9 @@ using SavedFiles;
 class MagicStuff {
 	public static final version:String = "1.0";
 
-    public static function reload_data():Void {        
+    public static function reload_data():Void {
+        ModListState.isFirst = false;
+        
         PreSettings.init();
         Controls.init();
         ModSupport.reload_mods();

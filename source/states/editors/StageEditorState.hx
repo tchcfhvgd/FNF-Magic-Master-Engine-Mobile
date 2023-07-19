@@ -332,6 +332,7 @@ class StageEditorState extends MusicBeatState {
         for(b in stage_objects_list){b.alpha = 0.5;}
 
         if(current_object == null){return;}
+        if(stage_objects_list.members[current_object.ID] == null){return;}
 
         stage_objects_list.members[current_object.ID].alpha = 1;
 
@@ -339,6 +340,7 @@ class StageEditorState extends MusicBeatState {
 
         var btnDeleteObject = new FlxUICustomButton(5, last_menu_height, Std.int(MENU.width - 10), null, "Delete Object", 0xf0ff4a4a, function(){
             SCRIPT_SOURCE.objects.remove(_object);
+            for(i in 0...SCRIPT_SOURCE.objects.length){SCRIPT_SOURCE.objects[i].ID = i;}
             reload_stage_objects();
             loadObjectSettings();
             canReload = true;

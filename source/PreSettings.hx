@@ -5,6 +5,11 @@ import flixel.util.FlxSave;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
 
+#if (desktop && sys)
+import sys.FileSystem;
+import sys.io.File;
+#end
+
 using StringTools;
 
 class PreSettings {
@@ -89,7 +94,7 @@ class PreSettings {
         
         #if sys
         var toNote:Array<String> = [];
-        for(a in Paths.readDirectory('assets/notes')){if(!FileSystem.isDirectory(a)){continue;} toNote.push(a.split("/").pop());}
+        for(a in Paths.readDirectory('assets/notes')){if(!FileSystem.isDirectory(a)){continue;} if(a.split("/").pop() == "Default"){continue;} toNote.push(a.split("/").pop());}
         CURRENT_SETTINGS.get("Visual Settings").get("Note Skin")[1] = toNote;
         #end
 

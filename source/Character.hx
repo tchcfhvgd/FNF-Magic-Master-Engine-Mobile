@@ -411,8 +411,13 @@ class Character extends FlxSpriteGroup {
 				}
 			}
 
-			if(c.animation.curAnim != null && c.animation.curAnim.finished && c.animation.getByName(c.animation.curAnim.name + '-loop') != null){
-				c.animation.play(c.animation.curAnim.name+'-loop');
+			if(c.animation.curAnim != null && c.animation.curAnim.finished){
+				if(c.animation.curAnim.name.contains('sing') && !c.animation.curAnim.name.contains('-end') && c.animation.getByName(c.animation.curAnim.name + '-end') != null){
+					c.animation.play(c.animation.curAnim.name+'-end');
+					holdTimer = ((c.animation.getByName(c.animation.curAnim.name+'-end').frames.length) / c.animation.getByName(c.animation.curAnim.name+'-end').frameRate);
+				}else if(c.animation.getByName(c.animation.curAnim.name + '-loop') != null){
+					c.animation.play(c.animation.curAnim.name+'-loop');
+				}
 			}
 		}
 
@@ -440,10 +445,19 @@ class Character extends FlxSpriteGroup {
 	}
 
 	public var curAnim:String = "";
+	private var susAnim:Bool = false;
 	public function singAnim(AnimName:String, Force:Bool = false, Special:Bool = false, IsSustain:Bool = false):Void {
-		if(IsSustain && curAnim.contains("sing") && c.animation.getByName(AnimName) != null){holdTimer = ((c.animation.getByName(AnimName).frames.length) / c.animation.getByName(AnimName).frameRate); return;}
+		if(IsSustain && curAnim.contains("sing") && c.animation.getByName(AnimName) != null){
+			playAnim(curAnim);
+			holdTimer = ((c.animation.getByName(AnimName).frames.length) / c.animation.getByName(AnimName).frameRate);
+			return;
+		}
+
 		playAnim(AnimName, Force, Special);
-		if(c.animation.getByName(AnimName) != null){holdTimer = ((c.animation.getByName(AnimName).frames.length) / c.animation.getByName(AnimName).frameRate);}
+
+		if(c.animation.getByName(AnimName) != null){
+			holdTimer = ((c.animation.getByName(AnimName).frames.length) / c.animation.getByName(AnimName).frameRate);
+		}
 	}
 	public function playAnim(AnimName:String, Force:Bool = false, Special:Bool = false):Void {
 		if(specialAnim && !Special){return;}

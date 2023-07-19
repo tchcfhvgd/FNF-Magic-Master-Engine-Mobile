@@ -59,7 +59,7 @@ class ModListState extends MusicBeatState {
 
     private var toNext:String;
 
-	override public function create():Void{
+	override public function create():Void {
         if(!isFirst){for(s in ModSupport.modDataScripts){s.exFunction("onExit");}}
         isFirst = false;
 
