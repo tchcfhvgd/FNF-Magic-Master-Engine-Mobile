@@ -140,8 +140,8 @@ function trainReset():Void {
     train.x = FlxG.width + 200;
     train.visible = false;
     trainMoving = false;
-    trainsound.stop();
-    trainsound.time = 0;
+    //trainsound.stop();
+    //trainsound.time = 0;
     trainCars = 8;
     trainFinishing = false;
     startedMoving = false;
