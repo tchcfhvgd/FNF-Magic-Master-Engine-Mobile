@@ -6,7 +6,7 @@ import("Reflect");
 import("StringTools");
 import("PreSettings");
 
-presset("defaultValues", 
+preset("defaultValues", 
     [
         {name:"Char List",type:"Array",value:"[]"}
     ]

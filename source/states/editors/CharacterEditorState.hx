@@ -181,15 +181,14 @@ class CharacterEditorState extends MusicBeatState{
                 if(FlxG.keys.justPressed.S){_character.position[1]++; reloadCharacter();}
                 if(FlxG.keys.justPressed.D){_character.position[0]++; reloadCharacter();}
                 
-                
-                if(FlxG.keys.justPressed.I){_character.camera[1] --; reloadCharacter();}
-                if(FlxG.keys.justPressed.J){_character.camera[0] --; reloadCharacter();}
-                if(FlxG.keys.justPressed.K){_character.camera[1] ++; reloadCharacter();}
-                if(FlxG.keys.justPressed.L){_character.camera[0] ++; reloadCharacter();}
+                if(FlxG.keys.justPressed.I){_character.camera[1]--; reloadCharacter();}
+                if(FlxG.keys.justPressed.J){_character.camera[0]--; reloadCharacter();}
+                if(FlxG.keys.justPressed.K){_character.camera[1]++; reloadCharacter();}
+                if(FlxG.keys.justPressed.L){_character.camera[0]++; reloadCharacter();}
             }
 
-            if(FlxG.keys.justPressed.Q){clAnims.setIndex(clAnims.getSelectedIndex()+1);}
-            if(FlxG.keys.justPressed.E){clAnims.setIndex(clAnims.getSelectedIndex()-1);}
+            if(FlxG.keys.justPressed.Q){clAnims.setIndex(clAnims.getSelectedIndex() - 1);}
+            if(FlxG.keys.justPressed.E){clAnims.setIndex(clAnims.getSelectedIndex() + 1);}
             if(FlxG.keys.justPressed.SPACE){chrStage.playAnim(clAnims.getSelectedLabel(), true);}
 
             if(FlxG.mouse.justPressedMiddle){camFollow.screenCenter();}

@@ -2,7 +2,7 @@ import("Note");
 import("Paths");
 import("Std");
 
-presset("defaultValues", 
+preset("defaultValues", 
     [
         {name:"Strum",type:"Int",value:0}
     ]

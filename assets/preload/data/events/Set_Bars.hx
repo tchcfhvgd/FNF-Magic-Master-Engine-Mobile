@@ -8,7 +8,7 @@ import("Std");
 import("Note");
 import("Paths");
 
-presset("defaultValues", 
+preset("defaultValues", 
     [
         {name:"Appear",type:"Bool",value:true},
     ]

@@ -411,12 +411,13 @@ class Character extends FlxSpriteGroup {
 				}
 			}
 
-			if(c.animation.curAnim != null && c.animation.curAnim.finished){
-				if(c.animation.curAnim.name.contains('sing') && !c.animation.curAnim.name.contains('-end') && c.animation.getByName(c.animation.curAnim.name + '-end') != null){
-					c.animation.play(c.animation.curAnim.name+'-end');
-					holdTimer = ((c.animation.getByName(c.animation.curAnim.name+'-end').frames.length) / c.animation.getByName(c.animation.curAnim.name+'-end').frameRate);
-				}else if(c.animation.getByName(c.animation.curAnim.name + '-loop') != null){
-					c.animation.play(c.animation.curAnim.name+'-loop');
+			if(curPAnim() != null && curPAnim().finished){
+				var a_name:String = aniName();
+				if(a_name.contains('sing') && !a_name.contains('-end') && getAnim('${a_name}-end') != null){
+					c.animation.play('${a_name}-end');
+					if(curPAnim() != null){holdTimer = ((curPAnim().frames.length) / curPAnim().frameRate);}
+				}else if(getAnim('${a_name}-loop') != null){
+					c.animation.play('${a_name}-loop');
 				}
 			}
 		}
@@ -461,11 +462,6 @@ class Character extends FlxSpriteGroup {
 	}
 	public function playAnim(AnimName:String, Force:Bool = false, Special:Bool = false):Void {
 		if(specialAnim && !Special){return;}
-
-		if(c.flipX){
-			if(AnimName.contains("LEFT")){AnimName = AnimName.replace("LEFT", "RIGHT");}
-			else{AnimName = AnimName.replace("RIGHT", "LEFT");}
-		}
 		
 		if(charScript != null && charScript.exFunction('playAnim', [AnimName, Force])){return;}
 		if(c.animation.getByName(AnimName) == null){return;}
@@ -473,8 +469,17 @@ class Character extends FlxSpriteGroup {
 		specialAnim = Special;
 		curAnim = AnimName;
 		
+		if(c.flipX){
+			if(AnimName.contains("LEFT")){AnimName = AnimName.replace("LEFT", "RIGHT");}
+			else{AnimName = AnimName.replace("RIGHT", "LEFT");}
+		}
+		
 		c.animation.play(AnimName, Force);
 	}
+
+	public function aniName():String {if(c.animation.curAnim == null){return "";} return c.animation.curAnim.name;}
+	public function getAnim(name:String){return c.animation.getByName(name);}
+	public function curPAnim(){return c.animation.curAnim;}
 
 	public function turnLook(toRight:Bool = true):Void {
 		onRight = toRight;

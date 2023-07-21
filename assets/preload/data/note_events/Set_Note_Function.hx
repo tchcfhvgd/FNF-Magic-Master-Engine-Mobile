@@ -7,7 +7,7 @@ import("StringTools");
 import("PreSettings");
 
 
-presset("defaultValues", 
+preset("defaultValues", 
     [
         {name:"Function",type:"String",value:""},
         {name:"Args",type:"Array",value:"[]"}

@@ -3,10 +3,10 @@ import("SavedFiles", "SavedFiles");
 import("Paths", "Paths");
 import("flixel.FlxSprite", "FlxSprite");
 
-presset("initChar", 1);
-presset("camP_1", [430,310]);
-presset("camP_2", [1080,600]);
-presset("zoom", 1.1);
+preset("initChar", 1);
+preset("camP_1", [430,310]);
+preset("camP_2", [1080,600]);
+preset("zoom", 1.1);
 
 var sky:FlxSprite = null;
 

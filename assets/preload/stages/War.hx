@@ -10,10 +10,10 @@ import("StrumLine");
 import("Type");
 import("Std");
 
-presset("initChar", 10);
-presset("camP_1", [540,-3000]);
-presset("camP_2", [970,530]);
-presset("zoom", 0.9);
+preset("initChar", 10);
+preset("camP_1", [540,-3000]);
+preset("camP_2", [970,530]);
+preset("zoom", 0.9);
 
 var tanksGroup:FlxTypedGroup<FlxSprite>;
 var shootStrumLine:Strumline;

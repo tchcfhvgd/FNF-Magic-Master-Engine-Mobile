@@ -37,7 +37,7 @@ import("Std");
 
 var blackScreen:FlxSprite;
 
-presset("endCountdown", true);
+preset("endCountdown", true);
 
 function preload():Void {
     blackScreen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, 0xFF000000);

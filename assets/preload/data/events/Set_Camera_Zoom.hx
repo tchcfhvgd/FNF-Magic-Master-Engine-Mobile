@@ -6,7 +6,7 @@ import("Note");
 import("Paths");
 import("Std");
 
-presset("defaultValues", 
+preset("defaultValues", 
     [
         {name:"Zoom",type:"Float",value:0},
         {name:"Steps",type:"Float",value:4},

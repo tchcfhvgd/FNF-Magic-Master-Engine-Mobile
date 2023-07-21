@@ -4,7 +4,7 @@ import("Std");
 
 import("flixel.FlxG", "FlxG");
 
-presset("defaultValues", 
+preset("defaultValues", 
     [
         {name:"Id",type:"Int",value:0},
         {name:"Name",type:"String",value:"hey"}

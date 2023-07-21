@@ -3,7 +3,7 @@ import("Paths");
 import("Stage");
 import("Std");
 
-presset("defaultValues", 
+preset("defaultValues", 
     [
         {name:"Name",type:"String",value:"Stage"}
     ]

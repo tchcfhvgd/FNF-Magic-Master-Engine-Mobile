@@ -4,10 +4,10 @@ import("Paths", "Paths");
 import("flixel.FlxSprite", "FlxSprite");
 import("states.PlayState", "PlayState");
 
-presset("initChar", 6);
-presset("camP_1", [380,310]);
-presset("camP_2", [930,530]);
-presset("zoom", 1);
+preset("initChar", 6);
+preset("camP_1", [380,310]);
+preset("camP_2", [930,530]);
+preset("zoom", 1);
 
 var sky:FlxSprite = null;
 var school:FlxSprite = null;

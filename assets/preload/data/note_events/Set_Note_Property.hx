@@ -6,7 +6,7 @@ import("Reflect");
 import("StringTools");
 import("PreSettings");
 
-presset("defaultValues", 
+preset("defaultValues", 
     [
         {name:"Property",type:"String",value:""},
         {name:"Value",type:"String",value:""}

@@ -17,10 +17,10 @@ function addToLoad(temp){
     temp.push({type:"IMAGE",instance:Paths.image('BANQUETA','stages/street')});
 }
 
-presset("initChar", 9);
-presset("camP_1", [250,-3200]);
-presset("camP_2", [1000,850]);
-presset("zoom", 0.4);
+preset("initChar", 9);
+preset("camP_1", [250,-3200]);
+preset("camP_2", [1000,850]);
+preset("zoom", 0.4);
 
 var car_list = ["Agent_Moto", "Agent_Moto2", "Agents_Car", "Def_Cars", "Fire_Car", "Formula1", "Limusine", "RTX_Car"];
 var car_group:FlxTypedGroup<FlxSprite>;

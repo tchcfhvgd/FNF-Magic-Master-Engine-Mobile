@@ -116,7 +116,7 @@ class MusicBeatSubstate extends FlxSubState {
 	}
 
 	override function close():Void {
-		for(s in scripts){s.exFunction('close');}
+		for(s in scripts){s.exFunction('onClose');}
 
 		onClose();
 

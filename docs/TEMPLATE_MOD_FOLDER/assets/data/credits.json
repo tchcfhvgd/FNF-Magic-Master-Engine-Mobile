@@ -1,0 +1,18 @@
+{
+    "New Mod Credits": [
+        {
+            "Name": "Me",
+            "Icon": "me",
+            "Description": "It's Me",
+            "Role": "coder",
+            "Color": "#47ffc2"
+        },
+        {
+            "Name": "My bro",
+            "Icon": "mybro",
+            "Description": "It's my bro",
+            "Role": "musician",
+            "Color": "#0e9df0"
+        }
+    ]
+}

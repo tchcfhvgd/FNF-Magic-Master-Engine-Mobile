@@ -5,7 +5,7 @@ import("Note");
 import("Paths");
 
 
-presset("defaultValues", 
+preset("defaultValues", 
     [
         {name:"Shake",type:"Float",value:0.03},
         {name:"Duration",type:"Float",value:1}

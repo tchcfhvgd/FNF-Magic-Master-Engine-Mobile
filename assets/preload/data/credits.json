@@ -4,56 +4,56 @@
             "Name": "Yirius125",
             "Icon": "yirius",
             "Description": "Plushie Yirius is now available (jk)",
-            "Rol": "coder",
+            "Role": "coder",
             "Color": "#47ffc2"
         },
         {
             "Name": "MixinFlame",
             "Icon": "mixin",
             "Description": "When rusheas la song del menu",
-            "Rol": "musician",
+            "Role": "musician",
             "Color": "#0e9df0"
         },
         {
             "Name": "Manolo Dev",
             "Icon": "manolo",
             "Description": "Odio Bolivia",
-            "Rol": "animator",
+            "Role": "animator",
             "Color": "#dfe37b"
         },
         {
             "Name": "Massanross",
             "Icon": "massan",
             "Description": "2 años y todavia no se como hacer cinematicas XD",
-            "Rol": "animator",
+            "Role": "animator",
             "Color": "#ff8585"
         },
         {
             "Name": "ElSniper",
             "Icon": "sniper",
             "Description": ":v",
-            "Rol": "animator",
+            "Role": "animator",
             "Color": "#5f9662"
         },
         {
             "Name": "Doggy",
             "Icon": "doggy",
             "Description": "Kirby dando vueltas",
-            "Rol": "artist",
+            "Role": "artist",
             "Color": "#8ad1ed"
         },
         {
             "Name": "AceOutAnd",
             "Icon": "ace",
             "Description": "puedo animarlo xDDXdxD",
-            "Rol": "artist",
+            "Role": "artist",
             "Color": "#e6c28c"
         },
         {
             "Name": "Ricky",
             "Icon": "ricky",
             "Description": "el que madruga dios le ayuda, a mi nunca me ayudo xd",
-            "Rol": "charter",
+            "Role": "charter",
             "Color": "#b8fffb"
         }
     ],
@@ -62,28 +62,28 @@
             "Name": "CaptainCheddar",
             "Icon": "cheddar",
             "Description": "hola",
-            "Rol": "artist",
+            "Role": "artist",
             "Color": "#f7ff59"
         },
         {
             "Name": "SugarMoon",
             "Icon": "sugar",
             "Description": "'StereoFunk' Song",
-            "Rol": "musician",
+            "Role": "musician",
             "Color": "#ff87f7"
         },
         {
             "Name": "Saruky",
             "Icon": "saruky",
             "Description": "Cassette Girl Chromatic",
-            "Rol": "musician",
+            "Role": "musician",
             "Color": "#842ec9"
         },
         {
             "Name": "YokuTzen",
             "Icon": "yokze",
             "Description": "No se que hago aca si no hice el oro",
-            "Rol": "",
+            "Role": "",
             "Color": "#842ec9"
         }
     ],
@@ -92,28 +92,28 @@
             "Name": "ninjamuffin99",
             "Icon": "ninja_muffin",
             "Description": "",
-            "Rol": "coder",
+            "Role": "coder",
             "Color": "#ff8282"
         },
         {
             "Name": "kawaisprite",
             "Icon": "kawai_sprite",
             "Description": "",
-            "Rol": "musician",
+            "Role": "musician",
             "Color": "#82b2ff"
         },
         {
             "Name": "PhantomArcade",
             "Icon": "phantomarcade",
             "Description": "",
-            "Rol": "animator",
+            "Role": "animator",
             "Color": "#fffd82"
         },
         {
             "Name": "evilsk8r",
             "Icon": "evilsk8r",
             "Description": "",
-            "Rol": "artist",
+            "Role": "artist",
             "Color": "#9effb3"
         }
     ]

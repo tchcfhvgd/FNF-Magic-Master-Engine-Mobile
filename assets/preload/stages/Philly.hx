@@ -6,10 +6,10 @@ import("Character", "Character");
 import("flixel.FlxG", "FlxG");
 import("Paths", "Paths");
 
-presset("initChar", 5);
-presset("camP_1", [585,305]);
-presset("camP_2", [980,610]);
-presset("zoom", 1.1);
+preset("initChar", 5);
+preset("camP_1", [585,305]);
+preset("camP_2", [980,610]);
+preset("zoom", 1.1);
 
 var phillyLightsColors = [0xFF31A2FD, 0xFF31FD8C, 0xFFFB33F5, 0xFFFD4531, 0xFFFBA633];
 var trainMoving:Bool = false;

@@ -2,7 +2,7 @@ import("Note");
 import("Paths");
 import("Std");
 
-presset("defaultValues", 
+preset("defaultValues", 
     [
         {name:"Scroll",type:"Float",value:3},
         {name:"Id",type:"Int",value:0}

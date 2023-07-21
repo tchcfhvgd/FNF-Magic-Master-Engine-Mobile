@@ -105,7 +105,7 @@ class CreditsState extends MusicBeatState {
 			for(credit in credits_stuff[cat]){
 				var path_icon:String = 'credits/${credit.Icon}';
 				if(!Paths.exists(Paths.image(path_icon))){path_icon = "credits/face";}
-				var path_rol_icon:String = 'credits/${credit.Rol}';
+				var path_rol_icon:String = 'credits/${credit.Role}';
 
 				var list_credit:Array<Dynamic> = [{color: 0x000000, scale: 0.7, text: ' ${credit.Name} '}, {image: path_icon, size: [0, 70]}];
 				if(Paths.exists(Paths.image(path_rol_icon))){list_credit.unshift({image: path_rol_icon, size: [0, 70]});}
@@ -122,7 +122,7 @@ class CreditsState extends MusicBeatState {
 						color: credit.Color,
 						icon: credit.Icon,
 						desc: credit.Description,
-						rol: credit.Rol
+						rol: credit.Role
 					}
 				);
 			}

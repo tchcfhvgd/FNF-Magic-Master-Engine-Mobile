@@ -2,10 +2,10 @@ import("SavedFiles", "SavedFiles");
 import("Paths", "Paths");
 import("flixel.FlxSprite", "FlxSprite");
 
-presset("initChar", 2);
-presset("camP_1", [-60,-2210]);
-presset("camP_2", [1110,490]);
-presset("zoom", 1.1);
+preset("initChar", 2);
+preset("camP_1", [-60,-2210]);
+preset("camP_2", [1110,490]);
+preset("zoom", 1.1);
 
 var background:FlxSprite = null;
 var tree:FlxSprite = null;

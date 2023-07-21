@@ -7,7 +7,7 @@ import("Note");
 import("Paths");
 import("Std");
 
-presset("defaultValues", 
+preset("defaultValues", 
     [
         {name:"X",type:"Int",value:0},
         {name:"Y",type:"Int",value:0},

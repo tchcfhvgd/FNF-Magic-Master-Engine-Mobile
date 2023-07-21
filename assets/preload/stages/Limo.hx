@@ -7,10 +7,10 @@ import("flixel.FlxG", "FlxG");
 import("Paths", "Paths");
 import("Type", "Type");
 
-presset("initChar", 4);
-presset("camP_1", [250,-1000]);
-presset("camP_2", [900,450]);
-presset("zoom", 0.9);
+preset("initChar", 4);
+preset("camP_1", [250,-1000]);
+preset("camP_2", [900,450]);
+preset("zoom", 0.9);
 
 var fastCarCanDrive:Bool = true;
 var isLeftDancing:Bool = false;

@@ -53,6 +53,7 @@ class Script extends FlxBasic {
         setVariable('preload', nFunc);
         
         setVariable('song_started', nFunc);
+        setVariable('song_paused', nFunc);
         setVariable('song_ended', nFunc);
         
         setVariable('onFocus', nFunc);
@@ -68,10 +69,10 @@ class Script extends FlxBasic {
         setVariable('beatHit', function(curBeat:Int) {});
         setVariable('stepHit', function(curStep:Int) {});
 
-        setVariable("presset", function(name:String, func:Any){setVariable(name, func);});
-        setVariable("getsset", function(name:String){return getVariable(name);});
+        setVariable("preset", function(name:String, func:Any){setVariable(name, func);});
+        setVariable("getset", function(name:String){return getVariable(name);});
 
-        setVariable('destroy', function(){this.program = null; this.destroy();});
+        setVariable('destroy', function(){this.destroy();});
 
         setVariable("pushGlobal", function(){states.MusicBeatState.state.tempScripts.set(this.Name, this);});
 

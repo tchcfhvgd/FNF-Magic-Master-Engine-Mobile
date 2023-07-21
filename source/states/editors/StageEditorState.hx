@@ -685,7 +685,7 @@ class StageScripManager {
         to_return += '\n';
 
         for(pre in variables){
-            to_return += 'presset("${pre.Name}", ${pre.Value});\n';
+            to_return += 'preset("${pre.Name}", ${pre.Value});\n';
         }
 
         to_return += '\n';

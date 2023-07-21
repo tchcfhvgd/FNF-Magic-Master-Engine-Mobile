@@ -766,7 +766,7 @@ class ChartEditorState extends MusicBeatState {
             stpStrumLine.value = selNote.strumTime;
             stpNoteLength.value = selNote.sustainLength;
             stpNoteHits.value = selNote.multiHits;
-            clNotePressets.setLabel(selNote.presset, true);
+            clNotePressets.setLabel(selNote.preset, true);
             btnCanMerge.label.text = selNote.canMerge ? 'Is Slide' : 'Is Not Slide';
             var events:Array<String> = []; for(e in selNote.eventData){events.push(e[0]);} clNoteEventList.setData(events);
             clNoteEventList.setLabel(clNoteEventList.getSelectedLabel(), false, true);
@@ -1089,7 +1089,7 @@ class ChartEditorState extends MusicBeatState {
         var _note:NoteData = Note.getNoteData();
         _note.strumTime = getStrumTime(cursor_Arrow.y) + sectionStartTime();
         _note.keyData = Math.floor((FlxG.mouse.x - curGrid.x) / KEYSIZE) % Song.getStrumKeys(_song.sectionStrums[curStrum], curSection);
-        _note.presset = clNotePressets.getSelectedLabel();
+        _note.preset = clNotePressets.getSelectedLabel();
 
         if(isRelease){
             if(getSwagNote(Note.convNoteData(_note)) == null && !Note.compNotes(lastNote, _note)){
@@ -1686,10 +1686,10 @@ class ChartEditorState extends MusicBeatState {
 
         clNotePressets = new FlxUICustomList(5, btnCanMerge.y + btnCanMerge.height + 5, Std.int(MENU.width - 10), Note.getNotePressets(), function(){
             updateSelectedNote(
-                function(curNote){curNote.presset = clNotePressets.getSelectedLabel();},
-                function(){selNote.presset = clNotePressets.getSelectedLabel();}
+                function(curNote){curNote.preset = clNotePressets.getSelectedLabel();},
+                function(){selNote.preset = clNotePressets.getSelectedLabel();}
             );
-            cursor_Arrow.loadPresset(selNote.presset, false);
+            cursor_Arrow.loadPresset(selNote.preset, false);
         }); tabNOTE.add(clNotePressets);
         clNotePressets.setPrefix("Note Presset: ["); clNotePressets.setSuffix("]");
         

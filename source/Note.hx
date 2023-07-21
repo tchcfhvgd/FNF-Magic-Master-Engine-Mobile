@@ -143,7 +143,7 @@ typedef NoteData = {
     var sustainLength:Float;
     var multiHits:Int;
     var canMerge:Bool;
-    var presset:String;
+    var preset:String;
     var eventData:Array<Dynamic>;
     var otherStuff:Array<Dynamic>;
 }
@@ -220,7 +220,7 @@ class Note extends StrumNote {
     
     public static function convNoteData(data:NoteData):Array<Dynamic> {
         if(data == null){return null;}
-        return [data.strumTime, data.keyData, data.sustainLength, data.multiHits, data.canMerge, data.presset, data.eventData, data.otherStuff];
+        return [data.strumTime, data.keyData, data.sustainLength, data.multiHits, data.canMerge, data.preset, data.eventData, data.otherStuff];
     }
     public static function convEventData(data:EventData):Array<Dynamic> {
         if(data == null){return null;}
@@ -234,7 +234,7 @@ class Note extends StrumNote {
             sustainLength: 0,
             multiHits: 0,
             canMerge: false,
-            presset: "Default",
+            preset: "Default",
             eventData: [],
             otherStuff: []
         }
@@ -246,7 +246,7 @@ class Note extends StrumNote {
         if(note.length >= 2 && Std.isOfType(note[2], Float)){toReturn.sustainLength = note[2];}      
         if(note.length >= 3 && Std.isOfType(note[3], Int)){toReturn.multiHits = note[3];}
         if(note.length >= 4 && note[4]){toReturn.canMerge = true;}
-        if(note.length >= 5 && Std.isOfType(note[5], String)){toReturn.presset = note[5];}
+        if(note.length >= 5 && Std.isOfType(note[5], String)){toReturn.preset = note[5];}
         if(note.length >= 6 && Std.isOfType(note[6], Array)){toReturn.eventData = note[6];}
         if(note.length >= 7 && Std.isOfType(note[7], Array)){toReturn.otherStuff = note[7];}
         
@@ -315,14 +315,14 @@ class Note extends StrumNote {
 
         super(data.keyData, noteKeys, _image, _style, _type);
 
-        loadPresset(data.presset);
+        loadPresset(data.preset);
 	}
 
-    public function loadPresset(presset:String, onCreate:Bool = true):Void {
-        if(!onCreate && presset == "Default"){otherData = []; loadNote(StrumNote.IMAGE_DEFAULT); return;}
+    public function loadPresset(preset:String, onCreate:Bool = true):Void {
+        if(!onCreate && preset == "Default"){otherData = []; loadNote(StrumNote.IMAGE_DEFAULT); return;}
 
-        var json_path:String = Paths.getPath('${presset}.json', TEXT, 'notes');
-        if(presset != "" && Paths.exists(json_path)){
+        var json_path:String = Paths.getPath('${preset}.json', TEXT, 'notes');
+        if(preset != "" && Paths.exists(json_path)){
             var eventList:Dynamic = json_path.getJson();
             otherData = eventList.Events;
         }

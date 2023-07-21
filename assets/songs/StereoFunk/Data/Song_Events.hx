@@ -35,7 +35,7 @@ import("Paths");
 import("Type");
 import("Std");
 
-presset("startCountdown", true);
+preset("startCountdown", true);
 
 var step:Float = 1;
 var camFollow:FlxObject = null;

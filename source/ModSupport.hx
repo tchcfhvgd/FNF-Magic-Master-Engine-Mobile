@@ -1,10 +1,10 @@
 package;
 
-import flixel.FlxG;
+import lime.tools.AssetType;
 import states.ModListState;
 import haxe.DynamicAccess;
-import lime.tools.AssetType;
 import hscript.Interp;
+import flixel.FlxG;
 import haxe.Json;
 
 #if (desktop && sys)
@@ -22,8 +22,15 @@ class ModSupport {
     public static var modDataScripts:Map<String, Script> = [];
     public static var staticScripts:Map<String, Script> = [];
     public static var exScripts:Array<String> = [
+        "substates.CustomScriptSubState",
+        "substates.MusicBeatSubstate",
+        "states.CustomScriptState",
+        "substates.FadeSubState",
+        "states.PreLoaderState",
+        "states.MusicBeatState",
         "states.ModListState",
-        "states.PreLoaderState"
+        "states.LoadingState",
+        "states.VoidState",
     ];
 
     public static var hideVanillaWeeks(get, null):Bool = false;
