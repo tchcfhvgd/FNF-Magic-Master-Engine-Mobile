@@ -86,6 +86,7 @@
 	"opt_controls": [{"scale":0.8, "bold":true, "text":"Controles"}],
 	"opt_key_controls": [{"scale":0.8, "bold":true, "text":"Controles de Notas"}],
 
+	"set_bumping_camera": "Camara al Beat",
 	"set_damage_multiplier": "Multiplicador de Daño",
 	"set_healing_multiplier": "Multiplicador de Vida",
 	"set_type_mode": "Modo de Juego",

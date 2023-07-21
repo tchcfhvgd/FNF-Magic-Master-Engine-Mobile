@@ -528,6 +528,11 @@ class PlayState extends MusicBeatState {
 				if(followChar){Character.setCameraToCharacter(stage.getCharacterById(Character.getFocusCharID(SONG, curSection)), camFollow, stage);}
 			}			
 		}
+
+		if(PreSettings.getPreSetting("Bumping Camera", "Visual Settings")){
+			FlxG.camera.zoom = FlxMath.lerp(FlxG.camera.zoom, stage.zoom, FlxG.elapsed * 3.125);
+			camHUD.zoom = FlxMath.lerp(camHUD.zoom, 1, FlxG.elapsed * 3.125);
+		}
 	}
 
 	private var exEvents:Array<Dynamic> = [];
@@ -685,6 +690,11 @@ class PlayState extends MusicBeatState {
 
 	override function beatHit(){
 		super.beatHit();
+
+		if(PreSettings.getPreSetting("Bumping Camera", "Visual Settings") && curBeat % 4 == 0){
+			FlxG.camera.zoom += 0.015;
+			camHUD.zoom += 0.03;
+		}
 
 		if(SONG.generalSection[curSection] != null){
 			if(SONG.generalSection[curSection].changeBPM){

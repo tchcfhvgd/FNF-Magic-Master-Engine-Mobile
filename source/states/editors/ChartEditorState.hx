@@ -614,7 +614,7 @@ class ChartEditorState extends MusicBeatState {
 
                     if(n.hitMiss){continue;}
                     if(!chkHideStrums.checked){strumStatics.members[i].playById((n.noteData % Song.getStrumKeys(_song.sectionStrums[i], curSection)), "confirm", true);}
-                    if(!chkMuteHitSounds.checked && sHitsArray[i] && n.typeHit != "Hold"){FlxG.sound.play(Paths.sound("CLAP"));}
+                    if(!chkMuteHitSounds.checked && sHitsArray[i] && n.typeHit != "Hold"){FlxG.sound.play(Paths.sound("CLAP").getSound());}
 
                     var song_animation:String = n.singAnimation;
                     if(_song.sectionStrums[i].notes[curSection].altAnim){song_animation += '-alt';}

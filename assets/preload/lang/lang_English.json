@@ -113,6 +113,7 @@
 	"opt_controls": [{"scale":0.8, "bold":true, "text":"Controls"}],
 	"opt_key_controls": [{"scale":0.8, "bold":true, "text":"Key Controls"}],
 
+	"set_bumping_camera": "Bumping Camera",
 	"set_damage_multiplier": "Damage Multiplier",
 	"set_healing_multiplier": "Healing Multiplier",
 	"set_type_mode": "Type Mode",
