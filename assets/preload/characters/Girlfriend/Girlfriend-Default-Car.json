@@ -90,6 +90,6 @@
 		-100
 	],
 	"onRight": false,
-	"deathCharacter": "Boyfriend",
+	"sing_time": 1,
 	"danceIdle": true
 }

@@ -108,5 +108,5 @@
 	"healthicon": "mom",
 	"onRight": true,
 	"skin": "Default",
-	"deathCharacter": "Boyfriend"
+	"sing_time": 1
 }

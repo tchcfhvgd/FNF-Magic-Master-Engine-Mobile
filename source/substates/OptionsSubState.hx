@@ -301,7 +301,7 @@ class ControlStrumOption extends Alphabet {
 			i++;
 		}
 		cur_data.push({scale:0.5, text:']'});
-		if(unChanged){cur_data.push({scale:0.5, text:' Unchanged Key'});}
+		if(unChanged){cur_data.push({scale:0.5, text:' Changed Key'});}
 
 		super.loadText();
 	}

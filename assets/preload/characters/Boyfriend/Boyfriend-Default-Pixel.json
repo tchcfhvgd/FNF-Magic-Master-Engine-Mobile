@@ -75,7 +75,7 @@
 	"image": "bfPixel",
 	"name": "Boyfriend",
 	"antialiasing": false,
-	"deathCharacter": "Boyfriend",
+	"sing_time": 1,
 	"healthicon": "bf-pixel",
 	"camera": [
 		171,

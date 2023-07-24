@@ -21,7 +21,8 @@ class ModSupport {
 
     public static var modDataScripts:Map<String, Script> = [];
     public static var staticScripts:Map<String, Script> = [];
-    public static var exScripts:Array<String> = [
+    public static var loadScripts:Map<String, Array<String>> = [];
+    public static var exStates:Array<String> = [
         "substates.CustomScriptSubState",
         "substates.MusicBeatSubstate",
         "states.CustomScriptState",
@@ -31,6 +32,14 @@ class ModSupport {
         "states.ModListState",
         "states.LoadingState",
         "states.VoidState",
+    ];
+    public static var exScripts:Array<String> = [
+        "substates.CustomScriptSubState",
+        "substates.MusicBeatSubstate",
+        "states.CustomScriptState",
+        "substates.FadeSubState",
+        "states.PreLoaderState",
+        "states.MusicBeatState",
     ];
 
     public static var hideVanillaWeeks(get, null):Bool = false;
@@ -96,43 +105,38 @@ class ModSupport {
 
         for(mod in MODS){
             if(!mod.enabled){continue;}
-            checkToScript('${mod.path}/scripts', true, mod.name);
-            if(mod.onlyThis){break;}
-        }
-
-        trace(MODS);
-        trace(modDataScripts);
-        trace(staticScripts);
-    }
-
-    #if sys
-    static var toRemove:String = "";
-    public static function checkToScript(file:String, first:Bool = false, name:String){
-        var aFile = FileSystem.absolutePath(file);
-
-        if(!FileSystem.exists(aFile)){return;}
-
-        if(first){toRemove = file.replace("/", ".");}
-        for(i in FileSystem.readDirectory(aFile)){
-            if(FileSystem.isDirectory('$aFile/$i')){checkToScript('${file}/${i}', false, name);}else{
-                var id:String = '${file}/${i.replace(".hx", "")}'; id = id.replace("/", ".").replace('$toRemove.', "");
-
-                if(id == 'ModData'){
-                    var nScript = new Script(); nScript.Name = name; nScript.Mod = name;
-                    nScript.exScript('$file/$i'.getText());
-                    modDataScripts.set(name, nScript);
-                    continue;
-                }
-
-                if(!staticScripts.exists(id) && !exScripts.contains(id)){
-                    var nScript = new Script(); nScript.Name = id; nScript.Mod = name;
-                    nScript.exScript('$file/$i'.getText());
-                    staticScripts.set(id, nScript);
+            var scripts_paths:String = FileSystem.absolutePath('${mod.path}/scripts');
+            if(FileSystem.exists(scripts_paths)){
+                for(i in FileSystem.readDirectory(scripts_paths)){
+                    if(!'$scripts_paths/$i'.contains(".hx")){continue;}
+                    var id:String = '${i.replace(".hx", "")}';
+    
+                    if(id == 'ModData'){
+                        var nScript = new Script();
+                        nScript.Name = mod.name;
+                        nScript.Mod = mod.name;
+                        nScript.exScript('$scripts_paths/$i'.getText());
+                        modDataScripts.set(mod.name, nScript);
+                        continue;
+                    }
+    
+                    if(!staticScripts.exists(id) && !exScripts.contains(id)){
+                        var nScript = new Script();
+                        nScript.Name = id;
+                        nScript.Mod = mod.name;
+                        nScript.exScript('$scripts_paths/$i'.getText());
+                        if(nScript.getVariable('isGlobal')){
+                            staticScripts.set(id, nScript);
+                        }else{
+                            loadScripts.set(id, ['$scripts_paths/$i', mod.name]);
+                            nScript.destroy();
+                        }
+                    }
                 }
             }
+            if(mod.onlyThis){break;}
         }
     }
-    #end
 
     public static function moveMod(index:Int, toUp:Bool = false){
         var mod_1:Mod = MODS[index];

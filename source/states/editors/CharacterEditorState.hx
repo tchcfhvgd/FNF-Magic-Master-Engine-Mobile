@@ -89,13 +89,6 @@ class CharacterEditorState extends MusicBeatState{
 
     override function create(){
         if(FlxG.sound.music != null){FlxG.sound.music.stop();}
-
-        #if desktop
-		// Updating Discord Rich Presence
-		DiscordClient.changePresence('[${_character.name}-${_character.skin}-${_character.aspect}]', '[Character Editor]');
-		MagicStuff.setWindowTitle('Editing [${_character.name}-${_character.skin}-${_character.aspect}]', 1);
-		#end
-
         FlxG.mouse.visible = true;
 
         var bgGrid:FlxSprite = FlxGridOverlay.create(10, 10, FlxG.width, FlxG.height, true, 0xff4d4d4d, 0xff333333);
@@ -146,6 +139,12 @@ class CharacterEditorState extends MusicBeatState{
 		add(camFollow);
 
         reloadCharacter();
+
+        #if desktop
+		// Updating Discord Rich Presence
+		DiscordClient.changePresence('[${chrStage.curCharacter}-${chrStage.curSkin}-${chrStage.curAspect}]', '[Character Editor]');
+		MagicStuff.setWindowTitle('Editing [${chrStage.curCharacter}-${chrStage.curSkin}-${chrStage.curAspect}]', 1);
+		#end
 
         super.create();
     }
@@ -220,6 +219,7 @@ class CharacterEditorState extends MusicBeatState{
     var chkGFPos:FlxUICheckBox;
     var lblOriPos:FlxText;
     var txtCharacter:FlxUIInputText;
+    var txtScript:FlxUIInputText;
     var txtSkin:FlxUIInputText;
     var txtAspect:FlxUIInputText;
     var txtImage:FlxUIInputText;
@@ -239,23 +239,25 @@ class CharacterEditorState extends MusicBeatState{
     var txtAnimSymbol:FlxUIInputText;
     var txtAnimIndices:FlxUIInputText;
     var stpAnimFrameRate:FlxUINumericStepper;
+    var stpSingDuration:FlxUINumericStepper;
+    var stpAnimHold:FlxUINumericStepper;
     var chkAnimLoop:FlxUICheckBox;
     private function addMENUTABS(){
         var tabMENU = new FlxUI(null, MENU);
         tabMENU.name = "1Character";
 
         var lblCharacter = new FlxText(5, 15, 0, "CHARACTER:", 8); tabMENU.add(lblCharacter);
-        txtCharacter = new FlxUIInputText(lblCharacter.x + lblCharacter.width + 5, lblCharacter.y, Std.int(MENU.width - lblCharacter.width - 15), _character.name, 8); tabMENU.add(txtCharacter);
+        txtCharacter = new FlxUIInputText(lblCharacter.x + lblCharacter.width + 5, lblCharacter.y, Std.int(MENU.width - lblCharacter.width - 15), chrStage.curCharacter, 8); tabMENU.add(txtCharacter);
         arrayFocus.push(txtCharacter);
         txtCharacter.name = "CHARACTER_NAME";
 
         var lblSkin = new FlxText(lblCharacter.x, txtCharacter.y + txtCharacter.height + 5, 0, "SKIN:", 8); tabMENU.add(lblSkin);
-        txtSkin = new FlxUIInputText(lblSkin.x + lblSkin.width + 5, lblSkin.y, Std.int(MENU.width - lblSkin.width - 15), _character.skin, 8); tabMENU.add(txtSkin);
+        txtSkin = new FlxUIInputText(lblSkin.x + lblSkin.width + 5, lblSkin.y, Std.int(MENU.width - lblSkin.width - 15), chrStage.curSkin, 8); tabMENU.add(txtSkin);
         arrayFocus.push(txtSkin);
         txtSkin.name = "CHARACTER_SKIN";
         
         var lblCat = new FlxText(lblCharacter.x, txtSkin.y + txtSkin.height + 5, 0, "ASPECT:", 8); tabMENU.add(lblCat);
-        txtAspect = new FlxUIInputText(lblCat.x + lblCat.width + 5, lblCat.y, Std.int(MENU.width - lblCat.width - 15), _character.aspect, 8); tabMENU.add(txtAspect);
+        txtAspect = new FlxUIInputText(lblCat.x + lblCat.width + 5, lblCat.y, Std.int(MENU.width - lblCat.width - 15), chrStage.curSkin, 8); tabMENU.add(txtAspect);
         arrayFocus.push(txtAspect);
         txtAspect.name = "CHARACTER_ASPECT";
 
@@ -271,50 +273,55 @@ class CharacterEditorState extends MusicBeatState{
 
         var line0 = new FlxSprite(5, btnLoadCharacter.y + btnLoadCharacter.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line0);
 
-        chkLEFT = new FlxUICheckBox(line0.x, line0.y + line0.height + 5, null, null, "onRight?", 100); tabMENU.add(chkLEFT);
-        chkGFPos = new FlxUICheckBox(chkLEFT.x, chkLEFT.y + chkLEFT.height + 5, null, null, "Girlfriend Position?", 100); tabMENU.add(chkGFPos);
+        chkLEFT = new FlxUICheckBox(5, line0.y + line0.height + 5, null, null, "onRight?", 100); tabMENU.add(chkLEFT);
+        chkGFPos = new FlxUICheckBox(5, chkLEFT.y + chkLEFT.height + 5, null, null, "Girlfriend Position?", 100); tabMENU.add(chkGFPos);
 
         var line1 = new FlxSprite(5, chkGFPos.y + chkGFPos.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line1);
 
-        var lblIcon = new FlxText(line1.x, line1.y + line1.height + 5, 0, "Icon:", 8); tabMENU.add(lblIcon);
+        var lblIcon = new FlxText(5, line1.y + line1.height + 5, 0, "Icon:", 8); tabMENU.add(lblIcon);
         txtIcon = new FlxUIInputText(lblIcon.x + lblIcon.width + 5, lblIcon.y, Std.int(MENU.width - lblIcon.width - 15), _character.healthicon, 8); tabMENU.add(txtIcon);
         arrayFocus.push(txtIcon);
         txtIcon.name = "CHARACTER_ICON";
         
-        var lblDeathChar = new FlxText(lblIcon.x, lblIcon.y + lblIcon.height + 5, 0, "Death Character:", 8); tabMENU.add(lblDeathChar);
-        txtDeathChar = new FlxUIInputText(lblDeathChar.x + lblDeathChar.width + 5, lblDeathChar.y, Std.int(MENU.width - lblDeathChar.width - 15), _character.deathCharacter, 8); tabMENU.add(txtDeathChar);
-        arrayFocus.push(txtDeathChar);
-        txtDeathChar.name = "CHARACTER_DEATHCHAR";
+        var lblScript = new FlxText(5, lblIcon.y + lblIcon.height + 5, 0, "Script:", 8); tabMENU.add(lblScript);
+        txtScript = new FlxUIInputText(lblScript.x + lblScript.width + 5, lblScript.y, Std.int(MENU.width - lblScript.width - 15), _character.script, 8); tabMENU.add(txtScript);
+        arrayFocus.push(txtScript);
+        txtScript.name = "CHARACTER_SCRIPT";
+
+        var lblScale = new FlxText(5, lblScript.y + lblScript.height + 5, 0, "Scale:", 8); tabMENU.add(lblScale);
+        stpScale = new FlxUICustomNumericStepper(lblScale.x + lblScale.width + 5, lblScale.y, Std.int(MENU.width - lblScale.width - 15), 0.1, _character.scale, -99999, 99999, 1); tabMENU.add(stpScale);
+            @:privateAccess arrayFocus.push(cast stpScale.text_field);
+        stpScale.name = "CHARACTER_Scale";
+
+        var lblSingDuration = new FlxText(5, lblScale.y + lblScale.height + 5, 0, "Sing Duration:", 8); tabMENU.add(lblSingDuration);
+        stpSingDuration = new FlxUICustomNumericStepper(lblSingDuration.x + lblSingDuration.width + 5, lblSingDuration.y, Std.int(MENU.width - lblSingDuration.width - 15), 0.5, _character.scale, 0, 99999, 1); tabMENU.add(stpSingDuration);
+            @:privateAccess arrayFocus.push(cast stpSingDuration.text_field);
+        stpSingDuration.name = "CHARACTER_SingDuration";
         
-        lblOriPos = new FlxText(lblDeathChar.x, lblDeathChar.y + lblDeathChar.height + 10, Std.int(MENU.width) - 10, 'Character Position: [${charPos[0]}, ${charPos[1]}]', 8); tabMENU.add(lblOriPos); lblOriPos.alignment = CENTER;
+        lblOriPos = new FlxText(5, lblSingDuration.y + lblSingDuration.height + 10, Std.int(MENU.width) - 10, 'Character Position: [${charPos[0]}, ${charPos[1]}]', 8); tabMENU.add(lblOriPos); lblOriPos.alignment = CENTER;
         var lblCharX = new FlxText(lblOriPos.x, lblOriPos.y + lblOriPos.height + 5, 0, "Offset [X]:", 8); tabMENU.add(lblCharX);
         stpCharacterX = new FlxUICustomNumericStepper(lblCharX.x + lblCharX.width + 5, lblCharX.y, Std.int(MENU.width - lblCharX.width - 15), 1, _character.position[0], -99999, 99999, 1); tabMENU.add(stpCharacterX);
             @:privateAccess arrayFocus.push(cast stpCharacterX.text_field);
         stpCharacterX.name = "CHARACTER_X";
 
-        var lblCharY = new FlxText(lblCharX.x, lblCharX.y + lblCharX.height + 5, 0, "Offset [Y]:", 8); tabMENU.add(lblCharY);
+        var lblCharY = new FlxText(5, lblCharX.y + lblCharX.height + 5, 0, "Offset [Y]:", 8); tabMENU.add(lblCharY);
         stpCharacterY = new FlxUICustomNumericStepper(lblCharY.x + lblCharY.width + 5, lblCharY.y, Std.int(MENU.width - lblCharX.width - 15), 1, _character.position[1], -99999, 99999, 1); tabMENU.add(stpCharacterY);
             @:privateAccess arrayFocus.push(cast stpCharacterY.text_field);
         stpCharacterY.name = "CHARACTER_Y";
 
-        var lblCamX = new FlxText(lblCharY.x, lblCharY.y + lblCharY.height + 10, 0, "Camera [X]:", 8); tabMENU.add(lblCamX);
+        var lblCamX = new FlxText(5, lblCharY.y + lblCharY.height + 10, 0, "Camera [X]:", 8); tabMENU.add(lblCamX);
         stpCameraX = new FlxUICustomNumericStepper(lblCamX.x + lblCamX.width + 5, lblCamX.y, Std.int(MENU.width - lblCamX.width - 15), 1, _character.camera[0], -99999, 99999, 1); tabMENU.add(stpCameraX);
             @:privateAccess arrayFocus.push(cast stpCameraX.text_field);
         stpCameraX.name = "CHARACTER_CameraX";
 
-        var lblCamY = new FlxText(lblCamX.x, lblCamX.y + lblCamX.height + 5, 0, "Camera [Y]:", 8); tabMENU.add(lblCamY);
+        var lblCamY = new FlxText(5, lblCamX.y + lblCamX.height + 5, 0, "Camera [Y]:", 8); tabMENU.add(lblCamY);
         stpCameraY = new FlxUICustomNumericStepper(lblCamY.x + lblCamY.width + 5, lblCamY.y, Std.int(MENU.width - lblCamY.width - 15), 1, _character.camera[1], -99999, 99999, 1); tabMENU.add(stpCameraY);
             @:privateAccess arrayFocus.push(cast stpCameraY.text_field);
         stpCameraY.name = "CHARACTER_CameraY";
-
-        var lblScale = new FlxText(lblCamY.x, lblCamY.y + lblCamY.height + 5, 0, "Scale:", 8); tabMENU.add(lblScale);
-        stpScale = new FlxUICustomNumericStepper(lblScale.x + lblScale.width + 5, lblScale.y, Std.int(MENU.width - lblScale.width - 15), 0.1, _character.scale, -99999, 99999, 1); tabMENU.add(stpScale);
-            @:privateAccess arrayFocus.push(cast stpScale.text_field);
-        stpScale.name = "CHARACTER_Scale";
         
-        chkFlipImage = new FlxUICheckBox(lblScale.x, lblScale.y + lblScale.height + 5, null, null, "Flip Image", 0); chkFlipImage.checked = _character.onRight; tabMENU.add(chkFlipImage);
-        chkAntialiasing = new FlxUICheckBox(chkFlipImage.x, chkFlipImage.y + chkFlipImage.height + 5, null, null, "With Antialiasing", 0); chkAntialiasing.checked = _character.antialiasing; tabMENU.add(chkAntialiasing);
-        chkDanceIdle = new FlxUICheckBox(chkAntialiasing.x, chkAntialiasing.y + chkAntialiasing.height + 5, null, null, "Dance on Idle", 0); chkDanceIdle.checked = _character.danceIdle; tabMENU.add(chkDanceIdle);
+        chkFlipImage = new FlxUICheckBox(5, lblCamY.y + lblCamY.height + 5, null, null, "Flip Image", 0); chkFlipImage.checked = _character.onRight; tabMENU.add(chkFlipImage);
+        chkAntialiasing = new FlxUICheckBox(5, chkFlipImage.y + chkFlipImage.height + 5, null, null, "\nWith Antialiasing", 0); chkAntialiasing.checked = _character.antialiasing; tabMENU.add(chkAntialiasing);
+        chkDanceIdle = new FlxUICheckBox(5, chkAntialiasing.y + chkAntialiasing.height + 5, null, null, "Dance on Idle", 0); chkDanceIdle.checked = _character.danceIdle; tabMENU.add(chkDanceIdle);
 
         var line2 = new FlxSprite(5, chkDanceIdle.y + chkDanceIdle.height + 5).makeGraphic(Std.int(MENU.width - 10), 2, FlxColor.BLACK); tabMENU.add(line2);
 
@@ -339,9 +346,8 @@ class CharacterEditorState extends MusicBeatState{
                     anim: txtAnimName.text,
                     symbol: txtAnimSymbol.text,
                     fps: Std.int(stpAnimFrameRate.value),
-    
                     indices: arrIndices,
-    
+                    sustain_sing: Std.int(stpAnimHold.value),
                     loop: chkAnimLoop.checked
                 }
 
@@ -364,6 +370,7 @@ class CharacterEditorState extends MusicBeatState{
                     anim.symbol = txtAnimSymbol.text;
                     anim.fps = Std.int(stpAnimFrameRate.value);
                     anim.indices = arrIndices;
+                    anim.sustain_sing = Std.int(stpAnimHold.value);
                     anim.loop = chkAnimLoop.checked;
                     break;
                 }
@@ -389,27 +396,32 @@ class CharacterEditorState extends MusicBeatState{
             reloadCharacter();
         }); tabMENU.add(btnAnimDel);
 
-        var lblAnimName = new FlxText(btnAnimAdd.x, btnAnimAdd.y + btnAnimAdd.height + 7, 0, "Anim Name:", 8); tabMENU.add(lblAnimName);
+        var lblAnimName = new FlxText(5, btnAnimAdd.y + btnAnimAdd.height + 7, 0, "Anim Name:", 8); tabMENU.add(lblAnimName);
         txtAnimName = new FlxUIInputText(lblAnimName.x + lblAnimName.width + 5, lblAnimName.y, Std.int(MENU.width - lblAnimName.width - 15), "", 8); tabMENU.add(txtAnimName);
         arrayFocus.push(txtAnimName);
         txtAnimName.name = "ANIMATION_NAME";
         
-        var lblAnimSymbol = new FlxText(lblAnimName.x, lblAnimName.y + lblAnimName.height + 5, 0, "Anim Symbol:", 8); tabMENU.add(lblAnimSymbol);
+        var lblAnimSymbol = new FlxText(5, lblAnimName.y + lblAnimName.height + 5, 0, "Anim Symbol:", 8); tabMENU.add(lblAnimSymbol);
         txtAnimSymbol = new FlxUIInputText(lblAnimSymbol.x + lblAnimSymbol.width + 5, lblAnimSymbol.y, Std.int(MENU.width - lblAnimSymbol.width - 15), "", 8); tabMENU.add(txtAnimSymbol);
         arrayFocus.push(txtAnimSymbol);
         txtAnimSymbol.name = "ANIMATION_SYMBOL";
 
-        var lblAnimIndices = new FlxText(lblAnimSymbol.x, lblAnimSymbol.y + lblAnimSymbol.height + 5, 0, "Anim Indices:", 8); tabMENU.add(lblAnimIndices);
+        var lblAnimIndices = new FlxText(5, lblAnimSymbol.y + lblAnimSymbol.height + 5, 0, "Anim Indices:", 8); tabMENU.add(lblAnimIndices);
         txtAnimIndices = new FlxUIInputText(lblAnimIndices.x + lblAnimIndices.width + 5, lblAnimIndices.y, Std.int(MENU.width - lblAnimIndices.width - 15), "", 8); tabMENU.add(txtAnimIndices);
         arrayFocus.push(txtAnimIndices);
         txtAnimIndices.name = "ANIMATION_INDICES";
 
-        var lblAnimFrame = new FlxText(lblAnimIndices.x, lblAnimIndices.y + lblAnimIndices.height + 7, 0, "Framerate:", 8); tabMENU.add(lblAnimFrame);
+        var lblAnimFrame = new FlxText(5, lblAnimIndices.y + lblAnimIndices.height + 7, 0, "Framerate:", 8); tabMENU.add(lblAnimFrame);
         stpAnimFrameRate = new FlxUICustomNumericStepper(lblAnimFrame.x + lblAnimFrame.width + 5, lblAnimFrame.y, Std.int(MENU.width - lblAnimFrame.width - 15), 1, 0, -99999, 99999, 1); tabMENU.add(stpAnimFrameRate);
             @:privateAccess arrayFocus.push(cast stpAnimFrameRate.text_field);
         stpAnimFrameRate.name = "ANIMATION_FRAMERATE";
 
-        chkAnimLoop = new FlxUICheckBox(lblAnimFrame.x, lblAnimFrame.y + lblAnimFrame.height + 5, null, null, "Animation Loop", 100); tabMENU.add(chkAnimLoop);
+        var lblAnimHold = new FlxText(5, lblAnimFrame.y + lblAnimFrame.height + 7, 0, "Hold Sing:", 8); tabMENU.add(lblAnimHold);
+        stpAnimHold = new FlxUICustomNumericStepper(lblAnimHold.x + lblAnimHold.width + 5, lblAnimHold.y, Std.int(MENU.width - lblAnimHold.width - 15), 1, 0, -99999, 99999, 1); tabMENU.add(stpAnimHold);
+            @:privateAccess arrayFocus.push(cast stpAnimHold.text_field);
+        stpAnimHold.name = "ANIMATION_HOLDSING";
+
+        chkAnimLoop = new FlxUICheckBox(5, lblAnimHold.y + lblAnimHold.height + 5, null, null, "Animation Loop", 100); tabMENU.add(chkAnimLoop);
         
         var btnSetXMLAnims:FlxButton = new FlxCustomButton(chkAnimLoop.x, chkAnimLoop.y + chkAnimLoop.height + 10, Std.int(MENU.width - 10), null, "SET ANIMATIONS FROM XML", null, null, function(){
             var character_path:String = Paths.image('characters/${chrStage.curCharacter}/${_character.image}').replace('.png', '.xml');
@@ -422,10 +434,11 @@ class CharacterEditorState extends MusicBeatState{
                 var nCharAnim:AnimArray = {
                     anim: symbol,
                     symbol: symbol,
-                    fps: 24,
-    
+                    
+                    fps: 24,    
                     indices: [],
-    
+                    sustain_sing: 0,
+
                     loop: false
                 }
 
@@ -473,15 +486,12 @@ class CharacterEditorState extends MusicBeatState{
             var wname = input.name;
             switch(wname){
                 default:{trace('$wname WORKS!');}
-                case "CHARACTER_NAME":{_character.name = input.text; reloadCharacter();}
-                case "CHARACTER_SKIN":{_character.skin = input.text; reloadCharacter();}
-                case "CHARACTER_ASPECT":{_character.aspect = input.text; reloadCharacter();}
                 case "CHARACTER_ICON":{
                     _character.healthicon = input.text;
                     healthIcon.setIcon(_character.healthicon);
                     healthIcon.x = MENU.x - healthIcon.width;
                 }
-                case "CHARACTER_DEATHCHAR":{_character.deathCharacter = input.text;}
+                case "CHARACTER_SCRIPT":{_character.script = input.text; reloadCharacter();}
                 case "CHARACTER_IMAGE":{_character.image = input.text; reloadCharacter();}
             }
         }else if(id == FlxUIDropDownMenu.CLICK_EVENT && (sender is FlxUIDropDownMenu)){
@@ -498,6 +508,7 @@ class CharacterEditorState extends MusicBeatState{
                 case "CHARACTER_X":{_character.position[0] = nums.value; reloadCharacter();}
                 case "CHARACTER_Y":{_character.position[1] = nums.value; reloadCharacter();}
                 case "CHARACTER_Scale":{_character.scale = nums.value; reloadCharacter();}
+                case "CHARACTER_SingDuration":{_character.sing_time = nums.value;}
                 case "CHARACTER_CameraX":{_character.camera[0] = nums.value;}
                 case "CHARACTER_CameraY":{_character.camera[1] = nums.value;}
             }

@@ -74,7 +74,7 @@
 	"image": "Pico_FNF_Assetss",
 	"zoom": 0.8,
 	"antialiasing": true,
-	"deathCharacter": "Boyfriend",
+	"sing_time": 1,
 	"skin": "Default",
 	"onRight": false,
 	"healthicon": "pico",

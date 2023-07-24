@@ -1,5 +1,6 @@
 package substates;
 
+import flixel.addons.ui.FlxUISubState;
 import Conductor.BPMChangeEvent;
 import states.MusicBeatState;
 import flixel.util.FlxColor;
@@ -10,7 +11,7 @@ import flixel.FlxG;
 using SavedFiles;
 using StringTools;
 
-class MusicBeatSubstate extends FlxSubState {
+class MusicBeatSubstate extends FlxUISubState {
 	public var conductor:Conductor = MusicBeatState.state.conductor;
 
 	public var onClose:Void->Void = function(){};

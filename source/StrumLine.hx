@@ -318,6 +318,11 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
             if(STATS.Combo > STATS.MaxCombo){STATS.MaxCombo = STATS.Combo;}
             if(STATS.Score > STATS.Record){STATS.Record = STATS.Score;}
 
+            if(leftIcon != null && PreSettings.getPreSetting("Bumping Camera", "Visual Settings")){
+                leftIcon.scale.x = FlxMath.lerp(leftIcon.scale.x, 1, FlxG.elapsed * 3.125);
+                leftIcon.scale.y = FlxMath.lerp(leftIcon.scale.y, 1, FlxG.elapsed * 3.125);
+            }
+
             if(healthBar != null){
                 healthBar.x = staticnotes.x;
                 if(!healthBar.flipX){healthBar.x = staticnotes.x + staticnotes.genWidth - healthBar.width;}
@@ -413,6 +418,15 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         update_hud = function(){
             if(STATS.Combo > STATS.MaxCombo){STATS.MaxCombo = STATS.Combo;}
             if(STATS.Score > STATS.Record){STATS.Record = STATS.Score;}
+
+            if(leftIcon != null && PreSettings.getPreSetting("Bumping Camera", "Visual Settings")){
+                leftIcon.scale.x = FlxMath.lerp(leftIcon.scale.x, 1, FlxG.elapsed * 3.125);
+                leftIcon.scale.y = FlxMath.lerp(leftIcon.scale.y, 1, FlxG.elapsed * 3.125);
+            }
+            if(rightIcon != null && PreSettings.getPreSetting("Bumping Camera", "Visual Settings")){
+                rightIcon.scale.x = FlxMath.lerp(rightIcon.scale.x, 1, FlxG.elapsed * 3.125);
+                rightIcon.scale.y = FlxMath.lerp(rightIcon.scale.y, 1, FlxG.elapsed * 3.125);
+            }
 
             if(healthBar != null){
                 var _player:Character = LOCAL_VARIABLES.Player;
@@ -582,6 +596,12 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         releaseArray[key] = false;
     }
 
+    public var daSing:Array<Int> = [];
+	public function getToSing(?note:Note):Array<Int> {
+		if(note != null && note.singCharacters != null){return note.singCharacters;}
+        return daSing;
+	}
+
     public function getStrumSize():Int {return Std.int(genWidth / key_number);}
 
     public function setGraphicToNotes(?_image:String, ?_style:String, ?_type:String){
@@ -607,12 +627,12 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
             var sectionInfo:Array<Dynamic> = swagStrum.notes[i].sectionNotes.copy();
             var slide_gp:Array<Note> = [];
 
-            for(n in sectionInfo){if(n[1] < 0 || n[1] >= Song.getStrumKeys(swagStrum, i)){sectionInfo.remove(n);}}
+            for(n in sectionInfo){if(n[1] < 0 || n[1] >= swagStrum.keys){sectionInfo.remove(n);}}
 
             for(n in sectionInfo){
                 var note:NoteData = Note.getNoteData(n);
     
-                var swagNote:Note = new Note(note, Song.getStrumKeys(swagStrum, i), image, style, type);
+                var swagNote:Note = new Note(note, swagStrum.keys, image, style, type);
                 swagNote.note_size.set(getStrumSize(), getStrumSize());
 
                 notelist.push(swagNote);
@@ -666,7 +686,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
                     if(second_slide.prevNote != null){second_slide.typeHit = "Release";}else{second_slide.typeHit = "Press";}
                     first_slide.typeNote = "Merge"; second_slide.typeNote = "Merge";
 
-                    var new_slide:Note = new Note(Note.getNoteData([first_slide.strumTime, first_slide.noteData]), Song.getStrumKeys(swagStrum, i), image, style, type);
+                    var new_slide:Note = new Note(Note.getNoteData([first_slide.strumTime, first_slide.noteData]), swagStrum.keys, image, style, type);
                     first_slide.nextNote = new_slide; new_slide.nextNote = second_slide;
                     new_slide.typeNote = "Switch"; new_slide.typeHit = "Ghost";
                     new_slide.note_size.set(getStrumSize(), getStrumSize());
@@ -688,12 +708,18 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     
         if(onRANK != null){onRANK(new Note(Note.getNoteData(), key_number), 500, "SICK", "sick");}
 
+        daSing = swagStrum.charToSing;
+
         strumGenerated = true;
     }
 
     var pre_TypeStrums:String = PreSettings.getPreSetting("Type Light Strums", "Visual Settings");
     override function update(elapsed:Float){
 		super.update(elapsed);
+
+        if(swagStrum.notes[curSection] != null && swagStrum.notes[curSection].changeSing){
+            daSing = swagStrum.notes[curSection].charToSing;
+        }
 
         for(i in 0...staticnotes.members.length){
             if(!staticnotes.members[i].animation.finished){continue;}
@@ -711,15 +737,6 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         }
 
         if(!strumGenerated){return;}
-
-        if(swagStrum.notes[curSection] != null){
-            var curSec = swagStrum.notes[curSection];
-
-            var nKeys:Int = swagStrum.keys;
-            if(curSec.changeKeys){nKeys = curSec.keys;}
-
-            changeKeyNumber(nKeys, genWidth, false, true);
-        }
 
         notes.forEachAlive(function(daNote:Note){
             if(daNote.strumTime > strumConductor.songPosition - Conductor.safeZoneOffset && daNote.strumTime < strumConductor.songPosition + (Conductor.safeZoneOffset * 0.5)){daNote.noteStatus = "CanBeHit";}

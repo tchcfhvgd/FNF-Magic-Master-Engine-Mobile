@@ -58,9 +58,6 @@ typedef SwagSection = {
 	var charToSing:Array<Int>;
 	var changeSing:Bool;
 
-	var keys:Int;
-	var changeKeys:Bool;
-
 	var altAnim:Bool;
 	var sectionNotes:Array<Dynamic>;
 }
@@ -114,155 +111,9 @@ typedef SongPlayer = {
 	var strum:Int;
 }
 
-class SongStuffManager {
-	public static function hasCatAndDiff(song:Dynamic, category:String, dificulty:String):Bool {
-		var cats:Array<SongCategoryData> = song.categories;
-		for(c in cats){
-			if(c.category != category){continue;}
-			for(d in c.difficults){
-				if(d != dificulty){continue;}
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public static function addCategoryToItemSong(category:SongCategoryData, itemSong:ItemSong):Void {
-		for(cat in itemSong.categories){
-			if(cat.category == category.category){
-				for(diff in category.difficults){
-					if(cat.difficults.contains(diff)){continue;}
-					cat.difficults.push(diff);
-				}
-			}
-			return;
-		}
-		itemSong.categories.push(category);
-	}
-	public static function addSongToSongList(itemSong:ItemSong, SongList:Array<ItemSong>):Void {
-		for(item in SongList){if(item.song == itemSong.song){for(cat in itemSong.categories){addCategoryToItemSong(cat, item);} return;}}
-		SongList.push(itemSong);
-	}
-
-	public static function getSongList():Array<ItemSong> {
-		var SongList:Array<ItemSong> = [];
-
-		var modlist:Array<String> = Paths.readFile('assets/data/weeks.json');
-		if(ModSupport.hideVanillaSongs){modlist.shift();}
-
-		for(_mod in modlist){
-			var modData:SongsData = cast _mod.getJson();
-
-			for(week in modData.weekData){
-				if(week.hiddenOnFreeplay){continue;}
-
-				var cats:Array<SongCategoryData> = week.categories;
-				var lock:String = week.keyLock;
-				var color:String = week.colorFreeplay;
-
-				for(song in week.songs){
-					var songItem:ItemSong = {
-						song: song,
-						categories: cats,
-						keyLock: lock,
-						color: color,
-						hidden: false
-					};
-					addSongToSongList(songItem, SongList);
-				}
-			}
-
-			for(song in modData.freeplayData){
-				if(song.hidden){continue;}
-
-				var cats:Array<SongCategoryData> = song.categories;
-				var lock:String = song.keyLock;
-				var color:String = song.color;
-					
-				var songItem:ItemSong = {
-					song: song.song,
-					categories: cats,
-					keyLock: lock,
-					color: color,
-					hidden: false
-				};
-				addSongToSongList(songItem, SongList);
-			}
-
-			#if sys
-			if(modData.showArchiveSongs){
-				var songsDirectory:String = _mod;
-				songsDirectory = songsDirectory.replace('data/weeks.json', 'songs');
-
-				for(song in FileSystem.readDirectory(songsDirectory)){
-					if(!FileSystem.isDirectory('${songsDirectory}/${song}') || !FileSystem.exists('${songsDirectory}/${song}/Data') || FileSystem.readDirectory('${songsDirectory}/${song}/Data').length <= 0){continue;}
-
-					var data:Array<SongCategoryData> = [];
-					for(chart in FileSystem.readDirectory('${songsDirectory}/${song}/Data')){
-						var cStats:Array<String> = chart.replace(".json", "").split("-");
-						if(cStats.length < 3){continue;}
-
-						if(cStats[1] == null){cStats[1] = "Normal";}
-						if(cStats[2] == null){cStats[2] = "Normal";}
-						
-						var hasCat:Bool = false;
-						for(d in data){
-							if(d.category == cStats[1]){continue;}
-							
-							hasCat = true;
-							d.difficults.push(cStats[2]);
-						}
-						if(!hasCat){data.push({category:cStats[1], difficults:[cStats[2]]});}
-					}
-					
-					var songItem:ItemSong = {
-						song: song,
-						categories: data,
-						keyLock: null,
-						color: "#fffd75",
-						hidden: false
-					};
-					addSongToSongList(songItem, SongList);
-				}
-			}
-			#end
-		}
-
-		return SongList;
-	}
-
-	public static function getWeekList(showLocked:Bool = false):Array<ItemWeek> {
-		var WeekList:Array<ItemWeek> = [];
-
-		var modlist:Array<String> = Paths.readFile('assets/data/weeks.json');
-		if(ModSupport.hideVanillaWeeks){modlist.shift();}
-
-		for(_mod in modlist){
-			var modData:SongsData = cast _mod.getJson();
-			for(week in modData.weekData){
-				if(showLocked && Highscore.checkLock(week.keyLock, true)){continue;}
-				WeekList.push(week);
-			}
-		}
-
-		return WeekList;
-	}
-}
-
 class Song {
 	public static function setPlayersByChart(song:SwagSong):Void {
 		states.PlayState.strum_players = [{alive: true, strum: song.single_player}];
-	}
-
-	public static function getStrumKeys(strum:SwagStrum, section:Int):Int {
-		if(strum.notes[section].changeKeys){return strum.notes[section].keys;}
-        return strum.keys;
-	}
-
-	public static function getNoteCharactersToSing(?note:Note, strum:SwagStrum, section:Int):Array<Int> {
-		if(note != null && note.singCharacters != null){return note.singCharacters;}
-		if(strum.notes[section].changeSing){return strum.notes[section].charToSing;}
-		return strum.charToSing;
 	}
 
 	public static function fileSong(song:String, cat:String, diff:String):String {
@@ -360,7 +211,6 @@ class Song {
 				}else{
 					for(sec in strum.notes){
 						if(sec.charToSing == null){sec.charToSing = [];}
-						if(sec.keys <= 0){sec.keys = strum.keys;}
 						if(sec.sectionNotes == null){
 							sec.sectionNotes = [];
 						}else{
@@ -414,6 +264,8 @@ class Song {
 			aSong.set("category", "Normal");
 			if(sName.split("-")[1] != null){aSong.set("category", sName.split("-")[1]);}
 		}
+
+		if(!aSong.exists("player")){aSong.set("player", 1);}
 
 		if(!aSong.exists("bpm")){aSong.set("bpm", 100);}
 		if(!aSong.exists("speed")){aSong.set("speed", 1);}
@@ -472,15 +324,11 @@ class Song {
 
 				var iAltAnim:Bool = cSec.get("altAnim");
 
-				var iKeys:Int = 4;
-				var iChangeKeys:Bool = false;
 				var iChangeSing:Bool = false;
 
 				sNotes1.push({
 					charToSing: [1],
 					changeSing: iChangeSing,
-					keys: iKeys,
-					changeKeys: iChangeKeys,
 					altAnim: iAltAnim,
 					sectionNotes: in1
 				});
@@ -488,8 +336,6 @@ class Song {
 				sNotes2.push({
 					charToSing: [2],
 					changeSing: iChangeSing,
-					keys: iKeys,
-					changeKeys: iChangeKeys,
 					altAnim: iAltAnim,
 					sectionNotes: in2
 				});
@@ -615,6 +461,144 @@ class Song {
 				_song.generalSection[i].events.push(ev);
 			}
 		}
+	}
+}
+
+class SongStuffManager {
+	public static function hasCatAndDiff(song:Dynamic, category:String, dificulty:String):Bool {
+		var cats:Array<SongCategoryData> = song.categories;
+		for(c in cats){
+			if(c.category != category){continue;}
+			for(d in c.difficults){
+				if(d != dificulty){continue;}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static function addCategoryToItemSong(category:SongCategoryData, itemSong:ItemSong):Void {
+		for(cat in itemSong.categories){
+			if(cat.category == category.category){
+				for(diff in category.difficults){
+					if(cat.difficults.contains(diff)){continue;}
+					cat.difficults.push(diff);
+				}
+			}
+			return;
+		}
+		itemSong.categories.push(category);
+	}
+	public static function addSongToSongList(itemSong:ItemSong, SongList:Array<ItemSong>):Void {
+		for(item in SongList){if(item.song == itemSong.song){for(cat in itemSong.categories){addCategoryToItemSong(cat, item);} return;}}
+		SongList.push(itemSong);
+	}
+
+	public static function getSongList():Array<ItemSong> {
+		var SongList:Array<ItemSong> = [];
+
+		var modlist:Array<String> = Paths.readFile('assets/data/weeks.json');
+		if(ModSupport.hideVanillaSongs){modlist.shift();}
+
+		for(_mod in modlist){
+			var modData:SongsData = cast _mod.getJson();
+
+			for(week in modData.weekData){
+				if(week.hiddenOnFreeplay){continue;}
+
+				var cats:Array<SongCategoryData> = week.categories;
+				var lock:String = week.keyLock;
+				var color:String = week.colorFreeplay;
+
+				for(song in week.songs){
+					var songItem:ItemSong = {
+						song: song,
+						categories: cats,
+						keyLock: lock,
+						color: color,
+						hidden: false
+					};
+					addSongToSongList(songItem, SongList);
+				}
+			}
+
+			for(song in modData.freeplayData){
+				if(song.hidden){continue;}
+
+				var cats:Array<SongCategoryData> = song.categories;
+				var lock:String = song.keyLock;
+				var color:String = song.color;
+					
+				var songItem:ItemSong = {
+					song: song.song,
+					categories: cats,
+					keyLock: lock,
+					color: color,
+					hidden: false
+				};
+				addSongToSongList(songItem, SongList);
+			}
+
+			#if sys
+			if(modData.showArchiveSongs){
+				var songsDirectory:String = _mod;
+				songsDirectory = songsDirectory.replace('weeks.json', 'songs');
+
+				for(song in FileSystem.readDirectory(songsDirectory)){
+					if(!FileSystem.isDirectory('${songsDirectory}/${song}') || FileSystem.readDirectory('${songsDirectory}/${song}').length <= 0){continue;}
+
+					var data:Array<SongCategoryData> = [];
+					for(chart in FileSystem.readDirectory('${songsDirectory}/${song}')){
+						if(chart == "global_events.json"){continue;}
+						if(chart.contains("_dialog.json")){continue;}
+						if(!chart.contains(".json")){continue;}
+
+						var cStats:Array<String> = chart.replace(".json", "").split("-");
+						if(cStats.length < 3){continue;}
+
+						if(cStats[1] == null){cStats[1] = "Normal";}
+						if(cStats[2] == null){cStats[2] = "Normal";}
+						
+						var has_cat:Bool = false;
+						for(d in data){
+							if(d.category != cStats[1]){continue;}
+							d.difficults.push(cStats[2]);
+							has_cat = true; break;
+						}
+						if(!has_cat){data.push({category:cStats[1], difficults:[cStats[2]]});}
+					}
+					
+					var songItem:ItemSong = {
+						song: song,
+						categories: data,
+						keyLock: null,
+						color: "#fffd75",
+						hidden: false
+					};
+					addSongToSongList(songItem, SongList);
+				}
+			}
+			#end
+		}
+
+		return SongList;
+	}
+
+	public static function getWeekList(showLocked:Bool = false):Array<ItemWeek> {
+		var WeekList:Array<ItemWeek> = [];
+
+		var modlist:Array<String> = Paths.readFile('assets/data/weeks.json');
+		if(ModSupport.hideVanillaWeeks){modlist.shift();}
+
+		for(_mod in modlist){
+			var modData:SongsData = cast _mod.getJson();
+			for(week in modData.weekData){
+				if(showLocked && Highscore.checkLock(week.keyLock, true)){continue;}
+				WeekList.push(week);
+			}
+		}
+
+		return WeekList;
 	}
 }
 

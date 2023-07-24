@@ -40,9 +40,9 @@ class Controls extends FlxActionSet {
 		STATIC_STRUMCONTROLS = DEFAULT_STATIC_STRUMCONTROLS.copy();
 	}
 
-	public function getNoteDataFromKey(key:FlxKey, keys:Int):Int {
-		var cont:Array<Dynamic> = CURRENT_STRUMCONTROLS.get(keys);
-		for(i in 0...cont.length){if(cont[i][0].contains(key)){return i;}}
+	public function getNoteDataFromKey(cur_key:FlxKey, game_keys:Int):Int {
+		var cont:Array<Dynamic> = CURRENT_STRUMCONTROLS.get(game_keys);
+		for(i in 0...cont.length){if(cont[i][0].contains(cur_key)){return i;}}
 		return -1;
 	}
 
@@ -78,24 +78,7 @@ class Controls extends FlxActionSet {
         "Pause_Game" => [
 			[FlxKey.ENTER, FlxKey.ESCAPE],
 			[FlxGamepadInputID.START, FlxGamepadInputID.BACK]
-		],
-        //Character General Movement Actions
-        "Game_Up" => [
-			[FlxKey.UP, FlxKey.W],
-			[FlxGamepadInputID.LEFT_STICK_DIGITAL_UP, FlxGamepadInputID.DPAD_UP]
-		],
-        "Game_Left" => [
-			[FlxKey.LEFT, FlxKey.A],
-			[FlxGamepadInputID.LEFT_STICK_DIGITAL_LEFT, FlxGamepadInputID.DPAD_LEFT]
-		],
-        "Game_Down" => [
-			[FlxKey.DOWN, FlxKey.S],
-			[FlxGamepadInputID.LEFT_STICK_DIGITAL_DOWN, FlxGamepadInputID.DPAD_DOWN]
-		],
-        "Game_Right" => [
-			[FlxKey.RIGHT, FlxKey.D],
-			[FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT, FlxGamepadInputID.DPAD_RIGHT]
-		],
+		]
         //Character General Movement Actions
         //"Player_Left" => [[FlxKey.LEFT]],
         //"Player_Down" => [[FlxKey.DOWN]],
@@ -532,7 +515,7 @@ class Controls extends FlxActionSet {
 				for(key in CURRENT_ACTIONS.keys()){
 					KEY_ACTIONS[key] = CURRENT_ACTIONS[key][0];
 				}
-		
+
 				for(key in CURRENT_STRUMCONTROLS.keys()){
 					for(i in 0...CURRENT_STRUMCONTROLS[key].length){
 						KEY_ACTIONS['${key}keys_${i}'] = CURRENT_STRUMCONTROLS[key][i][0];

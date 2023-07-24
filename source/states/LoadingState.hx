@@ -50,6 +50,7 @@ class LoadingState extends MusicBeatState {
 	];
 	public var toLoadStuff:Array<Dynamic> = [];
 
+	public var background:FlxSprite;
 	public var loadingText:Alphabet;
 
 	private var totalCount:Int = 0;
@@ -69,23 +70,26 @@ class LoadingState extends MusicBeatState {
 	}
 
 	override function create(){
+		FlxG.mouse.visible = false;
+
 		if(!WithMusic && FlxG.sound.music != null){FlxG.sound.music.stop();}
+		
 		preLoadStuff();
 		
 		totalCount = tempLoadingStuff.length;
 		
-		var bg = new FlxSprite().loadGraphic(Paths.image('menuBG').getGraphic());
-		bg.setGraphicSize(FlxG.width, FlxG.height);
-        bg.color = 0xffff8cf7;
-		bg.screenCenter();
-		add(bg);
+		background = new FlxSprite().loadGraphic(Paths.image('menuBG').getGraphic());
+		background.setGraphicSize(FlxG.width, FlxG.height);
+        background.color = 0xffff8cf7;
+		background.screenCenter();
+		add(background);
 
 		var shape_1:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, 100, FlxColor.BLACK); add(shape_1);
         var shape_2:FlxSprite = new FlxSprite(0, 105).makeGraphic(FlxG.width, 5, FlxColor.BLACK); add(shape_2);
         var shape_3:FlxSprite = new FlxSprite(0, FlxG.height - 110).makeGraphic(FlxG.width, 5, FlxColor.BLACK); add(shape_3);
         var shape_4:FlxSprite = new FlxSprite(0, FlxG.height - 100).makeGraphic(FlxG.width, 100, FlxColor.BLACK); add(shape_4);
 
-		loadingText = new Alphabet(20,525,[{text:'${LangSupport.getText("loading_info_1")} 0%'}]); add(loadingText);
+		loadingText = new Alphabet(20, 525, [{text:'${LangSupport.getText("loading_info_1")} 0%'}]); add(loadingText);
 
 		loadStuff();
 				
@@ -113,8 +117,6 @@ class LoadingState extends MusicBeatState {
 				switch(stuff.type){
 					case "SONG":{
 						var _song:SwagSong = cast stuff.instance;
-		
-						trace("SONG");
 						
 						tempLoadingStuff.push({type:SOUND,instance:Paths.inst(_song.song, _song.category)});
 						if(_song.hasVoices){for(i in 0..._song.characters.length){tempLoadingStuff.push({type:SOUND,instance:Paths.voice(i, _song.characters[i][0], _song.song, _song.category)});}}
@@ -130,7 +132,6 @@ class LoadingState extends MusicBeatState {
 							song_script.Name = "ScriptSong";
 							song_script.exScript(song_path.getText());
 							TARGET.tempScripts.set("ScriptSong", song_script);
-							song_script.exFunction("addToLoad", [tempLoadingStuff]);
 						}
 
 						for(char in _song.characters){Character.addToLoad(tempLoadingStuff, char[0], char[4]);}
@@ -140,9 +141,11 @@ class LoadingState extends MusicBeatState {
 								var cur_Event:EventData = Note.getEventData(ev);
 								if(cur_Event == null || cur_Event.isBroken){continue;}
 								for(dat in cur_Event.eventData){
-									tempLoadingStuff.push({type:"FUNCTION",instance:function(){TARGET.pushTempScript(dat[0]);}});
-									if(!TARGET.tempScripts.exists(dat[0]) || TARGET.tempScripts.get(dat[0]).getFunction("Preload") == null){continue;}
-									tempLoadingStuff.push({type:"FUNCTION",instance:function(){TARGET.tempScripts.get(dat[0]).exFunction("Preload", cast cast(dat[1],Array<Dynamic>));}});
+									if(!Paths.exists(Paths.event(dat[0]))){continue;}
+									tempLoadingStuff.push({type:"FUNCTION",instance:function(){
+										TARGET.pushTempScript(dat[0]);
+										TARGET.tempScripts.get(dat[0]).exFunction("preload_event", cast(dat[1],Array<Dynamic>));
+									}});
 								}
 							}
 						}
@@ -155,12 +158,17 @@ class LoadingState extends MusicBeatState {
 									var cur_Note:NoteData = Note.getNoteData(ss);
 									if(cur_Note.eventData == null){continue;}
 									for(dat in cur_Note.eventData){
-										tempLoadingStuff.push({type:"FUNCTION",instance:function(){TARGET.pushTempScript(dat[0]);}});
-										tempLoadingStuff.push({type:"FUNCTION",instance:function(){Script.getScript(dat[0]).exFunction("Preload", cast cast(dat[1],Array<Dynamic>));}});
+										if(!Paths.exists(Paths.event(dat[0]))){continue;}
+										tempLoadingStuff.push({type:"FUNCTION",instance:function(){
+											TARGET.pushTempScript(dat[0]);
+											TARGET.tempScripts.get(dat[0]).exFunction("preload_event", cast(dat[1],Array<Dynamic>));
+										}});
 									}
 								}
 							}
 						}
+
+						for(s in TARGET.tempScripts){tempLoadingStuff.push({type:"FUNCTION",instance:function(){s.exFunction("addToLoad", [tempLoadingStuff]);}});}
 					}
 					case "PRELOAD":{if(stuff.instance != null){stuff.instance();}}
 				}

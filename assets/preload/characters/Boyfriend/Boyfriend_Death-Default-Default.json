@@ -32,7 +32,7 @@
 	"image": "BOYFRIEND_DEATH",
 	"zoom": 0.8,
 	"antialiasing": true,
-	"deathCharacter": "Boyfriend",
+	"sing_time": 1,
 	"skin": "Default",
 	"onRight": false,
 	"healthicon": "bf",

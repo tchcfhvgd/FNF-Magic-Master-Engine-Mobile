@@ -1,27 +1,28 @@
 package states;
 
-import states.editors.CharacterEditorState;
-import states.editors.XMLEditorState;
-import flixel.input.mouse.FlxMouse;
-import flixel.FlxG;
-import flixel.FlxObject;
-import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionableState;
-import flixel.effects.FlxFlicker;
 import flixel.graphics.frames.FlxAtlasFrames;
+import states.editors.CharacterEditorState;
+import openfl.utils.Assets as OpenFlAssets;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.addons.text.FlxTypeText;
-import flixel.text.FlxText;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
-import flixel.util.FlxColor;
+import states.editors.XMLEditorState;
+import flixel.input.mouse.FlxMouse;
+import flixel.effects.FlxFlicker;
 import flixel.util.FlxGradient;
-import io.newgrounds.NG;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+import flixel.util.FlxColor;
 import lime.app.Application;
 import flixel.math.FlxMath;
-import flixel.FlxCamera;
+import flixel.text.FlxText;
 import flixel.FlxSubState;
+import io.newgrounds.NG;
+import flixel.FlxCamera;
+import flixel.FlxObject;
+import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.FlxG;
 
 #if desktop
 import Discord.DiscordClient;
@@ -34,10 +35,9 @@ using StringTools;
 class CustomScriptState extends MusicBeatState {
     public var custom_script:Script;
 
-	override function get_script():Script {return custom_script;}
-
     public function new(new_script:Script, ?onConfirm:String, ?onBack:String):Void {
         custom_script = new_script;
         super(onConfirm, onBack);
+        tempScripts.set(new_script.Name, new_script);
     }
 }

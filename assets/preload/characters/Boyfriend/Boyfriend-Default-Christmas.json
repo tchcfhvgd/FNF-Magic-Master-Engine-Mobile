@@ -81,7 +81,7 @@
 	"image": "bfChristmas",
 	"name": "Boyfriend",
 	"antialiasing": true,
-	"deathCharacter": "Boyfriend",
+	"sing_time": 1,
 	"healthicon": "bf",
 	"camera": [
 		0,

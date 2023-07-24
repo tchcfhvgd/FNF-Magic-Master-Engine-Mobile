@@ -12,7 +12,6 @@ import openfl.utils.AssetType;
 import haxe.format.JsonParser;
 import flixel.math.FlxPoint;
 import flash.geom.Rectangle;
-import openfl.utils.Assets;
 import flixel.math.FlxRect;
 import flash.media.Sound;
 import haxe.xml.Access;
@@ -39,7 +38,7 @@ class Paths {
 	}
 
 	inline public static function exists(path:String){
-		if(Assets.exists(path)){return true;}
+		if(OpenFlAssets.exists(path)){return true;}
 		#if sys	if(FileSystem.exists(setPath(path))){return true;} #end
 		return false;
 	}
@@ -118,7 +117,7 @@ class Paths {
 			path = '${mod.path}/assets/$file';
 			if(mod.onlyThis #if sys || FileSystem.exists(path) #end){break;}
 		}
-		if(!Assets.exists(path) #if sys && !FileSystem.exists(path) #end){path = 'assets/$file';}
+		if(!OpenFlAssets.exists(path) #if sys && !FileSystem.exists(path) #end){path = 'assets/$file';}
 		return path;
 	}
 	inline static function getModPath(file:String, mod_name:String){
@@ -128,7 +127,7 @@ class Paths {
 			path = '${mod.path}/assets/$file';
 			break;
 		}
-		if(!Assets.exists(path) #if sys && !FileSystem.exists(path) #end){path = 'assets/$file';}
+		if(!OpenFlAssets.exists(path) #if sys && !FileSystem.exists(path) #end){path = 'assets/$file';}
 		return path;
 	}
 
@@ -136,7 +135,7 @@ class Paths {
 	inline static public function sound(key:String, ?library:String, ?mod:String):String {return getPath('sounds/$key.$SOUND_EXT', SOUND, library, mod);}
 	inline static public function music(key:String, ?library:String, ?mod:String):String {return getPath('music/$key.$SOUND_EXT', MUSIC, library, mod);}
 	inline static public function shader(key:String, ?library:String, ?mod:String):String {return getPath('shaders/$key.frag', TEXT, library, mod);}
-	inline static public function song_script(song:String, ?mod:String):String {return getPath('${song}/Data/Song_Events.hx', TEXT, 'songs', mod);}
+	inline static public function song_script(song:String, ?mod:String):String {return getPath('songs/${song}/Song_Events.hx', TEXT, 'data', mod);}
 	inline static public function image(key:String, ?library:String, ?mod:String):String {return getPath('images/$key.png', IMAGE, library, mod);}
 	inline static public function json(key:String, ?library:String, ?mod:String):String {return getPath('data/$key.json', TEXT, library, mod);}
 	inline static public function xml(key:String, ?library:String, ?mod:String):String {return getPath('images/$key.xml', TEXT, library, mod);}
@@ -162,32 +161,32 @@ class Paths {
 		return path;
 	}	
 	inline static public function inst(song:String, category:String, ?mod:String):String {
-		var path = getPath('${song}/Audio/Inst-${category}.$SOUND_EXT', MUSIC, 'songs', mod);
-		if(!Paths.exists(path)){path = getPath('${song}/Audio/Inst.$SOUND_EXT', MUSIC, 'songs', mod);}
+		var path = getPath('${song}/Inst-${category}.$SOUND_EXT', MUSIC, 'songs', mod);
+		if(!Paths.exists(path)){path = getPath('${song}/Inst.$SOUND_EXT', MUSIC, 'songs', mod);}
 		return path;
 	}
 	inline static public function voice(id:Int, char:String, song:String, category:String, ?mod:String):String {
-		var path = getPath('${song}/Audio/${id}-${char}-${category}.$SOUND_EXT', SOUND, 'songs', mod);
-		if(!Paths.exists(path)){path = getPath('${song}/Audio/${id}-Default-${category}.$SOUND_EXT', SOUND, 'songs', mod);}
-		if(!Paths.exists(path)){path = getPath('${song}/Audio/${id}-Default.$SOUND_EXT', SOUND, 'songs', mod);}
-		if(!Paths.exists(path) && id == 0){path = getPath('${song}/Audio/Voices-${category}.$SOUND_EXT', SOUND, 'songs', mod);}
-		if(!Paths.exists(path) && id == 0){path = getPath('${song}/Audio/Voices.$SOUND_EXT', SOUND, 'songs', mod);}
+		var path = getPath('${song}/${id}-${char}-${category}.$SOUND_EXT', SOUND, 'songs', mod);
+		if(!Paths.exists(path)){path = getPath('${song}/${id}-Default-${category}.$SOUND_EXT', SOUND, 'songs', mod);}
+		if(!Paths.exists(path)){path = getPath('${song}/${id}-Default.$SOUND_EXT', SOUND, 'songs', mod);}
+		if(!Paths.exists(path) && id == 0){path = getPath('${song}/Voices-${category}.$SOUND_EXT', SOUND, 'songs', mod);}
+		if(!Paths.exists(path) && id == 0){path = getPath('${song}/Voices.$SOUND_EXT', SOUND, 'songs', mod);}
 		return path;
 	}
 	inline static public function chart(jsonInput:String, ?mod:String):String {
-		var path = getPath('${jsonInput.split('-')[0]}/Data/${jsonInput}.json', TEXT, 'songs', mod);
-		if(!Paths.exists(path)){path = getPath('Test/Data/Test-Normal-Normal.json', TEXT, 'songs', mod);}
+		var path = getPath('songs/${jsonInput.split('-')[0]}/${jsonInput}.json', TEXT, 'data', mod);
+		if(!Paths.exists(path)){path = getPath('songs/Test/Test-Normal-Normal.json', TEXT, 'data', mod);}
 		return path;
 	}
 	inline static public function chart_events(jsonInput:String, ?mod:String):String {
-		var path = getPath('${jsonInput.split('-')[0]}/Data/global_events.json', TEXT, 'songs', mod);
-		if(!Paths.exists(path)){path = getPath('Test/Data/global_events.json', TEXT, 'songs', mod);}
+		var path = getPath('songs/${jsonInput.split('-')[0]}/global_events.json', TEXT, 'data', mod);
+		if(!Paths.exists(path)){path = getPath('songs/Test/global_events.json', TEXT, 'data', mod);}
 		return path;
 	}
 	inline static public function dialogue(song:String, ?mod:String):String {
 		var language = PreSettings.getPreSetting("Language", "Game Settings");
-		var path = getPath('${song}/Data/${language}_dialog.json', TEXT, 'songs', mod);
-		if(!Paths.exists(path)){path = getPath('${song}/Data/Default_dialog.json', TEXT, 'songs', mod);}
+		var path = getPath('songs/${song}/${language}_dialog.json', TEXT, 'data', mod);
+		if(!Paths.exists(path)){path = getPath('songs/${song}/Default_dialog.json', TEXT, 'data', mod);}
 		return path;
 	}
 	inline static public function stage(key:String, ?mod:String):String {
@@ -230,5 +229,18 @@ class Paths {
 		if(!Paths.exists(path)){path = getPath('${char}/${cur_char_file}-Default-Default.json', TEXT, 'characters', mod);}
 		if(!Paths.exists(path)){path = getPath('Boyfriend/Boyfriend-Default-Default.json', TEXT, 'characters', mod);}
 		return path;
+	}
+	inline static public function _character(char:String, key:String, type:AssetType = TEXT, ?mod:String):String {
+		return getPath('${char}/${key}', type, 'characters', mod);
+	}
+	inline static public function script(key:String, ?mod_name:String):{script:String, mod:String} {
+		var path:String = ""; var cur_mod_name:String = "";
+		for(mod in ModSupport.MODS){
+			if(!mod.enabled || (mod_name != null && mod.name != mod_name)){continue;}
+			path = '${mod.path}/scripts/${key}.hx';
+			cur_mod_name = mod.name;
+			if(mod.onlyThis #if sys || FileSystem.exists(path) #end){break;}
+		}
+		return {script: path, mod: cur_mod_name};
 	}
 }

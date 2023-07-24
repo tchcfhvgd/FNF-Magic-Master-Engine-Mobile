@@ -53,7 +53,7 @@
 	"image": "cassettegirl",
 	"zoom": 0.8,
 	"antialiasing": true,
-	"deathCharacter": "Boyfriend",
+	"sing_time": 1,
 	"onRight": true,
 	"skin": "Default",
 	"camera": [

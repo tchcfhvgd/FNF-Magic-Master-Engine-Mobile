@@ -44,10 +44,7 @@ class GameOverSubstate extends MusicBeatSubstate {
         add(death_characters);
 
 		for(i in 0...characters.length){
-			var die_char:String = characters[i].dieCharacter;
-            if(die_char == null && i > 0){continue;}
-
-            var new_character = new Character(characters[i].x, characters[i].y, die_char, characters[i].curAspect, characters[i].curType, true);
+            var new_character = new Character(characters[i].x, characters[i].y, characters[i].curCharacter, characters[i].curAspect, characters[i].curType, true);
             new_character.turnLook(characters[i].onRight);
             new_character.playAnim('firstDeath', true);
             death_characters.add(new_character);

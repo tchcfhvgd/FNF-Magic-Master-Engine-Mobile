@@ -505,6 +505,8 @@ class NoteSplash extends FlxSprite {
         if(StrumNote.DRAW_SHADER){shader = ShaderColorSwap.get_shader(note_path.getColorNote(), daNote.playColor);}
 
         playAnim(splash_anims[FlxG.random.int(0, splash_anims.length - 1)]);
+        setGraphicSize(Std.int(daNote.note_size.x), Std.int(daNote.note_size.y));
+        updateHitbox();
     }
 
     public function playAnim(anim:String, ?force:Bool = false){

@@ -254,10 +254,10 @@ class PlayState extends MusicBeatState {
 				var song_animation:String = note.singAnimation;
 				if(strumLine.swagStrum.notes[strumLine.curSection] != null && strumLine.swagStrum.notes[strumLine.curSection].altAnim){song_animation += '-alt';}
 
-				for(ii in Song.getNoteCharactersToSing(note, strumLine.swagStrum, strumLine.curSection)){
+				for(ii in strumLine.getToSing(note)){
 					var new_character:Character = stage.getCharacterById(ii);
-					
-					new_character.singAnim(song_animation, true, false, note.typeNote == "Sustain");
+					if(new_character == null){continue;}
+					new_character.singAnim(song_animation, true);
 
 					if(!focus){
 						if(songData.sectionStrums[i].isPlayable){
@@ -290,8 +290,9 @@ class PlayState extends MusicBeatState {
 				var song_animation:String = '${note.singAnimation}miss';
 				if(strumLine.swagStrum.notes[strumLine.curSection] != null && strumLine.swagStrum.notes[strumLine.curSection].altAnim){song_animation += '-alt';}
 
-				for(ii in Song.getNoteCharactersToSing(note, strumLine.swagStrum, strumLine.curSection)){
+				for(ii in strumLine.getToSing(note)){
 					var new_character:Character = stage.getCharacterById(ii);
+					if(new_character == null){continue;}
 					new_character.playAnim(song_animation, true);
 
 					if(!focus){
@@ -691,9 +692,23 @@ class PlayState extends MusicBeatState {
 	override function beatHit(){
 		super.beatHit();
 
-		if(PreSettings.getPreSetting("Bumping Camera", "Visual Settings") && curBeat % 4 == 0){
-			FlxG.camera.zoom += 0.015;
-			camHUD.zoom += 0.03;
+		if(PreSettings.getPreSetting("Bumping Camera", "Visual Settings")){
+			if(curBeat % 2 == 0){
+				for(s in strumsGroup){
+					if(s.leftIcon != null){
+						s.leftIcon.scale.x += 0.1;
+						s.leftIcon.scale.y += 0.1;
+					}
+					if(s.rightIcon != null){
+						s.rightIcon.scale.x += 0.1;
+						s.rightIcon.scale.y += 0.1;
+					}
+				}
+			}
+			if(curBeat % 4 == 0){
+				FlxG.camera.zoom += 0.015;
+				camHUD.zoom += 0.03;
+			}
 		}
 
 		if(SONG.generalSection[curSection] != null){

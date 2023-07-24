@@ -56,10 +56,12 @@ class Script extends FlxBasic {
         setVariable('song_paused', nFunc);
         setVariable('song_ended', nFunc);
         
+        setVariable('onClose', nFunc);
         setVariable('onFocus', nFunc);
         setVariable('onFocusLost', nFunc);
         
         setVariable('load_global_ui', nFunc);
+        setVariable('load_solo_ui', nFunc);
 
         setVariable('startSong', function(toEndFun:Void->Void){});
         setVariable('endSong', function(toEndFun:Void->Void){});
@@ -131,7 +133,7 @@ class Script extends FlxBasic {
     }
 
     public override function destroy(){
-        states.MusicBeatState.state.tempScripts.remove(Name);
+        if(states.MusicBeatState.state != null){states.MusicBeatState.state.tempScripts.remove(Name);}
         program = null;
         super.destroy();
     }

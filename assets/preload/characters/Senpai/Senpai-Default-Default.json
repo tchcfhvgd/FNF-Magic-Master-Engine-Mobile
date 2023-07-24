@@ -45,7 +45,7 @@
 	"zoom": 0.8,
 	"image": "senpai",
 	"name": "Senpai",
-	"deathCharacter": "Boyfriend",
+	"sing_time": 1,
 	"healthicon": "senpai-pixel",
 	"camera": [
 		280,

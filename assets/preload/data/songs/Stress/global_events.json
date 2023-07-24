@@ -148,7 +148,9 @@
 								"Play_Animation",
 								[
 									1,
-									"good"
+									"good",
+									false,
+									true
 								]
 							]
 						],

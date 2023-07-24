@@ -40,6 +40,7 @@ function addToLoad(list:Array<Dynamic>){
 }
 
 function preload():Void {
+    if(!PlayState.isStoryMode || PlayState.total_plays > 1){return;}
     tankman = getState().stage.getCharacterByName("Tankman");
     boyfriend = getState().stage.getCharacterByName("Boyfriend");
     girlfriend = getState().stage.getCharacterByName("Girlfriend");

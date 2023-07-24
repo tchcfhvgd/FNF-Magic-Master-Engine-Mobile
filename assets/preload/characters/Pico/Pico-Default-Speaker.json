@@ -1,4 +1,5 @@
 {
+	"script": "Pico_Script",
 	"aspect": "Speaker",
 	"position": [
 		-140,
@@ -106,5 +107,5 @@
 	"healthicon": "pico",
 	"onRight": false,
 	"skin": "Default",
-	"deathCharacter": "Boyfriend"
+	"sing_time": 1
 }

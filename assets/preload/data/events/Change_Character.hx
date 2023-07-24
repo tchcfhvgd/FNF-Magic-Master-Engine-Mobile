@@ -1,6 +1,7 @@
-import("Note");
-import("Paths");
+
 import("Character");
+import("Paths");
+import("Note");
 import("Std");
 
 preset("defaultValues", 
@@ -13,6 +14,8 @@ preset("defaultValues",
 );
 
 function execute(id:Int, name:String, cat:String, type:String):Void {
+    if(getState().stage == null){return;}
     var _character:Character = getState().stage.getCharacterById(id);
+    if(_character == null){return;}
     _character.setupByName(name, cat, type);
 }

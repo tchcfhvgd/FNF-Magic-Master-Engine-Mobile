@@ -70,7 +70,7 @@
 	"image": "gfTankmen",
 	"zoom": 0.8,
 	"antialiasing": true,
-	"deathCharacter": "Boyfriend",
+	"sing_time": 1,
 	"onRight": false,
 	"camera": [
 		-10,
