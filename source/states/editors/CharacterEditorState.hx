@@ -56,6 +56,8 @@ using StringTools;
 
 class CharacterEditorState extends MusicBeatState{
     public static var _character:CharacterFile;
+    public static var curAspect:String = "Default";
+    public static var curSkin:String = "Default";
 
     var chrStage:Character;
     var healthIcon:HealthIcon;
@@ -88,8 +90,7 @@ class CharacterEditorState extends MusicBeatState{
     }
 
     override function create(){
-        if(FlxG.sound.music != null){FlxG.sound.music.stop();}
-        FlxG.mouse.visible = true;
+        FlxG.sound.playMusic(Paths.music('break_song').getSound());
 
         var bgGrid:FlxSprite = FlxGridOverlay.create(10, 10, FlxG.width, FlxG.height, true, 0xff4d4d4d, 0xff333333);
         bgGrid.cameras = [camGame];
@@ -111,6 +112,8 @@ class CharacterEditorState extends MusicBeatState{
         for(char in backStage.characterData){char.alpha = 0.5;}
         
         chrStage = backStage.getCharacterById(3);
+        chrStage.curAspect = curAspect;
+        chrStage.curSkin = curSkin;
         chrStage.setupByCharacterFile(_character);
         chrStage.onDebug = true;
         chrStage.alpha = 1;
@@ -142,11 +145,13 @@ class CharacterEditorState extends MusicBeatState{
 
         #if desktop
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence('[${chrStage.curCharacter}-${chrStage.curSkin}-${chrStage.curAspect}]', '[Character Editor]');
-		MagicStuff.setWindowTitle('Editing [${chrStage.curCharacter}-${chrStage.curSkin}-${chrStage.curAspect}]', 1);
+		DiscordClient.changePresence('[${chrStage.curCharacter}-${curSkin}-${curAspect}]', '[Character Editor]');
+		MagicStuff.setWindowTitle('Editing [${chrStage.curCharacter}-${curSkin}-${curAspect}]', 1);
 		#end
 
         super.create();
+        
+        FlxG.mouse.visible = true;
     }
 
     var pos = [[], []];
@@ -196,6 +201,11 @@ class CharacterEditorState extends MusicBeatState{
         super.update(elapsed);
     
         cameraPointer.setPosition(chrStage.c.getGraphicMidpoint().x + _character.camera[0], chrStage.c.getGraphicMidpoint().y + _character.camera[1]);
+    }
+
+    override function destroy() {
+        FlxG.sound.music.stop();
+        super.destroy();
     }
 
     public function reloadCharacter():Void{
@@ -252,12 +262,12 @@ class CharacterEditorState extends MusicBeatState{
         txtCharacter.name = "CHARACTER_NAME";
 
         var lblSkin = new FlxText(lblCharacter.x, txtCharacter.y + txtCharacter.height + 5, 0, "SKIN:", 8); tabMENU.add(lblSkin);
-        txtSkin = new FlxUIInputText(lblSkin.x + lblSkin.width + 5, lblSkin.y, Std.int(MENU.width - lblSkin.width - 15), chrStage.curSkin, 8); tabMENU.add(txtSkin);
+        txtSkin = new FlxUIInputText(lblSkin.x + lblSkin.width + 5, lblSkin.y, Std.int(MENU.width - lblSkin.width - 15), curSkin, 8); tabMENU.add(txtSkin);
         arrayFocus.push(txtSkin);
         txtSkin.name = "CHARACTER_SKIN";
         
         var lblCat = new FlxText(lblCharacter.x, txtSkin.y + txtSkin.height + 5, 0, "ASPECT:", 8); tabMENU.add(lblCat);
-        txtAspect = new FlxUIInputText(lblCat.x + lblCat.width + 5, lblCat.y, Std.int(MENU.width - lblCat.width - 15), chrStage.curSkin, 8); tabMENU.add(txtAspect);
+        txtAspect = new FlxUIInputText(lblCat.x + lblCat.width + 5, lblCat.y, Std.int(MENU.width - lblCat.width - 15), curAspect, 8); tabMENU.add(txtAspect);
         arrayFocus.push(txtAspect);
         txtAspect.name = "CHARACTER_ASPECT";
 
@@ -265,6 +275,9 @@ class CharacterEditorState extends MusicBeatState{
             var newCharacter:Character = new Character(0, 0, Paths.getFileName(txtCharacter.text, true), Paths.getFileName(txtAspect.text, true));
             newCharacter.curSkin = Paths.getFileName(txtSkin.text, true);
             newCharacter.setupByCharacterFile();
+
+            curAspect = txtAspect.text;
+            curSkin = txtSkin.text;
             
             MusicBeatState.switchState("states.editors.CharacterEditorState", [null, "states.MainMenuState", newCharacter.charFile]);
         }); tabMENU.add(btnLoadCharacter);
@@ -491,6 +504,9 @@ class CharacterEditorState extends MusicBeatState{
                     healthIcon.setIcon(_character.healthicon);
                     healthIcon.x = MENU.x - healthIcon.width;
                 }
+                case "CHARACTER_NAME":{_character.name = input.text; reloadCharacter();}
+                case "CHARACTER_SKIN":{chrStage.curSkin = input.text; reloadCharacter();}
+                case "CHARACTER_ASPECT":{chrStage.curAspect = input.text; reloadCharacter();}
                 case "CHARACTER_SCRIPT":{_character.script = input.text; reloadCharacter();}
                 case "CHARACTER_IMAGE":{_character.image = input.text; reloadCharacter();}
             }

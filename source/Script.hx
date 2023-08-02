@@ -65,6 +65,8 @@ class Script extends FlxBasic {
 
         setVariable('startSong', function(toEndFun:Void->Void){});
         setVariable('endSong', function(toEndFun:Void->Void){});
+        
+        setVariable('preload_event', nFunc);
 
         setVariable('update', function(elapsed:Float) {});
 

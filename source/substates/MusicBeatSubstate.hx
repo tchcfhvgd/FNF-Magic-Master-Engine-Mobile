@@ -42,35 +42,34 @@ class MusicBeatSubstate extends FlxUISubState {
 		tempScripts.remove(key);
 	}
 
-	private var script(get, never):Script;
-	function get_script():Script {
-		if(ModSupport.exScripts.contains(Type.getClassName(Type.getClass(this)))){return null;}
-
-		var stateScript = null;
-		if(ModSupport.staticScripts.exists(Type.getClassName(Type.getClass(this)))){stateScript = ModSupport.staticScripts.get(Type.getClassName(Type.getClass(this)));}
-
-		return stateScript;
-	}
 	public var scripts(get, never):Array<Script>;
 	function get_scripts():Array<Script> {
 		var toReturn:Array<Script> = [];
-		if(script != null){toReturn.push(script);}
 		for(sc in tempScripts.keys()){toReturn.push(tempScripts.get(sc));}
-		for(sc in ModSupport.staticScripts.keys()){if(!sc.contains(".")){toReturn.push(ModSupport.staticScripts.get(sc));}}
+		for(sc in ModSupport.staticScripts.keys()){
+			if(sc.contains(".") && sc != Type.getClassName(Type.getClass(this))){continue;}
+			toReturn.push(ModSupport.staticScripts.get(sc));
+		}
 		for(sc in ModSupport.modDataScripts.keys()){toReturn.push(ModSupport.modDataScripts.get(sc));}
 		return toReturn;
 	}
 
 	public function new(onClose:Void->Void = null){
-		for(s in scripts){s.setVariable("getSubstate", function(){return this;});}
 		if(onClose != null){this.onClose = onClose;}
 		curCamera.bgColor = FlxColor.BLACK;
 		curCamera.bgColor.alpha = 100;
 		FlxG.cameras.add(curCamera);
 		
-		for(s in scripts){s.exFunction('create');}
-
 		super();
+	}
+
+	override function create() {
+		super.create();
+		
+		FlxG.mouse.visible = false;
+
+		for(s in scripts){s.setVariable("getSubstate", function(){return this;});}
+		for(s in scripts){s.exFunction('create');}
 	}
 
 	override function update(elapsed:Float){
@@ -81,6 +80,8 @@ class MusicBeatSubstate extends FlxUISubState {
 		curBeat = Math.floor(curStep / 4);
 
 		if(oldStep != curStep && curStep > 0){stepHit();}
+
+		if(FlxG.keys.justPressed.P){for(s in tempScripts.keys()){trace(s);}}
 
 		for(s in scripts){s.exFunction('update', [elapsed]);}
 

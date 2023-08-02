@@ -35,21 +35,9 @@ using SavedFiles;
 using StringTools;
 
 class LoadingState extends MusicBeatState {
-	public static var toGlobalLoadStuff:Array<Dynamic> = [
-		{type:MUSIC,instance:Paths.music("breakfast","shared")},
-		{type:SOUND,instance:Paths.sound("fnf_loss_sfx","shared")},
-		{type:SOUND,instance:Paths.sound("missnote1","shared")},
-		{type:SOUND,instance:Paths.sound("missnote2","shared")},
-		{type:SOUND,instance:Paths.sound("missnote3","shared")},
-		{type:IMAGE,instance:Paths.image("alphabet")},
-		{type:IMAGE,instance:Paths.image("icons/icon-face")},
-		{type:MUSIC,instance:Paths.music("freakyMenu")},
-		{type:SOUND,instance:Paths.sound("cancelMenu")},
-		{type:SOUND,instance:Paths.sound("confirmMenu")},
-		{type:SOUND,instance:Paths.sound("scrollMenu")},
-	];
 	public var toLoadStuff:Array<Dynamic> = [];
 
+	public static var textLoad:String = "";
 	public var background:FlxSprite;
 	public var loadingText:Alphabet;
 
@@ -71,6 +59,7 @@ class LoadingState extends MusicBeatState {
 
 	override function create(){
 		FlxG.mouse.visible = false;
+		textLoad = "Starting";
 
 		if(!WithMusic && FlxG.sound.music != null){FlxG.sound.music.stop();}
 		
@@ -98,19 +87,25 @@ class LoadingState extends MusicBeatState {
 
 	override function update(elapsed:Float){
 		super.update(elapsed);
+		updateText();
 	}
 
 	function updateText():Void {
 		var percent:Int = Std.int((totalCount - tempLoadingStuff.length) * 100 / totalCount);
-		loadingText.cur_data = [{text:'${LangSupport.getText("loading_info_1")} ${percent}%'}];
+		if(loadingText.text == '${LangSupport.getText("loading_info_1")} ${percent} ${textLoad}'){return;}
+		loadingText.cur_data = [{text:'${LangSupport.getText("loading_info_1")} ${percent}% ${textLoad}'}];
 		loadingText.loadText();
 	}
 
 	private function preLoadStuff():Void {
-		for(stuff in toGlobalLoadStuff){tempLoadingStuff.push(stuff);}
-
-		for(i in Paths.readDirectory('assets/notes/Default/Default')){tempLoadingStuff.push({type:IMAGE,instance:i});}
-		for(i in Paths.readDirectory('assets/notes/${PreSettings.getPreSetting("Note Skin", "Visual Settings")}')){if(i.contains('.json')){tempLoadingStuff.push({type:TEXT,instance:i});}}
+		tempLoadingStuff.push({type:MUSIC,instance:Paths.music("breakfast", "shared")});
+		tempLoadingStuff.push({type:IMAGE,instance:Paths.image("icons/icon-face")});
+		tempLoadingStuff.push({type:SOUND,instance:Paths.sound("confirmMenu")});
+		tempLoadingStuff.push({type:MUSIC,instance:Paths.music("break_song")});
+		tempLoadingStuff.push({type:MUSIC,instance:Paths.music("freakyMenu")});
+		tempLoadingStuff.push({type:SOUND,instance:Paths.sound("cancelMenu")});
+		tempLoadingStuff.push({type:SOUND,instance:Paths.sound("scrollMenu")});
+		tempLoadingStuff.push({type:IMAGE,instance:Paths.image("alphabet")});
 		
 		for(stuff in toLoadStuff){
 			if(stuff.type != IMAGE && stuff.type != SOUND && stuff.type != MUSIC && stuff.type != TEXT){
@@ -119,10 +114,28 @@ class LoadingState extends MusicBeatState {
 						var _song:SwagSong = cast stuff.instance;
 						
 						tempLoadingStuff.push({type:SOUND,instance:Paths.inst(_song.song, _song.category)});
-						if(_song.hasVoices){for(i in 0..._song.characters.length){tempLoadingStuff.push({type:SOUND,instance:Paths.voice(i, _song.characters[i][0], _song.song, _song.category)});}}
 						
-						for(i in Paths.readDirectory('assets/shared/images/style_UI/${_song.uiStyle}')){if(i.contains(".png")){tempLoadingStuff.push({type:IMAGE,instance:i});}}
-						for(i in Paths.readDirectory('assets/shared/sounds/style_UI/${_song.uiStyle}')){if(i.contains(".ogg")){tempLoadingStuff.push({type:SOUND,instance:i});}}
+						if(_song.hasVoices){
+							for(i in 0..._song.sectionStrums.length){
+								if(_song.sectionStrums[i].charToSing.length <= 0){continue;}
+								if(_song.characters.length <= _song.sectionStrums[i].charToSing[0]){continue;}
+								var voice_path:String = Paths.voice(i, _song.characters[_song.sectionStrums[i].charToSing[0]][0], _song.song, _song.category);
+								if(!Paths.exists(voice_path)){continue;}
+								tempLoadingStuff.push({type:SOUND,instance:voice_path});
+							}
+						}
+
+						for(p in StrumLine.P_STAT){tempLoadingStuff.push({type:IMAGE,instance:Paths.styleImage(p.popup, _song.uiStyle, 'shared')});}
+						for(p in PlayState.introAssets){
+							if(p.asset != null){tempLoadingStuff.push({type:IMAGE,instance:Paths.styleImage(p.asset, _song.uiStyle, 'shared')});}
+							if(p.sound != null){tempLoadingStuff.push({type:SOUND,instance:Paths.styleSound(p.sound, _song.uiStyle, 'shared')});}
+						}
+						tempLoadingStuff.push({type:SOUND,instance:Paths.styleSound('fnf_loss_sfx', _song.uiStyle, 'shared')});
+						tempLoadingStuff.push({type:MUSIC,instance:Paths.styleMusic('gameOverEnd', _song.uiStyle, 'shared')});
+						tempLoadingStuff.push({type:SOUND,instance:Paths.styleSound('missnote1', _song.uiStyle, 'shared')});
+						tempLoadingStuff.push({type:SOUND,instance:Paths.styleSound('missnote2', _song.uiStyle, 'shared')});
+						tempLoadingStuff.push({type:SOUND,instance:Paths.styleSound('missnote3', _song.uiStyle, 'shared')});
+						tempLoadingStuff.push({type:MUSIC,instance:Paths.styleMusic('gameOver', _song.uiStyle, 'shared')});
 						
 						Stage.getStageScript(_song.stage).exFunction("addToLoad", [tempLoadingStuff]);
 
@@ -136,30 +149,36 @@ class LoadingState extends MusicBeatState {
 
 						for(char in _song.characters){Character.addToLoad(tempLoadingStuff, char[0], char[4]);}
 
-						for(gen in _song.generalSection){
-							for(ev in gen.events){
-								var cur_Event:EventData = Note.getEventData(ev);
-								if(cur_Event == null || cur_Event.isBroken){continue;}
-								for(dat in cur_Event.eventData){
-									if(!Paths.exists(Paths.event(dat[0]))){continue;}
-									tempLoadingStuff.push({type:"FUNCTION",instance:function(){
-										TARGET.pushTempScript(dat[0]);
-										TARGET.tempScripts.get(dat[0]).exFunction("preload_event", cast(dat[1],Array<Dynamic>));
-									}});
-								}
+						for(ev in _song.events){
+							var cur_Event:EventData = Note.getEventData(ev);
+							if(cur_Event == null || cur_Event.isBroken){continue;}
+							for(dat in cur_Event.eventData){
+								if(!Paths.exists(Paths.event(dat[0]))){continue;}
+								tempLoadingStuff.push({type:"FUNCTION",instance:function(){
+									textLoad = "[Events]";
+									TARGET.pushTempScript(dat[0]);
+									TARGET.tempScripts.get(dat[0]).exFunction("preload_event", cast(dat[1],Array<Dynamic>));
+								}});
 							}
 						}
 
 						for(strum in _song.sectionStrums){
-							for(i in Paths.readDirectory('assets/notes/${PreSettings.getPreSetting("Note Skin", "Visual Settings")}/${strum.noteStyle}')){tempLoadingStuff.push({type:IMAGE,instance:i});}
-
 							for(s in strum.notes){
 								for(ss in s.sectionNotes){
 									var cur_Note:NoteData = Note.getNoteData(ss);
-									if(cur_Note.eventData == null){continue;}
-									for(dat in cur_Note.eventData){
+									var events_data:Array<Dynamic> = [];
+									if(cur_Note.eventData != null){events_data = cur_Note.eventData.copy();}
+									if(cur_Note.preset != null && cur_Note.preset != "Default"){
+										var json_path:String = Paths.getPath('${cur_Note.preset}.json', TEXT, 'notes');
+										if(Paths.exists(json_path)){
+											var event_list:Array<Dynamic> = json_path.getJson().Events;
+											for(e in event_list){events_data.push(e);}
+										}
+									}
+									for(dat in events_data){
 										if(!Paths.exists(Paths.event(dat[0]))){continue;}
 										tempLoadingStuff.push({type:"FUNCTION",instance:function(){
+											textLoad = "[Events]";
 											TARGET.pushTempScript(dat[0]);
 											TARGET.tempScripts.get(dat[0]).exFunction("preload_event", cast(dat[1],Array<Dynamic>));
 										}});
@@ -168,7 +187,7 @@ class LoadingState extends MusicBeatState {
 							}
 						}
 
-						for(s in TARGET.tempScripts){tempLoadingStuff.push({type:"FUNCTION",instance:function(){s.exFunction("addToLoad", [tempLoadingStuff]);}});}
+						for(s in TARGET.scripts){s.exFunction("addToLoad", [tempLoadingStuff]);}
 					}
 					case "PRELOAD":{if(stuff.instance != null){stuff.instance();}}
 				}
@@ -190,13 +209,11 @@ class LoadingState extends MusicBeatState {
 
 				switch(_stuff.type){
 					default:{trace(_stuff);}
-					case IMAGE: SavedFiles.saveGraphic(_stuff.instance);
-					case SOUND, MUSIC: SavedFiles.saveSound(_stuff.instance);
-					case TEXT: SavedFiles.saveText(_stuff.instance);
+					case IMAGE: {textLoad = "[Graphics]"; SavedFiles.getGraphic(_stuff.instance);}
+					case SOUND, MUSIC: {textLoad = "[Sounds and Music]"; SavedFiles.getSound(_stuff.instance);}
+					case TEXT: {textLoad = "[Texts]"; SavedFiles.getText(_stuff.instance);}
 					case "FUNCTION":{_stuff.instance();}
 				}
-
-				updateText();
 			}
 		});
 	}

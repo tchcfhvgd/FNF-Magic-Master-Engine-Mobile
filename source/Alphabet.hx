@@ -244,6 +244,7 @@ class AlphaCharacter extends FlxSprite {
         "." => "period",
         "'" => "apostraphie",
         "?" => "question mark",
+        "/" => "forward slash",
         "!" => "exclamation point",
         " " => "space",
         "," => "comma"

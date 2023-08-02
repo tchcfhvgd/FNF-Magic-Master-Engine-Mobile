@@ -30,6 +30,8 @@ var senpaidies:FlxSprite;
 var camFollow:FlxObject;
 
 function preload():Void {
+    if(!PlayState.isStoryMode || PlayState.total_plays > 1){return;}
+    
     whiteScreen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, 0xFFFFFFFF);
     whiteScreen.cameras = [getState().camBHUD];
     whiteScreen.screenCenter();
@@ -56,7 +58,7 @@ function preload():Void {
 }
 
 function startSong(startCountdown:Void->Void):Void {
-    if(!PlayState.isStoryMode){return false;}
+    if(!PlayState.isStoryMode || PlayState.total_plays > 1){return false;}
 
     FlxG.sound.play(SavedFiles.getSound(Paths.sound("ANGRY_TEXT_BOX", "stages/schoolEvil")));
     
@@ -71,7 +73,7 @@ function startSong(startCountdown:Void->Void):Void {
 }
 
 function endSong(endCountdown:Void->Void):Void {
-    if(!PlayState.isStoryMode){return false;}
+    if(!PlayState.isStoryMode || PlayState.total_plays > 1){return false;}
 
     getState().camFHUD.fade(0xFFFF0000, 1, true);
     FlxG.sound.play(SavedFiles.getSound(Paths.sound("ANGRY", "stages/schoolEvil")));

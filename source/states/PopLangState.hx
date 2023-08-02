@@ -75,6 +75,8 @@ class PopLangState extends MusicBeatState {
         changeLang();
 
         super.create();
+        
+        FlxG.mouse.visible = true;
     }
 
     override function update(elapsed:Float){        

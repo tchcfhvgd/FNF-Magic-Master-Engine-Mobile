@@ -142,7 +142,6 @@ typedef NoteData = {
     var keyData:Int;
     var sustainLength:Float;
     var multiHits:Int;
-    var canMerge:Bool;
     var preset:String;
     var eventData:Array<Dynamic>;
     var otherStuff:Array<Dynamic>;
@@ -158,7 +157,7 @@ typedef EventData = {
 class Note extends StrumNote {
     //Static Methods
     public static function compNotes(n1:Dynamic, n2:Dynamic, checkData:Bool = true, specific:Bool = false):Bool {
-        if((n1 != null && n2 != null) && (((n1.strumTime >= n2.strumTime - 5 && n1.strumTime <= n2.strumTime + 5) && (!checkData || (checkData && (n1.keyData == n2.keyData)))) || (specific && (n1 == n2)))){return true;}
+        if((n1 != null && n2 != null) && (((n1.strumTime >= n2.strumTime - 10 && n1.strumTime <= n2.strumTime + 10) && (!checkData || (checkData && (n1.keyData == n2.keyData)))) || (specific && (n1 == n2)))){return true;}
         return false;
     }
 
@@ -220,7 +219,7 @@ class Note extends StrumNote {
     
     public static function convNoteData(data:NoteData):Array<Dynamic> {
         if(data == null){return null;}
-        return [data.strumTime, data.keyData, data.sustainLength, data.multiHits, data.canMerge, data.preset, data.eventData, data.otherStuff];
+        return [data.strumTime, data.keyData, data.sustainLength, data.multiHits, data.preset, data.eventData, data.otherStuff];
     }
     public static function convEventData(data:EventData):Array<Dynamic> {
         if(data == null){return null;}
@@ -233,7 +232,6 @@ class Note extends StrumNote {
             keyData: 0,
             sustainLength: 0,
             multiHits: 0,
-            canMerge: false,
             preset: "Default",
             eventData: [],
             otherStuff: []
@@ -245,10 +243,9 @@ class Note extends StrumNote {
         if(note.length >= 1 && Std.isOfType(note[1], Int)){toReturn.keyData = note[1];}    
         if(note.length >= 2 && Std.isOfType(note[2], Float)){toReturn.sustainLength = note[2];}      
         if(note.length >= 3 && Std.isOfType(note[3], Int)){toReturn.multiHits = note[3];}
-        if(note.length >= 4 && note[4]){toReturn.canMerge = true;}
-        if(note.length >= 5 && Std.isOfType(note[5], String)){toReturn.preset = note[5];}
-        if(note.length >= 6 && Std.isOfType(note[6], Array)){toReturn.eventData = note[6];}
-        if(note.length >= 7 && Std.isOfType(note[7], Array)){toReturn.otherStuff = note[7];}
+        if(note.length >= 4 && Std.isOfType(note[4], String)){toReturn.preset = note[4];}
+        if(note.length >= 5 && Std.isOfType(note[5], Array)){toReturn.eventData = note[5];}
+        if(note.length >= 6 && Std.isOfType(note[6], Array)){toReturn.otherStuff = note[6];}
         
         return toReturn;
     }
@@ -265,7 +262,24 @@ class Note extends StrumNote {
         if(event == null){return toReturn;}
 
         if(event.length >= 0 && Std.isOfType(event[0], Float)){toReturn.strumTime = event[0];}
-        if(event.length >= 1 && Std.isOfType(event[1], Array)){toReturn.eventData = event[1];}
+        if(event.length >= 1 && Std.isOfType(event[1], Array)){
+            for(e in cast(event[1],Array<Dynamic>)){
+                if(e.length <= 1){e = [e[0], []];}
+                if(!Std.isOfType(e[0], String)){e[0] = "None";}
+                if(!Std.isOfType(e[1], Array)){
+                    var new_event_data:Array<Dynamic> = [e[1]];
+                    if(e.length > 2){
+                        for(i in 2...cast(e,Array<Dynamic>).length){
+                            new_event_data.push(e[i]);
+                            e.remove(e[i]);
+                        }
+                    }
+                    e[1] = new_event_data;
+                }
+            }
+            toReturn.eventData = event[1];
+
+        }
         if(event.length >= 2 && Std.isOfType(event[2], String)){toReturn.condition = event[2];}
         if(event.length >= 3 && event[3]){toReturn.isExternal = true;}
         if(event.length >= 4 && event[4]){toReturn.isBroken = true;}
@@ -277,6 +291,7 @@ class Note extends StrumNote {
     public static var defaultMissHealth:Float = 0.0475;
 
     //General Variables
+    public var strumParent:StrumLine = null;
     public var prevNote:Note = null;
     public var nextNote(default, set):Note = null;
     public function set_nextNote(value:Note):Note {
@@ -305,7 +320,7 @@ class Note extends StrumNote {
     public var singCharacters:Array<Int> = null;
     
 	//PreSettings Variables
-	public var pre_TypeScroll:String = PreSettings.getPreSetting("Type Scroll", "Visual Settings");
+	public var pre_TypeScroll:String = ((states.MusicBeatState.state is states.editors.ChartEditorState)) ? "UpScroll" : PreSettings.getPreSetting("Type Scroll", "Visual Settings");
     
 	public function new(data:NoteData, noteKeys:Int, ?_image:String, ?_style:String, ?_type:String){
         this.strumTime = data.strumTime;
@@ -333,8 +348,7 @@ class Note extends StrumNote {
             var curScript:Script = Script.getScript(event[0]);
             if(curScript == null){MusicBeatState.state.pushTempScript(event[0]);}
             curScript = Script.getScript(event[0]);
-            if(curScript == null){return;}
-
+            if(curScript == null){continue;}
             curScript.setVariable("_note", this);
             curScript.exFunction("execute", event[1]);
         }
@@ -633,7 +647,6 @@ class ShaderColorSwap extends FlxCustomShader {
             if(new_secondColor != null && s.v_replaceColor2 != new_secondColor){continue;}
             return s;
         }
-        trace('Shader Created: ${shader_list.length + 1}');
         return new ShaderColorSwap(new_checkColor, new_replaceColor, new_secondColor);
     }
     public function new(new_checkColor:String = "Blue", new_replaceColor:FlxColor, ?new_secondColor:FlxColor):Void {

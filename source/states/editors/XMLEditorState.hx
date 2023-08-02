@@ -72,15 +72,13 @@ class XMLEditorState extends MusicBeatState {
     var camFollow:FlxObject;
 
     override function create(){
-        if(FlxG.sound.music != null){FlxG.sound.music.stop();}
+        FlxG.sound.playMusic(Paths.music('break_song').getSound());
 
         #if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence('Editing', '[XML Editor]');
 		MagicStuff.setWindowTitle('On XML Editor', 1);
 		#end
-        
-        FlxG.mouse.visible = true;
 
         var bgGrid:FlxSprite = FlxGridOverlay.create(10, 10, FlxG.width, FlxG.height, true, 0xff4d4d4d, 0xff333333);
         bgGrid.cameras = [camGame];
@@ -147,6 +145,13 @@ class XMLEditorState extends MusicBeatState {
 		add(camFollow); 
 
         super.create();
+        
+        FlxG.mouse.visible = true;
+    }
+
+    override function destroy() {
+        FlxG.sound.music.stop();
+        super.destroy();
     }
 
     var pos = [[], []];

@@ -100,15 +100,13 @@ class StageEditorState extends MusicBeatState {
 
     override function create(){
         if(SCRIPT_SOURCE == null){SCRIPT_SOURCE = new StageScripManager();}
-        if(FlxG.sound.music != null){FlxG.sound.music.stop();}
+        FlxG.sound.playMusic(Paths.music('break_song').getSound());
 
         #if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence('Editing Stage', '[Stage Editor]');
 		MagicStuff.setWindowTitle('Editing...', 1);
 		#end
-        
-        FlxG.mouse.visible = true;
         
         var bgGrid:FlxSprite = FlxGridOverlay.create(10, 10, FlxG.width, FlxG.height, true, 0xff4d4d4d, 0xff333333);
         bgGrid.cameras = [camGame];
@@ -165,10 +163,17 @@ class StageEditorState extends MusicBeatState {
         
         super.create();
         
+        FlxG.mouse.visible = true;
+        
 		camFollow = new FlxObject(0, 0, 1, 1);
         camFollow.screenCenter();
         camFGame.follow(camFollow, LOCKON);
 		add(camFollow);
+    }
+
+    override function destroy() {
+        FlxG.sound.music.stop();
+        super.destroy();
     }
 
     var pos = [[], []];

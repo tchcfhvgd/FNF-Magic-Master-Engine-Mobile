@@ -83,6 +83,12 @@ class SingEditorSubState extends MusicBeatSubstate {
 		FlxTween.tween(curCamera, {alpha: 1}, 0.5, {onComplete: function(twn){canControlle = true;}});
 	}
 
+	override function create() {
+		super.create();
+		
+		FlxG.mouse.visible = true;
+	}
+
     var pos = [[], []];
 	override function update(elapsed:Float):Void {
 		super.update(elapsed);

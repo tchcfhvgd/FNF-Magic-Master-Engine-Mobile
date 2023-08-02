@@ -73,6 +73,11 @@ class LangSupport {
         FlxG.save.data.language = Language;
     }
 
+    public static function getForcedText(key:String):String {
+        var toReturn:String = LANG.get(key);
+        if(toReturn == null){toReturn = key;}
+        return toReturn;
+    }
     public static function getText(key:String):Dynamic {
         var toReturn:Dynamic = LANG.get(key);
         if(toReturn == null){toReturn = key;}

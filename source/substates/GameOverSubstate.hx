@@ -52,7 +52,7 @@ class GameOverSubstate extends MusicBeatSubstate {
 		}
         characters_created = true;
 
-		FlxG.sound.play(Paths.sound('fnf_loss_sfx').getSound());
+		FlxG.sound.play(Paths.styleSound('fnf_loss_sfx', cur_style_ui).getSound());
         curCamera.fade(FlxColor.BLACK, 2);
 
 		conductor.changeBPM(100);

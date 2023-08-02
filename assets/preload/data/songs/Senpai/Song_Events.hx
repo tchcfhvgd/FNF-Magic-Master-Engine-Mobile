@@ -25,6 +25,8 @@ var whiteScreen:FlxSprite;
 var dialogue:DialogueBox;
 
 function preload():Void {
+    if(!PlayState.isStoryMode || PlayState.total_plays > 1){return;}
+
     whiteScreen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, 0xFFFFFFFF);
     whiteScreen.cameras = [getState().camBHUD];
     whiteScreen.screenCenter();
@@ -34,7 +36,7 @@ function preload():Void {
 }
 
 function startSong(startCountdown:Void->Void):Void {
-    if(!PlayState.isStoryMode){startCountdown(); return;}
+    if(!PlayState.isStoryMode || PlayState.total_plays > 1){return false;}
 
     FlxG.sound.playMusic(SavedFiles.getSound(Paths.music("Lunchbox", "stages/school")));
     FlxG.sound.music.fadeIn();

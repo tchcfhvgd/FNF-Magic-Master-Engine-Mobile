@@ -77,6 +77,7 @@ class FreeplayState extends MusicBeatState {
 		#end
 
 		songList = SongStuffManager.getSongList();
+		for(w in songList){if(!w.hidden){continue;} songList.remove(w);}
 		
 		background = new FlxSprite().loadGraphic(Paths.image('menuBG').getGraphic());
 		background.setGraphicSize(FlxG.width, FlxG.height);

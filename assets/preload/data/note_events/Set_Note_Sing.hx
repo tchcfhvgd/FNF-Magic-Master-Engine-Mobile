@@ -8,7 +8,7 @@ import("PreSettings");
 
 preset("defaultValues", 
     [
-        {name:"Char List",type:"Array",value:"[]"}
+        {name:"Char List",type:"Array",value:[]}
     ]
 );
 

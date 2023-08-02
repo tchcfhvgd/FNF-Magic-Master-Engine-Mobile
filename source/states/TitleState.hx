@@ -62,7 +62,7 @@ class TitleState extends MusicBeatState {
 	override public function create():Void {
 		FlxG.mouse.visible = false;
 
-		intro_list = LangSupport.getText('intro_list');		
+		intro_list = LangSupport.getText('intro_list');
 		otherStuff.add(new FlxSprite());
 
 		gradient = FlxGradient.createGradientFlxSprite(FlxG.width, Std.int(FlxG.height / 2), [0x00000000, 0xFF23FFB6]);

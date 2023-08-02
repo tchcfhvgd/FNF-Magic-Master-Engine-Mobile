@@ -40,9 +40,16 @@ class Controls extends FlxActionSet {
 		STATIC_STRUMCONTROLS = DEFAULT_STATIC_STRUMCONTROLS.copy();
 	}
 
-	public function getNoteDataFromKey(cur_key:FlxKey, game_keys:Int):Int {
+	public var current_keys:Array<Array<FlxKey>> = [];
+	public function setKeyData(game_keys:Int):Void {
 		var cont:Array<Dynamic> = CURRENT_STRUMCONTROLS.get(game_keys);
-		for(i in 0...cont.length){if(cont[i][0].contains(cur_key)){return i;}}
+		if(cont == null){return;}
+		current_keys = [];
+		for(i in 0...cont.length){current_keys.push(cont[i][0]);}
+		//trace(current_keys);
+	}
+	public function getNoteDataFromKey(cur_key:FlxKey):Int {
+		for(i in 0...current_keys.length){if(current_keys[i].contains(cur_key)){return i;}}
 		return -1;
 	}
 

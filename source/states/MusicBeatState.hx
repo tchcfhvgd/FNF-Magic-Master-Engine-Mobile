@@ -83,6 +83,8 @@ class MusicBeatState extends FlxUIState {
 	override function create(){
 		state = this;
 		persistentUpdate = false;
+		
+        FlxG.mouse.visible = false;
 
 		FlxG.game.setFilters([]);
 
@@ -105,7 +107,6 @@ class MusicBeatState extends FlxUIState {
 				var nScript = new Script();
 				nScript.Name = Type.getClassName(Type.getClass(this));
 				nScript.Mod = script_path.mod;
-				trace(script_path.script);
 				nScript.exScript(script_path.script.getText());
 				tempScripts.set(Type.getClassName(Type.getClass(this)), nScript);
 			}
@@ -135,6 +136,8 @@ class MusicBeatState extends FlxUIState {
 
 		updateCurStep();
 		updateBeat();
+
+		if(FlxG.keys.justPressed.P){for(s in tempScripts.keys()){trace(s);}}
 
 		if(oldStep != curStep && curStep > 0){stepHit();}
 

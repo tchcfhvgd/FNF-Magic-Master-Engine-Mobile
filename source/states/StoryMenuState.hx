@@ -70,6 +70,7 @@ class StoryMenuState extends MusicBeatState {
 		#end
 
         weeks = SongStuffManager.getWeekList();
+		for(w in weeks){if(!w.hiddenOnWeeks){continue;} weeks.remove(w);}
 
         var bg = new FlxSprite().loadGraphic(Paths.image('menuBG').getGraphic());
 		bg.setGraphicSize(FlxG.width, FlxG.height);

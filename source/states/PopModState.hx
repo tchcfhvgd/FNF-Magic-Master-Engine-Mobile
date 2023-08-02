@@ -65,5 +65,7 @@ class PopModState extends MusicBeatState {
         btnYes.screenCenter(); btnYes.y += 25; btnYes.x += btnYes.width; add(btnYes);
 
         super.create();
+        
+        FlxG.mouse.visible = true;
     }
 }

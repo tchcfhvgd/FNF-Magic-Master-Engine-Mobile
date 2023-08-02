@@ -66,7 +66,6 @@ class MainMenuState extends MusicBeatState {
 
 	override function create(){
 		if(FlxG.sound.music == null || (FlxG.sound.music != null && !FlxG.sound.music.playing)){FlxG.sound.playMusic(Paths.music('freakyMenu').getSound());}
-		FlxG.mouse.visible = true;
 		PlayState.isDuel = false;
 
 		// Updating Discord Rich Presence
@@ -146,6 +145,8 @@ class MainMenuState extends MusicBeatState {
 		changeSelection();
 		
 		super.create();
+        
+        FlxG.mouse.visible = true;
 	}
 
 	override function update(elapsed:Float){

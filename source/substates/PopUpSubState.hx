@@ -42,6 +42,12 @@ class PopUpSubState extends MusicBeatSubstate {
         add(MENU);
 	}
 
+	override function create() {
+		super.create();
+		
+		FlxG.mouse.visible = true;
+	}
+
 	public function doClose(){
 		canControlle = false;
         curCamera.alpha = 0;

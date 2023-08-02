@@ -31,6 +31,8 @@ using SavedFiles;
 using StringTools;
 
 typedef CharacterFile = {
+	var name:String;
+
 	var image:String;
 	var healthicon:String;
 
@@ -62,6 +64,9 @@ typedef AnimArray = {
 
 class Character extends FlxSpriteGroup {
 	public static function getFocusCharID(song:SwagSong, section:Int, ?strum:Int):Int {
+		section = Std.int(Math.min(section, song.generalSection.length - 1));
+		section = Std.int(Math.max(section, 0));
+		
 		var strum_list = song.sectionStrums;
 		var focused_strum = strum != null ? strum : song.generalSection[section].strumToFocus;
 		var focused_character = song.generalSection[section].charToFocus;
@@ -203,6 +208,8 @@ class Character extends FlxSpriteGroup {
 
 		parseCharacterFiler(charFile);
 
+		curCharacter = charFile.name;
+
 		singTimer = charFile.sing_time;
 		healthIcon = charFile.healthicon;
 		this.dancedIdle = charFile.danceIdle;
@@ -337,6 +344,7 @@ class Character extends FlxSpriteGroup {
 			curPAnim().curFrame < animationsArray[AnimName].sustain_sing
 		){return;}
 		if(charScript != null && charScript.exFunction('playAnim', [AnimName, Force])){return;}
+		if(c == null){return;}
 		if(c.animation.getByName(AnimName) == null){return;}
 		
 		specialAnim = Special;

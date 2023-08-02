@@ -91,8 +91,6 @@ class PackerEditorState extends MusicBeatState {
 		DiscordClient.changePresence('Editing', '[Packer Editor]');
 		MagicStuff.setWindowTitle('On Packer Editor', 1);
 		#end
-        
-        FlxG.mouse.visible = true;
 
         var bgGrid:FlxSprite = FlxGridOverlay.create(10, 10, FlxG.width, FlxG.height, true, 0xff4d4d4d, 0xff333333);
         bgGrid.cameras = [camGame];
@@ -159,6 +157,8 @@ class PackerEditorState extends MusicBeatState {
 		add(camFollow); 
 
         super.create();
+        
+        FlxG.mouse.visible = true;
     }
 
     var pos = [[], []];

@@ -189,10 +189,22 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     // NOTE EVENTS
     public dynamic function onHIT(_note:Note):Void {};
     public dynamic function onMISS(_note:Note):Void {}
-    public dynamic function onRANK(_note:Note,_score:Float,_rank:String, _pop_image:String):Void {}
+    public dynamic function onRANK(_note:Note,_score:Float,_rank:String, _pop_image:String):Void {
+        if(PreSettings.getPreSetting("Type Splash", "Visual Settings") == "OnSick" && _score >= 350){splashNote(_note);}
+        var cur_character = LOCAL_VARIABLES.Player;
+        if(cur_character == null){return;}
+
+        if(tween_icon != null){tween_icon.cancel();} rankIcon.revive();
+        rankIcon.loadGraphic(Paths.styleImage(_pop_image, ui_style).getGraphic());
+        rankIcon.scale.set(0.7, 0.7); rankIcon.updateHitbox(); rankIcon.alpha = 1;
+        rankIcon.setPosition(cur_character.c.getGraphicMidpoint().x, cur_character.c.getGraphicMidpoint().y);
+        tween_icon = FlxTween.tween(rankIcon, {y: rankIcon.y - 25, alpha: 0}, 0.5, {ease:FlxEase.quadOut, onComplete: function(twn){rankIcon.kill();}});
+    }
     public dynamic function onGAME_OVER():Void {}
     public dynamic function update_hud():Void {}
     public dynamic function onLIFE(value:Float){
+        if(PreSettings.getPreSetting("Type Mode", "Cheating Settings") == "Practice"){return;}
+
         HEALTH += value;
         
         if(HEALTH > MAXHEALTH){HEALTH = MAXHEALTH;}
@@ -203,7 +215,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     };
 
     // STATS VARIABLES    
-    public static var P_STAT:Array<Dynamic> = [
+    public static var P_STAT:Array<{rank:String, popup:String, score:Int, diff:Int}> = [
         {rank:"PERFECT", popup:"perfect", score:400, diff:0},
         {rank:"SICK", popup:"sick", score:350, diff:45},
         {rank:"GOOD", popup:"good", score:200, diff:90},
@@ -255,6 +267,10 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     public var pressArray:Array<Bool> = [];
     public var releaseArray:Array<Bool> = [];
     public var holdArray:Array<Bool> = [];
+
+    public var rankIcon:FlxSprite;
+    public var splashIcon:NoteSplash;
+    public var tween_icon:FlxTween;
     
 	//PreSettings Variables
 	public var pre_TypeScroll:String = PreSettings.getPreSetting("Type Scroll", "Visual Settings");
@@ -274,54 +290,22 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 
         changeTypeStrum(typeStrum);
 
-        onRANK = function(daNote:Note, _score:Float, _rate:String, _pop_image:String){
-            if(PreSettings.getPreSetting("Type Splash", "Visual Settings") == "OnSick" && _score >= 350){splashNote(daNote);}
-            var cur_character = LOCAL_VARIABLES.Player;
-            if(cur_character == null){return;}
-    
-            var popRank:FlxSprite = new FlxSprite();
-            popRank.loadGraphic(Paths.styleImage(_pop_image, ui_style).getGraphic());
-            popRank.scale.set(0.7, 0.7); popRank.updateHitbox();
-            popRank.setPosition(cur_character.c.getGraphicMidpoint().x, cur_character.c.getGraphicMidpoint().y);
-            popRank.alpha = 1;
-            popRank.cameras = [FlxG.camera];
-            add(popRank);
-            FlxTween.tween(popRank, {y: popRank.y - 25, alpha: 0}, 0.5, {ease:FlxEase.quadOut, onComplete:function(twn){popRank.destroy();}});
-            
-            var ppScore:PopUpScore = new PopUpScore();
-            ppScore.setPosition(popRank.x, popRank.y + (popRank.height / 2));
-            ppScore.popup(STATS.Score, ui_style);
-            ppScore.cameras = [FlxG.camera];
-            add(ppScore);
-            Timer.delay(function(){ppScore.destroy();}, Std.int(0.5 + (0.2 * ('${STATS.Score}'.length - 1)) * 1000));
-    
-            var sprt_combo:FlxSprite = new FlxSprite();
-            sprt_combo.loadGraphic(Paths.styleImage("combo", ui_style).getGraphic());
-            sprt_combo.scale.set(0.5, 0.5); sprt_combo.updateHitbox();
-            sprt_combo.setPosition(popRank.x, popRank.y + popRank.height + 5);
-            sprt_combo.alpha = 1;
-            sprt_combo.cameras = [FlxG.camera];
-            add(sprt_combo);
-            FlxTween.tween(sprt_combo, {y: sprt_combo.y - 25, alpha: 0}, 0.5, {ease:FlxEase.quadOut, onComplete:function(twn){popRank.destroy();}});
-    
-            var ppCombo:PopUpScore = new PopUpScore();
-            ppCombo.setPosition(sprt_combo.x, sprt_combo.y + (sprt_combo.height / 2));
-            ppCombo.popup(STATS.Combo, ui_style);
-            ppCombo.cameras = [FlxG.camera];
-            add(ppCombo);
-            Timer.delay(function(){ppCombo.destroy();}, Std.int(0.5 + (0.2 * ('${STATS.Combo}'.length - 1)) * 1000));
-        }
+        rankIcon = new FlxSprite();
+        rankIcon.cameras = [FlxG.camera];
+        add(rankIcon);
+        rankIcon.kill();
+        
+        splashIcon = new NoteSplash();
+        add(splashIcon);
+        splashIcon.kill();
+
+        if(controls != null){controls.setKeyData(_keys);}
     }
 
     public function load_solo_ui():Void {
         update_hud = function(){
             if(STATS.Combo > STATS.MaxCombo){STATS.MaxCombo = STATS.Combo;}
             if(STATS.Score > STATS.Record){STATS.Record = STATS.Score;}
-
-            if(leftIcon != null && PreSettings.getPreSetting("Bumping Camera", "Visual Settings")){
-                leftIcon.scale.x = FlxMath.lerp(leftIcon.scale.x, 1, FlxG.elapsed * 3.125);
-                leftIcon.scale.y = FlxMath.lerp(leftIcon.scale.y, 1, FlxG.elapsed * 3.125);
-            }
 
             if(healthBar != null){
                 healthBar.x = staticnotes.x;
@@ -352,36 +336,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
                 lblStats.x = staticnotes.x;
                 
                 if(LOCAL_VARIABLES.GameOver){lblStats.text = '|| You Died ||';}
-                else{
-                    switch(PreSettings.getPreSetting("Type HUD", "Visual Settings")){
-                        case "Detailed":{
-                            lblStats.text = '||'+
-                                ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} |' +
-                                ' ${LangSupport.getText('gmp_misses')}: ${STATS.Misses} ' +
-                            '||';
-                        }
-                        case "MagicHUD":{
-                            lblStats.text = '||'+
-                                ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} |' +
-                                ' ${LangSupport.getText('gmp_misses')}: ${STATS.Misses} ' +
-                            '||';
-                        }
-                        case "Original":{
-                            lblStats.text = '||'+
-                                ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} |' +
-                                ' ${LangSupport.getText('gmp_misses')}: ${STATS.Misses} ' +
-                            '||';
-                        }
-                        case "Minimized":{
-                            lblStats.text = '||'+
-                                ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} ' +
-                            '||';
-                        }
-                        case "OnlyNotes":{
-                            lblStats.text = '';
-                        }
-                    }
-                }
+                else{lblStats.text = getInfo(true);}
             }
         }
 
@@ -419,15 +374,6 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
             if(STATS.Combo > STATS.MaxCombo){STATS.MaxCombo = STATS.Combo;}
             if(STATS.Score > STATS.Record){STATS.Record = STATS.Score;}
 
-            if(leftIcon != null && PreSettings.getPreSetting("Bumping Camera", "Visual Settings")){
-                leftIcon.scale.x = FlxMath.lerp(leftIcon.scale.x, 1, FlxG.elapsed * 3.125);
-                leftIcon.scale.y = FlxMath.lerp(leftIcon.scale.y, 1, FlxG.elapsed * 3.125);
-            }
-            if(rightIcon != null && PreSettings.getPreSetting("Bumping Camera", "Visual Settings")){
-                rightIcon.scale.x = FlxMath.lerp(rightIcon.scale.x, 1, FlxG.elapsed * 3.125);
-                rightIcon.scale.y = FlxMath.lerp(rightIcon.scale.y, 1, FlxG.elapsed * 3.125);
-            }
-
             if(healthBar != null){
                 var _player:Character = LOCAL_VARIABLES.Player;
                 if(_player != null){
@@ -438,13 +384,13 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
                         if(_char_left != null && leftIcon.curIcon != _char_left.healthIcon){leftIcon.setIcon(_char_left.healthIcon); leftIcon.visible = true;}
         
                         leftIcon.y = (healthBar.y + (healthBar.height / 2)) - (leftIcon.height / 2);
-                        if(_player.onRight){
+                        if(_player.onRight){                        
+                            leftIcon.playAnim(HEALTH < (MAXHEALTH * 0.2) ? 'losing': 'default');
                             leftIcon.x = healthBar.x + (healthBar.width - (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01))) - leftIcon.width;
-                        }else{
+                        }else{                        
+                            leftIcon.playAnim(HEALTH > (MAXHEALTH * 0.8) ? 'losing': 'default');
                             leftIcon.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - leftIcon.width;
                         }
-                        
-                        leftIcon.playAnim(HEALTH < 0.8 ? 'default' : 'losing');		
                     }
 
                     if(rightIcon != null){
@@ -453,53 +399,18 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     
                         rightIcon.y = (healthBar.y + (healthBar.height / 2)) - (rightIcon.height / 2);
                         if(_player.onRight){
+                            rightIcon.playAnim(HEALTH > (MAXHEALTH * 0.8) ? 'losing': 'default');
                             rightIcon.x = healthBar.x + (healthBar.width - (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)));
                         }else{
+                            rightIcon.playAnim(HEALTH < (MAXHEALTH * 0.2) ? 'losing': 'default');
                             rightIcon.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01));
                         }
-
-                        rightIcon.playAnim(HEALTH > 0.2 ? 'default' : 'losing');
                     }
                 }
             }
     
             if(lblStats != null){
-                switch(PreSettings.getPreSetting("Type HUD", "Visual Settings")){
-                    case "Detailed":{
-                        lblStats.text = '||'+
-                            ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} |' +
-                            ' ${LangSupport.getText('gmp_record')}: ${STATS.Record} |' +
-                            ' ${LangSupport.getText('gmp_combo')}: ${STATS.Combo} |' +
-                            ' ${LangSupport.getText('gmp_maxCombo')}: ${STATS.MaxCombo} |' +
-                            ' ${LangSupport.getText('gmp_misses')}: ${STATS.Misses} |' +
-                            ' ${LangSupport.getText('gmp_hits')}: ${STATS.Hits} |' +
-                            ' ${LangSupport.getText('gmp_rating')}: ${STATS.Rating} ' +
-                        '||';
-                    }
-                    case "MagicHUD":{
-                        lblStats.text = '||'+
-                            ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} |' +
-                            ' ${LangSupport.getText('gmp_combo')}: ${STATS.Combo} |' +
-                            ' ${LangSupport.getText('gmp_misses')}: ${STATS.Misses} |' +
-                            ' ${LangSupport.getText('gmp_rating')}: ${STATS.Rating} ' +
-                        '||';
-                    }
-                    case "Original":{
-                        lblStats.text = '||'+
-                            ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} |' +
-                            ' ${LangSupport.getText('gmp_misses')}: ${STATS.Misses} ' +
-                        '||';
-                    }
-                    case "Minimized":{
-                        lblStats.text = '||'+
-                            ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} ' +
-                        '||';
-                    }
-                    case "OnlyNotes":{
-                        lblStats.text = '';
-                    }
-                }
-                
+                lblStats.text = getInfo();
                 lblStats.screenCenter(X);
             }
         }
@@ -508,12 +419,12 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 		if(cont.contains(true)){trace("RETURN"); return;}
 
 		if(sprite_healthBar == null){
-			sprite_healthBar = new FlxSprite(326, pre_TypeScroll == "DownScroll" ? 25 : 655).loadGraphic(Paths.styleImage("healthBar", ui_style, "shared").getGraphic());
+			sprite_healthBar = new FlxSprite(326, pre_TypeScroll == "DownScroll" ? 35 : 655).loadGraphic(Paths.styleImage("healthBar", ui_style, "shared").getGraphic());
 			sprite_healthBar.scale.set(0.7,0.7); sprite_healthBar.updateHitbox();
 		}
 
 		if(healthBar == null){
-			healthBar = new FlxBar(330, pre_TypeScroll == "DownScroll" ? 35 : 664, RIGHT_TO_LEFT, Std.int(FlxG.width / 2) - 20, 16, this, 'HEALTH', 0, MAXHEALTH);
+			healthBar = new FlxBar(330, pre_TypeScroll == "DownScroll" ? 45 : 664, RIGHT_TO_LEFT, Std.int(FlxG.width / 2) - 20, 16, this, 'HEALTH', 0, MAXHEALTH);
 			healthBar.numDivisions = 500;
             healthBar.screenCenter(X);
 		}
@@ -544,6 +455,76 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         add(lblStats);
 	}
 
+    public function getInfo(isSingle:Bool = false):String {
+        if(isSingle){
+            switch(PreSettings.getPreSetting("Type HUD", "Visual Settings")){
+                case "Detailed":{
+                    return '||'+
+                        ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} |' +
+                        ' ${LangSupport.getText('gmp_misses')}: ${STATS.Misses} ' +
+                    '||';
+                }
+                case "MagicHUD":{
+                    return '||'+
+                        ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} |' +
+                        ' ${LangSupport.getText('gmp_misses')}: ${STATS.Misses} ' +
+                    '||';
+                }
+                case "Original":{
+                    return '||'+
+                        ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} |' +
+                        ' ${LangSupport.getText('gmp_misses')}: ${STATS.Misses} ' +
+                    '||';
+                }
+                case "Minimized":{
+                    return '||'+
+                        ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} ' +
+                    '||';
+                }
+                case "OnlyNotes":{
+                    return '';
+                }
+            }
+            return '';
+        }
+        switch(PreSettings.getPreSetting("Type HUD", "Visual Settings")){
+            case "Detailed":{
+                return '||'+
+                    ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} |' +
+                    ' ${LangSupport.getText('gmp_record')}: ${STATS.Record} |' +
+                    ' ${LangSupport.getText('gmp_combo')}: ${STATS.Combo} |' +
+                    ' ${LangSupport.getText('gmp_maxCombo')}: ${STATS.MaxCombo} |' +
+                    ' ${LangSupport.getText('gmp_misses')}: ${STATS.Misses} |' +
+                    ' ${LangSupport.getText('gmp_hits')}: ${STATS.Hits} |' +
+                    ' ${LangSupport.getText('gmp_rating')}: ${STATS.Rating} ' +
+                '||';
+            }
+            case "MagicHUD":{
+                return '||'+
+                    ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} |' +
+                    ' ${LangSupport.getText('gmp_combo')}: ${STATS.Combo} |' +
+                    ' ${LangSupport.getText('gmp_misses')}: ${STATS.Misses} |' +
+                    ' ${LangSupport.getText('gmp_rating')}: ${STATS.Rating} ' +
+                '||';
+            }
+            case "Original":{
+                return '||'+
+                    ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} |' +
+                    ' ${LangSupport.getText('gmp_misses')}: ${STATS.Misses} ' +
+                '||';
+            }
+            case "Minimized":{
+                return '||'+
+                    ' ${LangSupport.getText('gmp_score')}: ${STATS.Score} ' +
+                '||';
+            }
+            case "OnlyNotes":{
+                return '';
+            }
+        }
+        return '';
+    }
+
     public function changeTypeStrum(_type:String):Void {
         typeStrum = _type;
 
@@ -559,32 +540,34 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
 		super.destroy();
 	}
 
-    private var pressedKeys:Array<FlxKey> = [];
+    var pressed_keys:Array<FlxKey> = [];
     private function onKeyPress(event:KeyboardEvent):Void {
         if(typeStrum == "BotPlay" || PreSettings.getPreSetting("Type Mode", "Cheating Settings") == "BotPlay"){return;}
         if(controls.keyboardScheme != Solo){return;}
 
         var eventKey:FlxKey = event.keyCode;
-        if(pressedKeys.contains(eventKey)){return;} pressedKeys.push(eventKey);
-        var key:Int = controls.getNoteDataFromKey(eventKey, key_number);
+        var cur_key:Int = controls.getNoteDataFromKey(eventKey);
     
-        if(key < 0 || disableArray[key]){return;}
-
-        staticnotes.playById(key, "pressed", true);
+        if(!pressed_keys.contains(eventKey)){pressed_keys.push(eventKey);}
         
-        pressArray[key] = true;
-        holdArray[key] = true;
+        if(cur_key < 0){return;}
+        if(holdArray[cur_key]){return;}
+        if(disableArray[cur_key]){return;}
+
+        staticnotes.playById(cur_key, "pressed", true);
+        
+        pressArray[cur_key] = true;
+        holdArray[cur_key] = true;
         keyShit();
-        pressArray[key] = false;
+        pressArray[cur_key] = false;
     }
 
     private function onKeyRelease(event:KeyboardEvent):Void {
         if(typeStrum == "BotPlay" || PreSettings.getPreSetting("Type Mode", "Cheating Settings") == "BotPlay"){return;}
         if(controls.keyboardScheme != Solo){return;}
         
-        var eventKey:FlxKey = event.keyCode;
-        if(pressedKeys.contains(eventKey)){pressedKeys.remove(eventKey);}
-        var key:Int = controls.getNoteDataFromKey(eventKey, key_number);
+        var eventKey:FlxKey = event.keyCode; pressed_keys.remove(eventKey);
+        var key:Int = controls.getNoteDataFromKey(eventKey);
     
         if(key < 0 || disableArray[key]){return;}
         
@@ -616,6 +599,9 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         pressArray.resize(key_number);
         releaseArray.resize(key_number);
         holdArray.resize(key_number);
+
+        if(controls != null){controls.setKeyData(_keys);}
+        for(n in notelist){n.note_size.set(getStrumSize(), getStrumSize());}
     }
 
     public function loadStrumNotes(swagStrum:SwagStrum){
@@ -625,8 +611,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         notelist = [];
         for(i in 0...swagStrum.notes.length){
             var sectionInfo:Array<Dynamic> = swagStrum.notes[i].sectionNotes.copy();
-            var slide_gp:Array<Note> = [];
-
+            
             for(n in sectionInfo){if(n[1] < 0 || n[1] >= swagStrum.keys){sectionInfo.remove(n);}}
 
             for(n in sectionInfo){
@@ -634,12 +619,11 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
     
                 var swagNote:Note = new Note(note, swagStrum.keys, image, style, type);
                 swagNote.note_size.set(getStrumSize(), getStrumSize());
+                swagNote.strumParent = this;
 
                 notelist.push(swagNote);
         
                 if(note.sustainLength <= 0 || note.multiHits > 0){continue;}
-
-                if(note.canMerge){slide_gp.push(swagNote);}
 
                 var cSusNote = Math.floor(note.sustainLength / (strumConductor.stepCrochet * 0.25)) + 2;
         
@@ -663,38 +647,6 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
                 }
 
                 var lastNote:Note = swagNote; while(lastNote.nextNote != null){lastNote = lastNote.nextNote;}
-                if(note.canMerge){slide_gp.push(lastNote);}
-            }
-            
-
-            slide_gp.sort(function(a, b) {
-                if(a.strumTime < b.strumTime) return -1;
-                else if(a.strumTime > b.strumTime) return 1;
-                else if(a.noteData < b.noteData) return -1;
-                else if(a.noteData > b.noteData) return 1;
-                else return 0;
-             });
-
-            while(slide_gp.length > 0){
-                var first_slide = slide_gp.shift();
-                
-                for(second_slide in slide_gp){
-                    if(first_slide.strumTime != second_slide.strumTime){continue;}
-                    if(first_slide.noteData == second_slide.noteData){continue;}
-
-                    if(first_slide.prevNote != null){first_slide.typeHit = "Release";}else{first_slide.typeHit = "Press";}
-                    if(second_slide.prevNote != null){second_slide.typeHit = "Release";}else{second_slide.typeHit = "Press";}
-                    first_slide.typeNote = "Merge"; second_slide.typeNote = "Merge";
-
-                    var new_slide:Note = new Note(Note.getNoteData([first_slide.strumTime, first_slide.noteData]), swagStrum.keys, image, style, type);
-                    first_slide.nextNote = new_slide; new_slide.nextNote = second_slide;
-                    new_slide.typeNote = "Switch"; new_slide.typeHit = "Ghost";
-                    new_slide.note_size.set(getStrumSize(), getStrumSize());
-                    new_slide.shader = ShaderColorSwap.get_shader(new_slide.note_path.getColorNote(), first_slide.playColor, second_slide.playColor);
-                    notelist.push(new_slide);
-
-                    break;
-                }
             }
         }
 
@@ -706,9 +658,9 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
             else {return 0;}
         });
     
-        if(onRANK != null){onRANK(new Note(Note.getNoteData(), key_number), 500, "SICK", "sick");}
-
         daSing = swagStrum.charToSing;
+
+        if(notelist.length > 0){onRANK(notelist[0], 900, "sick", "sick");}
 
         strumGenerated = true;
     }
@@ -739,7 +691,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         if(!strumGenerated){return;}
 
         notes.forEachAlive(function(daNote:Note){
-            if(daNote.strumTime > strumConductor.songPosition - Conductor.safeZoneOffset && daNote.strumTime < strumConductor.songPosition + (Conductor.safeZoneOffset * 0.5)){daNote.noteStatus = "CanBeHit";}
+            if(daNote.strumTime < strumConductor.songPosition + (Conductor.safeZoneOffset * 0.5)){daNote.noteStatus = "CanBeHit";}
             if(strumConductor.songPosition > daNote.strumTime + (350 / getScrollSpeed()) && daNote.noteStatus != "Pressed"){missNOTE(daNote); return;}
             
             daNote.visible = false;
@@ -839,6 +791,7 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         for(event in daNote.otherData){
             if(event[2] != "OnHit"){continue;}
             var curScript:Script = Script.getScript(event[0]);
+            if(curScript == null){continue;}
             curScript.setVariable("_note", daNote);
             curScript.exFunction("execute", event[1]);
         }
@@ -878,18 +831,22 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         if(daNote.noteHits > 0){daNote.missHealth *= daNote.noteHits + 1;}
         
         for(event in daNote.otherData){
-            if(event[2] != "OnMiss"){continue;} var curScript:Script = Script.getScript(event[0]);
-            curScript.setVariable("_note", daNote); curScript.exFunction("execute", event[1]);
+            if(event[2] != "OnMiss"){continue;}
+            var curScript:Script = Script.getScript(event[0]);
+            if(curScript == null){continue;}
+            curScript.setVariable("_note", daNote); 
+            curScript.exFunction("execute", event[1]);
         }
         
         if(daNote.ignoreMiss && !daNote.hitMiss){return;}
 
-        if(PreSettings.getPreSetting("Type Mode", "Cheating Settings") != "Practice"){
+        if(daNote.typeNote != "Sustain"){
+            if(PreSettings.getPreSetting("Miss Sounds", "Game Settings")){FlxG.sound.play(Paths.styleSound('missnote${FlxG.random.int(1,3)}', states.PlayState.SONG.uiStyle).getSound(), 0.4);}
             onLIFE(-daNote.missHealth * PreSettings.getPreSetting("Damage Multiplier", "Cheating Settings"));
+            STATS.Misses += 1 + daNote.noteHits;
         }
 
         STATS.TotalNotes++;
-        if(daNote.typeNote != "Sustain"){STATS.Misses += 1 + daNote.noteHits;}
         STATS.Score -= 100;
         STATS.Combo = 0;
 
@@ -942,10 +899,9 @@ class StrumLine extends FlxTypedGroup<Dynamic> {
         var cur_strum:StrumNote = staticnotes.statics[cur_data];
         if(cur_strum == null){return;}
 
-        var note_splash = new NoteSplash();
-        note_splash.setupByNote(daNote, cur_strum);
-        note_splash.onSplashed = function(){note_splash.destroy();}
-        add(note_splash);
+        splashIcon.revive();
+        splashIcon.setupByNote(daNote, cur_strum);
+        splashIcon.onSplashed = function(){splashIcon.kill();}
     }
 
     public function getScrollSpeed():Float{

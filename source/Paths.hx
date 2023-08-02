@@ -132,6 +132,7 @@ class Paths {
 	}
 
 	inline static public function file(file:String, type:AssetType = TEXT, ?library:String, ?mod:String):String {return getPath(file, type, library, mod);}
+	inline static public function video(key:String, ?library:String, ?mod:String):String {return getPath('videos/$key.mp4', MOVIE_CLIP, library, mod);}
 	inline static public function sound(key:String, ?library:String, ?mod:String):String {return getPath('sounds/$key.$SOUND_EXT', SOUND, library, mod);}
 	inline static public function music(key:String, ?library:String, ?mod:String):String {return getPath('music/$key.$SOUND_EXT', MUSIC, library, mod);}
 	inline static public function shader(key:String, ?library:String, ?mod:String):String {return getPath('shaders/$key.frag', TEXT, library, mod);}
@@ -168,13 +169,20 @@ class Paths {
 	inline static public function voice(id:Int, char:String, song:String, category:String, ?mod:String):String {
 		var path = getPath('${song}/${id}-${char}-${category}.$SOUND_EXT', SOUND, 'songs', mod);
 		if(!Paths.exists(path)){path = getPath('${song}/${id}-Default-${category}.$SOUND_EXT', SOUND, 'songs', mod);}
+		if(!Paths.exists(path)){path = getPath('${song}/${id}-${char}.$SOUND_EXT', SOUND, 'songs', mod);}
 		if(!Paths.exists(path)){path = getPath('${song}/${id}-Default.$SOUND_EXT', SOUND, 'songs', mod);}
 		if(!Paths.exists(path) && id == 0){path = getPath('${song}/Voices-${category}.$SOUND_EXT', SOUND, 'songs', mod);}
 		if(!Paths.exists(path) && id == 0){path = getPath('${song}/Voices.$SOUND_EXT', SOUND, 'songs', mod);}
 		return path;
 	}
 	inline static public function chart(jsonInput:String, ?mod:String):String {
-		var path = getPath('songs/${jsonInput.split('-')[0]}/${jsonInput}.json', TEXT, 'data', mod);
+		var song_name:String = jsonInput.split('-')[0];
+		var song_cat:String = jsonInput.split('-')[1];
+		var song_diff:String = jsonInput.split('-')[2];
+
+		var path = getPath('songs/${song_name}/${jsonInput}.json', TEXT, 'data', mod);
+		if(!Paths.exists(path)){path = getPath('songs/${song_name}/${song_name}-${song_diff}.json', TEXT, 'data', mod);}
+		if(!Paths.exists(path)){path = getPath('songs/${song_name}/${song_name}.json', TEXT, 'data', mod);}
 		if(!Paths.exists(path)){path = getPath('songs/Test/Test-Normal-Normal.json', TEXT, 'data', mod);}
 		return path;
 	}
@@ -223,11 +231,11 @@ class Paths {
 	}
 	inline static public function character(char:String, asp:String, ?skin:String, ?is_death:Bool, ?mod:String):String {
 		if(skin == null){skin = Skins.getSkin(char);}
-		var cur_char_file:String = '${char}'; if(is_death){cur_char_file = '${cur_char_file}_Death';}
-		var path = getPath('${char}/${cur_char_file}-${skin}-${asp}.json', TEXT, 'characters', mod);
-		if(!Paths.exists(path)){path = getPath('${char}/${cur_char_file}-Default-${asp}.json', TEXT, 'characters', mod);}
-		if(!Paths.exists(path)){path = getPath('${char}/${cur_char_file}-Default-Default.json', TEXT, 'characters', mod);}
-		if(!Paths.exists(path)){path = getPath('Boyfriend/Boyfriend-Default-Default.json', TEXT, 'characters', mod);}
+		var death_char:String = ''; if(is_death){death_char = '_Death';}
+		var path = getPath('${char}/${char}${death_char}-${skin}-${asp}.json', TEXT, 'characters', mod);
+		if(!Paths.exists(path)){path = getPath('${char}${death_char}/${char}-Default-${asp}.json', TEXT, 'characters', mod);}
+		if(!Paths.exists(path)){path = getPath('${char}${death_char}/${char}-Default-Default.json', TEXT, 'characters', mod);}
+		if(!Paths.exists(path)){path = getPath('Boyfriend/Boyfriend${death_char}-Default-Default.json', TEXT, 'characters', mod);}
 		return path;
 	}
 	inline static public function _character(char:String, key:String, type:AssetType = TEXT, ?mod:String):String {

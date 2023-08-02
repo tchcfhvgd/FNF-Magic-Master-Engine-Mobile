@@ -2,9 +2,10 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.math.FlxPoint;
 import flixel.graphics.FlxGraphic;
-import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.Assets as OpenFlAssets;
+import flixel.graphics.frames.FlxAtlasFrames;
 
 using SavedFiles;
 using StringTools;
@@ -12,6 +13,7 @@ using StringTools;
 class HealthIcon extends FlxSprite {
 	public var isPlayer:Bool = false;
 	public var curIcon:String = "";
+	public var default_scale:FlxPoint = FlxPoint.get(1, 1);
 
 	public function new(char:String = 'bf', _isPlayer:Bool = false){
 		this.isPlayer = _isPlayer;

@@ -99,6 +99,7 @@ class ModSupport {
     public static function reload_mods():Void {
         modDataScripts.clear();
         staticScripts.clear();
+        loadScripts = [];
 
         savedMODS = []; for(m in MODS){savedMODS.push({name: m.name, enabled: m.enabled});}
         FlxG.save.data.saved_mods = savedMODS; FlxG.save.flush();

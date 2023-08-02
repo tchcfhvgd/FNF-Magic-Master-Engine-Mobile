@@ -77,6 +77,13 @@ class CharacterEditorSubState extends MusicBeatSubstate {
 		changeCharacter();
 
 		FlxTween.tween(curCamera, {alpha: 1}, 0.5, {onComplete: function(twn){canControlle = true;}});
+
+	}
+
+	override function create() {
+		super.create();
+		
+		FlxG.mouse.visible = true;
 	}
 
     var pos = [[], []];

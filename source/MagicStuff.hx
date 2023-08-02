@@ -20,7 +20,7 @@ import openfl.Lib;
 using SavedFiles;
 
 class MagicStuff {
-	public static final version:String = "1.0";
+	public static final version:String = "1.1";
 
     public static function reload_data():Void {
         ModListState.isFirst = false;

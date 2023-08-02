@@ -64,7 +64,6 @@ class ModListState extends MusicBeatState {
         isFirst = false;
 
         if(FlxG.sound.music != null){FlxG.sound.music.stop();}
-        FlxG.mouse.visible = true;
 
         if(onConfirm != null){toNext = onConfirm; onConfirm = null;}
 
@@ -105,6 +104,8 @@ class ModListState extends MusicBeatState {
         var lblModList = new Alphabet(10,20,LangSupport.getText("mod_list")); add(lblModList);
 
 		super.create();
+        
+        FlxG.mouse.visible = true;
 	}
 
 	override function update(elapsed:Float){        
