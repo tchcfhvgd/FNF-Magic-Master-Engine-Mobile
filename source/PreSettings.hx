@@ -5,10 +5,8 @@ import flixel.util.FlxSave;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
 
-#if (desktop && sys)
 import sys.FileSystem;
 import sys.io.File;
-#end
 
 using StringTools;
 
