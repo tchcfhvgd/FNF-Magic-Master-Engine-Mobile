@@ -7,10 +7,8 @@ import hscript.Interp;
 import flixel.FlxG;
 import haxe.Json;
 
-#if (desktop && sys)
 import sys.FileSystem;
 import sys.io.File;
-#end
 
 using SavedFiles;
 using StringTools;
@@ -58,12 +56,11 @@ class ModSupport {
         if(FlxG.save.data.saved_mods != null){savedMODS = FlxG.save.data.saved_mods;}
 
         //Adding Mods from Archives
-        #if (desktop && sys)
-        if(FileSystem.exists('mods')){
+        if(FileSystem.exists(Sys.getCwd() + 'mods')){
             var _i:Int = 0;
             
-            for(modFolder in FileSystem.readDirectory('mods')){
-                var mod_path:String = FileSystem.absolutePath('mods/$modFolder');
+            for(modFolder in FileSystem.readDirectory(Sys.getCwd() + 'mods')){
+                var mod_path:String = FileSystem.absolutePath(Sys.getCwd() + 'mods/$modFolder');
 
                 if(!FileSystem.isDirectory(mod_path)){continue;}
 
@@ -73,7 +70,6 @@ class ModSupport {
                 _i++;
             }
         }
-        #end
 
         var curSavedMods:Array<{name:String, enabled:Bool}> = savedMODS.copy();
         while(curSavedMods.length > 0){
