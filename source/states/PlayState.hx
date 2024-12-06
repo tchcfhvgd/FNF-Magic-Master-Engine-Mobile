@@ -18,7 +18,7 @@ import openfl.filters.ShaderFilter;
 import flixel.util.FlxStringUtil;
 import flixel.util.FlxCollision;
 import openfl.display.BlendMode;
-import hxcodec.flixel.FlxVideo;
+import hxvlc.flixel.FlxVideo;
 import substates.PauseSubState;
 import flixel.system.FlxSound;
 import flixel.tweens.FlxTween;
