@@ -77,7 +77,9 @@ class PreLoaderState extends FlxUIState {
 		
 		FlxG.autoPause = false;
 
+		# desktop
 		NGio.noLogin(APIStuff.API);
+		#end
 
 		#if ng
 		var ng:NGio = new NGio(APIStuff.API, APIStuff.EncKey);
