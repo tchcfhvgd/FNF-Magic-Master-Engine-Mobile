@@ -22,6 +22,10 @@ import sys.io.File;
 import flixel.FlxG;
 import openfl.Lib;
 
+#if android
+import android.content.Context;
+#end
+
 class Main extends Sprite {
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
@@ -35,6 +39,11 @@ class Main extends Sprite {
 
 	public static function main():Void {
 		Lib.current.addChild(new Main());
+		#if cpp
+		cpp.NativeGc.enable(true);
+		#elseif hl
+		hl.Gc.enable(true);
+		#end
 	}
 
 	public function new(){
@@ -42,7 +51,14 @@ class Main extends Sprite {
 		
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 
-		if(stage != null){
+		// Credits to MAJigsaw77 (he's the og author for this code)
+		#if android
+		Sys.setCwd(Path.addTrailingSlash(Context.getExternalFilesDir()));
+		#elseif ios
+		Sys.setCwd(lime.system.System.applicationStorageDirectory);
+		#end
+		
+	        if(stage != null){
 			init();
 		}else{
 			addEventListener(Event.ADDED_TO_STAGE, init);
@@ -58,25 +74,12 @@ class Main extends Sprite {
 	}
 
 	private function setupGame():Void {
-		var stageWidth:Int = Lib.current.stage.stageWidth;
-		var stageHeight:Int = Lib.current.stage.stageHeight;
-
-		if(zoom == -1){
-			var ratioX:Float = stageWidth / gameWidth;
-			var ratioY:Float = stageHeight / gameHeight;
-			zoom = Math.min(ratioX, ratioY);
-			gameWidth = Math.ceil(stageWidth / zoom);
-			gameHeight = Math.ceil(stageHeight / zoom);
-		}
-
-		#if !debug
-		initialState = states.PreLoaderState;
-		#end
-
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, framerate, framerate, skipSplash, startFullscreen));
 
-		#if !mobile
-		addChild(new FPS(10, 3, 0xFFFFFF));
+		FlxG.game.addChild(new FPS(10, 3, 0xFFFFFF));
+
+		#if android
+		FlxG.android.preventDefaultKeys = [BACK];
 		#end
 	}
 
@@ -90,7 +93,7 @@ class Main extends Sprite {
 		dateNow = StringTools.replace(dateNow, " ", "_");
 		dateNow = StringTools.replace(dateNow, ":", "'");
 
-		path = "./crash/" + "MagicMaster_" + dateNow + ".txt";
+		path = "crash/" + "MagicMaster_" + dateNow + ".txt";
 
 		for (stackItem in callStack)
 		{
@@ -105,8 +108,8 @@ class Main extends Sprite {
 
 		errMsg += "\nUncaught Error: " + e.error;
 
-		if (!FileSystem.exists("./crash/"))
-			FileSystem.createDirectory("./crash/");
+		if (!FileSystem.exists("crash/"))
+			FileSystem.createDirectory("crash/");
 
 		File.saveContent(path, errMsg + "\n");
 
