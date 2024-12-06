@@ -10,7 +10,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.addons.effects.FlxTrailArea;
 import flixel.addons.effects.FlxTrail;
 import flixel.graphics.atlas.FlxAtlas;
-import hxcodec.flixel.FlxVideoSprite;
+import hxvlc.flixel.FlxVideoSprite;
 import flixel.system.FlxSoundGroup;
 import substates.MusicBeatSubstate;
 import openfl.display.StageQuality;
