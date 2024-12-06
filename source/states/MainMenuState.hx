@@ -69,7 +69,9 @@ class MainMenuState extends MusicBeatState {
 		PlayState.isDuel = false;
 
 		// Updating Discord Rich Presence
+		#if desktop
 		DiscordClient.changePresence("In the Menus", null);
+		#end
 		MagicStuff.setWindowTitle('In the Menus');
 
 		var bg = new FlxSprite().loadGraphic(Paths.image('menuBG').getGraphic());
