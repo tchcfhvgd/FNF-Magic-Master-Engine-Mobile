@@ -82,7 +82,7 @@
 
 	<!--In case you want to use the addons package-->
 	<haxelib name="flixel-addons" />
-	<haxelib name="hscript-improved" />
+	<haxelib name="hscript" />
 	<haxelib name="hxvlc" />
 
 	<!--In case you want to use the ui package-->
