@@ -55,7 +55,7 @@ jobs:
           haxelib install hxvlc 1.7.1
           haxelib install newgrounds 1.3.0
           haxelib install hxjsonast
-          haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
+          haxelib install hscript
           haxelib git linc_luajit https://github.com/mcagabe19-stuff/linc_luajit-rewriten
           haxelib install extension-androidtools
           haxelib install hxcpp-debug-server
