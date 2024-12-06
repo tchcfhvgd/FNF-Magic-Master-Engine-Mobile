@@ -12,7 +12,7 @@ import haxe.Json;
 
 import Note;
 
-#if desktop
+#if sys
 import sys.FileSystem;
 import sys.io.File;
 #end
