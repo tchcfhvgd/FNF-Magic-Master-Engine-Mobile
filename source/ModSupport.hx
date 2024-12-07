@@ -6,6 +6,7 @@ import haxe.DynamicAccess;
 import hscript.Interp;
 import flixel.FlxG;
 import haxe.Json;
+import haxe.io.Path;
 
 import sys.FileSystem;
 import sys.io.File;
@@ -56,11 +57,11 @@ class ModSupport {
         if(FlxG.save.data.saved_mods != null){savedMODS = FlxG.save.data.saved_mods;}
 
         //Adding Mods from Archives
-        if(FileSystem.exists(Sys.getCwd() + 'mods')){
+        if(FileSystem.exists(Path.addTrailingSlash(Context.getExternalFilesDir()) + 'mods')){
             var _i:Int = 0;
             
-            for(modFolder in FileSystem.readDirectory(Sys.getCwd() + 'mods')){
-                var mod_path:String = FileSystem.absolutePath(Sys.getCwd() + 'mods/$modFolder');
+            for(modFolder in FileSystem.readDirectory(Path.addTrailingSlash(Context.getExternalFilesDir()) + 'mods')){
+                var mod_path:String = FileSystem.absolutePath(Path.addTrailingSlash(Context.getExternalFilesDir()) + 'mods/$modFolder');
 
                 if(!FileSystem.isDirectory(mod_path)){continue;}
 
