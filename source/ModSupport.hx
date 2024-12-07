@@ -7,6 +7,9 @@ import hscript.Interp;
 import flixel.FlxG;
 import haxe.Json;
 import haxe.io.Path;
+#if android
+import android.content.Context;
+#end
 
 import sys.FileSystem;
 import sys.io.File;
@@ -57,11 +60,11 @@ class ModSupport {
         if(FlxG.save.data.saved_mods != null){savedMODS = FlxG.save.data.saved_mods;}
 
         //Adding Mods from Archives
-        if(FileSystem.exists(Path.addTrailingSlash(Context.getExternalFilesDir()) + 'mods')){
+        if(FileSystem.exists(#if mobile Path.addTrailingSlash(Context.getExternalFilesDir()) + #end 'mods')){
             var _i:Int = 0;
             
-            for(modFolder in FileSystem.readDirectory(Path.addTrailingSlash(Context.getExternalFilesDir()) + 'mods')){
-                var mod_path:String = FileSystem.absolutePath(Path.addTrailingSlash(Context.getExternalFilesDir()) + 'mods/$modFolder');
+            for(modFolder in FileSystem.readDirectory(#if mobile Path.addTrailingSlash(Context.getExternalFilesDir()) + #end 'mods')){
+                var mod_path:String = FileSystem.absolutePath(#if mobile Path.addTrailingSlash(Context.getExternalFilesDir()) + #end 'mods/$modFolder');
 
                 if(!FileSystem.isDirectory(mod_path)){continue;}
 
